@@ -28,6 +28,8 @@ TVC_WANT_FEATURE(l0xx,[ build for STM32L0xx], [no])
 
 TVC_WANT_STM32(stm32, [choose the stm32 as F407VEx], [F407VEx])
 
+TVC_WANT_STRING(port, [choose the uart port fo stm32 as console], [uart1])
+
 
 TVC_WANT_FEATURE(ipv4,[ choose the vesion V4 of Ip proctol], [yes])
 TVC_WANT_FEATURE(ipv6,[ choose the vesion V6 of Ip proctol], [no])
@@ -65,5 +67,5 @@ AM_CONDITIONAL([WANT_IPV4],  [test "$ipv4" = true ])
 AM_CONDITIONAL([WANT_IPV6],  [test "$ipv6" = true ])
 
 ## generate all the Makefile
-AC_CONFIG_FILES([Makefile LwIP/system/OS/Makefile CMSIS/Device/Makefile CMSIS/Device/ST/Makefile CMSIS/Device/ST/STM32F4xx/Makefile CMSIS/Device/ST/STM32F4xx/Source/Makefile CMSIS/Device/ST/STM32F4xx/Source/Templates/Makefile CMSIS/Makefile STM32F4xx_HAL_Driver/Makefile STM32F4xx_HAL_Driver/Src/Makefile FreeRTOS/Makefile FreeRTOS/Source/Makefile FreeRTOS/Source/CMSIS_RTOS/Makefile LwIP/Makefile LwIP/src/api/Makefile LwIP/src/core/ipv4/Makefile over-hal/Makefile application/Makefile bsp/Makefile Common/Makefile Common/Utils/Makefile Common/TCP_IP/Makefile])
+AC_CONFIG_FILES([Makefile LwIP/system/OS/Makefile CMSIS/Device/Makefile CMSIS/Device/ST/Makefile CMSIS/Device/ST/STM32F4xx/Makefile CMSIS/Device/ST/STM32F4xx/Source/Makefile CMSIS/Device/ST/STM32F4xx/Source/Templates/Makefile CMSIS/Makefile STM32F4xx_HAL_Driver/Makefile STM32F4xx_HAL_Driver/Src/Makefile FreeRTOS/Makefile FreeRTOS/Source/Makefile FreeRTOS/Source/CMSIS_RTOS/Makefile LwIP/Makefile LwIP/src/api/Makefile LwIP/src/core/ipv4/Makefile over-hal/Makefile application/Makefile bsp/Makefile Common/Makefile Common/Utils/Makefile Common/TCP_IP/Makefile FreeRTOS/Source/portable/MemMang/Makefile FreeRTOS/Source/portable/Makefile FreeRTOS/Source/portable/GCC/Makefile])
 AC_OUTPUT

@@ -624,6 +624,7 @@ WANT_FREERTOS
 WANT_LWIP
 WANT_IPV6
 WANT_IPV4
+WANT_PORT
 WANT_STM32
 WANT_L0XX
 WANT_F7XX
@@ -735,6 +736,7 @@ enable_l4xx
 enable_f7xx
 enable_l0xx
 enable_stm32
+enable_port
 enable_ipv4
 enable_ipv6
 enable_lwip
@@ -1383,6 +1385,7 @@ Optional Features:
   --enable-f7xx           build for STM32F7xx (no)
   --enable-l0xx           build for STM32L0xx (no)
   --enable-stm32          choose the stm32 as F407VEx (F407VEx)
+  --set-port              choose the uart port fo stm32 as console (uart1)
   --enable-ipv4           choose the vesion V4 of Ip proctol (yes)
   --enable-ipv6           choose the vesion V6 of Ip proctol (no)
   --enable-lwip           choose the IP stack (yes)
@@ -4349,6 +4352,28 @@ _ACEOF
 
 
 
+  # Check whether --enable-port was given.
+if test "${enable_port+set}" = set; then :
+  enableval=$enable_port;
+else
+  enableval="uart1"
+fi
+
+
+
+  WANT_PORT=$enableval
+
+  want_string=WANT_PORT
+
+cat >>confdefs.h <<_ACEOF
+#define $want_string $enableval
+_ACEOF
+
+
+
+
+
+
   # Check whether --enable-ipv4 was given.
 if test "${enable_ipv4+set}" = set; then :
   enableval=$enable_ipv4;
@@ -4701,7 +4726,7 @@ fi
 
 
 ## generate all the Makefile
-ac_config_files="$ac_config_files Makefile LwIP/system/OS/Makefile CMSIS/Device/Makefile CMSIS/Device/ST/Makefile CMSIS/Device/ST/STM32F4xx/Makefile CMSIS/Device/ST/STM32F4xx/Source/Makefile CMSIS/Device/ST/STM32F4xx/Source/Templates/Makefile CMSIS/Makefile STM32F4xx_HAL_Driver/Makefile STM32F4xx_HAL_Driver/Src/Makefile FreeRTOS/Makefile FreeRTOS/Source/Makefile FreeRTOS/Source/CMSIS_RTOS/Makefile LwIP/Makefile LwIP/src/api/Makefile LwIP/src/core/ipv4/Makefile over-hal/Makefile application/Makefile bsp/Makefile Common/Makefile Common/Utils/Makefile Common/TCP_IP/Makefile"
+ac_config_files="$ac_config_files Makefile LwIP/system/OS/Makefile CMSIS/Device/Makefile CMSIS/Device/ST/Makefile CMSIS/Device/ST/STM32F4xx/Makefile CMSIS/Device/ST/STM32F4xx/Source/Makefile CMSIS/Device/ST/STM32F4xx/Source/Templates/Makefile CMSIS/Makefile STM32F4xx_HAL_Driver/Makefile STM32F4xx_HAL_Driver/Src/Makefile FreeRTOS/Makefile FreeRTOS/Source/Makefile FreeRTOS/Source/CMSIS_RTOS/Makefile LwIP/Makefile LwIP/src/api/Makefile LwIP/src/core/ipv4/Makefile over-hal/Makefile application/Makefile bsp/Makefile Common/Makefile Common/Utils/Makefile Common/TCP_IP/Makefile FreeRTOS/Source/portable/MemMang/Makefile FreeRTOS/Source/portable/Makefile FreeRTOS/Source/portable/GCC/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -5516,6 +5541,9 @@ do
     "Common/Makefile") CONFIG_FILES="$CONFIG_FILES Common/Makefile" ;;
     "Common/Utils/Makefile") CONFIG_FILES="$CONFIG_FILES Common/Utils/Makefile" ;;
     "Common/TCP_IP/Makefile") CONFIG_FILES="$CONFIG_FILES Common/TCP_IP/Makefile" ;;
+    "FreeRTOS/Source/portable/MemMang/Makefile") CONFIG_FILES="$CONFIG_FILES FreeRTOS/Source/portable/MemMang/Makefile" ;;
+    "FreeRTOS/Source/portable/Makefile") CONFIG_FILES="$CONFIG_FILES FreeRTOS/Source/portable/Makefile" ;;
+    "FreeRTOS/Source/portable/GCC/Makefile") CONFIG_FILES="$CONFIG_FILES FreeRTOS/Source/portable/GCC/Makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac
