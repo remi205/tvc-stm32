@@ -31,22 +31,19 @@
  */
 
 /* lwIP includes. */
-#include "FreeRTOS.h"
-#include "queue.h"
-#include "semphr.h"
 #include "lwip/debug.h"
 #include "lwip/def.h"
 #include "lwip/sys.h"
 #include "lwip/mem.h"
 #include "lwip/stats.h"
-
+#include "FreeRTOS.h"
 #include "task.h"
 
 
 xTaskHandle xTaskGetCurrentTaskHandle( void ) PRIVILEGED_FUNCTION;
 
 /* This is the number of threads that can be started with sys_thread_new() */
-#define SYS_THREAD_MAX 12
+#define SYS_THREAD_MAX 6
 
 static u16_t s_nextthread = 0;
 
@@ -266,17 +263,18 @@ err_t sys_sem_new(sys_sem_t *sem, u8_t count)
 */
 u32_t sys_arch_sem_wait(sys_sem_t *sem, u32_t timeout)
 {
-     portTickType StartTime, Elapsed;
+portTickType StartTime, EndTime, Elapsed;
 
 	StartTime = xTaskGetTickCount();
 
 	if(	timeout != 0)
 	{
-	 if( xSemaphoreTake(sem, timeout / portTICK_RATE_MS ) == pdTRUE )
+		if( xSemaphoreTake( *sem, timeout / portTICK_RATE_MS ) == pdTRUE )
 		{
-	   Elapsed = xTaskGetTickCount() * portTICK_RATE_MS;
+			EndTime = xTaskGetTickCount();
+			Elapsed = (EndTime - StartTime) * portTICK_RATE_MS;
 			
-			return Elapsed; // return time blocked TODO test	
+			return (Elapsed); // return time blocked TODO test	
 		}
 		else
 		{
@@ -285,13 +283,13 @@ u32_t sys_arch_sem_wait(sys_sem_t *sem, u32_t timeout)
 	}
 	else // must block without a timeout
 	{
-		while( xSemaphoreTake(sem, portMAX_DELAY) != pdTRUE){
-		Elapsed = (xTaskGetTickCount() - StartTime) * portTICK_RATE_MS;
+		while( xSemaphoreTake(*sem, portMAX_DELAY) != pdTRUE){}
+		EndTime = xTaskGetTickCount();
+		Elapsed = (EndTime - StartTime) * portTICK_RATE_MS;
 
-		return Elapsed; // return time blocked	
+		return ( Elapsed ); // return time blocked	
 		
 	}
-}
 }
 
 /*-----------------------------------------------------------------------------------*/
@@ -372,7 +370,7 @@ void sys_mutex_free(sys_mutex_t *mutex)
 /* Lock a mutex*/
 void sys_mutex_lock(sys_mutex_t *mutex)
 {
-	sys_arch_sem_wait(*mutex, 0);
+	sys_arch_sem_wait(mutex, 0);
 }
 
 /*-----------------------------------------------------------------------------------*/

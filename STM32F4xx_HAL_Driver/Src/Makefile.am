@@ -2,7 +2,7 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 lib_LIBRARIES = libSTM32F4xx.a
 
-AM_CFLAGS =-mcpu=cortex-m4 -mthumb -O3 -Wall -Wpointer-arith  -Winline -Wundef -g  -ffunction-sections -fdata-sections
+AM_CFLAGS =-mcpu=cortex-m4 -mthumb -O3 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Wall -Wpointer-arith  -Winline -Wundef -g  -ffunction-sections -fdata-sections
 
 CPPFLAGS += -I$(top_srcdir)/inc -I$(top_srcdir) -I$(top_srcdir)/STM32F4xx_HAL_Driver/Inc
 CFLAGS += -I$(top_srcdir)/Inc -I$(top_srcdir) -I$(top_srcdir)/STM32F4xx_HAL_Driver/Inc -I$(top_srcdir)/CMSIS/Device/ST/STM32F4xx/Include -I$(top_srcdir)/CMSIS/Include/ -DSTM32F407xx

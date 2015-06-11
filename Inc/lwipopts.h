@@ -2,12 +2,11 @@
 /**
   ******************************************************************************
   * File Name          : lwipopts.h
-  * Date               : 08/06/2014 00:14:02
   * Description        : This file overrides LwIP stack default configuration
   *                      done in opt.h file.
   ******************************************************************************
   *
-  * COPYRIGHT(c) 2014 STMicroelectronics
+  * COPYRIGHT(c) 2015 STMicroelectronics
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -34,7 +33,7 @@
   ******************************************************************************
   */
  
-/* Define to prevent recursive inclusion -------------------------------------*/
+/* Define to prevent recursive inclusion --------------------------------------*/
 #ifndef __LWIPOPTS__H__
 #define __LWIPOPTS__H__
 
@@ -49,42 +48,62 @@
  extern "C" {
 #endif
 
-/*----- Default Value for LWIP_DHCP: 0 -----*/  
-#define LWIP_DHCP   1
-/*----- Default Value for WITH_RTOS: 0 -----*/
-#define WITH_RTOS   1		
-/*----- Default Value for NO_SYS: 0 -----*/ 
-#define NO_SYS   0			
-/*----- Default Value for MEM_ALIGNMENT: 1 -----*/ 
-#define MEM_ALIGNMENT   4
-/*----- Default Value for LWIP_DNS: 0 -----*/
-#define LWIP_DNS   0		
-/*----- Default Value for LWIP_TCP: 1 -----*/
-#define LWIP_TCP   0		
-#define LWIP_UDP   1		
-/*----- Default Value for MEMP_NUM_TCP_PCB: 5 -----*/
-#define MEMP_NUM_TCP_PCB   0
-#define MEMP_NUM_UDP_PCB   8			
-/*----- Default Value for LWIP_NETCONN: 1 -----*/ 
-#define LWIP_NETCONN   0		
-/*----- Default Value for LWIP_SOCKET: 1 -----*/ 
-#define LWIP_SOCKET   0		
-/*----- Default Value for CHECKSUM_GEN_IP: 1 -----*/
-#define CHECKSUM_GEN_IP   0		
-/*----- Default Value for CHECKSUM_GEN_UDP: 1 -----*/
-#define CHECKSUM_GEN_UDP   0		
-/*----- Default Value for CHECKSUM_GEN_TCP: 1 -----*/
-#define CHECKSUM_GEN_TCP   0		
-/*----- Default Value for CHECKSUM_GEN_ICMP: 1 -----*/
-#define CHECKSUM_GEN_ICMP   0		
-/*----- Default Value for CHECKSUM_CHECK_IP: 1 -----*/
-#define CHECKSUM_CHECK_IP   0		
-/*----- Default Value for CHECKSUM_CHECK_UDP: 1 -----*/
-#define CHECKSUM_CHECK_UDP   0		
-/*----- Default Value for CHECKSUM_CHECK_TCP: 1 -----*/
-#define CHECKSUM_CHECK_TCP   0		
-/*----- No Default Value for LWIP_PROVIDE_ERRNO -----*/
+
+#define ETHARP_STATS 0
+#define LWIP_DHCP_BOOTP_FILE 0
+#define LWIP_COMPAT_MUTEX 0
+#define LWIP_EVENT_API 0
+/* STM32CubeMX Specific Parameters (not defined in opt.h) ---------------------*/
+/* Parameters set in STM32CubeMX LwIP Configuration GUI -*/
+/*----- WITH_RTOS enabled (Since FREERTOS is set) -----*/
+#define WITH_RTOS 1
+/*----- CHECKSUM_BY_HARDWARE enabled -----*/
+#define CHECKSUM_BY_HARDWARE 1
+/*-----------------------------------------------------------------------------*/
+
+/* LwIP Stack Parameters (modified compared to initialization value in opt.h) -*/
+/* Parameters set in STM32CubeMX LwIP Configuration GUI -*/
+/*----- Value in opt.h for LWIP_DHCP: 0 -----*/
+#define LWIP_DHCP 1
+/*----- Value in opt.h for NO_SYS: 0 -----*/
+#define NO_SYS 0
+/*----- Value in opt.h for MEM_ALIGNMENT: 1 -----*/
+#define MEM_ALIGNMENT 4
+/*----- Value in opt.h for LWIP_ETHERNET: (LWIP_ARP || PPPOE_SUPPORT) -*/
+#define LWIP_ETHERNET 1
+/*----- Default Value for LWIP_DNS: 0 -*/
+#define LWIP_DNS 0
+/*----- Value in opt.h for TCPIP_THREAD_STACKSIZE: 0 -----*/
+#define TCPIP_THREAD_STACKSIZE 1024
+/*----- Value in opt.h for LWIP_NETCONN: 1 -----*/
+#define LWIP_NETCONN 1
+/*----- Value in opt.h for LWIP_SOCKET: 1 -----*/
+#define LWIP_SOCKET 1
+/*----- Value in opt.h for LWIP_STATS: 1 -----*/
+#define LWIP_STATS 0
+/*----- Value in opt.h for CHECKSUM_GEN_IP: 1 -----*/
+#define CHECKSUM_GEN_IP 0
+/*----- Value in opt.h for CHECKSUM_GEN_UDP: 1 -----*/
+#define CHECKSUM_GEN_UDP 0
+/*----- Value in opt.h for CHECKSUM_GEN_TCP: 1 -----*/
+#define CHECKSUM_GEN_TCP 0
+/*----- Value in opt.h for CHECKSUM_GEN_ICMP: 1 -----*/
+#define CHECKSUM_GEN_ICMP 0
+/*----- Value in opt.h for CHECKSUM_CHECK_IP: 1 -----*/
+#define CHECKSUM_CHECK_IP 0
+/*----- Value in opt.h for CHECKSUM_CHECK_UDP: 1 -----*/
+#define CHECKSUM_CHECK_UDP 0
+/*----- Value in opt.h for CHECKSUM_CHECK_TCP: 1 -----*/
+#define CHECKSUM_CHECK_TCP 0
+/*----- Default Value for LWIP_DBG_MIN_LEVEL: LWIP_DBG_LEVEL_ALL -*/
+#define LWIP_DBG_MIN_LEVEL LWIP_DBG_LEVEL_SERIOUS
+/*-----------------------------------------------------------------------------*/ 
+ 
+/* Parameter(s) not set in STM32CubeMX LwIP Configuration GUI -*/
+/* LwIP Parameter(s) not in opt.h -----------------------------*/
 #define LWIP_PROVIDE_ERRNO  1
+
+
 #define LWIP_NETIF_HOSTNAME 1
 #define LWIP_CALLBACK_API 1
 #define LWIP_NOASSERT 1
@@ -97,5 +116,3 @@
 }
 #endif
 #endif /*__ LWIPOPTS__H_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -95,7 +95,7 @@ osSemaphoreId SemaphoreIncommoingPacket = NULL;
 ETH_HandleTypeDef heth;
 
 /* USER CODE BEGIN 3 */
-static void arp_timer(void *arg);
+//static void arp_timer(void *arg);
 /* USER CODE END 3 */
 /* Private functions ---------------------------------------------------------*/
 /**
@@ -192,11 +192,11 @@ static void low_level_init(struct netif *netif)
   /* Enable Interrupt on change of link status */
   HAL_ETH_WritePHYRegister(&heth, PHY_MISR, regvalue);  
   
-
+#if 0
   /* create the task that handles the ETH_MAC */
   osThreadDef(Eth_if, ethernetif_input, osPriorityRealtime, 0, INTERFACE_THREAD_STACK_SIZE);
   osThreadCreate (osThread(Eth_if), netif);
-
+#endif
 }
 
 /**
@@ -591,12 +591,7 @@ void ethernetif_update_config(struct netif *netif)
 
   ethernetif_notify_conn_changed(netif);
 }
-
 #endif
-
-/* USER CODE BEGIN 6 */
-  
-/* USER CODE END 6 */ 
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
 

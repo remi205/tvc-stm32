@@ -4,16 +4,13 @@
 
 
 /* Private variables ---------------------------------------------------------*/
+
 I2C_HandleTypeDef hi2c1;
-
 RTC_HandleTypeDef hrtc;
-
 SPI_HandleTypeDef hspi2;
 DMA_HandleTypeDef hdma_spi2_rx;
 DMA_HandleTypeDef hdma_spi2_tx;
-
 TIM_HandleTypeDef htim6;
-
 UART_HandleTypeDef huart5;
 UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart6;

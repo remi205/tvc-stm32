@@ -11,4 +11,9 @@ unsigned short ads111x_read();
 int ads111x_write_pointer(  unsigned char RegisterAddress);
 
 void ads111x_write_rr(unsigned short Data, unsigned char RegisterAddress);
-//#define ads111x_write(data) ads111x_write_rr(data,1)
+
+
+void ads111x_write(unsigned short data);
+
+
+#define ads111x_write(data) ads111x_write_rr(data,1)
