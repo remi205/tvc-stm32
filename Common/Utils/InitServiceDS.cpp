@@ -1,5 +1,6 @@
 
 #include "stdafx.h"
+#include "lwip/sockets.h"
 #include "TraceFunction.h"
 #include "ServiceClient.h"
 #include "UDPClient.h"

@@ -4,8 +4,9 @@
 
 #pragma once
 
+#include "../../LwIP/src/include/lwip/sockets.h"
+
 typedef int SOCKET;
-struct sockaddr_in;
 
 class UDP
   {
@@ -24,9 +25,9 @@ class UDP
     //
     // m_addr est l'adresse du maitre résolue
     //
-    sockaddr_in m_addr;
+    struct sockaddr_in m_addr;
 
-    sockaddr_in m_addr_reply;
+    struct sockaddr_in m_addr_reply;
 
     UDP();
 
