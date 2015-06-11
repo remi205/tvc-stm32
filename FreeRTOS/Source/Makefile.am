@@ -1,5 +1,5 @@
-
 ## Makefile.am -- Process this file with automake to produce Makefile.in
+SUBDIRS = CMSIS_RTOS portable
 
 lib_LIBRARIES = libfreertos.a
 
