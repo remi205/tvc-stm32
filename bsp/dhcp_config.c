@@ -17,6 +17,8 @@ uint32_t DHCPfineTimer = 0;
 __IO uint8_t DHCP_state;
 #endif
 
+extern void WriteConsole(char *Message);
+
 #if 1
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/

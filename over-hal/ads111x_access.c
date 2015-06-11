@@ -25,7 +25,6 @@ unsigned short ads111x_read()
   ret = HAL_I2C_Master_Receive_IT(&hi2c1, ads111x_adr, (unsigned char*)&Data, 2);
   if ( ret != HAL_OK)
     {
-      WriteConsole("Pas Réponse de l'ads\n");
       return ret;
     }
 
@@ -44,7 +43,6 @@ int ads111x_write_pointer(  unsigned char RegisterAddress)
   int ret = HAL_I2C_Master_Transmit_IT(&hi2c1, ads111x_adr , &Address, 1);
   if ( ret != HAL_OK)
     {
-      WriteConsole("Pas Réponse de l'ads\n");
       // generation d'un stop alors
       return ret;
     }
@@ -53,7 +51,7 @@ int ads111x_write_pointer(  unsigned char RegisterAddress)
   return ret;
 }
 
-
+#if 0
 // ne sert que pour les configurations, il faut 
 void ads111x_write(unsigned short Data)
 {
@@ -75,7 +73,7 @@ void ads111x_write(unsigned short Data)
 
   while( TransmitComplete == 0);
 }
-
+#endif
 
 // ne sert que pour les configurations, il faut 
 void ads111x_write_rr(unsigned short Data, unsigned char reg)
@@ -91,10 +89,7 @@ void ads111x_write_rr(unsigned short Data, unsigned char reg)
    
   ret = HAL_I2C_Master_Transmit_IT(&hi2c1, ads111x_adr , (unsigned char*)&data, 3);
   if ( ret != HAL_OK)
-    {
-      WriteConsole("Pas Réponse de l'ads\n");
       return ;
-    }
 
   while( TransmitComplete == 0);
 }

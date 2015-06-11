@@ -53,8 +53,11 @@ uint8_t GATEWAY_ADDRESS[4];
 
 extern void dhcp_thread(void const * argument);
 extern void ethernetif_input(void const *argument);
+extern void dhcp_process(void const * argument);
 
 err_t ethernetif_init(struct netif *netif);
+
+extern int lwip_init();
 
 /* Private function prototypes -----------------------------------------------*/
 void netif_config(void);
