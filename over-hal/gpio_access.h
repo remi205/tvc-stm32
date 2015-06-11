@@ -1,5 +1,6 @@
 #include "stm32f4xx_hal.h"
 
+#pragma once
 //////////////////////////////////////////////////////////
 
 // MCU GPIO
@@ -15,7 +16,11 @@
 #define PB1  17
 #define PB3  19
 #define PB4  20
-#define PB9  25
+
+#define PD12  60
+#define PD13  61
+#define PD14  62
+#define PD15  63
 
 // board GPIO
 
@@ -27,15 +32,20 @@
 #define RELAY3     PC11
 
 #define GPIO_0     PB4
+
 #define GPIO_1     PB0
 #define GPIO_2     PB1
 #define GPIO_3     PC10
 #define GPIO_4     PC11
+
 #define ENALBLE_GPIO_5V   PA15
 
-#define NSS_1     PA11
-#define NSS_2     PB9
-#define NSS_3     PA15
+
+#define LED_GREEN  PD12
+#define LED_RED    PD14
+#define LED_ORANGE PD13
+#define LED_BLUE   PD15
+
 
 //////////////////////////////////////////////////////////
 typedef enum io_direction {
@@ -45,7 +55,7 @@ typedef enum io_direction {
 
 
 typedef enum io_event_mode {
-  MODE_INTPUT,
+  MODE_INPUT,
   MODE_RISING,
   MODE_FALLING,
   MODE_RISING_FALLING
