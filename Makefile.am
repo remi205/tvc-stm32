@@ -51,7 +51,7 @@ AM_CPPFLAGS += -O3 -ffunction-sections -fdata-sections  -fno-exceptions -I$(top_
 bin_PROGRAMS = essai_stm32
 
 ## pas encore full automatise
-essai_stm32_SOURCES = bsp/main.c bsp/newlib_stub.c bsp/stm32f4xx_crt0.s FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c
+essai_stm32_SOURCES = 
 
 essai_stm32_LDFLAGS =-mcpu=cortex-m4 -mthumb -Wl,-Map,essai_stm32.map -T$(top_srcdir)/target/stm32-mem/STM32F417VEx-mem.ld -T$(top_srcdir)/target/target-stm32-rom.ld 
 essai_stm32_LDADD = bsp/libbsp.a application/libapplication.a over-hal/libover_hal.a bsp/dhcp_config.o STM32F4xx_HAL_Driver/Src/libSTM32F4xx.a FreeRTOS/Source/libfreertos.a LwIP/src/api/libapi.a LwIP/src/core/libcore.a LwIP/src/netif/libnetif.a LwIP/system/OS/libsysarch.a LwIP/src/core/ipv4/libipv4.a STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_eth.o LwIP/src/core/raw.o
