@@ -1,0 +1,6 @@
+# les 
+*.in
+*#*#
+*.bak
+*autom4te.cache*
+
