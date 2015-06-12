@@ -4,18 +4,18 @@ ACLOCAL_AMFLAGS = -I macro_m4
 
 ### par defaut c'est le F4
 if WANT_L4XX 
-AM_CFLAGS =  -I$(top_srcdir)/STM32L4xx_HAL_Driver/Inc -D__CORTEX_M=4 -D__FPU_PRESENT -D__FPU_USED=1 -mcpu=cortex-m4 -mthumb -I$(top_srcdir)/CMSIS/Device/ST/STM32L4xx/Include
+AM_CFLAGS = -I$(top_srcdir)/STM32L4xx_HAL_Driver/Inc -D__CORTEX_M=4 -D__FPU_PRESENT -D__FPU_USED=1 -mcpu=cortex-m4 -mthumb -I$(top_srcdir)/CMSIS/Device/ST/STM32L4xx/Include
 AM_CPPFLAGS = -I$(top_srcdir)/STM32L4xx_HAL_Driver/Inc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 SUBDIRS = STM32L4xx_HAL_Driver
 else
 if WANT_F3XX
 AM_CFLAGS =  -I$(top_srcdir)/STM32F3xx_HAL_Driver/Inc -D__CORTEX_M=4 -D__FPU_PRESENT -D__FPU_USED=1 -mcpu=cortex-m4 -mthumb -I$(top_srcdir)/CMSIS/Device/ST/STM32F3xx/Include -mfloat-abi=hard -mfpu=fpv4-sp-d16 
-AM_CPPFLAGS =  -I$(top_srcdir)/STM32F3xx_HAL_Driver/Inc  -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 
+AM_CPPFLAGS =  -I$(top_srcdir)/STM32F3xx_HAL_Driver/Inc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 
 SUBDIRS = STM32F3xx_HAL_Driver
 else
 if WANT_F7XX 
-AM_CFLAGS =  -I$(top_srcdir)/STM32F7xx_HAL_Driver/Inc -D__CORTEX_M=7 -D__FPU_PRESENT -D__FPU_USED=1 -mcpu=cortex-m7 -mthumb -I$(top_srcdir)/CMSIS/Device/ST/STM32F7xx/Include
-AM_CPPFLAGS =   -I$(top_srcdir)/STM32F7xx_HAL_Driver/Inc -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
+AM_CFLAGS = -I$(top_srcdir)/STM32F7xx_HAL_Driver/Inc -D__CORTEX_M=7 -D__FPU_PRESENT -D__FPU_USED=1 -mcpu=cortex-m7 -mthumb -I$(top_srcdir)/CMSIS/Device/ST/STM32F7xx/Include
+AM_CPPFLAGS =   -I$(top_srcdir)/STM32F7xx_HAL_Driver/Inc -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-sp-d16
 SUBDIRS = STM32F7xx_HAL_Driver
 else
 if WANT_L0XX 
@@ -43,9 +43,9 @@ AM_CFLAGS = -DIPV4=$(WANT_IPV6)
 AM_CPPFLAGS = -I$(top_srcdir)/LwIP/src/include/ipv6 
 endif
 
-AM_CFLAGS += -O3 -Wall -Wpointer-arith -Wstrict-prototypes -Winline -Wundef -g  -I$(top_srcdir)/Inc -I../Inc -DIPV4=$(WANT_IPV4) -I$(top_srcdir)/CMSIS/Include -I$(top_srcdir)/FreeRTOS/Source/CMSIS_RTOS -I$(top_srcdir)/FreeRTOS/Source/include/ -I$(top_srcdir)/FreeRTOS/Source/portable/GCC/ARM_CM3 -DSTM32F407xx
+AM_CFLAGS += -Wall -Wpointer-arith -Wstrict-prototypes -Winline -Wundef -g  -I$(top_srcdir)/Inc -I../Inc -DIPV4=$(WANT_IPV4) -I$(top_srcdir)/CMSIS/Include -I$(top_srcdir)/FreeRTOS/Source/CMSIS_RTOS -I$(top_srcdir)/FreeRTOS/Source/include/ -I$(top_srcdir)/FreeRTOS/Source/portable/GCC/ARM_CM4F -DSTM32F407xx
 
-AM_CPPFLAGS += -O3 -ffunction-sections -fdata-sections  -fno-exceptions -I$(top_srcdir)/tvc-macros -I$(top_srcdir)/LwIP/src/include  
+AM_CPPFLAGS += -O3 -ffunction-sections -fdata-sections -fno-exceptions -I$(top_srcdir)/tvc-macros -I$(top_srcdir)/LwIP/src/include  
 
 ## -fno-rtti
 bin_PROGRAMS = essai_stm32

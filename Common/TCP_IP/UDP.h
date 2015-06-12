@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "../../LwIP/src/include/lwip/sockets.h"
+//#include "../../LwIP/src/include/lwip/sockets.h"
 
 typedef int SOCKET;
 
