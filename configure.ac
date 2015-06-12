@@ -27,26 +27,24 @@ TVC_WANT_FEATURE(f7xx,[ build for STM32F7xx], [no])
 TVC_WANT_FEATURE(l0xx,[ build for STM32L0xx], [no])
 
 TVC_WANT_STM32(stm32, [choose the stm32 as F407VEx], [F407VEx])
+TVC_WANT_CONSOLE(console, [choose the stm32 uart port as console], [uart1])
 
-TVC_WANT_STRING(port, [choose the uart port fo stm32 as console], [uart1])
-
-
-TVC_WANT_FEATURE(ipv4,[ choose the vesion V4 of Ip proctol], [yes])
-TVC_WANT_FEATURE(ipv6,[ choose the vesion V6 of Ip proctol], [no])
+TVC_WANT_FEATURE(ipv4,[ choose the vesion V4 of Ip protocol], [yes])
+TVC_WANT_FEATURE(ipv6,[ choose the vesion V6 of Ip protocol], [no])
 TVC_WANT_FEATURE(lwip,[ choose the IP stack], [yes])
 TVC_WANT_FEATURE(freertos,[ use FreeRTOS as scheduler], [yes])
 
-TVC_WANT_FEATURE(south, [build the south application], [no])
-TVC_WANT_FEATURE(east_west, [build the east_west application], [yes])
+##TVC_WANT_FEATURE(south, [build the south application], [no])
+##TVC_WANT_FEATURE(east_west, [build the east_west application], [yes])
 
 TVC_WANT_FEATURE(target_ram,[ build for ram target], [yes])
 TVC_WANT_FEATURE(target_flash,[ build for flash target], [no])
-#TVC_WANT_FEATURE(canopen,[ use CanOpen over HAL], [no])
+## TVC_WANT_FEATURE(canopen,[ use CanOpen over HAL], [no])
 
 ## setup define for compilation 
 AC_DEFINE([stm32],["$want_string"],[Specify MCU])
 AC_DEFINE([user_main],["$want_string"],[Specify user start function])
-
+AC_DEFINE([console],["$want_string"],[Specifty uart])
 
 AM_CONDITIONAL([WANT_F4XX],     [test "$f4xx" = true])
 AM_CONDITIONAL([WANT_F3XX],     [test "$f3xx" = true])
@@ -65,6 +63,9 @@ AM_CONDITIONAL([WANT_CANOPEN],  [test "$canopen" = true])
 AM_CONDITIONAL([WANT_LWIP],     [test "$lwip" = true])
 AM_CONDITIONAL([WANT_IPV4],  [test "$ipv4" = true ])
 AM_CONDITIONAL([WANT_IPV6],  [test "$ipv6" = true ])
+
+AM_CONDITIONAL([WANT_IPV6],  [test "$ipv6" = true ])
+
 
 ## generate all the Makefile
 AC_CONFIG_FILES([Makefile LwIP/system/OS/Makefile CMSIS/Device/Makefile CMSIS/Device/ST/Makefile CMSIS/Device/ST/STM32F4xx/Makefile CMSIS/Device/ST/STM32F4xx/Source/Makefile CMSIS/Device/ST/STM32F4xx/Source/Templates/Makefile CMSIS/Makefile STM32F4xx_HAL_Driver/Makefile STM32F4xx_HAL_Driver/Src/Makefile FreeRTOS/Makefile FreeRTOS/Source/Makefile FreeRTOS/Source/CMSIS_RTOS/Makefile LwIP/Makefile LwIP/src/api/Makefile LwIP/src/core/ipv4/Makefile over-hal/Makefile application/Makefile bsp/Makefile Common/Makefile Common/Utils/Makefile Common/TCP_IP/Makefile FreeRTOS/Source/portable/MemMang/Makefile FreeRTOS/Source/portable/Makefile FreeRTOS/Source/portable/GCC/Makefile LwIP/src/Makefile LwIP/src/core/Makefile LwIP/src/netif/Makefile LwIP/system/Makefile FreeRTOS/Source/portable/GCC/ARM_CM4F/Makefile])

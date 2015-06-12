@@ -1169,4 +1169,3 @@ AC_SUBST([am__untar])
 
 m4_include([macro_m4/tvc-want-feature.m4])
 m4_include([macro_m4/tvc-want-stm32.m4])
-m4_include([macro_m4/tvc-want-string.m4])

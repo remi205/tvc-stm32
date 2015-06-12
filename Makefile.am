@@ -31,6 +31,8 @@ endif
 endif
 endif
 
+
+
 SUBDIRS += Common application bsp over-hal LwIP FreeRTOS CMSIS 
 
 if WANT_IPV4
@@ -43,7 +45,7 @@ AM_CFLAGS = -DIPV4=$(WANT_IPV6)
 AM_CPPFLAGS = -I$(top_srcdir)/LwIP/src/include/ipv6 
 endif
 
-AM_CFLAGS += -Wall -Wpointer-arith -Wstrict-prototypes -Winline -Wundef -g  -I$(top_srcdir)/Inc -I../Inc -DIPV4=$(WANT_IPV4) -I$(top_srcdir)/CMSIS/Include -I$(top_srcdir)/FreeRTOS/Source/CMSIS_RTOS -I$(top_srcdir)/FreeRTOS/Source/include/ -I$(top_srcdir)/FreeRTOS/Source/portable/GCC/ARM_CM4F -DSTM32F407xx
+AM_CFLAGS += -Wall -Wpointer-arith -Wstrict-prototypes -Winline -Wundef -g  -I$(top_srcdir)/Inc -I../Inc -DIPV4=$(WANT_IPV4) -I$(top_srcdir)/CMSIS/Include -I$(top_srcdir)/FreeRTOS/Source/CMSIS_RTOS -I$(top_srcdir)/FreeRTOS/Source/include/ -I$(top_srcdir)/FreeRTOS/Source/portable/GCC/ARM_CM4F -DSTM32F407xx -D$(WANT_CONSOLE)
 
 AM_CPPFLAGS += -O3 -ffunction-sections -fdata-sections -fno-exceptions -I$(top_srcdir)/tvc-macros -I$(top_srcdir)/LwIP/src/include  
 
@@ -53,7 +55,7 @@ bin_PROGRAMS = essai_stm32
 ## pas encore full automatise
 essai_stm32_SOURCES = 
 
-essai_stm32_LDFLAGS =-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Wl,-Map,essai_stm32.map -T$(top_srcdir)/target/stm32-mem/STM32F417VEx-mem.ld -T$(top_srcdir)/target/target-stm32-rom.ld 
+essai_stm32_LDFLAGS =-mcpu=cortex-m4  -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Wl,-Map,essai_stm32.map -T$(top_srcdir)/target/stm32-mem/STM32F417VEx-mem.ld -T$(top_srcdir)/target/target-stm32-rom.ld 
 essai_stm32_LDADD = bsp/libbsp.a application/libapplication.a over-hal/libover_hal.a bsp/dhcp_config.o STM32F4xx_HAL_Driver/Src/libSTM32F4xx.a LwIP/src/api/libapi.a LwIP/src/core/libcore.a LwIP/src/netif/libnetif.a LwIP/system/OS/libsysarch.a LwIP/src/core/ipv4/libipv4.a STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_eth.o LwIP/src/core/raw.o FreeRTOS/Source/libfreertos.a  FreeRTOS/Source/CMSIS_RTOS/libcmsis_os.a FreeRTOS/Source/libfreertos.a FreeRTOS/Source/portable/GCC/ARM_CM4F/libport.a FreeRTOS/Source/portable/MemMang/libmem.a 
 
 if WANT_F4XX 

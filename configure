@@ -618,13 +618,11 @@ WANT_F4XX_FALSE
 WANT_F4XX_TRUE
 WANT_TARGET_FLASH
 WANT_TARGET_RAM
-WANT_EAST_WEST
-WANT_SOUTH
 WANT_FREERTOS
 WANT_LWIP
 WANT_IPV6
 WANT_IPV4
-WANT_PORT
+WANT_CONSOLE
 WANT_STM32
 WANT_L0XX
 WANT_F7XX
@@ -736,13 +734,11 @@ enable_l4xx
 enable_f7xx
 enable_l0xx
 enable_stm32
-enable_port
+enable_console
 enable_ipv4
 enable_ipv6
 enable_lwip
 enable_freertos
-enable_south
-enable_east_west
 enable_target_ram
 enable_target_flash
 '
@@ -1385,13 +1381,11 @@ Optional Features:
   --enable-f7xx           build for STM32F7xx (no)
   --enable-l0xx           build for STM32L0xx (no)
   --enable-stm32          choose the stm32 as F407VEx (F407VEx)
-  --set-port              choose the uart port fo stm32 as console (uart1)
-  --enable-ipv4           choose the vesion V4 of Ip proctol (yes)
-  --enable-ipv6           choose the vesion V6 of Ip proctol (no)
+  --enable-console        choose the stm32 uart port as console (uart1)
+  --enable-ipv4           choose the vesion V4 of Ip protocol (yes)
+  --enable-ipv6           choose the vesion V6 of Ip protocol (no)
   --enable-lwip           choose the IP stack (yes)
   --enable-freertos       use FreeRTOS as scheduler (yes)
-  --enable-south          build the south application (no)
-  --enable-east_west      build the east_west application (yes)
   --enable-target_ram     build for ram target (yes)
   --enable-target_flash   build for flash target (no)
 
@@ -4351,24 +4345,21 @@ _ACEOF
 
 
 
-
-  # Check whether --enable-port was given.
-if test "${enable_port+set}" = set; then :
-  enableval=$enable_port;
+  # Check whether --enable-console was given.
+if test "${enable_console+set}" = set; then :
+  enableval=$enable_console;
 else
   enableval="uart1"
 fi
 
 
+  WANT_CONSOLE=$enableval
 
-  WANT_PORT=$enableval
-
-  want_string=WANT_PORT
+  want_string=WANT_CONSOLE
 
 cat >>confdefs.h <<_ACEOF
 #define $want_string $enableval
 _ACEOF
-
 
 
 
@@ -4485,62 +4476,8 @@ _ACEOF
 
 
 
-
-
-  # Check whether --enable-south was given.
-if test "${enable_south+set}" = set; then :
-  enableval=$enable_south;
-else
-  enableval="no"
-fi
-
-  case "$enableval" in
-    yes)     enableval=true  ;;
-    no)      enableval=false  ;;
-    on)      enableval=true  ;;
-    off)     enableval=false  ;;
-    in)      enableval=true  ;;
-    out)     enableval=false  ;;
-    default) enableval="no" ;;
-    *) as_fn_error $? "Invalid setting for --enable-south. Use \"yes\" or \"no\"" "$LINENO" 5 ;;
-  esac
-  WANT_SOUTH=$enableval
-
-  want_var=WANT_SOUTH
-
-cat >>confdefs.h <<_ACEOF
-#define $want_var $enableval
-_ACEOF
-
-
-
-
-  # Check whether --enable-east_west was given.
-if test "${enable_east_west+set}" = set; then :
-  enableval=$enable_east_west;
-else
-  enableval="yes"
-fi
-
-  case "$enableval" in
-    yes)     enableval=true  ;;
-    no)      enableval=false  ;;
-    on)      enableval=true  ;;
-    off)     enableval=false  ;;
-    in)      enableval=true  ;;
-    out)     enableval=false  ;;
-    default) enableval="yes" ;;
-    *) as_fn_error $? "Invalid setting for --enable-east_west. Use \"yes\" or \"no\"" "$LINENO" 5 ;;
-  esac
-  WANT_EAST_WEST=$enableval
-
-  want_var=WANT_EAST_WEST
-
-cat >>confdefs.h <<_ACEOF
-#define $want_var $enableval
-_ACEOF
-
-
+##TVC_WANT_FEATURE(south, [build the south application], [no])
+##TVC_WANT_FEATURE(east_west, [build the east_west application], [yes])
 
 
 
@@ -4598,7 +4535,7 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
-#TVC_WANT_FEATURE(canopen,[ use CanOpen over HAL], [no])
+## TVC_WANT_FEATURE(canopen,[ use CanOpen over HAL], [no])
 
 ## setup define for compilation
 
@@ -4607,6 +4544,8 @@ $as_echo "#define stm32 \"\$want_string\"" >>confdefs.h
 
 $as_echo "#define user_main \"\$want_string\"" >>confdefs.h
 
+
+$as_echo "#define console \"\$want_string\"" >>confdefs.h
 
 
  if test "$f4xx" = true; then
@@ -4723,6 +4662,16 @@ else
   WANT_IPV6_TRUE='#'
   WANT_IPV6_FALSE=
 fi
+
+
+ if test "$ipv6" = true ; then
+  WANT_IPV6_TRUE=
+  WANT_IPV6_FALSE='#'
+else
+  WANT_IPV6_TRUE='#'
+  WANT_IPV6_FALSE=
+fi
+
 
 
 ## generate all the Makefile
@@ -4919,6 +4868,10 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${WANT_IPV4_TRUE}" && test -z "${WANT_IPV4_FALSE}"; then
   as_fn_error $? "conditional \"WANT_IPV4\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${WANT_IPV6_TRUE}" && test -z "${WANT_IPV6_FALSE}"; then
+  as_fn_error $? "conditional \"WANT_IPV6\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${WANT_IPV6_TRUE}" && test -z "${WANT_IPV6_FALSE}"; then
