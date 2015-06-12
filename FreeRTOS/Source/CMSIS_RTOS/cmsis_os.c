@@ -39,7 +39,7 @@ static unsigned portBASE_TYPE makeFreeRtosPriority (osPriority priority)
   return fpriority;
 }
 
-#if (INCLUDE_vTaskPriorityGet == 1)
+#if (INCLUDE_uxTaskPriorityGet == 1)
 /* Convert from FreeRTOS priority number to CMSIS type osPriority */
 static osPriority makeCmsisPriority (unsigned portBASE_TYPE fpriority)
 {
@@ -207,7 +207,7 @@ osStatus osThreadSetPriority (osThreadId thread_id, osPriority priority)
 */
 osPriority osThreadGetPriority (osThreadId thread_id)
 {
-#if (INCLUDE_vTaskPriorityGet == 1)
+#if (INCLUDE_uxTaskPriorityGet == 1)
   return makeCmsisPriority(uxTaskPriorityGet(thread_id));
 #else
   return osPriorityError;
@@ -448,6 +448,7 @@ osMutexId osMutexCreate (const osMutexDef_t *mutex_def)
 osStatus osMutexWait (osMutexId mutex_id, uint32_t millisec)
 {
   TickType_t ticks;
+  portBASE_TYPE taskWoken = pdFALSE;  
   
   
   if (mutex_id == NULL) {
@@ -466,10 +467,12 @@ osStatus osMutexWait (osMutexId mutex_id, uint32_t millisec)
   }
   
   if (inHandlerMode()) {
-    return osErrorISR;
+    if (xSemaphoreTakeFromISR(mutex_id, &taskWoken) != pdTRUE) {
+      return osErrorOS;
   }
-  
-  if (xSemaphoreTake(mutex_id, ticks) != pdTRUE) {
+	portEND_SWITCHING_ISR(taskWoken);
+  } 
+  else if (xSemaphoreTake(mutex_id, ticks) != pdTRUE) {
     return osErrorOS;
   }
   
@@ -485,12 +488,15 @@ osStatus osMutexWait (osMutexId mutex_id, uint32_t millisec)
 osStatus osMutexRelease (osMutexId mutex_id)
 {
   osStatus result = osOK;
+  portBASE_TYPE taskWoken = pdFALSE;
   
   if (inHandlerMode()) {
-    return osErrorISR;
+    if (xSemaphoreGiveFromISR(mutex_id, &taskWoken) != pdTRUE) {
+      return osErrorOS;
   }
-  
-  if (xSemaphoreGive(mutex_id) != pdTRUE) 
+    portEND_SWITCHING_ISR(taskWoken);
+  }
+  else if (xSemaphoreGive(mutex_id) != pdTRUE) 
   {
     result = osErrorOS;
   }
@@ -552,6 +558,7 @@ osSemaphoreId osSemaphoreCreate (const osSemaphoreDef_t *semaphore_def, int32_t 
 int32_t osSemaphoreWait (osSemaphoreId semaphore_id, uint32_t millisec)
 {
   TickType_t ticks;
+  portBASE_TYPE taskWoken = pdFALSE;  
   
   
   if (semaphore_id == NULL) {
@@ -570,10 +577,12 @@ int32_t osSemaphoreWait (osSemaphoreId semaphore_id, uint32_t millisec)
   }
   
   if (inHandlerMode()) {
-    return osErrorISR;
+    if (xSemaphoreTakeFromISR(semaphore_id, &taskWoken) != pdTRUE) {
+      return osErrorOS;
   }
-  
-  if (xSemaphoreTake(semaphore_id, ticks) != pdTRUE) {
+	portEND_SWITCHING_ISR(taskWoken);
+  }  
+  else if (xSemaphoreTake(semaphore_id, ticks) != pdTRUE) {
     return osErrorOS;
   }
   
@@ -901,6 +910,7 @@ osEvent osMessageGet (osMessageQId queue_id, uint32_t millisec)
 #endif     /* Use Message Queues */
 
 /********************   Mail Queue Management Functions  ***********************/
+#if 0 /* Mail Queue Management Functions are not supported in this cmsis_os version, will be added in the next release  */
 
 #if (defined (osFeature_MailQ)  &&  (osFeature_MailQ != 0))  /* Use Mail Queues */
 
@@ -1100,6 +1110,8 @@ osStatus osMailFree (osMailQId queue_id, void *mail)
   return osOK;
 }
 #endif  /* Use Mail Queues */
+#endif /* Mail Queue Management Functions are not supported in this cmsis_os version, will be added in the next release  */
+
 
 /*************************** Additional specific APIs to Free RTOS ************/
 /**
@@ -1158,6 +1170,20 @@ osThreadState osThreadGetState(osThreadId thread_id)
 }
 #endif /* INCLUDE_eTaskGetState */
 
+#if (INCLUDE_eTaskGetState == 1)
+/**
+* @brief Check if a thread is already suspended or not.
+* @param thread_id thread ID obtained by \ref osThreadCreate or \ref osThreadGetId.
+* @retval status code that indicates the execution status of the function.
+*/
+osStatus osThreadIsSuspended(osThreadId thread_id)
+{
+  if (eTaskGetState(thread_id) == eSuspended)
+    return osOK;
+  else
+    return osErrorOS;
+}
+#endif /* INCLUDE_eTaskGetState */
 /**
 * @brief  Suspend execution of a thread.
 * @param   thread_id   thread ID obtained by \ref osThreadCreate or \ref osThreadGetId.
@@ -1253,10 +1279,10 @@ osStatus osDelayUntil (uint32_t PreviousWakeTime, uint32_t millisec)
 *          will be written
 * @retval  status code that indicates the execution status of the function.
 */
-osStatus osThreadList (int8_t *buffer)
+osStatus osThreadList (uint8_t *buffer)
 {
 #if ( ( configUSE_TRACE_FACILITY == 1 ) && ( configUSE_STATS_FORMATTING_FUNCTIONS == 1 ) )
-  vTaskList(buffer);
+  vTaskList((char *)buffer);
 #endif
   return osOK;
 }
@@ -1308,7 +1334,7 @@ osEvent osMessagePeek (osMessageQId queue_id, uint32_t millisec)
 * @param  mutex_def     mutex definition referenced with \ref osMutex.
 * @retval  mutex ID for reference by other functions or NULL in case of error..
 */
-osMutexId osRecursiveMutexCreate (osMutexDef_t *mutex_def)
+osMutexId osRecursiveMutexCreate (const osMutexDef_t *mutex_def)
 {
   (void) mutex_def;
 #if (configUSE_RECURSIVE_MUTEXES == 1)

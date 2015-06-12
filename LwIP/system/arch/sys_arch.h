@@ -46,7 +46,7 @@ typedef osThreadId    sys_thread_t;
 typedef struct _sys_arch_state_t
 {
 	// Task creation data.
-	char cTaskName[configMAX_TASK_NAME_LEN];
+	char cTaskName[16];
 	unsigned short nStackDepth;
 	unsigned short nTaskCount;
 } sys_arch_state_t;

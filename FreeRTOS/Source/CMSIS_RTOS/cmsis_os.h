@@ -57,7 +57,7 @@
   ******************************************************************************
   * @file    cmsis_os.h
   * @author  MCD Application Team
-  * @date    04-December-2014
+  * @date    25-December-2014
   * @brief   Header of cmsis_os.c
   *          A new set of APIs are added in addition to existing ones, these APIs 
   *          are specific to FreeRTOS.
@@ -79,19 +79,10 @@
   ******************************************************************************
   */ 
 
- #if   defined ( __CC_ARM )
-  #define __ASM            __asm                                      /*!< asm keyword for ARM Compiler          */
-  #define __INLINE         __inline                                   /*!< inline keyword for ARM Compiler       */
-  #define __STATIC_INLINE  static __inline
-#elif defined ( __ICCARM__ )
-  #define __ASM            __asm                                      /*!< asm keyword for IAR Compiler          */
-  #define __INLINE         inline                                     /*!< inline keyword for IAR Compiler. Only available in High optimization mode! */
-  #define __STATIC_INLINE  static inline
-#elif defined ( __GNUC__ )
-  #define __ASM            __asm                                      /*!< asm keyword for GNU Compiler          */
-  #define __INLINE         inline                                     /*!< inline keyword for GNU Compiler       */
-  #define __STATIC_INLINE  static inline
-#endif
+
+#define __ASM            __asm    /*!< asm keyword for GNU Compiler          */
+#define __INLINE         inline   /*!< inline keyword for GNU Compiler       */
+#define __STATIC_INLINE  static inline
 
 #include <stdint.h>
 #include <stddef.h>
@@ -770,6 +761,8 @@ osEvent osMessageGet (osMessageQId queue_id, uint32_t millisec);
 
 //  ==== Mail Queue Management Functions ====
 
+#if 0 /* Mail Queue Management Functions are not supported in this cmsis_os version, will be added in the next release  */
+
 #if (defined (osFeature_MailQ)  &&  (osFeature_MailQ != 0))     // Mail Queues available
 
 /// \brief Create a Mail Queue Definition.
@@ -839,6 +832,8 @@ osEvent osMailGet (osMailQId queue_id, uint32_t millisec);
 osStatus osMailFree (osMailQId queue_id, void *mail);
 
 #endif  // Mail Queues available
+#endif /* Mail Queue Management Functions are not supported in this cmsis_os version, will be added in the next release  */
+
 
 /*************************** Additional specific APIs to Free RTOS ************/
 /**
@@ -855,6 +850,17 @@ void osSystickHandler(void);
 * @retval  the stae of the thread, states are encoded by the osThreadState enumerated type.
 */
 osThreadState osThreadGetState(osThreadId thread_id);
+#endif /* INCLUDE_eTaskGetState */
+
+#if ( INCLUDE_eTaskGetState == 1 )
+/**
+* @brief Check if a thread is already suspended or not.
+* @param thread_id thread ID obtained by \ref osThreadCreate or \ref osThreadGetId.
+* @retval status code that indicates the execution status of the function.
+*/
+
+osStatus osThreadIsSuspended(osThreadId thread_id);
+
 #endif /* INCLUDE_eTaskGetState */
 
 /**
@@ -899,7 +905,7 @@ osStatus osDelayUntil (uint32_t PreviousWakeTime, uint32_t millisec);
 *          will be written
 * @retval  status code that indicates the execution status of the function.
 */
-osStatus osThreadList (int8_t *buffer);
+osStatus osThreadList (uint8_t *buffer);
 
 /**
 * @brief  Receive an item from a queue without removing the item from the queue.
@@ -914,7 +920,7 @@ osEvent osMessagePeek (osMessageQId queue_id, uint32_t millisec);
 * @param  mutex_def     mutex definition referenced with \ref osMutex.
 * @retval  mutex ID for reference by other functions or NULL in case of error..
 */
-osMutexId osRecursiveMutexCreate (osMutexDef_t *mutex_def);
+osMutexId osRecursiveMutexCreate (const osMutexDef_t *mutex_def);
 
 /**
 * @brief  Release a Recursive Mutex

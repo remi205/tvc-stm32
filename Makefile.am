@@ -5,7 +5,7 @@ ACLOCAL_AMFLAGS = -I macro_m4
 ### par defaut c'est le F4
 if WANT_L4XX 
 AM_CFLAGS =  -I$(top_srcdir)/STM32L4xx_HAL_Driver/Inc -D__CORTEX_M=4 -D__FPU_PRESENT -D__FPU_USED=1 -mcpu=cortex-m4 -mthumb -I$(top_srcdir)/CMSIS/Device/ST/STM32L4xx/Include
-AM_CPPFLAGS = -I$(top_srcdir)/STM32L4xx_HAL_Driver/Inc -mcpu=cortex-m4 -mthumb 
+AM_CPPFLAGS = -I$(top_srcdir)/STM32L4xx_HAL_Driver/Inc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 SUBDIRS = STM32L4xx_HAL_Driver
 else
 if WANT_F3XX
@@ -15,7 +15,7 @@ SUBDIRS = STM32F3xx_HAL_Driver
 else
 if WANT_F7XX 
 AM_CFLAGS =  -I$(top_srcdir)/STM32F7xx_HAL_Driver/Inc -D__CORTEX_M=7 -D__FPU_PRESENT -D__FPU_USED=1 -mcpu=cortex-m7 -mthumb -I$(top_srcdir)/CMSIS/Device/ST/STM32F7xx/Include
-AM_CPPFLAGS =   -I$(top_srcdir)/STM32F7xx_HAL_Driver/Inc -mcpu=cortex-m7 -mthumb 
+AM_CPPFLAGS =   -I$(top_srcdir)/STM32F7xx_HAL_Driver/Inc -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 SUBDIRS = STM32F7xx_HAL_Driver
 else
 if WANT_L0XX 
@@ -24,7 +24,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/STM32L0xx_HAL_Driver/Inc -mcpu=cortex-m0 -mthumb
 SUBDIRS = STM32L0xx_HAL_Driver
 else
 AM_CFLAGS =  -I$(top_srcdir)/STM32F4xx_HAL_Driver/Inc -D__CORTEX_M=4 -D__FPU_PRESENT -D__FPU_USED=1 -mcpu=cortex-m4 -mthumb  -I$(top_srcdir)/CMSIS/Device/ST/STM32F4xx/Include
-AM_CPPFLAGS = -I$(top_srcdir)/STM32F4xx_HAL_Driver/Inc -mcpu=cortex-m4 -mthumb 
+AM_CPPFLAGS = -I$(top_srcdir)/STM32F4xx_HAL_Driver/Inc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 SUBDIRS = STM32F4xx_HAL_Driver
 endif
 endif
@@ -53,8 +53,8 @@ bin_PROGRAMS = essai_stm32
 ## pas encore full automatise
 essai_stm32_SOURCES = 
 
-essai_stm32_LDFLAGS =-mcpu=cortex-m4 -mthumb -Wl,-Map,essai_stm32.map -T$(top_srcdir)/target/stm32-mem/STM32F417VEx-mem.ld -T$(top_srcdir)/target/target-stm32-rom.ld 
-essai_stm32_LDADD = bsp/libbsp.a application/libapplication.a over-hal/libover_hal.a bsp/dhcp_config.o STM32F4xx_HAL_Driver/Src/libSTM32F4xx.a LwIP/src/api/libapi.a LwIP/src/core/libcore.a LwIP/src/netif/libnetif.a LwIP/system/OS/libsysarch.a LwIP/src/core/ipv4/libipv4.a STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_eth.o LwIP/src/core/raw.o FreeRTOS/Source/libfreertos.a  FreeRTOS/Source/CMSIS_RTOS/libcmsis_os.a FreeRTOS/Source/libfreertos.a FreeRTOS/Source/portable/GCC/ARM_CM4F/libport.a FreeRTOS/Source/portable/MemMang/libmem.a
+essai_stm32_LDFLAGS =-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Wl,-Map,essai_stm32.map -T$(top_srcdir)/target/stm32-mem/STM32F417VEx-mem.ld -T$(top_srcdir)/target/target-stm32-rom.ld 
+essai_stm32_LDADD = bsp/libbsp.a application/libapplication.a over-hal/libover_hal.a bsp/dhcp_config.o STM32F4xx_HAL_Driver/Src/libSTM32F4xx.a LwIP/src/api/libapi.a LwIP/src/core/libcore.a LwIP/src/netif/libnetif.a LwIP/system/OS/libsysarch.a LwIP/src/core/ipv4/libipv4.a STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_eth.o LwIP/src/core/raw.o FreeRTOS/Source/libfreertos.a  FreeRTOS/Source/CMSIS_RTOS/libcmsis_os.a FreeRTOS/Source/libfreertos.a FreeRTOS/Source/portable/GCC/ARM_CM4F/libport.a FreeRTOS/Source/portable/MemMang/libmem.a 
 
 if WANT_F4XX 
 essai_stm32_LDADD += STM32F4xx_HAL_Driver/Src/libSTM32F4xx.a

@@ -2,9 +2,7 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 lib_LIBRARIES = libipv4.a
 
-AM_CFLAGS =-mcpu=cortex-m4 -mthumb -O3 -Wall -Wpointer-arith  -Winline -Wundef -g  -ffunction-sections -fdata-sections
-
-CPPFLAGS += -Iinc/ -I../inc -I$(top_srcdir)/inc -I$(top_srcdir) -I$(top_srcdir)/STM32F4xx_HAL_Driver/inc
+AM_CFLAGS =-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -O3 -Wall -Wpointer-arith  -Winline -Wundef -g  -ffunction-sections -fdata-sections
 
 CFLAGS += -I$(top_srcdir)/Inc -I../inc -I$(top_srcdir) -I$(top_srcdir)/STM32F4xx_HAL_Driver/Inc -I$(top_srcdir)/CMSIS/Device/ST/STM32F4xx/Include -I$(top_srcdir)/LwIP/src/include -I$(top_srcdir)/LwIP/src/include/ipv4 -I$(top_srcdir)/CMSIS/Include -I$(top_srcdir)/LwIP/system/  -DSTM32F407xx
 

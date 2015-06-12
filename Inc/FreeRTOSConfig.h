@@ -153,8 +153,7 @@ to all Cortex-M ports, and do not rely on any particular library functions. */
 See http://www.FreeRTOS.org/RTOS-Cortex-M3-M4.html. */
 #define configMAX_SYSCALL_INTERRUPT_PRIORITY 	( configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY << (8 - configPRIO_BITS) )
 
-/* Normal assert() semantics without relying on the provision of an assert.h
-header file. */
+/* Normal assert() semantics without relying on the provision of an assert.h header file. */
 /* USER CODE BEGIN 1 */   
 #define configASSERT( x ) if( ( x ) == 0 ) { taskDISABLE_INTERRUPTS(); for( ;; ); }
 /* USER CODE END 1 */
