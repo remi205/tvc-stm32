@@ -21,4 +21,3 @@ AC_DEFUN([TVC_WANT_CONSOLE],[
   want_string=[WANT_]allcapsname()
   AC_DEFINE_UNQUOTED($want_string,$enableval,[translit($2,a-z-,A-Z)])
 ])
-

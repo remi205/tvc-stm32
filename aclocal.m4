@@ -1167,5 +1167,7 @@ AC_SUBST([am__tar])
 AC_SUBST([am__untar])
 ]) # _AM_PROG_TAR
 
+m4_include([macro_m4/freertos.m4])
+m4_include([macro_m4/ramrom.m4])
 m4_include([macro_m4/tvc-want-feature.m4])
 m4_include([macro_m4/tvc-want-stm32.m4])

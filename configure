@@ -594,18 +594,6 @@ WANT_IPV4_FALSE
 WANT_IPV4_TRUE
 WANT_LWIP_FALSE
 WANT_LWIP_TRUE
-WANT_CANOPEN_FALSE
-WANT_CANOPEN_TRUE
-WANT_FREERTOS_FALSE
-WANT_FREERTOS_TRUE
-TARGET_SOUTH_FALSE
-TARGET_SOUTH_TRUE
-TARGET_EAST_WEST_FALSE
-TARGET_EAST_WEST_TRUE
-TARGET_FLASH_FALSE
-TARGET_FLASH_TRUE
-TARGET_RAM_FALSE
-TARGET_RAM_TRUE
 WANT_L0XX_FALSE
 WANT_L0XX_TRUE
 WANT_F7XX_FALSE
@@ -616,12 +604,13 @@ WANT_F3XX_FALSE
 WANT_F3XX_TRUE
 WANT_F4XX_FALSE
 WANT_F4XX_TRUE
-WANT_TARGET_FLASH
-WANT_TARGET_RAM
-WANT_FREERTOS
+WANT_FREERTOS_FALSE
+WANT_FREERTOS_TRUE
 WANT_LWIP
 WANT_IPV6
 WANT_IPV4
+WANT_FREERTOS
+WANT_ROMRAM
 WANT_CONSOLE
 WANT_STM32
 WANT_L0XX
@@ -735,12 +724,11 @@ enable_f7xx
 enable_l0xx
 enable_stm32
 enable_console
+enable_romram
+enable_freertos
 enable_ipv4
 enable_ipv6
 enable_lwip
-enable_freertos
-enable_target_ram
-enable_target_flash
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1382,12 +1370,11 @@ Optional Features:
   --enable-l0xx           build for STM32L0xx (no)
   --enable-stm32          choose the stm32 as F407VEx (F407VEx)
   --enable-console        choose the stm32 uart port as console (uart1)
+  --enable-romram         choose the target type 'flash/'ram (flash)
+  --enable-freertos       do you want freertos feature 'yes/no' (yes)
   --enable-ipv4           choose the vesion V4 of Ip protocol (yes)
   --enable-ipv6           choose the vesion V6 of Ip protocol (no)
   --enable-lwip           choose the IP stack (yes)
-  --enable-freertos       use FreeRTOS as scheduler (yes)
-  --enable-target_ram     build for ram target (yes)
-  --enable-target_flash   build for flash target (no)
 
 Some influential environment variables:
   CC          C compiler command
@@ -4365,6 +4352,46 @@ _ACEOF
 
 
 
+  # Check whether --enable-romram was given.
+if test "${enable_romram+set}" = set; then :
+  enableval=$enable_romram;
+else
+  enableval="flash"
+fi
+
+
+  WANT_ROMRAM=$enableval
+
+  want_string=WANT_ROMRAM
+
+cat >>confdefs.h <<_ACEOF
+#define $want_string $enableval
+_ACEOF
+
+
+
+
+
+  # Check whether --enable-freertos was given.
+if test "${enable_freertos+set}" = set; then :
+  enableval=$enable_freertos;
+else
+  enableval="yes"
+fi
+
+
+  WANT_FREERTOS=$enableval
+
+  want_string=WANT_FREERTOS
+
+cat >>confdefs.h <<_ACEOF
+#define $want_string $enableval
+_ACEOF
+
+
+
+
+
   # Check whether --enable-ipv4 was given.
 if test "${enable_ipv4+set}" = set; then :
   enableval=$enable_ipv4;
@@ -4449,93 +4476,9 @@ _ACEOF
 
 
 
-  # Check whether --enable-freertos was given.
-if test "${enable_freertos+set}" = set; then :
-  enableval=$enable_freertos;
-else
-  enableval="yes"
-fi
-
-  case "$enableval" in
-    yes)     enableval=true  ;;
-    no)      enableval=false  ;;
-    on)      enableval=true  ;;
-    off)     enableval=false  ;;
-    in)      enableval=true  ;;
-    out)     enableval=false  ;;
-    default) enableval="yes" ;;
-    *) as_fn_error $? "Invalid setting for --enable-freertos. Use \"yes\" or \"no\"" "$LINENO" 5 ;;
-  esac
-  WANT_FREERTOS=$enableval
-
-  want_var=WANT_FREERTOS
-
-cat >>confdefs.h <<_ACEOF
-#define $want_var $enableval
-_ACEOF
-
-
-
 ##TVC_WANT_FEATURE(south, [build the south application], [no])
 ##TVC_WANT_FEATURE(east_west, [build the east_west application], [yes])
-
-
-
-  # Check whether --enable-target_ram was given.
-if test "${enable_target_ram+set}" = set; then :
-  enableval=$enable_target_ram;
-else
-  enableval="yes"
-fi
-
-  case "$enableval" in
-    yes)     enableval=true  ;;
-    no)      enableval=false  ;;
-    on)      enableval=true  ;;
-    off)     enableval=false  ;;
-    in)      enableval=true  ;;
-    out)     enableval=false  ;;
-    default) enableval="yes" ;;
-    *) as_fn_error $? "Invalid setting for --enable-target_ram. Use \"yes\" or \"no\"" "$LINENO" 5 ;;
-  esac
-  WANT_TARGET_RAM=$enableval
-
-  want_var=WANT_TARGET_RAM
-
-cat >>confdefs.h <<_ACEOF
-#define $want_var $enableval
-_ACEOF
-
-
-
-
-  # Check whether --enable-target_flash was given.
-if test "${enable_target_flash+set}" = set; then :
-  enableval=$enable_target_flash;
-else
-  enableval="no"
-fi
-
-  case "$enableval" in
-    yes)     enableval=true  ;;
-    no)      enableval=false  ;;
-    on)      enableval=true  ;;
-    off)     enableval=false  ;;
-    in)      enableval=true  ;;
-    out)     enableval=false  ;;
-    default) enableval="no" ;;
-    *) as_fn_error $? "Invalid setting for --enable-target_flash. Use \"yes\" or \"no\"" "$LINENO" 5 ;;
-  esac
-  WANT_TARGET_FLASH=$enableval
-
-  want_var=WANT_TARGET_FLASH
-
-cat >>confdefs.h <<_ACEOF
-#define $want_var $enableval
-_ACEOF
-
-
-## TVC_WANT_FEATURE(canopen,[ use CanOpen over HAL], [no])
+##TVC_WANT_FEATURE(canopen,[ use CanOpen over HAL], [no])
 
 ## setup define for compilation
 
@@ -4545,7 +4488,24 @@ $as_echo "#define stm32 \"\$want_string\"" >>confdefs.h
 $as_echo "#define user_main \"\$want_string\"" >>confdefs.h
 
 
-$as_echo "#define console \"\$want_string\"" >>confdefs.h
+$as_echo "#define console \$want_string" >>confdefs.h
+
+
+$as_echo "#define romram \"\$want_string\"" >>confdefs.h
+
+
+$as_echo "#define freertos \"\$want_string\"" >>confdefs.h
+
+
+
+ if test "$(freertos)" = "yes"; then
+  WANT_FREERTOS_TRUE=
+  WANT_FREERTOS_FALSE='#'
+else
+  WANT_FREERTOS_TRUE='#'
+  WANT_FREERTOS_FALSE=
+fi
+
 
 
  if test "$f4xx" = true; then
@@ -4589,56 +4549,9 @@ else
 fi
 
 
- if test "target-ram" = true; then
-  TARGET_RAM_TRUE=
-  TARGET_RAM_FALSE='#'
-else
-  TARGET_RAM_TRUE='#'
-  TARGET_RAM_FALSE=
-fi
-
- if test "target-flash" = true; then
-  TARGET_FLASH_TRUE=
-  TARGET_FLASH_FALSE='#'
-else
-  TARGET_FLASH_TRUE='#'
-  TARGET_FLASH_FALSE=
-fi
-
-
- if test "east_west" = true; then
-  TARGET_EAST_WEST_TRUE=
-  TARGET_EAST_WEST_FALSE='#'
-else
-  TARGET_EAST_WEST_TRUE='#'
-  TARGET_EAST_WEST_FALSE=
-fi
-
- if test "south" = true; then
-  TARGET_SOUTH_TRUE=
-  TARGET_SOUTH_FALSE='#'
-else
-  TARGET_SOUTH_TRUE='#'
-  TARGET_SOUTH_FALSE=
-fi
-
-
- if test "$freertos" = true; then
-  WANT_FREERTOS_TRUE=
-  WANT_FREERTOS_FALSE='#'
-else
-  WANT_FREERTOS_TRUE='#'
-  WANT_FREERTOS_FALSE=
-fi
-
- if test "$canopen" = true; then
-  WANT_CANOPEN_TRUE=
-  WANT_CANOPEN_FALSE='#'
-else
-  WANT_CANOPEN_TRUE='#'
-  WANT_CANOPEN_FALSE=
-fi
-
+##AM_CONDITIONAL([TARGET_EAST_WEST],   [test "east_west" = true])
+##AM_CONDITIONAL([TARGET_SOUTH],   [test "south" = true])
+##AM_CONDITIONAL([WANT_CANOPEN],  [test "$canopen" = true])
  if test "$lwip" = true; then
   WANT_LWIP_TRUE=
   WANT_LWIP_FALSE='#'
@@ -4662,16 +4575,6 @@ else
   WANT_IPV6_TRUE='#'
   WANT_IPV6_FALSE=
 fi
-
-
- if test "$ipv6" = true ; then
-  WANT_IPV6_TRUE=
-  WANT_IPV6_FALSE='#'
-else
-  WANT_IPV6_TRUE='#'
-  WANT_IPV6_FALSE=
-fi
-
 
 
 ## generate all the Makefile
@@ -4818,6 +4721,10 @@ if test -z "${am__fastdepCCAS_TRUE}" && test -z "${am__fastdepCCAS_FALSE}"; then
   as_fn_error $? "conditional \"am__fastdepCCAS\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
+if test -z "${WANT_FREERTOS_TRUE}" && test -z "${WANT_FREERTOS_FALSE}"; then
+  as_fn_error $? "conditional \"WANT_FREERTOS\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
 if test -z "${WANT_F4XX_TRUE}" && test -z "${WANT_F4XX_FALSE}"; then
   as_fn_error $? "conditional \"WANT_F4XX\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
@@ -4838,40 +4745,12 @@ if test -z "${WANT_L0XX_TRUE}" && test -z "${WANT_L0XX_FALSE}"; then
   as_fn_error $? "conditional \"WANT_L0XX\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
-if test -z "${TARGET_RAM_TRUE}" && test -z "${TARGET_RAM_FALSE}"; then
-  as_fn_error $? "conditional \"TARGET_RAM\" was never defined.
-Usually this means the macro was only invoked conditionally." "$LINENO" 5
-fi
-if test -z "${TARGET_FLASH_TRUE}" && test -z "${TARGET_FLASH_FALSE}"; then
-  as_fn_error $? "conditional \"TARGET_FLASH\" was never defined.
-Usually this means the macro was only invoked conditionally." "$LINENO" 5
-fi
-if test -z "${TARGET_EAST_WEST_TRUE}" && test -z "${TARGET_EAST_WEST_FALSE}"; then
-  as_fn_error $? "conditional \"TARGET_EAST_WEST\" was never defined.
-Usually this means the macro was only invoked conditionally." "$LINENO" 5
-fi
-if test -z "${TARGET_SOUTH_TRUE}" && test -z "${TARGET_SOUTH_FALSE}"; then
-  as_fn_error $? "conditional \"TARGET_SOUTH\" was never defined.
-Usually this means the macro was only invoked conditionally." "$LINENO" 5
-fi
-if test -z "${WANT_FREERTOS_TRUE}" && test -z "${WANT_FREERTOS_FALSE}"; then
-  as_fn_error $? "conditional \"WANT_FREERTOS\" was never defined.
-Usually this means the macro was only invoked conditionally." "$LINENO" 5
-fi
-if test -z "${WANT_CANOPEN_TRUE}" && test -z "${WANT_CANOPEN_FALSE}"; then
-  as_fn_error $? "conditional \"WANT_CANOPEN\" was never defined.
-Usually this means the macro was only invoked conditionally." "$LINENO" 5
-fi
 if test -z "${WANT_LWIP_TRUE}" && test -z "${WANT_LWIP_FALSE}"; then
   as_fn_error $? "conditional \"WANT_LWIP\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${WANT_IPV4_TRUE}" && test -z "${WANT_IPV4_FALSE}"; then
   as_fn_error $? "conditional \"WANT_IPV4\" was never defined.
-Usually this means the macro was only invoked conditionally." "$LINENO" 5
-fi
-if test -z "${WANT_IPV6_TRUE}" && test -z "${WANT_IPV6_FALSE}"; then
-  as_fn_error $? "conditional \"WANT_IPV6\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${WANT_IPV6_TRUE}" && test -z "${WANT_IPV6_FALSE}"; then
