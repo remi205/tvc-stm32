@@ -613,6 +613,7 @@ WANT_FREERTOS
 WANT_ROMRAM
 WANT_CONSOLE
 WANT_STM32
+stm32
 WANT_L0XX
 WANT_F7XX
 WANT_L4XX
@@ -4320,6 +4321,18 @@ else
 fi
 
 
+### [F407Vex]
+
+
+
+  stm32 =
+
+
+cat >>confdefs.h <<_ACEOF
+#define STM32 $stm32
+_ACEOF
+
+
   WANT_STM32=STM32$enableval-mem.ld
 
   want_string=WANT_STM32
@@ -4342,7 +4355,7 @@ fi
 
   WANT_CONSOLE=$enableval
 
-  want_string=WANT_CONSOLE
+  want_string=CONSOLE
 
 cat >>confdefs.h <<_ACEOF
 #define $want_string $enableval
