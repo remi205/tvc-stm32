@@ -20,13 +20,7 @@ AC_PROG_CXX
 AM_PROG_AS
 
 ## initialize the arguments to configure
-TVC_WANT_FEATURE(f4xx,[ build for STM32F4xx], [yes])
-TVC_WANT_FEATURE(f3xx,[ build for STM32F3xx], [no])
-TVC_WANT_FEATURE(l4xx,[ build for STM32L4xx], [no])
-TVC_WANT_FEATURE(f7xx,[ build for STM32F7xx], [no])
-TVC_WANT_FEATURE(l0xx,[ build for STM32L0xx], [no])
-
-TVC_WANT_STM32(stm32, [choose the stm32 as F407VEx], [F407VEx])
+TVC_WANT_STM32(stm32, [choose the stm32 as F407VEx],[F407VEx])
 TVC_WANT_CONSOLE(console, [choose the stm32 uart port as console], [uart1])
 TVC_WANT_RAMROM(romram,  [choose the target type 'flash/'ram], [flash])
 TVC_WANT_FREERTOS(freertos, [do you want freertos feature 'yes/no'], [yes])
@@ -35,32 +29,22 @@ TVC_WANT_FEATURE(ipv4,[ choose the vesion V4 of Ip protocol], [yes])
 TVC_WANT_FEATURE(ipv6,[ choose the vesion V6 of Ip protocol], [no])
 TVC_WANT_FEATURE(lwip,[ choose the IP stack], [yes])
 
-
-##TVC_WANT_FEATURE(south, [build the south application], [no])
-##TVC_WANT_FEATURE(east_west, [build the east_west application], [yes])
-##TVC_WANT_FEATURE(canopen,[ use CanOpen over HAL], [no])
-
 ## setup define for compilation 
 AC_DEFINE([stm32],["$want_string"],[Specify MCU])
 AC_DEFINE([user_main],["$want_string"],[Specify user start function])
-AC_DEFINE([console],[$want_string],[Specifty uart])
+AC_DEFINE([console],["$want_string"],[Specifty uart])
 AC_DEFINE([romram],["$want_string"],[Specify the target type])
 AC_DEFINE([freertos],["$want_string"],[Specify the target type])
 
-
 AM_CONDITIONAL([WANT_FREERTOS], [test "$(freertos)" = "yes"])
 
+AM_CONDITIONAL([WANT_F4XX],     [test "$f4xx" = "$stm32"])
+AM_CONDITIONAL([WANT_F3XX],     [test "$f3xx" = "$stm32"])
+AM_CONDITIONAL([WANT_L4XX],     [test "$l4xx" = "$stm32"])
+AM_CONDITIONAL([WANT_F7XX],     [test "$f7xx" = "$stm32"])
+AM_CONDITIONAL([WANT_L0XX],     [test "$l0xx" = "$stm32"])
 
-AM_CONDITIONAL([WANT_F4XX],     [test "$f4xx" = true])
-AM_CONDITIONAL([WANT_F3XX],     [test "$f3xx" = true])
-AM_CONDITIONAL([WANT_L4XX],     [test "$l4xx" = true])
-AM_CONDITIONAL([WANT_F7XX],     [test "$f7xx" = true])
-AM_CONDITIONAL([WANT_L0XX],     [test "$l0xx" = true])
-
-##AM_CONDITIONAL([TARGET_EAST_WEST],   [test "east_west" = true])
-##AM_CONDITIONAL([TARGET_SOUTH],   [test "south" = true])
-##AM_CONDITIONAL([WANT_CANOPEN],  [test "$canopen" = true])
-AM_CONDITIONAL([WANT_LWIP],     [test "$lwip" = true])
+AM_CONDITIONAL([WANT_LWIP],  [test "$lwip" = true])
 AM_CONDITIONAL([WANT_IPV4],  [test "$ipv4" = true ])
 AM_CONDITIONAL([WANT_IPV6],  [test "$ipv6" = true ])
 

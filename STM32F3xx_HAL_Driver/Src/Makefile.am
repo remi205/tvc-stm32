@@ -2,11 +2,8 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 lib_LIBRARIES = libSTM32F3xx.a
 
-AM_CFLAGS =-mcpu=cortex-m4 -mthumb -O3 -Wall -Wpointer-arith  -Winline -Wundef -g  -ffunction-sections -fdata-sections
-
-CPPFLAGS += -I$(top_srcdir)/inc -I$(top_srcdir) -I$(top_srcdir)/STM32F3xx_HAL_Driver/Inc
-CFLAGS += -I$(top_srcdir)/Inc -I$(top_srcdir) -I$(top_srcdir)/STM32F3xx_HAL_Driver/Inc -I$(top_srcdir)/CMSIS/Device/ST/STM32F3xx/Include -I$(top_srcdir)/CMSIS/Include/ -DSTM32F373xx
-
+AM_CFLAGS =-mcpu=cortex-m4 -mthumb -O3 -Wall -Wpointer-arith  -Winline -Wundef -g  -ffunction-sections -fdata-sections -DSTM32$(STM32)xx
+CFLAGS += -I$(top_srcdir)/Inc -I$(top_srcdir) -I$(top_srcdir)/STM32F3xx_HAL_Driver/Inc -I$(top_srcdir)/CMSIS/Device/ST/STM32F3xx/Include -I$(top_srcdir)/CMSIS/Include
 libSTM32F3xx_a_SOURCES =stm32f3xx_hal.c\
 			stm32f3xx_hal_adc.c\
 			stm32f3xx_hal_adc_ex.c\

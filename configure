@@ -613,12 +613,8 @@ WANT_FREERTOS
 WANT_ROMRAM
 WANT_CONSOLE
 WANT_STM32
-stm32
-WANT_L0XX
-WANT_F7XX
-WANT_L4XX
-WANT_F3XX
-WANT_F4XX
+FAMILLY
+STM32
 am__fastdepCCAS_FALSE
 am__fastdepCCAS_TRUE
 CCASDEPMODE
@@ -718,11 +714,6 @@ ac_user_opts='
 enable_option_checking
 enable_silent_rules
 enable_dependency_tracking
-enable_f4xx
-enable_f3xx
-enable_l4xx
-enable_f7xx
-enable_l0xx
 enable_stm32
 enable_console
 enable_romram
@@ -1364,11 +1355,6 @@ Optional Features:
                           do not reject slow dependency extractors
   --disable-dependency-tracking
                           speeds up one-time build
-  --enable-f4xx           build for STM32F4xx (yes)
-  --enable-f3xx           build for STM32F3xx (no)
-  --enable-l4xx           build for STM32L4xx (no)
-  --enable-f7xx           build for STM32F7xx (no)
-  --enable-l0xx           build for STM32L0xx (no)
   --enable-stm32          choose the stm32 as F407VEx (F407VEx)
   --enable-console        choose the stm32 uart port as console (uart1)
   --enable-romram         choose the target type 'flash/'ram (flash)
@@ -4171,147 +4157,6 @@ fi
 ## initialize the arguments to configure
 
 
-  # Check whether --enable-f4xx was given.
-if test "${enable_f4xx+set}" = set; then :
-  enableval=$enable_f4xx;
-else
-  enableval="yes"
-fi
-
-  case "$enableval" in
-    yes)     enableval=true  ;;
-    no)      enableval=false  ;;
-    on)      enableval=true  ;;
-    off)     enableval=false  ;;
-    in)      enableval=true  ;;
-    out)     enableval=false  ;;
-    default) enableval="yes" ;;
-    *) as_fn_error $? "Invalid setting for --enable-f4xx. Use \"yes\" or \"no\"" "$LINENO" 5 ;;
-  esac
-  WANT_F4XX=$enableval
-
-  want_var=WANT_F4XX
-
-cat >>confdefs.h <<_ACEOF
-#define $want_var $enableval
-_ACEOF
-
-
-
-
-  # Check whether --enable-f3xx was given.
-if test "${enable_f3xx+set}" = set; then :
-  enableval=$enable_f3xx;
-else
-  enableval="no"
-fi
-
-  case "$enableval" in
-    yes)     enableval=true  ;;
-    no)      enableval=false  ;;
-    on)      enableval=true  ;;
-    off)     enableval=false  ;;
-    in)      enableval=true  ;;
-    out)     enableval=false  ;;
-    default) enableval="no" ;;
-    *) as_fn_error $? "Invalid setting for --enable-f3xx. Use \"yes\" or \"no\"" "$LINENO" 5 ;;
-  esac
-  WANT_F3XX=$enableval
-
-  want_var=WANT_F3XX
-
-cat >>confdefs.h <<_ACEOF
-#define $want_var $enableval
-_ACEOF
-
-
-
-
-  # Check whether --enable-l4xx was given.
-if test "${enable_l4xx+set}" = set; then :
-  enableval=$enable_l4xx;
-else
-  enableval="no"
-fi
-
-  case "$enableval" in
-    yes)     enableval=true  ;;
-    no)      enableval=false  ;;
-    on)      enableval=true  ;;
-    off)     enableval=false  ;;
-    in)      enableval=true  ;;
-    out)     enableval=false  ;;
-    default) enableval="no" ;;
-    *) as_fn_error $? "Invalid setting for --enable-l4xx. Use \"yes\" or \"no\"" "$LINENO" 5 ;;
-  esac
-  WANT_L4XX=$enableval
-
-  want_var=WANT_L4XX
-
-cat >>confdefs.h <<_ACEOF
-#define $want_var $enableval
-_ACEOF
-
-
-
-
-  # Check whether --enable-f7xx was given.
-if test "${enable_f7xx+set}" = set; then :
-  enableval=$enable_f7xx;
-else
-  enableval="no"
-fi
-
-  case "$enableval" in
-    yes)     enableval=true  ;;
-    no)      enableval=false  ;;
-    on)      enableval=true  ;;
-    off)     enableval=false  ;;
-    in)      enableval=true  ;;
-    out)     enableval=false  ;;
-    default) enableval="no" ;;
-    *) as_fn_error $? "Invalid setting for --enable-f7xx. Use \"yes\" or \"no\"" "$LINENO" 5 ;;
-  esac
-  WANT_F7XX=$enableval
-
-  want_var=WANT_F7XX
-
-cat >>confdefs.h <<_ACEOF
-#define $want_var $enableval
-_ACEOF
-
-
-
-
-  # Check whether --enable-l0xx was given.
-if test "${enable_l0xx+set}" = set; then :
-  enableval=$enable_l0xx;
-else
-  enableval="no"
-fi
-
-  case "$enableval" in
-    yes)     enableval=true  ;;
-    no)      enableval=false  ;;
-    on)      enableval=true  ;;
-    off)     enableval=false  ;;
-    in)      enableval=true  ;;
-    out)     enableval=false  ;;
-    default) enableval="no" ;;
-    *) as_fn_error $? "Invalid setting for --enable-l0xx. Use \"yes\" or \"no\"" "$LINENO" 5 ;;
-  esac
-  WANT_L0XX=$enableval
-
-  want_var=WANT_L0XX
-
-cat >>confdefs.h <<_ACEOF
-#define $want_var $enableval
-_ACEOF
-
-
-
-
-
 
   # Check whether --enable-stm32 was given.
 if test "${enable_stm32+set}" = set; then :
@@ -4321,15 +4166,19 @@ else
 fi
 
 
-### [F407Vex]
-
-
-
-  stm32 =
+  STM32=F407
 
 
 cat >>confdefs.h <<_ACEOF
-#define STM32 $stm32
+#define STM32 STM32$stm32
+_ACEOF
+
+
+  FAMILLY=F4
+
+
+cat >>confdefs.h <<_ACEOF
+#define FAMILLY STM32$famillyxx
 _ACEOF
 
 
@@ -4356,6 +4205,7 @@ fi
   WANT_CONSOLE=$enableval
 
   want_string=CONSOLE
+
 
 cat >>confdefs.h <<_ACEOF
 #define $want_string $enableval
@@ -4488,11 +4338,6 @@ _ACEOF
 
 
 
-
-##TVC_WANT_FEATURE(south, [build the south application], [no])
-##TVC_WANT_FEATURE(east_west, [build the east_west application], [yes])
-##TVC_WANT_FEATURE(canopen,[ use CanOpen over HAL], [no])
-
 ## setup define for compilation
 
 $as_echo "#define stm32 \"\$want_string\"" >>confdefs.h
@@ -4501,14 +4346,13 @@ $as_echo "#define stm32 \"\$want_string\"" >>confdefs.h
 $as_echo "#define user_main \"\$want_string\"" >>confdefs.h
 
 
-$as_echo "#define console \$want_string" >>confdefs.h
+$as_echo "#define console \"\$want_string\"" >>confdefs.h
 
 
 $as_echo "#define romram \"\$want_string\"" >>confdefs.h
 
 
 $as_echo "#define freertos \"\$want_string\"" >>confdefs.h
-
 
 
  if test "$(freertos)" = "yes"; then
@@ -4520,8 +4364,7 @@ else
 fi
 
 
-
- if test "$f4xx" = true; then
+ if test "$f4xx" = "$stm32"; then
   WANT_F4XX_TRUE=
   WANT_F4XX_FALSE='#'
 else
@@ -4529,7 +4372,7 @@ else
   WANT_F4XX_FALSE=
 fi
 
- if test "$f3xx" = true; then
+ if test "$f3xx" = "$stm32"; then
   WANT_F3XX_TRUE=
   WANT_F3XX_FALSE='#'
 else
@@ -4537,7 +4380,7 @@ else
   WANT_F3XX_FALSE=
 fi
 
- if test "$l4xx" = true; then
+ if test "$l4xx" = "$stm32"; then
   WANT_L4XX_TRUE=
   WANT_L4XX_FALSE='#'
 else
@@ -4545,7 +4388,7 @@ else
   WANT_L4XX_FALSE=
 fi
 
- if test "$f7xx" = true; then
+ if test "$f7xx" = "$stm32"; then
   WANT_F7XX_TRUE=
   WANT_F7XX_FALSE='#'
 else
@@ -4553,7 +4396,7 @@ else
   WANT_F7XX_FALSE=
 fi
 
- if test "$l0xx" = true; then
+ if test "$l0xx" = "$stm32"; then
   WANT_L0XX_TRUE=
   WANT_L0XX_FALSE='#'
 else
@@ -4562,9 +4405,6 @@ else
 fi
 
 
-##AM_CONDITIONAL([TARGET_EAST_WEST],   [test "east_west" = true])
-##AM_CONDITIONAL([TARGET_SOUTH],   [test "south" = true])
-##AM_CONDITIONAL([WANT_CANOPEN],  [test "$canopen" = true])
  if test "$lwip" = true; then
   WANT_LWIP_TRUE=
   WANT_LWIP_FALSE='#'
