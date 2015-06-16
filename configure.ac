@@ -38,16 +38,16 @@ AC_DEFINE([freertos],["$want_string"],[Specify the target type])
 
 AM_CONDITIONAL([WANT_FREERTOS], [test "$(freertos)" = "yes"])
 
-AM_CONDITIONAL([WANT_F4XX],     [test "$f4xx" = "$stm32"])
-AM_CONDITIONAL([WANT_F3XX],     [test "$f3xx" = "$stm32"])
-AM_CONDITIONAL([WANT_L4XX],     [test "$l4xx" = "$stm32"])
-AM_CONDITIONAL([WANT_F7XX],     [test "$f7xx" = "$stm32"])
-AM_CONDITIONAL([WANT_L0XX],     [test "$l0xx" = "$stm32"])
+AM_CONDITIONAL([F4XX],     [test "$f4xx" = "$stm32"])
+AM_CONDITIONAL([F3XX],     [test "$f3xx" = "$stm32"])
+AM_CONDITIONAL([L4XX],     [test "$l4xx" = "$stm32"])
+AM_CONDITIONAL([F7XX],     [test "$f7xx" = "$stm32"])
+AM_CONDITIONAL([L0XX],     [test "$l0xx" = "$stm32"])
 
 AM_CONDITIONAL([WANT_LWIP],  [test "$lwip" = true])
 AM_CONDITIONAL([WANT_IPV4],  [test "$ipv4" = true ])
 AM_CONDITIONAL([WANT_IPV6],  [test "$ipv6" = true ])
 
 ## generate all the Makefile
-AC_CONFIG_FILES([Makefile LwIP/system/OS/Makefile CMSIS/Device/Makefile CMSIS/Device/ST/Makefile CMSIS/Device/ST/STM32F4xx/Makefile CMSIS/Device/ST/STM32F4xx/Source/Makefile CMSIS/Device/ST/STM32F4xx/Source/Templates/Makefile CMSIS/Makefile STM32F4xx_HAL_Driver/Makefile STM32F4xx_HAL_Driver/Src/Makefile FreeRTOS/Makefile FreeRTOS/Source/Makefile FreeRTOS/Source/CMSIS_RTOS/Makefile LwIP/Makefile LwIP/src/api/Makefile LwIP/src/core/ipv4/Makefile over-hal/Makefile application/Makefile bsp/Makefile Common/Makefile Common/Utils/Makefile Common/TCP_IP/Makefile FreeRTOS/Source/portable/MemMang/Makefile FreeRTOS/Source/portable/Makefile FreeRTOS/Source/portable/GCC/Makefile LwIP/src/Makefile LwIP/src/core/Makefile LwIP/src/netif/Makefile LwIP/system/Makefile FreeRTOS/Source/portable/GCC/ARM_CM4F/Makefile])
+AC_CONFIG_FILES([Makefile LwIP/system/OS/Makefile CMSIS/Device/Makefile CMSIS/Device/ST/Makefile CMSIS/Device/ST/STM32F4xx/Makefile CMSIS/Device/ST/STM32F4xx/Source/Makefile CMSIS/Device/ST/STM32F4xx/Source/Templates/Makefile CMSIS/Makefile STM32F4xx_HAL_Driver/Makefile STM32F4xx_HAL_Driver/Src/Makefile FreeRTOS/Makefile FreeRTOS/Source/Makefile FreeRTOS/Source/CMSIS_RTOS/Makefile LwIP/Makefile LwIP/src/api/Makefile LwIP/src/core/ipv4/Makefile over-hal/Makefile application/Makefile bsp/Makefile Common/Makefile Common/Utils/Makefile Common/TCP_IP/Makefile FreeRTOS/Source/portable/MemMang/Makefile FreeRTOS/Source/portable/Makefile FreeRTOS/Source/portable/GCC/Makefile LwIP/src/Makefile LwIP/src/core/Makefile LwIP/src/netif/Makefile LwIP/system/Makefile FreeRTOS/Source/portable/GCC/ARM_CM4F/Makefile STM32F3xx_HAL_Driver/Makefile STM32F3xx_HAL_Driver/Src/Makefile STM32F7xx_HAL_Driver/Makefile STM32F7xx_HAL_Driver/Src/Makefile STM32L0xx_HAL_Driver/Makefile STM32L0xx_HAL_Driver/Src/Makefile STM32L4xx_HAL_Driver/Makefile STM32L4xx_HAL_Driver/Src/Makefile])
 AC_OUTPUT

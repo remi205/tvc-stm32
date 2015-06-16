@@ -594,16 +594,16 @@ WANT_IPV4_FALSE
 WANT_IPV4_TRUE
 WANT_LWIP_FALSE
 WANT_LWIP_TRUE
-WANT_L0XX_FALSE
-WANT_L0XX_TRUE
-WANT_F7XX_FALSE
-WANT_F7XX_TRUE
-WANT_L4XX_FALSE
-WANT_L4XX_TRUE
-WANT_F3XX_FALSE
-WANT_F3XX_TRUE
-WANT_F4XX_FALSE
-WANT_F4XX_TRUE
+L0XX_FALSE
+L0XX_TRUE
+F7XX_FALSE
+F7XX_TRUE
+L4XX_FALSE
+L4XX_TRUE
+F3XX_FALSE
+F3XX_TRUE
+F4XX_FALSE
+F4XX_TRUE
 WANT_FREERTOS_FALSE
 WANT_FREERTOS_TRUE
 WANT_LWIP
@@ -4178,9 +4178,13 @@ _ACEOF
 
 
 cat >>confdefs.h <<_ACEOF
-#define FAMILLY STM32$famillyxx
+#define FAMILLY $familly
 _ACEOF
 
+
+#  f = m4_bregexp(choose the stm32 as F407VEx,[\([FL][0-9]\)[0-9][0-9]],[\1])
+#  AC_SUBST([HAL_PATH],[STM32]$(f)[xx_HAL_DRIVER],[choose the stm32 as F407VEx])
+#  AC_DEFINE_UNQUOTED([HAL_PATH],[STM32]$(f)[xx_HAL_Driver],[choose the stm32 as F407VEx])
 
   WANT_STM32=STM32$enableval-mem.ld
 
@@ -4365,43 +4369,43 @@ fi
 
 
  if test "$f4xx" = "$stm32"; then
-  WANT_F4XX_TRUE=
-  WANT_F4XX_FALSE='#'
+  F4XX_TRUE=
+  F4XX_FALSE='#'
 else
-  WANT_F4XX_TRUE='#'
-  WANT_F4XX_FALSE=
+  F4XX_TRUE='#'
+  F4XX_FALSE=
 fi
 
  if test "$f3xx" = "$stm32"; then
-  WANT_F3XX_TRUE=
-  WANT_F3XX_FALSE='#'
+  F3XX_TRUE=
+  F3XX_FALSE='#'
 else
-  WANT_F3XX_TRUE='#'
-  WANT_F3XX_FALSE=
+  F3XX_TRUE='#'
+  F3XX_FALSE=
 fi
 
  if test "$l4xx" = "$stm32"; then
-  WANT_L4XX_TRUE=
-  WANT_L4XX_FALSE='#'
+  L4XX_TRUE=
+  L4XX_FALSE='#'
 else
-  WANT_L4XX_TRUE='#'
-  WANT_L4XX_FALSE=
+  L4XX_TRUE='#'
+  L4XX_FALSE=
 fi
 
  if test "$f7xx" = "$stm32"; then
-  WANT_F7XX_TRUE=
-  WANT_F7XX_FALSE='#'
+  F7XX_TRUE=
+  F7XX_FALSE='#'
 else
-  WANT_F7XX_TRUE='#'
-  WANT_F7XX_FALSE=
+  F7XX_TRUE='#'
+  F7XX_FALSE=
 fi
 
  if test "$l0xx" = "$stm32"; then
-  WANT_L0XX_TRUE=
-  WANT_L0XX_FALSE='#'
+  L0XX_TRUE=
+  L0XX_FALSE='#'
 else
-  WANT_L0XX_TRUE='#'
-  WANT_L0XX_FALSE=
+  L0XX_TRUE='#'
+  L0XX_FALSE=
 fi
 
 
@@ -4431,7 +4435,7 @@ fi
 
 
 ## generate all the Makefile
-ac_config_files="$ac_config_files Makefile LwIP/system/OS/Makefile CMSIS/Device/Makefile CMSIS/Device/ST/Makefile CMSIS/Device/ST/STM32F4xx/Makefile CMSIS/Device/ST/STM32F4xx/Source/Makefile CMSIS/Device/ST/STM32F4xx/Source/Templates/Makefile CMSIS/Makefile STM32F4xx_HAL_Driver/Makefile STM32F4xx_HAL_Driver/Src/Makefile FreeRTOS/Makefile FreeRTOS/Source/Makefile FreeRTOS/Source/CMSIS_RTOS/Makefile LwIP/Makefile LwIP/src/api/Makefile LwIP/src/core/ipv4/Makefile over-hal/Makefile application/Makefile bsp/Makefile Common/Makefile Common/Utils/Makefile Common/TCP_IP/Makefile FreeRTOS/Source/portable/MemMang/Makefile FreeRTOS/Source/portable/Makefile FreeRTOS/Source/portable/GCC/Makefile LwIP/src/Makefile LwIP/src/core/Makefile LwIP/src/netif/Makefile LwIP/system/Makefile FreeRTOS/Source/portable/GCC/ARM_CM4F/Makefile"
+ac_config_files="$ac_config_files Makefile LwIP/system/OS/Makefile CMSIS/Device/Makefile CMSIS/Device/ST/Makefile CMSIS/Device/ST/STM32F4xx/Makefile CMSIS/Device/ST/STM32F4xx/Source/Makefile CMSIS/Device/ST/STM32F4xx/Source/Templates/Makefile CMSIS/Makefile STM32F4xx_HAL_Driver/Makefile STM32F4xx_HAL_Driver/Src/Makefile FreeRTOS/Makefile FreeRTOS/Source/Makefile FreeRTOS/Source/CMSIS_RTOS/Makefile LwIP/Makefile LwIP/src/api/Makefile LwIP/src/core/ipv4/Makefile over-hal/Makefile application/Makefile bsp/Makefile Common/Makefile Common/Utils/Makefile Common/TCP_IP/Makefile FreeRTOS/Source/portable/MemMang/Makefile FreeRTOS/Source/portable/Makefile FreeRTOS/Source/portable/GCC/Makefile LwIP/src/Makefile LwIP/src/core/Makefile LwIP/src/netif/Makefile LwIP/system/Makefile FreeRTOS/Source/portable/GCC/ARM_CM4F/Makefile STM32F3xx_HAL_Driver/Makefile STM32F3xx_HAL_Driver/Src/Makefile STM32F7xx_HAL_Driver/Makefile STM32F7xx_HAL_Driver/Src/Makefile STM32L0xx_HAL_Driver/Makefile STM32L0xx_HAL_Driver/Src/Makefile STM32L4xx_HAL_Driver/Makefile STM32L4xx_HAL_Driver/Src/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -4578,24 +4582,24 @@ if test -z "${WANT_FREERTOS_TRUE}" && test -z "${WANT_FREERTOS_FALSE}"; then
   as_fn_error $? "conditional \"WANT_FREERTOS\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
-if test -z "${WANT_F4XX_TRUE}" && test -z "${WANT_F4XX_FALSE}"; then
-  as_fn_error $? "conditional \"WANT_F4XX\" was never defined.
+if test -z "${F4XX_TRUE}" && test -z "${F4XX_FALSE}"; then
+  as_fn_error $? "conditional \"F4XX\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
-if test -z "${WANT_F3XX_TRUE}" && test -z "${WANT_F3XX_FALSE}"; then
-  as_fn_error $? "conditional \"WANT_F3XX\" was never defined.
+if test -z "${F3XX_TRUE}" && test -z "${F3XX_FALSE}"; then
+  as_fn_error $? "conditional \"F3XX\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
-if test -z "${WANT_L4XX_TRUE}" && test -z "${WANT_L4XX_FALSE}"; then
-  as_fn_error $? "conditional \"WANT_L4XX\" was never defined.
+if test -z "${L4XX_TRUE}" && test -z "${L4XX_FALSE}"; then
+  as_fn_error $? "conditional \"L4XX\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
-if test -z "${WANT_F7XX_TRUE}" && test -z "${WANT_F7XX_FALSE}"; then
-  as_fn_error $? "conditional \"WANT_F7XX\" was never defined.
+if test -z "${F7XX_TRUE}" && test -z "${F7XX_FALSE}"; then
+  as_fn_error $? "conditional \"F7XX\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
-if test -z "${WANT_L0XX_TRUE}" && test -z "${WANT_L0XX_FALSE}"; then
-  as_fn_error $? "conditional \"WANT_L0XX\" was never defined.
+if test -z "${L0XX_TRUE}" && test -z "${L0XX_FALSE}"; then
+  as_fn_error $? "conditional \"L0XX\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${WANT_LWIP_TRUE}" && test -z "${WANT_LWIP_FALSE}"; then
@@ -5234,6 +5238,14 @@ do
     "LwIP/src/netif/Makefile") CONFIG_FILES="$CONFIG_FILES LwIP/src/netif/Makefile" ;;
     "LwIP/system/Makefile") CONFIG_FILES="$CONFIG_FILES LwIP/system/Makefile" ;;
     "FreeRTOS/Source/portable/GCC/ARM_CM4F/Makefile") CONFIG_FILES="$CONFIG_FILES FreeRTOS/Source/portable/GCC/ARM_CM4F/Makefile" ;;
+    "STM32F3xx_HAL_Driver/Makefile") CONFIG_FILES="$CONFIG_FILES STM32F3xx_HAL_Driver/Makefile" ;;
+    "STM32F3xx_HAL_Driver/Src/Makefile") CONFIG_FILES="$CONFIG_FILES STM32F3xx_HAL_Driver/Src/Makefile" ;;
+    "STM32F7xx_HAL_Driver/Makefile") CONFIG_FILES="$CONFIG_FILES STM32F7xx_HAL_Driver/Makefile" ;;
+    "STM32F7xx_HAL_Driver/Src/Makefile") CONFIG_FILES="$CONFIG_FILES STM32F7xx_HAL_Driver/Src/Makefile" ;;
+    "STM32L0xx_HAL_Driver/Makefile") CONFIG_FILES="$CONFIG_FILES STM32L0xx_HAL_Driver/Makefile" ;;
+    "STM32L0xx_HAL_Driver/Src/Makefile") CONFIG_FILES="$CONFIG_FILES STM32L0xx_HAL_Driver/Src/Makefile" ;;
+    "STM32L4xx_HAL_Driver/Makefile") CONFIG_FILES="$CONFIG_FILES STM32L4xx_HAL_Driver/Makefile" ;;
+    "STM32L4xx_HAL_Driver/Src/Makefile") CONFIG_FILES="$CONFIG_FILES STM32L4xx_HAL_Driver/Src/Makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac

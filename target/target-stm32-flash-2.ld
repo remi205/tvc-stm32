@@ -53,7 +53,7 @@ SECTIONS
   /* The program code and other data goes into FLASH */
   .text :
   {
-    . 	= ALIGN(4);
+    . 	= ALIGN(2);
 	KEEP(*(.isr_vector))
         *(.text)           /* .text sections (code) */
 
@@ -78,15 +78,17 @@ SECTIONS
         *(.rodata*)        /* .rodata* sections (constants, strings, etc.) */
         KEEP(*(.eh_frame*))
 
-    . = ALIGN(4);
+    . = ALIGN(2);
     _etext = .;        /* define a global symbols at end of code */
   } >FLASH
 
 
    .ARM.extab   : { *(.ARM.extab* .gnu.linkonce.armextab.*) } >FLASH
     .ARM : {
+ . 	= ALIGN(2);
     __exidx_start = .;
       *(.ARM.exidx*)
+ . 	= ALIGN(2);
       __exidx_end = .;
     } >FLASH
 
@@ -117,40 +119,40 @@ SECTIONS
   /* Initialized data sections goes into RAM, load LMA copy after code */
   .data : AT ( _sidata )
   {
-    . = ALIGN(4);
+    . = ALIGN(2);
     __data_start__ = .;        /* create a global symbol at data start */
-	*(vtable)    
+    *(vtable)    
     *(.data*)          /* .data* sections */
 
 
 	KEEP(*(.jcr*))
-    . = ALIGN(4);
+    . = ALIGN(2);
     __data_end__ = .;        /* define a global symbol at data end */
-  } >RAM
+  } >SRAM
 
   /* Uninitialized data section */
-  . = ALIGN(4);
+  . = ALIGN(2);
   .bss :
   {
     /* This is used by the startup in order to initialize the .bss secion */
     __bss_start__ = .;
     *(.bss*)
     *(COMMON)
-    . = ALIGN(4);
+    . = ALIGN(2);
     __bss_end__ = .;
-  } >RAM
+  } >SRAM
 
   /* User_heap_stack section, used to check that there is enough RAM left */
   ._user_heap_stack :
   {
-    . = ALIGN(4);
+    . = ALIGN(2);
     PROVIDE ( end = . );
     PROVIDE ( _end = . );
 		*(.heap*)    
     . = . + _Min_Heap_Size;
     . = . + _Min_Stack_Size;
-    . = ALIGN(4);
-  } >RAM
+    . = ALIGN(2);
+  } >SRAM
 
 
 	/* .stack_dummy section doesn't contains any symbols. It is only
@@ -159,28 +161,20 @@ SECTIONS
 	.stack_dummy (COPY):
 	{
 		*(.stack*)
-	} > RAM
+	} > SRAM
 
 	/* Set stack top to end of RAM, and stack limit move down by
 	 * size of stack_dummy section */
-	__StackTop = ORIGIN(RAM) + LENGTH(RAM);
+	__StackTop = ORIGIN(SRAM) + LENGTH(SRAM);
 	__StackLimit = __StackTop - SIZEOF(.stack_dummy);
 	PROVIDE(__stack = __StackTop);
 	
 	/* Check if data + heap + stack exceeds RAM limit */
-	ASSERT(__StackLimit >= __HeapLimit, "region RAM overflowed with stack")
+/*	ASSERT(__StackLimit >= __HeapLimit, "region SRAM overflowed with stack")*/
 	
 	
   /* MEMORY_bank1 section, code must be located here explicitly            */
   /* Example: extern int foo(void) __attribute__ ((section (".mb1text"))); */
-  .memory_b1_text :
-  {
-    *(.mb1text)        /* .mb1text sections (code) */
-    *(.mb1text*)       /* .mb1text* sections (code)  */
-    *(.mb1rodata)      /* read-only data (constants) */
-    *(.mb1rodata*)
-  } >MEMORY_B1
-
   /* Remove information from the standard libraries */
   /DISCARD/ :
   {
