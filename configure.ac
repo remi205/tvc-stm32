@@ -22,7 +22,7 @@ AM_PROG_AS
 ## initialize the arguments to configure
 TVC_WANT_STM32(stm32, [choose the stm32 as F407VEx],[F407VEx])
 TVC_WANT_CONSOLE(console, [choose the stm32 uart port as console], [uart1])
-TVC_WANT_RAMROM(romram,  [choose the target type 'flash/'ram], [flash])
+TVC_WANT_RAMROM(romram, [choose the target type 'flash/'ram], [flash])
 TVC_WANT_FREERTOS(freertos, [do you want freertos feature 'yes/no'], [yes])
 
 TVC_WANT_FEATURE(ipv4,[ choose the vesion V4 of Ip protocol], [yes])
@@ -38,11 +38,11 @@ AC_DEFINE([freertos],["$want_string"],[Specify the target type])
 
 AM_CONDITIONAL([WANT_FREERTOS], [test "$(freertos)" = "yes"])
 
-AM_CONDITIONAL([F4XX],     [test "$f4xx" = "$stm32"])
-AM_CONDITIONAL([F3XX],     [test "$f3xx" = "$stm32"])
-AM_CONDITIONAL([L4XX],     [test "$l4xx" = "$stm32"])
-AM_CONDITIONAL([F7XX],     [test "$f7xx" = "$stm32"])
-AM_CONDITIONAL([L0XX],     [test "$l0xx" = "$stm32"])
+AM_CONDITIONAL([F4XX],     [test "$f4" = "$stm32"])
+AM_CONDITIONAL([F3XX],     [test "$f3" = "$stm32"])
+AM_CONDITIONAL([L4XX],     [test "$l4" = "$stm32"])
+AM_CONDITIONAL([F7XX],     [test "$f7" = "$stm32"])
+AM_CONDITIONAL([L0XX],     [test "$l0" = "$stm32"])
 
 AM_CONDITIONAL([WANT_LWIP],  [test "$lwip" = true])
 AM_CONDITIONAL([WANT_IPV4],  [test "$ipv4" = true ])

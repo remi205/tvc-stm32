@@ -1,16 +1,5 @@
-/**
-  ******************************************************************************
-  * @file    LwIP/LwIP_HTTP_Server_Socket_RTOS/Src/main.c 
-  * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    18-February-2014
-  * @brief   This sample code implements a http server application based on 
-  *          Netconn API of LwIP stack and FreeRTOS. This application uses 
-  *          STM32F4xx the ETH HAL API to transmit and receive data. 
-  *          The communication is done with a web browser of a remote PC.
- */
 
-/* Includes ------------------------------------------------------------------*/
+
 #include "stm32f4xx_hal.h"
 #include "lwipopts.h"
 #include "cmsis_os.h"
@@ -24,14 +13,9 @@
 
 #include "netif/etharp.h"
 
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
-/* Private macro -------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
+#include "Console.h"
+
 UART_HandleTypeDef huart6;
-
-
-int OpenConsole( char * name);
 
 // network interface structure
 struct netif gnetif;
@@ -62,7 +46,7 @@ extern int lwip_init();
 /* Private function prototypes -----------------------------------------------*/
 void netif_config(void);
 
-extern int WriteConsole(char *);
+
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -73,7 +57,7 @@ extern int WriteConsole(char *);
   */
 void StartThread(void const * argument)
 {  
-  OpenConsole("/dev/uart6");
+  OpenConsole();
   
   WriteConsole("Salut , stm32 ici\n");
   

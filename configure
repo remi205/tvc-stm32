@@ -610,9 +610,10 @@ WANT_LWIP
 WANT_IPV6
 WANT_IPV4
 WANT_FREERTOS
-WANT_ROMRAM
+ROMRAM
 WANT_CONSOLE
 WANT_STM32
+HAL_PATH
 FAMILLY
 STM32
 am__fastdepCCAS_FALSE
@@ -4182,9 +4183,14 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
-#  f = m4_bregexp(choose the stm32 as F407VEx,[\([FL][0-9]\)[0-9][0-9]],[\1])
-#  AC_SUBST([HAL_PATH],[STM32]$(f)[xx_HAL_DRIVER],[choose the stm32 as F407VEx])
-#  AC_DEFINE_UNQUOTED([HAL_PATH],[STM32]$(f)[xx_HAL_Driver],[choose the stm32 as F407VEx])
+  f = F4
+  HAL_PATH=STM32$(f)xx_HAL_DRIVER
+
+
+cat >>confdefs.h <<_ACEOF
+#define HAL_PATH STM32$(f)xx_HAL_Driver
+_ACEOF
+
 
   WANT_STM32=STM32$enableval-mem.ld
 
@@ -4227,9 +4233,9 @@ else
 fi
 
 
-  WANT_ROMRAM=$enableval
+  ROMRAM=$enableval
 
-  want_string=WANT_ROMRAM
+  want_string=ROMRAM
 
 cat >>confdefs.h <<_ACEOF
 #define $want_string $enableval
@@ -4368,7 +4374,7 @@ else
 fi
 
 
- if test "$f4xx" = "$stm32"; then
+ if test "$f4" = "$stm32"; then
   F4XX_TRUE=
   F4XX_FALSE='#'
 else
@@ -4376,7 +4382,7 @@ else
   F4XX_FALSE=
 fi
 
- if test "$f3xx" = "$stm32"; then
+ if test "$f3" = "$stm32"; then
   F3XX_TRUE=
   F3XX_FALSE='#'
 else
@@ -4384,7 +4390,7 @@ else
   F3XX_FALSE=
 fi
 
- if test "$l4xx" = "$stm32"; then
+ if test "$l4" = "$stm32"; then
   L4XX_TRUE=
   L4XX_FALSE='#'
 else
@@ -4392,7 +4398,7 @@ else
   L4XX_FALSE=
 fi
 
- if test "$f7xx" = "$stm32"; then
+ if test "$f7" = "$stm32"; then
   F7XX_TRUE=
   F7XX_FALSE='#'
 else
@@ -4400,7 +4406,7 @@ else
   F7XX_FALSE=
 fi
 
- if test "$l0xx" = "$stm32"; then
+ if test "$l0" = "$stm32"; then
   L0XX_TRUE=
   L0XX_FALSE='#'
 else
