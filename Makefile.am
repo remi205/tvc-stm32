@@ -12,35 +12,35 @@ if L4XX
 AM_CFLAGS +=  -D__CORTEX_M=4 -D__FPU_PRESENT -D__FPU_USED=1 -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 
 AM_CPPFLAGS +=  -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 PORT_INC = FreeRTOS/Source/portable/GCC/ARM_CM4F
-LIBPORT  =  $(PORT_INC)/libport.a
+LIBPORT  = FreeRTOS/Source/portable/GCC/ARM_CM4F/libport.a
 LD_SCRIPT = $(top_srcdir)/target/target-stm32-$(ROMRAM)-8.ld 
 else
 if F3XX
 AM_CFLAGS +=  -D__CORTEX_M=4 -D__FPU_PRESENT -D__FPU_USED=1 -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 
 AM_CPPFLAGS += -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mfpu=fpv4-sp-d16 
 PORT_INC = FreeRTOS/Source/portable/GCC/ARM_CM4F
-LIBPORT  =  $(PORT_INC)/libport.a
+LIBPORT  =  FreeRTOS/Source/portable/GCC/ARM_CM4F/libport.a
 LD_SCRIPT = $(top_srcdir)/target/target-stm32-$(ROMRAM)-2.ld 
 else
 if F7XX 
 AM_CFLAGS += -D__CORTEX_M=7 -D__FPU_PRESENT -D__FPU_USED=1 -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-sp-d16
 AM_CPPFLAGS += -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-sp-d16
 PORT_INC = FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1
-LIBPORT =  $(PORT_INC)/libport.a 
+LIBPORT =  FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1/libport.a 
 LD_SCRIPT = $(top_srcdir)/target/target-stm32-$(ROMRAM)-4.ld 
 else
 if L0XX 
 AM_CFLAGS += -D__CORTEX_M=0 -D__FPU_USED=0 -mcpu=cortex-m0 -mthumb 
 AM_CPPFLAGS +=  -mcpu=cortex-m0 -mthumb  -mfloat-abi=soft
 PORT_INC = FreeRTOS/Source/portable/GCC/ARM_CM0
-LIBPORT = $(PORT_INC)/libport.a
+LIBPORT = FreeRTOS/Source/portable/GCC/ARM_CM0/libport.a
 LD_SCRIPT = $(top_srcdir)/target/target-stm32-$(ROMRAM)-4.ld 
 else
 ### par defaut c'est le F4
 AM_CFLAGS += -D__CORTEX_M=4 -D__FPU_PRESENT -D__FPU_USED=1 -mcpu=cortex-m4 -mthumb  
 AM_CPPFLAGS += -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 PORT_INC = FreeRTOS/Source/portable/GCC/ARM_CM4F 
-LIBPORT =  $(PORT_INC)/libport.a FreeRTOS/Source/portable/MemMang/libmem.a 
+LIBPORT = FreeRTOS/Source/portable/GCC/ARM_CM4F/libport.a FreeRTOS/Source/portable/MemMang/libmem.a 
 LD_SCRIPT = $(top_srcdir)/target/target-stm32-$(ROMRAM)-4.ld 
 endif
 endif
@@ -48,8 +48,8 @@ endif
 endif
 
 ### TOTO : STM32F4xx_HAL_Driver une macro pour cela
-###TOTO = STM32$(FAMILLY)xx_HAL_Driver
-SUBDIRS =Common application bsp over-hal LwIP FreeRTOS CMSIS STM32F4xx_HAL_Driver 
+### TOTO = $(HAL_PATH) = STM32$(FAMILLY)xx_HAL_Driver
+SUBDIRS =Common application bsp over-hal LwIP FreeRTOS CMSIS $(HAL_PATH) 
 
 if WANT_IPV4
 LIB_IP = LwIP/src/core/ipv4/libipv4.a 
@@ -78,5 +78,5 @@ essai_stm32_SOURCES =
 ##  -DSTM32$(STM32)xx donne STM32F407xx pour la HAL
 essai_stm32_LDFLAGS =-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Wl,-Map,essai_stm32.map -T$(top_srcdir)/target/stm32-mem/$(WANT_STM32) -T$(LD_SCRIPT) -DSTM32$(STM32)xx
 
-essai_stm32_LDADD = bsp/libbsp.a application/libapplication.a over-hal/libover_hal.a bsp/dhcp_config.o $(LIB_HAL) LwIP/src/api/libapi.a LwIP/src/core/libcore.a LwIP/src/netif/libnetif.a LwIP/system/OS/libsysarch.a LwIP/src/core/ipv4/libipv4.a LwIP/src/core/raw.o $(LIBPORT) $(LIB_FREERTOS) $(LIB_IP) STM32$(FAMILLY)xx_HAL_Driver/Src/STM32$(FAMILLY)xx_hal_eth.o 
+essai_stm32_LDADD = bsp/libbsp.a application/libapplication.a over-hal/libover_hal.a bsp/dhcp_config.o $(LIB_HAL) LwIP/src/api/libapi.a LwIP/src/core/libcore.a LwIP/src/netif/libnetif.a LwIP/system/OS/libsysarch.a LwIP/src/core/ipv4/libipv4.a LwIP/src/core/raw.o $(LIBPORT) $(LIB_FREERTOS) $(LIB_IP) $(HAL_PATH)/Src/STM32$(FAMILLY)xx_hal_eth.o 
 ## @end 1

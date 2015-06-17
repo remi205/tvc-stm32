@@ -10,9 +10,8 @@ AC_DEFUN([TVC_WANT_STM32],[
   AC_SUBST([FAMILLY],m4_bregexp($2,[\([FL][0-9]\)[0-9][0-9]],[\1]))
   AC_DEFINE_UNQUOTED([FAMILLY],$familly,[$2])
 
-  f = m4_bregexp($2,[\([FL][0-9]\)[0-9][0-9]],[\1])
-  AC_SUBST([HAL_PATH],[STM32]$(f)[xx_HAL_DRIVER],[$2])
-  AC_DEFINE_UNQUOTED([HAL_PATH],[STM32]$(f)[xx_HAL_Driver],[$2])
+  AC_SUBST([HAL_PATH],[STM32]m4_bregexp($2,[\([FL][0-9]\)[0-9][0-9]],[\1])[xx_HAL_Driver],[$2])
+  AC_DEFINE_UNQUOTED([HAL_PATH],[STM32]m4_bregexp($2,[\([FL][0-9]\)[0-9][0-9]],[\1])[xx_HAL_Driver],[$2])
 
   AC_SUBST([WANT_]allcapsname(),[STM32]$enableval[-mem.ld])
   want_string=[WANT_]allcapsname()

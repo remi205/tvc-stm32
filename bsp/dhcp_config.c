@@ -7,7 +7,8 @@
 #include "dns.h"
 #include "net_config.h"
 
-#include "Serial.h"
+//#include "Serial.h"
+#include "Console.h"
 
 #define CONSOLE 0
 
@@ -16,8 +17,6 @@
 uint32_t DHCPfineTimer = 0;
 __IO uint8_t DHCP_state;
 #endif
-
-extern void WriteConsole(char *Message);
 
 #if 1
 /* Private function prototypes -----------------------------------------------*/
@@ -156,7 +155,7 @@ void dhcp_process(void const * argument)
                 iptab[3] = (uint8_t)(IPaddress);
                 
                 
-//                sprintf(iptxt, "IP address assigned by a DHCP server: %d.%d.%d.%d", iptab[3], iptab[2], iptab[1], iptab[0]);       
+                sprintf(iptxt, "IP address assigned by a DHCP server: %d.%d.%d.%d", iptab[3], iptab[2], iptab[1], iptab[0]);       
                 WriteConsole ("address IP affecté\n");
 #endif        
                 return;

@@ -38,11 +38,11 @@ AC_DEFINE([freertos],["$want_string"],[Specify the target type])
 
 AM_CONDITIONAL([WANT_FREERTOS], [test "$(freertos)" = "yes"])
 
-AM_CONDITIONAL([F4XX],     [test "$f4" = "$stm32"])
-AM_CONDITIONAL([F3XX],     [test "$f3" = "$stm32"])
-AM_CONDITIONAL([L4XX],     [test "$l4" = "$stm32"])
-AM_CONDITIONAL([F7XX],     [test "$f7" = "$stm32"])
-AM_CONDITIONAL([L0XX],     [test "$l0" = "$stm32"])
+AM_CONDITIONAL([F4XX],     [test "F4" = "$(FAMILLY)"])
+AM_CONDITIONAL([F3XX],     [test "F3" = "$(FAMILLY)"])
+AM_CONDITIONAL([L4XX],     [test "L4" = "$(FAMILLY)"])
+AM_CONDITIONAL([F7XX],     [test "F7" = "$(FAMILLY)"])
+AM_CONDITIONAL([L0XX],     [test "L0" = "$(FAMILLY)"])
 
 AM_CONDITIONAL([WANT_LWIP],  [test "$lwip" = true])
 AM_CONDITIONAL([WANT_IPV4],  [test "$ipv4" = true ])

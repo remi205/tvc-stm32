@@ -4183,12 +4183,11 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
-  f = F4
-  HAL_PATH=STM32$(f)xx_HAL_DRIVER
+  HAL_PATH=STM32F4xx_HAL_Driver
 
 
 cat >>confdefs.h <<_ACEOF
-#define HAL_PATH STM32$(f)xx_HAL_Driver
+#define HAL_PATH STM32F4xx_HAL_Driver
 _ACEOF
 
 
@@ -4374,7 +4373,7 @@ else
 fi
 
 
- if test "$f4" = "$stm32"; then
+ if test "F4" = "$(FAMILLY)"; then
   F4XX_TRUE=
   F4XX_FALSE='#'
 else
@@ -4382,7 +4381,7 @@ else
   F4XX_FALSE=
 fi
 
- if test "$f3" = "$stm32"; then
+ if test "F3" = "$(FAMILLY)"; then
   F3XX_TRUE=
   F3XX_FALSE='#'
 else
@@ -4390,7 +4389,7 @@ else
   F3XX_FALSE=
 fi
 
- if test "$l4" = "$stm32"; then
+ if test "L4" = "$(FAMILLY)"; then
   L4XX_TRUE=
   L4XX_FALSE='#'
 else
@@ -4398,7 +4397,7 @@ else
   L4XX_FALSE=
 fi
 
- if test "$f7" = "$stm32"; then
+ if test "F7" = "$(FAMILLY)"; then
   F7XX_TRUE=
   F7XX_FALSE='#'
 else
@@ -4406,7 +4405,7 @@ else
   F7XX_FALSE=
 fi
 
- if test "$l0" = "$stm32"; then
+ if test "L0" = "$(FAMILLY)"; then
   L0XX_TRUE=
   L0XX_FALSE='#'
 else
