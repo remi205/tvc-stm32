@@ -14,6 +14,7 @@ AS_IF([test -f macro_m4/tvc-want-feature.m4],[
 
 AM_INIT_AUTOMAKE([1.9 foreign])
 
+
 AC_PROG_CC
 AC_PROG_RANLIB
 AC_PROG_CXX
@@ -24,7 +25,7 @@ TVC_WANT_STM32(stm32, [choose the stm32 as F407VEx],[F407VEx])
 TVC_WANT_CONSOLE(console, [choose the stm32 uart port as console], [uart1])
 TVC_WANT_RAMROM(romram, [choose the target type 'flash/'ram], [flash])
 TVC_WANT_FREERTOS(freertos, [do you want freertos feature 'yes/no'], [yes])
-TVC_WANT_STM32_SERIE(stm32_serie, [choose the stm32 as F4 or L0],[F4])
+TVC_STM32_SERIE(stm32_serie, [choose the stm32 as F4 or L0],[F4])
 
 TVC_WANT_FEATURE(ipv4,[ choose the vesion V4 of Ip protocol], [yes])
 TVC_WANT_FEATURE(ipv6,[ choose the vesion V6 of Ip protocol], [no])
