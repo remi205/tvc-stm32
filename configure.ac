@@ -36,7 +36,7 @@ AC_DEFINE([console],["$want_string"],[Specifty uart])
 AC_DEFINE([romram],["$want_string"],[Specify the target type])
 AC_DEFINE([freertos],["$want_string"],[Specify the target type])
 
-AM_CONDITIONAL([WANT_FREERTOS], [test "$(freertos)" = "yes"])
+AM_CONDITIONAL([FREERTOS], [test "$(freertos)" = "yes"])
 
 AM_CONDITIONAL([F4XX],     [test "F4" = "$(FAMILLY)"])
 AM_CONDITIONAL([F3XX],     [test "F3" = "$(FAMILLY)"])

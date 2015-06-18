@@ -604,12 +604,12 @@ F3XX_FALSE
 F3XX_TRUE
 F4XX_FALSE
 F4XX_TRUE
-WANT_FREERTOS_FALSE
-WANT_FREERTOS_TRUE
+FREERTOS_FALSE
+FREERTOS_TRUE
 WANT_LWIP
 WANT_IPV6
 WANT_IPV4
-WANT_FREERTOS
+FREERTOS
 ROMRAM
 WANT_CONSOLE
 WANT_STM32
@@ -4252,9 +4252,9 @@ else
 fi
 
 
-  WANT_FREERTOS=$enableval
+  FREERTOS=$enableval
 
-  want_string=WANT_FREERTOS
+  want_string=FREERTOS
 
 cat >>confdefs.h <<_ACEOF
 #define $want_string $enableval
@@ -4365,11 +4365,11 @@ $as_echo "#define freertos \"\$want_string\"" >>confdefs.h
 
 
  if test "$(freertos)" = "yes"; then
-  WANT_FREERTOS_TRUE=
-  WANT_FREERTOS_FALSE='#'
+  FREERTOS_TRUE=
+  FREERTOS_FALSE='#'
 else
-  WANT_FREERTOS_TRUE='#'
-  WANT_FREERTOS_FALSE=
+  FREERTOS_TRUE='#'
+  FREERTOS_FALSE=
 fi
 
 
@@ -4583,8 +4583,8 @@ if test -z "${am__fastdepCCAS_TRUE}" && test -z "${am__fastdepCCAS_FALSE}"; then
   as_fn_error $? "conditional \"am__fastdepCCAS\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
-if test -z "${WANT_FREERTOS_TRUE}" && test -z "${WANT_FREERTOS_FALSE}"; then
-  as_fn_error $? "conditional \"WANT_FREERTOS\" was never defined.
+if test -z "${FREERTOS_TRUE}" && test -z "${FREERTOS_FALSE}"; then
+  as_fn_error $? "conditional \"FREERTOS\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${F4XX_TRUE}" && test -z "${F4XX_FALSE}"; then
