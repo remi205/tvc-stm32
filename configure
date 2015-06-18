@@ -594,28 +594,27 @@ WANT_IPV4_FALSE
 WANT_IPV4_TRUE
 WANT_LWIP_FALSE
 WANT_LWIP_TRUE
+L4XX_FALSE
+L4XX_TRUE
 L0XX_FALSE
 L0XX_TRUE
 F7XX_FALSE
 F7XX_TRUE
-L4XX_FALSE
-L4XX_TRUE
-F3XX_FALSE
-F3XX_TRUE
 F4XX_FALSE
 F4XX_TRUE
+F3XX_FALSE
+F3XX_TRUE
 WANT_FREERTOS_FALSE
 WANT_FREERTOS_TRUE
 WANT_LWIP
 WANT_IPV6
 WANT_IPV4
+FAMILLY
+WANT_STM32_SERIE
 WANT_FREERTOS
 ROMRAM
 WANT_CONSOLE
 WANT_STM32
-HAL_PATH
-FAMILLY
-STM32
 am__fastdepCCAS_FALSE
 am__fastdepCCAS_TRUE
 CCASDEPMODE
@@ -719,6 +718,7 @@ enable_stm32
 enable_console
 enable_romram
 enable_freertos
+enable_stm32_serie
 enable_ipv4
 enable_ipv6
 enable_lwip
@@ -1360,6 +1360,7 @@ Optional Features:
   --enable-console        choose the stm32 uart port as console (uart1)
   --enable-romram         choose the target type 'flash/'ram (flash)
   --enable-freertos       do you want freertos feature 'yes/no' (yes)
+  --enable-stm32_serie    choose the stm32 as F4 or L0 (F4)
   --enable-ipv4           choose the vesion V4 of Ip protocol (yes)
   --enable-ipv6           choose the vesion V6 of Ip protocol (no)
   --enable-lwip           choose the IP stack (yes)
@@ -4167,31 +4168,7 @@ else
 fi
 
 
-  STM32=F407
-
-
-cat >>confdefs.h <<_ACEOF
-#define STM32 STM32$stm32
-_ACEOF
-
-
-  FAMILLY=F4
-
-
-cat >>confdefs.h <<_ACEOF
-#define FAMILLY $familly
-_ACEOF
-
-
-  HAL_PATH=STM32F4xx_HAL_Driver
-
-
-cat >>confdefs.h <<_ACEOF
-#define HAL_PATH STM32F4xx_HAL_Driver
-_ACEOF
-
-
-  WANT_STM32=STM32$enableval-mem.ld
+   WANT_STM32=STM32$enableval-mem.ld
 
   want_string=WANT_STM32
 
@@ -4255,6 +4232,30 @@ fi
   WANT_FREERTOS=$enableval
 
   want_string=WANT_FREERTOS
+
+cat >>confdefs.h <<_ACEOF
+#define $want_string $enableval
+_ACEOF
+
+
+
+
+
+  # Check whether --enable-stm32_serie was given.
+if test "${enable_stm32_serie+set}" = set; then :
+  enableval=$enable_stm32_serie;
+else
+  enableval="F4"
+fi
+
+
+  WANT_STM32_SERIE=$enableval
+
+  want_string=STM32_SERIE
+
+  FAMILLY=$enableval
+
+
 
 cat >>confdefs.h <<_ACEOF
 #define $want_string $enableval
@@ -4364,7 +4365,10 @@ $as_echo "#define romram \"\$want_string\"" >>confdefs.h
 $as_echo "#define freertos \"\$want_string\"" >>confdefs.h
 
 
- if test "$(freertos)" = "yes"; then
+$as_echo "#define stm32_serie \"\$want_string\"" >>confdefs.h
+
+
+ if test "WANT_FREERTOS" = "yes"; then
   WANT_FREERTOS_TRUE=
   WANT_FREERTOS_FALSE='#'
 else
@@ -4373,15 +4377,7 @@ else
 fi
 
 
- if test "F4" = "$(FAMILLY)"; then
-  F4XX_TRUE=
-  F4XX_FALSE='#'
-else
-  F4XX_TRUE='#'
-  F4XX_FALSE=
-fi
-
- if test "F3" = "$(FAMILLY)"; then
+ if test "$enable_stm32_serie" = F3; then
   F3XX_TRUE=
   F3XX_FALSE='#'
 else
@@ -4389,15 +4385,15 @@ else
   F3XX_FALSE=
 fi
 
- if test "L4" = "$(FAMILLY)"; then
-  L4XX_TRUE=
-  L4XX_FALSE='#'
+ if test "$enable_stm32_serie" = F4; then
+  F4XX_TRUE=
+  F4XX_FALSE='#'
 else
-  L4XX_TRUE='#'
-  L4XX_FALSE=
+  F4XX_TRUE='#'
+  F4XX_FALSE=
 fi
 
- if test "F7" = "$(FAMILLY)"; then
+ if test "$enable_stm32_serie" = F7; then
   F7XX_TRUE=
   F7XX_FALSE='#'
 else
@@ -4405,13 +4401,22 @@ else
   F7XX_FALSE=
 fi
 
- if test "L0" = "$(FAMILLY)"; then
+ if test "$enable_stm32_serie" = L0; then
   L0XX_TRUE=
   L0XX_FALSE='#'
 else
   L0XX_TRUE='#'
   L0XX_FALSE=
 fi
+
+ if test "$enable_stm32_serie" = L4; then
+  L4XX_TRUE=
+  L4XX_FALSE='#'
+else
+  L4XX_TRUE='#'
+  L4XX_FALSE=
+fi
+
 
 
  if test "$lwip" = true; then
@@ -4587,16 +4592,12 @@ if test -z "${WANT_FREERTOS_TRUE}" && test -z "${WANT_FREERTOS_FALSE}"; then
   as_fn_error $? "conditional \"WANT_FREERTOS\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
-if test -z "${F4XX_TRUE}" && test -z "${F4XX_FALSE}"; then
-  as_fn_error $? "conditional \"F4XX\" was never defined.
-Usually this means the macro was only invoked conditionally." "$LINENO" 5
-fi
 if test -z "${F3XX_TRUE}" && test -z "${F3XX_FALSE}"; then
   as_fn_error $? "conditional \"F3XX\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
-if test -z "${L4XX_TRUE}" && test -z "${L4XX_FALSE}"; then
-  as_fn_error $? "conditional \"L4XX\" was never defined.
+if test -z "${F4XX_TRUE}" && test -z "${F4XX_FALSE}"; then
+  as_fn_error $? "conditional \"F4XX\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${F7XX_TRUE}" && test -z "${F7XX_FALSE}"; then
@@ -4605,6 +4606,10 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${L0XX_TRUE}" && test -z "${L0XX_FALSE}"; then
   as_fn_error $? "conditional \"L0XX\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${L4XX_TRUE}" && test -z "${L4XX_FALSE}"; then
+  as_fn_error $? "conditional \"L4XX\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${WANT_LWIP_TRUE}" && test -z "${WANT_LWIP_FALSE}"; then

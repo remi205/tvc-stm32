@@ -9,6 +9,7 @@ AM_CFLAGS = -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/Inc -I$(top_srcdir)/CMS
 AM_CPPFLAGS = -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/Inc -I$(top_srcdir)/CMSIS/Device/ST/STM32$(FAMILLY)xx/Include 
 
 if L4XX
+F = L4
 AM_CFLAGS +=  -D__CORTEX_M=4 -D__FPU_PRESENT -D__FPU_USED=1 -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 
 AM_CPPFLAGS +=  -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 PORT_INC = FreeRTOS/Source/portable/GCC/ARM_CM4F
@@ -16,6 +17,7 @@ LIBPORT  = FreeRTOS/Source/portable/GCC/ARM_CM4F/libport.a
 LD_SCRIPT = $(top_srcdir)/target/target-stm32-$(ROMRAM)-8.ld 
 else
 if F3XX
+F = L3
 AM_CFLAGS +=  -D__CORTEX_M=4 -D__FPU_PRESENT -D__FPU_USED=1 -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 
 AM_CPPFLAGS += -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mfpu=fpv4-sp-d16 
 PORT_INC = FreeRTOS/Source/portable/GCC/ARM_CM4F
@@ -23,6 +25,7 @@ LIBPORT  =  FreeRTOS/Source/portable/GCC/ARM_CM4F/libport.a
 LD_SCRIPT = $(top_srcdir)/target/target-stm32-$(ROMRAM)-2.ld 
 else
 if F7XX 
+F = L7
 AM_CFLAGS += -D__CORTEX_M=7 -D__FPU_PRESENT -D__FPU_USED=1 -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-sp-d16
 AM_CPPFLAGS += -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-sp-d16
 PORT_INC = FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1
@@ -30,6 +33,7 @@ LIBPORT =  FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1/libport.a
 LD_SCRIPT = $(top_srcdir)/target/target-stm32-$(ROMRAM)-4.ld 
 else
 if L0XX 
+F = L0
 AM_CFLAGS += -D__CORTEX_M=0 -D__FPU_USED=0 -mcpu=cortex-m0 -mthumb 
 AM_CPPFLAGS +=  -mcpu=cortex-m0 -mthumb  -mfloat-abi=soft
 PORT_INC = FreeRTOS/Source/portable/GCC/ARM_CM0
@@ -37,6 +41,7 @@ LIBPORT = FreeRTOS/Source/portable/GCC/ARM_CM0/libport.a
 LD_SCRIPT = $(top_srcdir)/target/target-stm32-$(ROMRAM)-4.ld 
 else
 ### par defaut c'est le F4
+F = F4
 AM_CFLAGS += -D__CORTEX_M=4 -D__FPU_PRESENT -D__FPU_USED=1 -mcpu=cortex-m4 -mthumb  
 AM_CPPFLAGS += -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 PORT_INC = FreeRTOS/Source/portable/GCC/ARM_CM4F 
