@@ -3,4 +3,6 @@
 *#*#
 *.bak
 *autom4te.cache*
-
+configure
+compile
+build*
