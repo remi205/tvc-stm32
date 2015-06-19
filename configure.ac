@@ -21,23 +21,26 @@ AC_PROG_CXX
 AM_PROG_AS
 
 ## initialize the arguments to configure
-TVC_WANT_STM32(stm32, [choose the stm32 as F407VEx],[F407VEx])
+TVC_WANT_STM32(stm32, [choose a stm32 as F407VEx],[F407VEx])
 TVC_WANT_CONSOLE(console, [choose the stm32 uart port as console], [uart1])
 TVC_WANT_RAMROM(romram, [choose the target type 'flash/'ram], [flash])
 TVC_WANT_FREERTOS(freertos, [do you want freertos feature 'yes/no'], [yes])
 TVC_STM32_SERIE(stm32_serie, [choose the stm32 as F4 or L0],[F4])
+TVC_STM32_PRODUCT(stm32_product, [choose the stm32 as F407 or L053],[F407])
 
 TVC_WANT_FEATURE(ipv4,[ choose the vesion V4 of Ip protocol], [yes])
 TVC_WANT_FEATURE(ipv6,[ choose the vesion V6 of Ip protocol], [no])
 TVC_WANT_FEATURE(lwip,[ choose the IP stack], [yes])
 
 ## setup define for compilation 
-AC_DEFINE([stm32],["$want_string"],[Specify MCU])
+AC_DEFINE([stm32],["$want_string"],[Specify the MCU])
 AC_DEFINE([user_main],["$want_string"],[Specify user start function])
 AC_DEFINE([console],["$want_string"],[Specifty uart])
 AC_DEFINE([romram],["$want_string"],[Specify the target type])
 AC_DEFINE([freertos],["$want_string"],[Specify the target type])
 AC_DEFINE([stm32_serie],["$want_string"],[Specify the serie of stm32])
+AC_DEFINE([stm32_product],["$want_string"],[Specify the product of stm32])
+
 
 AM_CONDITIONAL([WANT_FREERTOS], [test "WANT_FREERTOS" = "yes"])
 
