@@ -1,7 +1,6 @@
-
 #pragma once
 
-#include "stm32f4xx_hal.h"
+#include "stm32.h"
 #include "usart.h"
 
 void MotorsSendCommand(unsigned char* Cmd, unsigned char Len);

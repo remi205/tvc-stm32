@@ -1,5 +1,5 @@
 
-#include "stm32f4xx_hal.h"
+#include "stm32.h"
 
 
 extern ADC_HandleTypeDef hadc1;

@@ -1,7 +1,7 @@
 
 typedef unsigned short USHORT;
 
-#include "stm32f4xx_hal.h"
+#include "stm32.h"
 
 #include "ads111x_access.h"
 #include "Ads1115_types.h"

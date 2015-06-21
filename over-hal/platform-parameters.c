@@ -1,5 +1,4 @@
-#include "stm32f4xx_hal.h"
-#include "stm32f4xx_hal_flash.h"
+#include "stm32xx_hal.h"
 
 #include <string.h>
 #include <stdio.h>

@@ -1,4 +1,5 @@
-#include "stm32f4xx_hal.h"
+#include "stm32.h"
+
 #include "Serial.h"
 #include "ads111x_access.h"
 

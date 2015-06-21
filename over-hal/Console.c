@@ -1,5 +1,5 @@
-#include <stm32f4xx_hal.h>
-#include <stm32f4xx_hal_usart.h>
+#include <stm32.h>
+
 #include <string.h>
 
 extern struct UART_HandleTypeDef huart5;

@@ -14,7 +14,6 @@ AS_IF([test -f macro_m4/tvc-want-feature.m4],[
 
 AM_INIT_AUTOMAKE([1.9 foreign])
 
-
 AC_PROG_CC
 AC_PROG_RANLIB
 AC_PROG_CXX

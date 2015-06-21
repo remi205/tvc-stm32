@@ -1,11 +1,10 @@
 #if 0
 
-#include "stm32f3xx_hal.h"
+#include "stm32.h"
 #include "cmsis_os.h"
 #include <string.h>
 
 #include "Serial.h"
-
 #include "BasicTypes.h"
 #include "RegisterMacros.h"
 #include "stm32_Uart_sci3.h"

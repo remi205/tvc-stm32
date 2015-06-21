@@ -1,7 +1,7 @@
 
 #include <math.h>
+#include "stm32.h"
 
-#include "stm32f3xx_hal.h"
 #include "spi_access.h"
 #include "motor_st.h"
 

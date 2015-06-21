@@ -1,6 +1,5 @@
 
 #if 0
-#include "stm32f4xx_hal.h"
 #include "Serial.h"
 #include "spi_access.h"
 #include "cmsis_os.h"
