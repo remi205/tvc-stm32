@@ -1,0 +1,122 @@
+begin | The universal synchronous asynchronous receiver transmitter (USART) offers a flexible means of full-duplex data exchange with external equipment requiring an industry standard NRZ asynchronous serial data format. The USART offers a very wide range of baud rates using a fractional baud rate generator
+
+copyright | tvc-stm32, Grenoble
+
+use-discret-address| UART | 0x40013800 0x40004400 0x40004800 0x40004C00 0x40005000
+
+base | UART_STATUS           | USHORT |  0  | Status register 
+base | UART_DATA             | USHORT |  4  | Data register 
+base | UART_BAUD_RATE        | USHORT |  8  | Baud rate register 
+base | UART_CONTROL          | USHORT |  12 | Control register 1
+base | UART_CONTROL2         | USHORT |  16 | Control register 2
+base | UART_CONTROL3         | USHORT |  20 | Control register 3
+base | UART_PRESCALER        | USHORT |  24 | Guard time and prescaler register
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+
+reg | UART_STATUS | CLEAR_TO_SEND              | USHORT | 0 | 9:9 | This bit is set by hardware when the nCTS input toggles, if the CTSE bit is set. It is cleared by software (by writing it to 0). An interrupt is generated if CTSIE=1 in the USART_CR3 register. \\0: No change occurred on the nCTS status line\\1: A change occurred on the nCTS status line 
+
+reg | UART_STATUS | LINE_BREAK                | USHORT | 0 | 8:8 | This bit is set by hardware when the LIN break is detected. It is cleared by software (by writing it to 0). An interrupt is generated if LBDIE = 1 in the USART_CR2 register. \\0: LIN Break not detected\\1: LIN break detected 
+
+reg | UART_STATUS | TRANSMIT_EMPTY            | USHORT | 0 | 7:7 | This bit is set by hardware when the content of the TDR register has been transferred into the shift register. An interrupt is generated if the TXEIE bit =1 in the USART_CR1 register. It is cleared by a write to the USART_DR register. \\0: Data is not transferred to the shift register\\1: Data is transferred to the shift register) 
+
+reg | UART_STATUS | TRANSMISSION_COMPLETE     | USHORT | 0 | 6:6 | This bit is set by hardware if the transmission of a frame containing data is complete and if TXE is set. An interrupt is generated if TCIE=1 in the USART_CR1 register. It is cleared by a software sequence (a read from the USART_SR register followed by a write to the USART_DR register). The TC bit can also be cleared by writing a '0' to it. This clearing sequence is recommended only for multibuffer communication. \\0: Transmission is not complete\\1: Transmission is complete
+
+reg | UART_STATUS | READDATA_NOT_EMPTY         | USHORT | 0 | 5:5 | This bit is set by hardware when the content of the RDR shift register has been transferred to the USART_DR register. An interrupt is generated if RXNEIE=1 in the USART_CR1 register. It is cleared by a read to the USART_DR register. The RXNE flag can also be cleared by writing a zero to it. This clearing sequence is recommended only for multibuffer communication.\\0: Data is not received\\1: Received data is ready to be read. 
+
+reg | UART_STATUS | IDLE_LINE_DETECTED         | USHORT | 0 | 4:4 | This bit is set by hardware when an Idle Line is detected. An interrupt is generated if the IDLEIE=1 in the USART_CR1 register. It is cleared by a software sequence (an read to the USART_SR register followed by a read to the USART_DR register).\\0: No Idle Line is detected \\1: Idle Line is detected
+
+
+reg | UART_STATUS | OVERRUN_ERROR            | USHORT | 0 | 3:3 | This bit is set by hardware when the word currently being received in the shift register is ready to be transferred into the RDR register while RXNE=1. An interrupt is generated if RXNEIE=1 in the USART_CR1 register. It is cleared by a software sequence (an read to the USART_SR register followed by a read to the USART_DR register). 
+
+reg | UART_STATUS | NOISE_ERROR_FLAG          | USHORT | 0 | 2:2 | This bit is set by hardware when noise is detected on a received frame. It is cleared by a software sequence (an read to the USART_SR register followed by a read to the USART_DR register).\\0: No noise is detected\\1: Noise is detected 
+
+reg | UART_STATUS | FRAMING_ERROR            | USHORT | 0 | 1:1 | This bit is set by hardware when a de-synchronization, excessive noise or a break character is detected. It is cleared by a software sequence (an read to the USART_SR register followed by a read to the USART_DR register). \\0: No Framing error is detected\\1: Framing error or break character is detected 
+
+reg | UART_STATUS | PARITY_ERROR             | USHORT | 0 | 0:0 | This bit is set by hardware when a parity error occurs in receiver mode. It is cleared by a software sequence (a read to the status register followed by a read to the USART_DR data register). The software must wait for the RXNE flag to be set before clearing the PE bit.
+
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+
+# base | UART_BAUD_RATE        | USHORT |  8  | Baud rate register 
+
+reg | UART_BAUD_RATE | DIV_FRACTION             | USHORT | 8 | 3:0 | These 4 bits define the fraction of the USART Divider.
+reg | UART_BAUD_RATE | MANTISSA_FRACTION        | USHORT | 8 | 11:4 | These 12 bits define the mantissa of the USART Divider.
+
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+# base | UART_CONTROL          | USHORT |  12 | Control register 1
+
+reg | UART_CONTROL | UART_ENABLE              | USHORT | 12 | 13:13 | When this bit is cleared the USART prescalers and outputs are stopped and the end of the current byte transfer in order to reduce power consumption. This bit is set and cleared by software.\\0: USART prescaler and outputs disabled\\1: USART enabled 
+
+reg | UART_CONTROL | WORD_LENGTH_9_BIT         | USHORT | 12 | 12:12 | This bit determines the word length. It is set or cleared by software.\\0: 1 Start bit, 8 Data bits, n Stop bit\\1: 1 Start bit, 9 Data bits, n Stop bit 
+
+reg | UART_CONTROL | WAKEUP_METHOD            | USHORT | 12 | 11:11 | This bit determines the USART wakeup method, it is set or cleared by software.\\0: Idle Line\\1: Address Mark 
+
+reg | UART_CONTROL | PARITY_CONTROL           | USHORT | 12 | 10:10 | This bit selects the hardware parity control (generation and detection). When the parity control is enabled, the computed parity is inserted at the MSB position (9th bit if M=1; 8th bit if M=0) and parity is checked on the received data. This bit is set and cleared by software. Once it is set, PCE is active after the current byte (in reception and in transmission 
+
+reg | UART_CONTROL | PARITY_SELECTION         | USHORT | 12 | 9:9 | This bit selects the odd or even parity when the parity generation/detection is enabled (PCE bit set). It is set and cleared by software. The parity will be selected after the current byte. 
+
+reg | UART_CONTROL | PARITY_INTERRUPT         | USHORT | 12 | 8:8 | This bit is set and cleared by software. 
+
+reg | UART_CONTROL | TRANSMIT_EMPTY_INTERRUPT  | USHORT | 12 | 7:7 | This bit is set and cleared by software. 
+
+reg | UART_CONTROL | TRANSMISSION_COMPLETE_INTERRUPT | USHORT | 12 | 6:6 | This bit is set and cleared by software.
+
+reg | UART_CONTROL | RECEIVE_NOT_EMPTY_INTERRUPT| USHORT | 12 | 5:5 | This bit is set and cleared by software. 
+
+reg | UART_CONTROL | IDLE_INTERRUPT           | USHORT | 12 | 4:4 | This bit is set and cleared by software. 
+
+reg | UART_CONTROL | TRANSMITTER_ENABLE       | USHORT | 12 | 3:3 | This bit enables the transmitter. It is set and cleared by software. 
+
+reg | UART_CONTROL | RECEIVER_ENABLE          | USHORT | 12 | 2:2 | This bit enables the receiver.. It is set and cleared by software. 
+
+reg | UART_CONTROL | RECEIVER_WAKEUP          | USHORT | 12 | 1:1 | This bit determines if the USART is in mute mode or not. It is set and cleared by software and can be cleared by hardware when a wakeup sequence is recognized.\\0: Receiver in active mode\\1: Receiver in mute mode 
+ 
+reg | UART_CONTROL | SEND_BREAK               | USHORT | 12 | 0:0 | This bit set is used to send break characters. It can be set and cleared by software. It shouldbe set by software, and will be reset by hardware during the stop bit of break 
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+
+reg | UART_CONTROL2 | LIN_MODE           | USHORT | 16 | 14:14 | The LIN mode enables the capability to send LIN Synch Breaks (13 low bits) using the SBK bit in the USART_CR1 register, and to detect LIN Sync breaks. 
+reg | UART_CONTROL2 | STOP_BITS          | USHORT | 16 | 12:13 | These bits are used for programming the stop bits. 
+reg | UART_CONTROL2 | UART_CLOCK         | USHORT | 16 | 11:11 | This bit allows the user to enable the CK pin. 
+
+reg | UART_CONTROL2 | CLOCK_POLARITY     | USHORT | 16 | 10:10 | This bit allows the user to select the polarity of the clock output on the CK pin in synchronous mode. It works in conjunction with the CPHA bit to produce the desired clock/data relationship\\ 0: Steady low value on CK pin outside transmission window.\\ 1: Steady high value on CK pin outside transmission window.
+
+reg | UART_CONTROL2 | CLOCK_PHASE       | USHORT | 16 |  9:9   | This bit allows the user to select the phase of the clock output on the CK pin in synchronous mode. It works in conjunction with the CPOL bit to produce the desired clock/data relationship 
+
+reg | UART_CONTROL2 | LAST_BIT_CLOCK_PULSE | USHORT | 16 |  8:8   | This bit allows the user to select whether the clock pulse associated with the last data bit transmitted (MSB) has to be output on the CK pin in synchronous mode. \\0: The clock pulse of the last data bit is not output to the CK pin\\1: The clock pulse of the last data bit is output to the CK pin\\The last bit is the 8th or 9th data bit transmitted depending on the 8 or 9 bit format selected by the M bit in the USART_CR1 register 
+
+reg | UART_CONTROL2 | BREAK_DETECTION_INTERRUPT   | USHORT | 16 | 6:6 | LIN break detection interrupt enable Break interrupt mask (break detection using break delimiter).\\0: Interrupt is inhibited\\1: An interrupt is generated whenever LBD=1 in the USART_SR register. 
+
+reg | UART_CONTROL2 | BREAK_DETECTION_LENGTH   | USHORT | 16 | 4:4 | This bit is for selection between 11 bit or 10 bit break detection. 
+
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+reg | UART_CONTROL3 | CTS_INTERRUPT            | USHORT | 20 | 10:10 | CTS interrupt enable. 
+reg | UART_CONTROL3 | CTS_ENABLE               | USHORT | 20 |  9:9  | CTS  enable.
+reg | UART_CONTROL3 | RTS_ENABLE               | USHORT | 20 |  8:8  | RTS  enable. 
+reg | UART_CONTROL3 | DMA_TRANSMITTER_ENABLE| USHORT | 20 |  7:7  | This bit is set/reset by software 
+reg | UART_CONTROL3 | DMA_RECEIVER_ENABLE   | USHORT | 20 |  6:6  | This bit is set/reset by software 
+# the bit from 5:5 to 1:1 are used by Irda Mode and SmartCard Mode, they are left from description
+reg | UART_CONTROL3 | ERROR_INTERRUP_TENABLE    | USHORT | 20 |  0:0  |Error Interrupt Enable Bit is required to enable interrupt generation in case of a framing error,overrun error or noise error (FE=1 or ORE=1 or NE=1 in the USART_SR register) in case of Multi Buffer Communication (DMAR=1 in the USART_CR3 register).\\0: Interrupt is inhibited\\1: An interrupt is generated whenever DMAR=1 in the USART_CR3 register and FE=1 or ORE=1 or NE=1 in the USART_SR register.
+
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+
+reg | UART_PRESCALER | PRESCALER_VALUE   | USHORT | 20 |  7:0  | Not used in Console Mode 
+
+
+end

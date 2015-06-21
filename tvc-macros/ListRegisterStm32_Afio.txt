@@ -1,0 +1,64 @@
+
+
+
+base-register | AFIO | 0x40010000
+
+use-prefix-for-function-name | afio
+
+#####################################################################################################
+
+register | EventControl            |  0x0  | L | Event control register                        |  AFIO_EVCR   | 0
+register | RemapConfiguration      |  0x4  | L | AF remap and debug I/O configuration register |  AFIO_MAPR   | 0
+register | ExternalConfiguration1  |  0x8  | L | External interrupt configuration register 1   |  AFIO_EXTICR1| 0
+register | ExternalConfiguration2  |  0xC  | L | External interrupt configuration register 2   |  AFIO_EXTICR2| 0
+register | ExternalConfiguration3  |  0x10 | L | External interrupt configuration register 3   |  AFIO_EXTICR3| 0
+register | ExternalConfiguration4  |  0x14 | L | External interrupt configuration register 4   |  AFIO_EXTICR4| 0
+
+#####################################################################################################
+type | PortSelection | ES |  PORT_A PORT_B PORT_C PORT_D PORT_E PORT_F PORT_G
+
+
+#####################################################################################################
+field | EventControl | EventOutputEnable | EVOE  | rw | 7:7  | Event output enable |  EventOutputEnable | C
+field | EventControl | PortSelection     | PORT  | rw | 6:4  | Port selection  |  PortSelection | Y1  
+field | EventControl | PinSelection      | PIN   | rw | 3:0  | Pin selection   |  PinSelection  | ES  | PIN0 PIN1 PIN2 PIN3 PIN4 PIN5 PIN7 PIN8 PIN9 PIN10 PIN11 PIN12 PIN13 PIN14 PIN15
+
+#####################################################################################################
+
+type | NoRemap | B | NO_REMAP FULL_REMAP 
+type | FullRemap | ES | NO_REMAP PARTIAL_REMAP1 PARTIAL_REMAP2 FULL_REMAP
+
+field | RemapConfiguration | JtagConfiguration | SWJ_CFG    | rw | 26:24  |  Serial wire JTAG configuration |  JtagConfiguration | ES | FULL_SWJ_WITH_RESET FULL_SWJ_WITHOUT_RESET JTAG_DP_DISABLED_AND_SW_DP_ENABLED JTAG_DP_DISABLED_AND_SW_DP_DISABLED
+
+field | RemapConfiguration | Pd01Remap   | PD01_REMAP | rw | 15:15  | Port D0/Port D1 mapping on OSC_IN/OSC_OUT                            | NoRemap | Y1
+field | RemapConfiguration | Timer4Remap | TIM4_REMAP | rw | 12:12  | It controls the mapping of TIM4 channels 1 to 4 onto the GPIO ports. | NoRemap | Y1
+field | RemapConfiguration | Timer3Remap | TIM3_REMAP | rw | 11:10  | It controls the mapping of TIM3 channels 1 to 4 onto the GPIO ports. | FullRemap | Y1
+field | RemapConfiguration | Timer2Remap | TIM2_REMAP | rw |  9:8   | It controls the mapping of TIM2 channels 1 to 4 onto the GPIO ports. | FullRemap | Y1
+field | RemapConfiguration | Timer1Remap | TIM1_REMAP | rw |  7:6   | It controls the mapping of TIM1 channels 1 to 4 onto the GPIO ports. | FullRemap | Y1
+field | RemapConfiguration | Uart3Remap  | UART3_REMAP| rw |  5:4   | It controls the mapping of UART3 pin onto the GPIO ports.            | FullRemap | Y1
+field | RemapConfiguration | Uart2Remap  | UART2_REMAP| rw |  3:3   | It controls the mapping of UART2 pin onto the GPIO ports.            | NoRemap | Y1
+field | RemapConfiguration | Uart1Remap  | UART1_REMAP| rw |  2:2   | It controls the mapping of UART1 pin onto the GPIO ports.            | NoRemap | Y1
+field | RemapConfiguration | Uart1Remap  | I2C1_REMAP | rw |  1:1   | It controls the mapping of I2C1 pin onto the GPIO ports.             | NoRemap | Y1
+field | RemapConfiguration | Uart1Remap  | SPI1_REMAP | rw |  0:0   | It controls the mapping of SPI1 pin onto the GPIO ports.             | NoRemap | Y1
+
+#####################################################################################################
+field | ExternalConfiguration1 | SelectPortForExti3  |  EXTI3  | rw | 15:12  |  EXTI 3 configuration                       | PortSelection | Y1
+field | ExternalConfiguration1 | SelectPortForExti2  |  EXTI2  | rw | 11:8   |  EXTI 2 configuration                       | PortSelection | Y1
+field | ExternalConfiguration1 | SelectPortForExti1  |  EXTI1  | rw |  7:4   |  EXTI 1 configuration                       | PortSelection | Y1
+field | ExternalConfiguration1 | SelectPortForExti0  |  EXTI0  | rw |  3:0   |  EXTI 0 configuration                       | PortSelection | Y1
+#####################################################################################################
+field | ExternalConfiguration2 | SelectPortForExti7  |  EXTI7  | rw | 15:12  |  EXTI 7 configuration                       | PortSelection | Y1
+field | ExternalConfiguration2 | SelectPortForExti6  |  EXTI6  | rw | 11:8   |  EXTI 6 configuration                       | PortSelection | Y1
+field | ExternalConfiguration2 | SelectPortForExti5  |  EXTI5  | rw |  7:4   |  EXTI 5 configuration                       | PortSelection | Y1
+field | ExternalConfiguration2 | SelectPortForExti4  |  EXTI4  | rw |  3:0   |  EXTI 4 configuration                       | PortSelection | Y1
+#####################################################################################################
+field | ExternalConfiguration3 | SelectPortForExti11 |  EXTI11 | rw | 15:12  |  EXTI 11 configuration                      | PortSelection | Y1
+field | ExternalConfiguration3 | SelectPortForExti10 |  EXTI10 | rw | 11:8   |  EXTI 10 configuration                      | PortSelection | Y1
+field | ExternalConfiguration3 | SelectPortForExti9  |  EXTI9  | rw |  7:4   |  EXTI 9 configuration                       | PortSelection | Y1
+field | ExternalConfiguration3 | SelectPortForExti8  |  EXTI8  | rw |  3:0   |  EXTI 8 configuration                       | PortSelection | Y1
+
+#####################################################################################################
+field | ExternalConfiguration4 | SelectPortForExti15 |  EXTI15 | rw | 15:12  |  EXTI 15 configuration                      | PortSelection | Y1
+field | ExternalConfiguration4 | SelectPortForExti14 |  EXTI14 | rw | 11:8   |  EXTI 14 configuration                      | PortSelection | Y1
+field | ExternalConfiguration4 | SelectPortForExti13 |  EXTI13 | rw |  7:4   |  EXTI 13 configuration                      | PortSelection | Y1
+field | ExternalConfiguration4 | SelectPortForExti12 |  EXTI12 | rw |  3:0   |  EXTI 12 configuration                      | PortSelection | Y1

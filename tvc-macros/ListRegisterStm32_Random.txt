@@ -1,0 +1,27 @@
+begin | The RNG processor is a random number generator, based on a continuous analog noise, that provides a random 32-bit value to the host when read.
+
+copyright | Rémi PRUD'HOMME TVC  Grenoble
+
+base-register | RGN | 0x50060800
+
+use-prefix-for-function-name | rgn
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+register | Control           |    0  |  L | RNG control register             | RNG_CR   | 0
+register | Status            |    4  |  L | RNG control register             | RNG_SR   | 0
+register | Data              |    8  |  L | RNG data register                | RNG_DR   | 0
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+field | Control | InterruptEnable       | IE    | rw | 3:3 | Interrupt enable
+field | Control | GeneratorEnable       | RNGEN | rw | 2:2 | Random number generator enable
+
+##########################################################################################
+field | Status  | SeedErrorInterrupt      | SEIS    | rw | 6:6 | Seed error interrupt status. This bit is set at the same time as SECS, it is cleared by writing it to 0
+field | Status  | ClockErrorInterrupt     | RNGEN   | rw | 5:5 | Clock error interrupt status. 
+field | Status  | SeedErrorCurrentStatus  | SECS    | rw | 2:2 | Seed error current status
+field | Status  | ClockErrorCurrentStatus | CECS    | rw | 1:1 | Clock error current status
+field | Status  | DataReady               | DRDY    | rw | 0:0 | Data ready

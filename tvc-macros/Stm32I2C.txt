@@ -1,0 +1,142 @@
+begin | I2C (inter-integrated circuit) bus Interface serves as an interface between the microcontroller and the serial I2C bus. It provides multimaster capability, and controls all I2C bus-specific sequencing, protocol, arbitration and timing. It supports standard and fast speed modes. It is also SMBus 2.0 compatible.
+
+copyright |  Rémi PRUD'HOMME,  TVC audio
+
+use-discret-address| I2C | 0x40005400  0x40005800
+
+base | I2C_CONTROL           | USHORT |  0 | Control Register 
+base | I2C_CONTROL_2         | USHORT |  4 | Control Register 
+base | I2C_OWN_ADDRESS       | USHORT |  8 | Slave Mode
+base | I2C_OWN_ADDRESS_2     | USHORT | 12 | Own address register 2
+base | I2C_DATA              | UCHAR  | 16 | Data Register 
+base | I2C_STATUS1           | USHORT | 20 | Status 1 Register 
+base | I2C_STATUS2           | USHORT | 24 | Status 2 Register 
+base | I2C_CLOCK_CONTROL     | USHORT | 28 | Clock Control Register 
+base | I2C_TRISE             | USHORT | 32 | TRISE Registerl Register 
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+
+reg | I2C_CONTROL | SOFTWARE_RESET              | USHORT | 0 | 15:15 | When set, the I2C is under reset state. Before resetting this bit, make sure the I2C lines are released and the bus is free 
+
+reg | I2C_CONTROL | SMBUS_ALERT                 | USHORT | 0 | 13:13 | This bit is set and cleared by software, and cleared by hardware when PE=0. 0: Releases SMBAlert pin high. Alert Response Address Header followed by NACK. 1: Drives SMBAlert pin low. Alert Response Address Header followed by ACK.
+
+reg | I2C_CONTROL | PACKET_ERROR_CHECKING       | USHORT | 0 | 12:12 | This bit is set and cleared by software, and cleared by hardware when PEC is transferred or by a START or Stop condition or when PE=0. 0: No PEC transfer 1: PEC transfer (in Tx or Rx mode)
+
+reg | I2C_CONTROL | ACKNOWLEDGE_PEC_POSITION    | USHORT | 0 | 11:11 | This bit is set and cleared by software and cleared by hardware when PE=0. 0: ACK bit controls the (N)ACK of the current byte being received in the shift register. The PEC bit indicates that current byte in shift register is a PEC. 1: ACK bit controls the (N)ACK of the next byte which will be received in the shift register. The PEC bit indicates that the next byte in the shift register is a PEC. This bit must be configured before data reception starts.
+
+
+reg | I2C_CONTROL | ACKNOWLEDGE_ENABLE          | USHORT | 0 | 10:10 | The bit is set and cleared by software, cleared by hardware when a Stop condition is detected, set by hardware when a timeout error is detected. In Master Mode: 0: No Stop generation. 1: Stop generation after the current byte transfer or after the current Start condition is sent
+
+
+reg | I2C_CONTROL | STOP_GENERATION             | USHORT | 0 |  9:9  | The bit is set and cleared by software, cleared by hardware when a Stop condition is detected, set by hardware when a timeout error is detected
+
+
+
+reg | I2C_CONTROL | START                       | USHORT | 0 |  8:8 | This bit is set and cleared by software and cleared by hardware when start is sent or PE=0. In Master Mode: 0: No Start generation 1: Repeated start generation In Slave mode: 0: No Start generation 1: Start generation when the bus is free
+
+reg | I2C_CONTROL | NOSTRETCH                   | USHORT | 0 |  7:7 | This bit is used to disable clock stretching in slave mode when ADDR or BTF flag is set, until it is reset by software. 0: Clock stretching enabled
+1: Clock stretching disabled 
+
+reg | I2C_CONTROL | GENERAL_CALL_ENABLE         | USHORT | 0 |  6:6 | General Call Enable
+reg | I2C_CONTROL | PEC_ENABLE                  | USHORT | 0 |  5:5 | PEC Enable
+reg | I2C_CONTROL | ARP_ENABLE                  | USHORT | 0 |  4:4 | ARP Enable
+reg | I2C_CONTROL | SMBUS_TYPE                  | USHORT | 0 |  3:3 | SMBus Type 0: SMBus Device 1: SMBus Host
+reg | I2C_CONTROL | SMBUS_MODE                  | USHORT | 0 |  1:1 | SMBus Mode 0: I2C mode, 1: SMBus mode
+
+reg | I2C_CONTROL | PERIPHERAL_ENABLE           | USHORT | 0 |  0:0 | Peripheral Enable. 0: Peripheral disable 1: Peripheral enable: the corresponding I/Os are selected as alternate functions depending on SMBus bit. If this bit is reset while a communication is on going, the peripheral is disabled at the end of the current communication, when back to IDLE state. All bit resets due to PE=0 occur at the end of the communication. In master mode, this bit must not be reset before the end of the communication.
+
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+
+reg | I2C_CONTROL_2 | LAST_DMA_TRANSFERT        | USHORT | 4 | 12:12 | LAST: DMA Last Transfer : 0: Next DMA EOT is not the last transfer; 1: Next DMA EOT is the last transfer. Note: This bit is used in master receiver mode to permit the generation of a NACK on the last received data.
+
+reg | I2C_CONTROL_2 | DMA_REQUESTS_ENABLE        | USHORT | 4 | 11:11 | DMA Requests Enable
+reg | I2C_CONTROL_2 | BUFFER_INTERRUPT_ENABLE    | USHORT | 4 | 10:10 | Buffer Interrupt Enable
+reg | I2C_CONTROL_2 | EVENT_INTERRUPT_ENABLE     | USHORT | 4 |  9:9  | Event Interrupt Enable
+reg | I2C_CONTROL_2 | ERROR_INTERRUPT_ENABLE     | USHORT | 4 |  8:8  | Error Interrupt Enable
+
+reg | I2C_CONTROL_2 | PERIPHERAL_CLOCK_FREQUENCY | USHORT | 4 |  5:0  | Peripheral Clock Frequency. The allowed range is between 2 MHz and 36 MHz : 000000: Not allowed ; 000001: Not allowed ; 000010: 2 MHz ; ... ; 100100: 36 MHz. Higher than 100100: Not allowed
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+
+reg | I2C_OWN_ADDRESS | OWN_ADDRESS_1_ENABLE  | ULONG | 8 | 15:15 | 0: Own address 1 disabled : received slave address OA1 is NACKed.\\1: Own address 1 enabled. received slave address OA1 is ACKed.
+
+reg | I2C_OWN_ADDRESS | OWN_ADDRESS_1_MODE    | ULONG | 8 | 10:10 | Own address 1 10-bit mode.\\0: Own address 1 is a 7 Bit address.\\1: Own address 1 is a 10 Bit address.
+
+reg | I2C_OWN_ADDRESS | OWN_ADDRESS_1_ADDRESS_BIT_10| ULONG | 8 | 9:0 |  Slave address bit 9:0 (master mode)\\7-bit addressing mode (ADD10 = 0): don't care\\10-bit addressing mode (ADD10 = 1): bit 9:8 of slave address to be sent
+
+reg | I2C_OWN_ADDRESS | OWN_ADDRESS_1_ADDRESS_BIT_7 | ULONG | 8 | 7:1 |  Interface address bits 7:1 of address
+
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+
+reg | I2C_OWN_ADDRESS_2 | OWN_ADDRESS_2_ADDRESS_BIT_7 | ULONG | 12 | 7:1 |  Interface address bits 7:1 of address
+reg | I2C_OWN_ADDRESS_2 | DUAL_ADDRESSING_MODE        | ULONG | 12 | 0:0 |  Dual addressing mode enable 
+
+
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+
+reg | I2C_STATUS1           |  SMBUS_ALERT_FLAG    | ULONG | 20 | 15:15 | This flag is set by hardware when SMBHEN=1 (SMBus host configuration) , ALERTEN=1  and a SMBALERT event (falling edge) is detected on SMBA pin. It is cleared by software by setting ALERTCF bit. Note: This bit is cleared by HW when PE=0 or SWRST is set.
+
+reg | I2C_STATUS1           |  TIMEOUT_FLAG        | ULONG | 20 | 14:14 | Timeout or Tlow detection flag. This flag is set by hardware when a timeout or extended clock timeout occured. It is cleared by software by setting TIMEOUTCF bit.\\ Note: This bit is cleared by HW when PE=0 or SWRST
+
+reg | I2C_STATUS1           |  PEC_ERROR_IN_RECEPTION | ULONG | 20 | 12:12 | PEC Error in reception\\This flag is set by hardware when the received PEC does not match with the PEC register content. A NACK is automatically sent after the wrong PEC reception. It is cleared by software by setting PECCF bit.
+
+reg | I2C_STATUS1           |  OVERRUN              | ULONG | 20 | 11:11 | OVR: Overrun/Underrun (slave mode) \\This flag is set by hardware in slave mode with NOSTRETCH=1, when an overrun/underrun
+error occurs. It is cleared by software by setting OVRCF bit. Note: This bit is cleared by HW when PE=0 or SWRST is set.
+
+reg | I2C_STATUS1           |  ACK_FAILURE          | ULONG | 20 | 10:10 | Acknoledge failure. Cleared by software writing 0. 
+
+
+reg | I2C_STATUS1           |  ARBITRATION_LOST     | ULONG | 20 |  9:9  |  Arbitration lost\\This flag is set by hardware when the interface in case of arbitration loss. It is cleared by software by setting ARLOCF bit. Note: This bit is cleared by HW when PE=0 or SWRST is set.
+
+reg | I2C_STATUS1           |  BUS_ERROR            | ULONG | 20 |  8:8  |  Bus error\\This flag is set by hardware when a misplaced Start or Stop condition is detected. It is cleared by software by setting BERRCF bit. Note: This bit is cleared by HW when PE=0 or SWRST is set.
+
+reg | I2C_STATUS1           |  TRANSMIT_EMPTY          | ULONG | 20 |  7:7  |  Transmit Data register empty (transmitters)\\This bit is set by hardware when TXDR is empty. It is set when the next data to be sent is written into TXDR register. This bit can be written to '1' by software in order to flush the transmit data register TXDR. Note: This bit is set by HW when PE=0 or SWRST is set.
+
+reg | I2C_STATUS1           |  RECEIVE_NOT_EMPTY       | ULONG | 20 |  6:6  | This bit is set by hardware when the received data is copied into RXDR register, and is ready to be read. It is cleared when RXDR is read. Note: This bit is cleared by HW when PE=0 or SWRST is set.
+
+
+reg | I2C_STATUS1           |  STOP_CONDITION           | ULONG | 20 |  4:4  |  This flag is set by hardware when a Stop condition is detected on the bus and the peripheral is involved in this transfer:\\  either as a master, provided that the STOP condition is generated by the peripheral. \\ or as a slave, provided that the peripheral has been addressed previously during this transfer. It is cleared by software by setting STOPCF bit.
+
+reg | I2C_STATUS1           | HEADER_10_BITS            | ULONG | 20 |  3:3  |  0: No ADD10 event occurred.\\1: Master has sent first address byte (header).
+reg | I2C_STATUS1          |  TRANSMIT_STATUS           | ULONG | 20 |  2:2  |  Byte transfer finished\\0: Data byte transfer not done\\1: Data byte transfer succeeded
+reg | I2C_STATUS1          |  ADDRESS_SENT              | ULONG | 20 |  1:1  |  0: No end of address transmission\\1: End of address transmission\\For 10-bit addressing, the bit is set after the ACK of the 2nd byte.\\For 7-bit addressing, the bit is set after the ACK of the byte.
+
+reg | I2C_STATUS1          |  START_CONDITION           | ULONG | 20 |  0:0  | Start bit \\Start bit (Master mode)\\0: No Start condition\\1: Start condition generated.
+
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+
+reg | I2C_STATUS2          |  STATUS_PACKET_ERROR       | ULONG | 0x18 |  15:8  | Packet error checking register
+reg | I2C_STATUS2          |  DUAL_FLAG                 | ULONG | 0x18 |   7:7  | 0: Received address matched with OAR1\\1: Received address matched with OAR2
+
+reg | I2C_STATUS2          |  DATA_TRANSFERED           | ULONG | 0x18 |   2:2  | 0: Data bytes received\\1: Data bytes transmitted\\This bit is set depending on the R/W bit of the address byte, at the end of total address phase.
+reg | I2C_STATUS2          |  BUSY                      | ULONG | 0x18 |   1:1  | 0: No communication on the bus\\1: Communication ongoing on the bus
+reg | I2C_STATUS2          |  MASTER_OR_SLAVE           | ULONG | 0x18 |   0:0  | Master/slave\\0: Slave Mode\\1: Master Mode. Set by hardware as soon as the interface is in Master mode (SB=1).
+
+
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+
+reg | I2C_CLOCK_CONTROL    |  I2C_MASTER_MODE_SELECTION     | ULONG | 0x1C |  15:15  | I2C master mode selection \\0: Standard Mode I2C\\1: Fast Mode I2C
+reg | I2C_CLOCK_CONTROL    |  FAST_MODE_DUTY_CYCLE          | ULONG | 0x1C |  14:14  | Fast mode duty cycle\\0: Fast Mode tlow/thigh = 2\\1: Fast Mode tlow/thigh = 16/9 (see CCR)
+reg | I2C_CLOCK_CONTROL    |  CLOCK_REGISTER                 | ULONG | 0x1C |  11:0   | Clock control register in Fast/Standard mode
+
+
+end

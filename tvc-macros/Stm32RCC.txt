@@ -1,0 +1,170 @@
+begin | There are three types of reset, defined as system reset, power reset and backup domain reset.
+
+
+copyright | Rémi PRUD'HOMME,  TVC audio
+
+
+base-register | SMT32_RCC_BASE | 0x40021000
+
+
+base | RCC_CLOCK_CONTROL            | ULONG | 0     | Clock control register
+base | RCC_CLOCK_CONFIGURATION      | ULONG | 4     | Clock configuration register 
+base | RCC_CLOCK_INTERRUPT          | ULONG | 8     | Clock interrupt register
+base | RCC_APB2_PERIPHERAL_RESET    | ULONG | 0xC   | APB2 peripheral reset register 
+base | RCC_APB1_PERIPHERAL_RESET    | ULONG | 0x10  | APB1 peripheral reset register 
+base | RCC_AHB_PERIPHERAL_CLOCK     | ULONG | 0x14  | AHB peripheral clock enable register 
+base | RCC_APB2_PERIPHERAL_CLOCK    | ULONG | 0x18  | APB2 peripheral clock enable register
+base | RCC_APB1_PERIPHERAL_CLOCK    | ULONG | 0x1C  | APB1 peripheral clock enable register
+base | RCC_BACKUP_DOMAIN_CONTROL    | ULONG | 0x20  | Backup domain control register
+base | RCC_CONTROL_STATUS           | ULONG | 0x24  | Control status register
+
+
+
+##############################################################################
+
+reg | RCC_CLOCK_CONTROL             | RCC_PLL_READY           | ULONG | 0 | 25:25 | PLL clock ready flag\\Set by hardware to indicate that the PLL is locked.\\0: PLL unlocked\\1: PLL locked
+reg | RCC_CLOCK_CONTROL             | RCC_PLL_ENABLE          | ULONG | 0 | 24:24 | PLL enable\\Set and cleared by software to enable PLL. Cleared by hardware when entering Stop or Standby mode. This bit can not be reset if the PLL clock is used as system clock or is selected to become the system clock.\\0: PLL OFF\\1: PLL ON 
+
+reg | RCC_CLOCK_CONTROL             | RCC_HSE_BYPASS          | ULONG | 0 | 18:18 | External high-speed clock bypass. Set and cleared by software to bypass the oscillator with an external clock. The external clock must be enabled with the HSEON bit set, to be used by the device.  The HSEBYP bit can be written only if the HSE oscillator is disabled. \\0: external 4-16 MHz oscillator not bypassed\\1: external 4-16 MHz oscillator bypassed with external clock
+
+reg | RCC_HSE_CLOCK_ENABLE          | RCC_HSE_CLOCK_ENABLE    | ULONG | 0 | 16:16 | HSE clock enable. Set and cleared by software. Cleared by hardware to stop the HSE oscillator when entering Stop or Standby mode. This  bit cannot be reset if the HSE oscillator is used directly or indirectly as the system clock.\\0: HSE oscillator OFF\\1: HSE oscillator ON
+
+reg | RCC_HSE_CLOCK_READY          | RCC_PLL_HSE_CLOCK_READY  | ULONG | 0 | 17:17 | External high-speed clock ready flag. Set by hardware to indicate that the  HSE oscillator is stable. This bit needs 6 cycles of the HSE oscillator clock to fall down after HSEON reset.\\0: HSE oscillator not ready\\1: HSE oscillator read
+
+##############################################################################
+
+reg | RCC_CLOCK_CONFIGURATION      |   RCC_CLOCK_OUTPUT       | ULONG | 4 | 26:24 |  Microcontroller clock output. Set and cleared by software. \\ 0xx: No clock\\100: System clock (SYSCLK) selected\\101: HSI clock selected
+110: HSE clock selected\\111: PLL clock divided by 2 selected\\Note: This clock output may have some truncated cycles at startup or during MCO clock source switching. When the System Clock is selected to output to the MCO pin, make sure that this clock does not exceed 50 MHz (the maximum IO speed
+
+define | CLOCK_OUTPUT_NO_CLOCK | 0
+define | CLOCK_OUTPUT_SYSCLK   | 4
+define | CLOCK_OUTPUT_HSE      | 6
+define | CLOCK_OUTPUT_HSI      | 5
+define | CLOCK_OUTPUT_PLL_BY_2 | 7
+
+reg | RCC_CLOCK_CONFIGURATION      |  RCC_PLL_MULTIPLICATION_FACTOR | ULONG | 4 | 21:18 | PLL multiplication factor. These bits are written by software to define the PLL multiplication factor. These bits can be written only when PLL is disabled. Caution: The PLL output frequency must not exceed 72 MHz. 
+
+define | CLOCK_PLL_INPUT_CLOCK_X_2 |  0
+define | CLOCK_PLL_INPUT_CLOCK_X_3 |  1
+define | CLOCK_PLL_INPUT_CLOCK_X_4 |  2
+define | CLOCK_PLL_INPUT_CLOCK_X_5 |  3
+define | CLOCK_PLL_INPUT_CLOCK_X_6 |  4
+define | CLOCK_PLL_INPUT_CLOCK_X_7 |  5
+define | CLOCK_PLL_INPUT_CLOCK_X_8 |  6
+
+define | CLOCK_PLL_INPUT_CLOCK_X_9 |  7
+define | CLOCK_PLL_INPUT_CLOCK_X_10 |  8
+define | CLOCK_PLL_INPUT_CLOCK_X_11 |  9
+define | CLOCK_PLL_INPUT_CLOCK_X_12 |  10
+define | CLOCK_PLL_INPUT_CLOCK_X_13 |  11
+define | CLOCK_PLL_INPUT_CLOCK_X_14 |  12
+define | CLOCK_PLL_INPUT_CLOCK_X_15 |  13
+define | CLOCK_PLL_INPUT_CLOCK_X_16 |  14
+define | CLOCK_PLL_INPUT_CLOCK_X_1 |  15
+
+
+reg | RCC_CLOCK_CONFIGURATION      |  RCC_PLL_ENTRY_DIVIDER | ULONG | 4 | 17:17 | HSE divider for PLL entry. Set and cleared by software to divide HSE before PLL entry. This bit can be written only when PLL is disabled.\\0: HSE clock not divided\\1: HSE clock divided by 2
+
+reg | RCC_CLOCK_CONFIGURATION      |  RCC_PLL_ENTRY_SOURCE | ULONG | 4 | 16:16 | PLL entry clock source. Set and cleared by software to select PLL clock source. This bit can be written only when PLL is disabled.\\0: HSI oscillator clock / 2 selected as PLL input clock\\1: HSE oscillator clock selected as PLL input clock
+
+reg | RCC_CLOCK_CONFIGURATION      |  ABP_HIGH_SPEED_PRESCALER | ULONG | 4 | 13:11  |  APB high-speed prescaler (APB2). Set and cleared by software to control the division factor of the APB high-speed clock 
+(PCLK2).
+
+define | HCLK_NOT_DIVIDED   | 0
+define | HCLK_DIVIDED_BY_2  | 4
+define | HCLK_DIVIDED_BY_4  | 5
+define | HCLK_DIVIDED_BY_8  | 6
+define | HCLK_DIVIDED_BY_16 | 7
+
+
+reg | RCC_CLOCK_CONFIGURATION      |  APB_LOW_SPEED_PRESCALER  | ULONG | 4 | 10:8  | APB low-speed prescaler (APB1). Set and cleared by software to control the division factor of the APB low-speed clock (PCLK1). Warning: the software has to set correctly these bits to not exceed 36 MHz on this domain.
+
+reg | RCC_CLOCK_CONFIGURATION      |  AHB_LOW_SPEED_PRESCALER  | ULONG | 4 |  7:4  | Set and cleared by software to control the division factor of the AHB clock
+
+define | SYSCLK_NOT_DIVIDED    | 0
+define | SYSCLK_DIVIDED_BY_2   | 8
+define | SYSCLK_DIVIDED_BY_4   | 9
+define | SYSCLK_DIVIDED_BY_8   | 10
+define | SYSCLK_DIVIDED_BY_16  | 11 
+define | SYSCLK_DIVIDED_BY_64  | 12
+define | SYSCLK_DIVIDED_BY_128 | 13
+define | SYSCLK_DIVIDED_BY_256 | 14
+define | SYSCLK_DIVIDED_BY_512 | 15
+
+
+reg | RCC_CLOCK_CONFIGURATION      |  SYSTEM_CLOCK_SWITCH  | ULONG | 4 | 1:0  |  System clock switch. Set and cleared by software to select SYSCLK source. Set by hardware to force HSI selection when leaving Stop and Standby mode or in case of  failure of the HSE oscillator used directly or indirectly as system clock (if the Clock Security System is enabled).
+
+define |  HSI_SELECTED_AS_SYSTEM_CLOCK | 0
+define |  HSE_SELECTED_AS_SYSTEM_CLOCK | 1
+define |  PLL_SELECTED_AS_SYSTEM_CLOCK | 2
+
+##############################################################################
+
+# 0x18
+
+reg | RCC_APB2_PERIPHERAL_CLOCK   |  TIMER_11_CLOCK_ENABLE  | ULONG | 0x18 | 21:21  | timer clock enable. Set and cleared by software. \\0: TIM11 timer clock disabled\\1: TIM11 timer clock enabled
+reg | RCC_APB2_PERIPHERAL_CLOCK   |  TIMER_10_CLOCK_ENABLE  | ULONG | 0x18 | 20:20  | timer clock enable. Set and cleared by software. \\0: TIM10 timer clock disabled\\1: TIM10 timer clock enabled
+reg | RCC_APB2_PERIPHERAL_CLOCK   |  TIMER_9_CLOCK_ENABLE   | ULONG | 0x18 | 19:19  | timer clock enable. Set and cleared by software. \\0: TIM9 timer clock disabled\\1: TIM9 timer clock enabled
+reg | RCC_APB2_PERIPHERAL_CLOCK   |  ADC_3_CLOCK_ENABLE     | ULONG | 0x18 | 15:15  | ADC3 interface clock enable. Set and cleared by software. \\0: ADC3 interface clock disabled\\1: ADC3 interface clock enabled
+reg | RCC_APB2_PERIPHERAL_CLOCK   |  USART1_CLOCK_ENABLE    | ULONG | 0x18 | 14:14  | USART1 interface clock enable. Set and cleared by software. \\0: USART1 interface clock disabled\\1: USART1 interface clock enabled
+reg | RCC_APB2_PERIPHERAL_CLOCK   |  TIMER_8_CLOCK_ENABLE   | ULONG | 0x18 | 13:13  | timer clock enable. Set and cleared by software. \\0: TIM8 timer clock disabled\\1: TIM8 timer clock enabled
+reg | RCC_APB2_PERIPHERAL_CLOCK   |  SPI1_CLOCK_ENABLE      | ULONG | 0x18 | 12:12  | SPI1 clock enable. Set and cleared by software. \\0: SPI1 timer clock disabled\\1: SPI1 timer clock enabled
+reg | RCC_APB2_PERIPHERAL_CLOCK   |  TIMER_1_CLOCK_ENABLE   | ULONG | 0x18 | 11:11  | timer clock enable. Set and cleared by software. \\0: TIM1 timer clock disabled\\1: TIM1 timer clock enabled
+reg | RCC_APB2_PERIPHERAL_CLOCK   |  ADC_2_CLOCK_ENABLE     | ULONG | 0x18 | 10:10  | ADC2 interface clock enable. Set and cleared by software. \\0: ADC2 interface clock disabled\\1: ADC2 interface clock enabled
+reg | RCC_APB2_PERIPHERAL_CLOCK   |  ADC_1_CLOCK_ENABLE     | ULONG | 0x18 |  9:9   | ADC1 interface clock enable. Set and cleared by software. \\0: ADC1 interface clock disabled\\1: ADC1 interface clock enabled
+reg | RCC_APB2_PERIPHERAL_CLOCK   |  IOPG_CLOCK_ENABLE      | ULONG | 0x18 |  8:8   | IO port G clock enable. Set and cleared by software. \\0: IO port G clock disabled \\1: IO port G clock enabled
+reg | RCC_APB2_PERIPHERAL_CLOCK   |  IOPF_CLOCK_ENABLE      | ULONG | 0x18 |  7:7   | IO port F clock enable. Set and cleared by software. \\0: IO port F clock disabled \\1: IO port F clock enabled
+reg | RCC_APB2_PERIPHERAL_CLOCK   |  IOPE_CLOCK_ENABLE      | ULONG | 0x18 |  6:6   | IO port E clock enable. Set and cleared by software. \\0: IO port E clock disabled \\1: IO port E clock enabled
+reg | RCC_APB2_PERIPHERAL_CLOCK   |  IOPD_CLOCK_ENABLE      | ULONG | 0x18 |  5:5   | IO port D clock enable. Set and cleared by software. \\0: IO port D clock disabled \\1: IO port D clock enabled
+reg | RCC_APB2_PERIPHERAL_CLOCK   |  IOPC_CLOCK_ENABLE      | ULONG | 0x18 |  4:4   | IO port C clock enable. Set and cleared by software. \\0: IO port C clock disabled \\1: IO port C clock enabled
+reg | RCC_APB2_PERIPHERAL_CLOCK   |  IOPB_CLOCK_ENABLE      | ULONG | 0x18 |  3:3   | IO port B clock enable. Set and cleared by software. \\0: IO port B clock disabled \\1: IO port B clock enabled
+reg | RCC_APB2_PERIPHERAL_CLOCK   |  IOPA_CLOCK_ENABLE      | ULONG | 0x18 |  2:2   | IO port A clock enable. Set and cleared by software. \\0: IO port A clock disabled \\1: IO port A clock enabled
+reg | RCC_APB2_PERIPHERAL_CLOCK   |  ALT_FUNCTION_IO_CLOCK_ENABLE      | ULONG | 0x18 |  0:0   | Alternate function IO clock enable. Set and cleared by software. \\0: Alternate Function IO clock disabled\\1: Alternate Function IO clock enable
+
+
+##############################################################################
+# 0x1C
+
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  DAC_CLOCK_ENABLE       | ULONG | 0x1C | 29:29   |  DAC interface clock enable. Set and cleared by software. \\0: DAC interface clock disabled\\1: DAC interface clock enable
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  POWER_CLOCK_ENABLE     | ULONG | 0x1C | 28:28   |  Power interface clock enable. Set and cleared by software. \\0: Power interface clock disabled\\1: Power interface clock enable
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  BACKUP_CLOCK_ENABLE    | ULONG | 0x1C | 27:27   |  Backup interface clock enable. Set and cleared by software. \\0: Backup interface clock disabled\\1: Backup interface clock enable
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  CAN_CLOCK_ENABLE       | ULONG | 0x1C | 25:25   |  CAN interface clock enable. Set and cleared by software. \\0: CAN interface clock disabled\\1: CAN interface clock enable
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  USB_CLOCK_ENABLE       | ULONG | 0x1C | 23:23   |  USB interface clock enable. Set and cleared by software. \\0: USB interface clock disabled\\1: USB interface clock enable
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  I2C2_CLOCK_ENABLE      | ULONG | 0x1C | 22:22   |  I2C2 interface clock enable. Set and cleared by software. \\0: I2C2 interface clock disabled\\1: I2C2 interface clock enable
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  I2C1_CLOCK_ENABLE      | ULONG | 0x1C | 22:22   |  I2C1 interface clock enable. Set and cleared by software. \\0: I2C1 interface clock disabled\\1: I2C1 interface clock enable
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  USART5_CLOCK_ENABLE    | ULONG | 0x1C | 20:20   |  USART5 interface clock enable. Set and cleared by software. \\0: USART5 interface clock disabled\\1: USART5 interface clock enable
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  USART4_CLOCK_ENABLE    | ULONG | 0x1C | 19:19   |  USART4 interface clock enable. Set and cleared by software. \\0: USART4 interface clock disabled\\1: USART4 interface clock enable
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  USART3_CLOCK_ENABLE    | ULONG | 0x1C | 18:18   |  USART3 interface clock enable. Set and cleared by software. \\0: USART3 interface clock disabled\\1: USART3 interface clock enable
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  USART2_CLOCK_ENABLE    | ULONG | 0x1C | 17:17   |  USART2 interface clock enable. Set and cleared by software. \\0: USART2 interface clock disabled\\1: USART2 interface clock enable
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  SPI3_CLOCK_ENABLE      | ULONG | 0x1C | 15:15   |  SPI3 interface clock enable. Set and cleared by software. \\0: SPI3 interface clock disabled\\1: SPI3 interface clock enable
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  SPI2_CLOCK_ENABLE      | ULONG | 0x1C | 15:15   |  SPI2 interface clock enable. Set and cleared by software. \\0: SPI2 interface clock disabled\\1: SPI2 interface clock enable
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  WATCHDOG_CLOCK_ENABLE  | ULONG | 0x1C | 11:11   |  WATCHDOG interface clock enable. Set and cleared by software. \\0: WATCHDOG interface clock disabled\\1: WATCHDOG interface clock enable
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  TIMER_14_CLOCK_ENABLE     | ULONG | 0x1C |  8:8    |  TIM14 interface clock enable. Set and cleared by software. \\0: TIM14 interface clock disabled\\1: TIMER_14 interface clock enable
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  TIMER_13_CLOCK_ENABLE     | ULONG | 0x1C |  7:7    |  TIM13 interface clock enable. Set and cleared by software. \\0: TIM13 interface clock disabled\\1: TIMER_13 interface clock enable
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  TIMER_12_CLOCK_ENABLE     | ULONG | 0x1C |  6:6    |  TIM12 interface clock enable. Set and cleared by software. \\0: TIM12 interface clock disabled\\1: TIMER_12 interface clock enable
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  TIMER_7_CLOCK_ENABLE      | ULONG | 0x1C |  5:5    |  TIM7 interface clock enable. Set and cleared by software. \\0: TIM7 interface clock disabled\\1: TIMER_7 interface clock enable
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  TIMER_6_CLOCK_ENABLE      | ULONG | 0x1C |  4:4    |  TIM6 interface clock enable. Set and cleared by software. \\0: TIM6 interface clock disabled\\1: TIMER_6 interface clock enable
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  TIMER_5_CLOCK_ENABLE      | ULONG | 0x1C |  3:3    |  TIM5 interface clock enable. Set and cleared by software. \\0: TIM5 interface clock disabled\\1: TIMER_5 interface clock enable
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  TIMER_4_CLOCK_ENABLE      | ULONG | 0x1C |  2:2    |  TIM4 interface clock enable. Set and cleared by software. \\0: TIM4 interface clock disabled\\1: TIMER_4 interface clock enable
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  TIMER_3_CLOCK_ENABLE      | ULONG | 0x1C |  1:1    |  TIM3 interface clock enable. Set and cleared by software. \\0: TIM3 interface clock disabled\\1: TIMER_3 interface clock enable
+reg | RCC_APB1_PERIPHERAL_CLOCK   |  TIMER_2_CLOCK_ENABLE      | ULONG | 0x1C |  0:0    |  TIM2 interface clock enable. Set and cleared by software. \\0: TIM2 interface clock disabled\\1: TIMER_2 interface clock enable
+
+
+##############################################################################
+#
+
+
+reg | RCC_BACKUP_DOMAIN_CONTROL | RTC_CLOCK_ENABLE           | ULONG | 0x20 | 15:15 | RTC clock enable
+reg | RCC_BACKUP_DOMAIN_CONTROL | RTC_CLOCK_SOURCE_SELECTION | ULONG | 0x20 |  9:8  | RTC clock source selection. Set by software to select the clock source for the RTC. Once the RTC clock source has been selected, it cannot be changed anymore unless the Backup domain is reset. The BDRST bit can be used to reset them.\\00: No clock\\01: LSE oscillator clock used as RTC clock10: LSI oscillator clock used as RTC clock\\11: HSE oscillator clock divided by 128 used as RTC clock
+
+define | RTC_NO_CLOCK  | 0
+define | RTC_HSE_CLOCK | 1
+define | RTC_HSI_CLOCK | 2
+define | RTC_HSE_CLOCK_DIV_128 | 3
+
+
+reg | RCC_BACKUP_DOMAIN_CONTROL | EXTERNAL_LSE_CLOCK_READY | ULONG | 0x20 |  1:1 | Read Only. Set and cleared by hardware to indicate when the external 32 kHz oscillator is stable. After the LSEON bit is cleared, LSERDY goes low after 6 external low-speed oscillator clock cycles.\\0: External 32 kHz oscillator not ready\\1: External 32 kHz oscillator ready
+
+reg | RCC_BACKUP_DOMAIN_CONTROL | EXTERNAL_LSE_CLOCK_ENABLE | ULONG | 0x20 |  0:0 | External low-speed oscillator enable
+
+end

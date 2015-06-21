@@ -1,0 +1,159 @@
+begin | The serial peripheral interface (SPI) allows half/ full-duplex, synchronous, serial communication with external devices. The interface can be configured as the master and in this case it provides the communication clock (SCK) to the external slave device. The interface is also capable of operating in multimaster configuration.
+
+copyright | Rémi PRUD'HOMME TVC  Grenoble
+
+use-discret-address| SPI | 0x40013000 0x40003800 0x40003C00 | 1
+use-prefix-for-function-name | spi
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+register | Control1           |    0  |  W | SPI Control Register 1             | SPI_CR1   | 0
+register | Control2           |    4  |  W |Spi Control Register 2              | SPI_CR2   | 0        
+register | Status             |    8  |  W |Spi Status Register                 | SPI_SR    | 2 
+register | Data               |  0xc  |  W |Spi Data Register                   | SPI_DR    | 0
+register | Crc                |  0x10 |  W |Spi Crc Polynomial Register         | SPI_CRCPR | 0
+register | RxCrc              |  0x14 |  W |Spi Rx Crc Register                 | SPI_RXCRCR| 0
+register | TxCrc              |  0x18 |  W |Spi Tx Crc Register                 | SPI_TXCRCR| 0
+register | I2sConfiguration   |  0x1c |  W |Spi_I2s Configuration Register      | 
+register | I2sPrescaler       |  0x20 |  W |SPI_I2S prescaler register          |
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+
+field | Control1 | Bidirectionnal       | BIDIMODE   | rw | 15:15 | Bidirectional data mode enable\\0: 2-line unidirectional data mode selected\\1: 1-line bidirectional data mode selected | BidirectionnalEnable | C
+field | Control1 | OutputEnable         | BIDIOE     | rw | 14:14 | Output enable in bidirectional mode\\This bit combined with the BIDImode bit selects the direction of transfer in bidirectional mode | OutputEnable | C
+field | Control1 | CrcCalculationEnable | CRCEN      | rw | 13:13 | Hardware CRC calculation enable | CrcCalculationEnable | C
+field | Control1 | TransmitCrcNext      | CRCNEXT    | rw | 12:12 | This bit has to be written as soon as the last data is written into the SPI_DR register. | TransmitCrcNextEnable | C
+
+######
+field | Control1 | DataFrameFormat      | DFF        | rw | 11:11 | 16-bit data frame format is selected | Frame16Enable | C
+field | Control1 | CrcLength            | CRCL       | rw | 11:11 | This bit is set and cleared by software to select the CRC length. 0: 8-bit CRC length\\1: 16-bit CRC length | Crc16Enable | C
+
+field | Control1 | ReceiveOnly          | RXONLY     | rw | 10:10 | This bit combined with the BIDImode bit selects the direction of transfer in 2-line unidirectional mode. This bit is also useful in a multislave system in which this particular slave is not accessed, the output from the accessed slave is not corrupted. | ReceiveOnly | B | FULL_DUPLEX RECEIVE_ONLY
+field | Control1 | SoftwareSlaveManagement| SSM      | rw |  9:9  | This bit combined with the BIDImode bit selects the direction of transfer in 2-line unidirectional mode. This bit is also useful in a multislave system in which this particular slave is not accessed, the output from the accessed slave is not corrupted | SoftwareManagementEnable | C
+
+field | Control1 | InternalSlaveSelect  | SSI        | rw |  8:8  | This bit has an effect only when the SSM bit is set. The value of this bit is forced onto the NSS pin and the IO value of the NSS pin is ignored. | InternalSlaveSelect | C
+field | Control1 | LsbTransmittedFirst  | LSBFIRST   | rw |  7:7  | Frame format      | LsbFirstEnable | C
+field | Control1 | SpiEnable            | SPE        | rw |  6:6  | SPI enable        | SpiEnable | C
+field | Control1 | BaudRateControl      | BR         | rw |  5:3  | Baud rate control | SpiBaudRate | ES | PCLK_PER_2 PCLK_PER_4 PCLK_PER_8 PCLK_PER_16 PCLK_PER_32 PCLK_PER_64 PCLK_PER_128 PCLK_PER_256 
+field | Control1 | MasterEnable         | MSTR       | rw |  2:2  | Master selection  | MasterEnable | C
+field | Control1 | ClockPolarity        | CPOL       | rw |  1:1  | 0: CK to 0 when idle\\1: CK to 1 when idle | ClockPolarity | B |  IDLE_WHEN_1 IDLE_WHEN_0
+field | Control1 | ClockPhase           | CPHA       | rw |  0:0  | 0: The first clock transition is the first data capture edge\\1: The second clock transition is the first data capture edge | ClockPhase | B | FIRST_CLOCK_EGDE SECOND_CLOCK_EGDE 
+
+##########################################################################################
+
+
+
+##########################################################################################
+type | Masked | B | INTERRUPT_MASKED INTERRUPT_UNMASKED
+
+This bit is used in data packing mode, to define if the total number of data to transmit by DMA
+is odd or even. It has significance only if the TXDMAEN bit in the SPIx_CR2 register is set and
+if packing mode is used (data length =< 8-bit and write access to SPIx_DR is 16-bit wide). It
+has to be written when the SPI is disabled (SPE = 0 in the SPIx_CR1 register).
+0: Number of data to transfer is even
+1: Number of data to transfer is odd
+
+
+Bit 13 LDMA_RX: Last DMA transfer for reception
+This bit is used in data packing mode, to define if the total number of data to receive by DMA is
+odd or even. It has significance only if the RXDMAEN bit in the SPIx_CR2 register is set and if
+packing mode is used (data length =< 8-bit and write access to SPIx_DR is 16-bit wide). It has
+to be written when the SPI is disabled (SPE = 0 in the SPIx_CR1 register).
+0: Number of data to transfer is even
+1: Number of data to transfer is odd
+
+Bit 12 FRXTH: FIFO reception threshold
+This bit is used to set the threshold of the RXFIFO that triggers an RXNE event
+0: RXNE event is generated if the FIFO level is greater than or equal to 1/2 (16-bit)
+1: RXNE event is generated if the FIFO level is greater than or equal to 1/4 (8-bit)
+
+Bits 11:8 DS [3:0]: Data size
+These bits configure the data length for SPI transfers:
+0000: Not used
+0001: Not used
+0010: Not used
+0011: 4-bit
+0100: 5-bit
+0101: 6-bit
+0110: 7-bit
+0111: 8-bit
+1000: 9-bit
+1001: 10-bit
+1010: 11-bit
+1011: 12-bit
+1100: 13-bit
+1101: 14-bit
+1110: 15-bit
+1111: 16-bit
+
+field | Control2 | TxBufferEmpty    | TXEIE      | rw  |  7:7  | Used to generate an interrupt request when the TXE flag is set. | Masked | Y1 
+field | Control2 | RxBufferNotEmpty | RXNEIE     | rw  |  6:6  | Used to generate an interrupt request when the RXNE flag is set. | Masked | Y1  
+field | Control2 | ErrorInterrupt   | ERRIE      | rw  |  5:5  |This bit controls the generation of an interrupt when an error condition occurs (CRCERR, OVR, MODF in SPI mode and UDR, OVR in I2S mode).. | Masked | Y1  
+field | Control2 | SsOutput         | SSOE       | rw  |  2:2  | SS output is enabled in master mode and when the cell is enabled. The cell cannot work in a multimaster environment | SsOutputEnable | C
+field | Control2 | TxBufferDma      | TXDMAEN    | rw  |  1:1  | When this bit is set, the DMA request is made whenever the TXE flag is set | TxBufferDmaEnable | C
+field | Control2 | RxBufferDma      | RXDMAEN    | rw  |  0:0  | When this bit is set, the DMA request is made whenever the TXE flag is set | RxBufferDmaEnable | C
+
+##########################################################################################
+
+Bits 12:11 FTLVL[1:0]: FIFO Transmission Level
+These bits are set and cleared by hardware.
+00: FIFO empty
+01: 1/4 FIFO
+10: 1/2 FIFO
+11: FIFO full (considered as FULL when the FIFO threshold is greater than 1/2)
+
+Bits 10:9 FRLVL[1:0]: FIFO reception level
+These bits are set and cleared by hardware.
+00: FIFO empty
+01: 1/4 FIFO
+10: 1/2 FIFO
+11: FIFO full
+
+Bit 8 FRE: Frame format error
+This flag is used for SPI in TI slave mode and I2S slave mode. Refer to Section 32.5.10: SPI
+error flags and Section 32.7.8: I2S error flags. This flag is set by hardware and reset when SPIx_SR is read by software.
+0: No frame format error
+1: A frame format error occurred
+
+field | Status          |  BusyFlag           | BSY       | rw  |  7:7  | SPIis busy in communication or Tx buffer is not empty  | BusyFlag      | M
+field | Status          |  OverrunFlag        | OVR       | rw  |  6:6  | Overrun flag                                           | OverrunFlag   | M
+field | Status          |  ModeFaultFlag      | MODF      | rw  |  5:5  | 0: No mode fault occurred\\1: Mode fault occurred      | ModeFaultFlag | M
+field | Status          |  CrcErrorFlag       | CRCERR    | rw  |  4:4  | CRC value received does not match the SPI_RXCRCR value | CrcErrorFlag  | M
+
+field | Status          |  TransmitBufferEmpty| TXE       | rw  |  1:1  | Transmit buffer empty                                 | TransmitBufferEmpty  | M
+field | Status          |  ReceiveBufferNotEmpty| RXE     | rw  |  0:0  | Receive buffer not empty                              | ReceiveBufferNotEmpty| M
+
+##########################################################################################
+Bit 12 ASTRTEN: Asynchronous start enable.
+0: The Asynchronous start is disabled.
+When the I2S is enabled in slave mode, the hardware starts the transfer when the I2S clock is
+received and an appropriate transition is detected on the WS signal.
+1: The Asynchronous start is enabled.
+When the I2S is enabled in slave mode, the hardware starts the transfer when the I2S clock is
+received and the appropriate level is detected on the WS signal.
+Note: The appropriate transition is a falling edge on WS signal when I2S Philips Standard is used,
+or a rising edge for other standards.
+The appropriate level is a LOW level on WS signal when I2S Philips Standard is used, or a
+HIGH level for other standards.
+Please refer to Section 32.7.3: Start-up description for additional information.
+
+
+field | I2sConfiguration | I2sMode              | I2SMOD   | rw |  11:11  | I2S mode is selected | I2sModeEnable | C
+field | I2sConfiguration | I2sEnable            | I2SE     | rw |  10:10  | I2S peripheral is enabled  | I2sEnable | C
+field | I2sConfiguration | I2sConfigurationMode | I2SCFG   | rw |   9:8   | I2S configuration mode This bit should be configured when the I2S is disabled | I2sConfigurationMode | ES | SLAVE_TRANSMIT SLAVE_RECEIVE MASTER_TRANSMIT MASTER_RECIEVE
+field | I2sConfiguration | PcmLongFrame         | PCMSYNC  | rw |   7:7   | This bit has a meaning only if I2SSTD = 11 (PCM standard is used) | PcmLongFrameEnable | C
+field | I2sConfiguration | I2sStandart          | I2SSTD   | rw |   5:4   | I2S standard selection | I2sStandart | ES | I2S_PHILLIPS_STANDARD_MSB JUSTIFIED_STANDARD LSB_JUSTIFIED_STANDARD PCM_STANDARD
+field | I2sConfiguration | I2sClockPolarity     | CKPOL    | rw |   3:3   | Steady state clock polarity | I2sSteadyState | B | CLOCK_STEADY_STATE_LOW_LEVEL CLOCK_STEADY_STATE_HIGH_LEVEL
+field | I2sConfiguration | I2sDataLength        | DATLEN   | rw |   2:1   | Data length to be transferred | I2sDataLength | ES | I2S_16_DATA_LENGTH I2S_24_DATA_LENGTH I2S_32_DATA_LENGTH  
+field | I2sConfiguration | I2sChannelLength     | CHLEN    | rw |   0:0   | | I2sChannelLength | B | I2S_CHANNEL_16_WIDE I2S_CHANNEL_32_WIDE 
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+field | I2sPrescaler | MasterClockOutput  | MCKOE    | rw |  9:9  | Master clock output enable   |  MasterClockOutputEnable | C
+field | I2sPrescaler | OddFactor          |  ODD     | rw |  8:8  | Odd factor for the prescaler | OddFactor | B | REAL_DIVIDER_VALUE_I2SDIV_PER_2 REAL_DIVIDER_VALUE_I2SDIV_PER_2_MORE_1
+field | I2sPrescaler | I2sDivisor         | I2SDIV   | rw |  7:0  | I2S Linear prescaler         | I2sDivisor | W
+

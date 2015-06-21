@@ -1,0 +1,58 @@
+begin | The device communicates to the system via 16-bit-wide control registers accessible via AMBA
+rev 2.0 Peripheral Bus (APB).
+
+copyright | STEricsson, Grenoble
+
+base-register | SMT32_RTC_BASE2 | 0x40002800 
+
+base | RTC_CONTROL_HIGH               | USHORT |  0      | Control register high
+base | RTC_CONTROL_LOW                | USHORT |  4      | Control register low
+
+base | RTC_PRESCALER_LOAD_HIGH        | USHORT |  8      | Control register high
+base | RTC_PRESCALER_LOAD_LOW         | USHORT |  12     | Control register low
+
+base | RTC_PRESCALER_DIV_HIGH         | USHORT |  16     | Control register high
+base | RTC_PRESCALER_DIV_LOW          | USHORT |  20     | Control register low
+
+base | RTC_COUNTER_HIGH               | USHORT |  24     | Control register high
+base | RTC_COUNTER_LOW                | USHORT |  28     | Control register low
+
+base | RTC_ALARM_HIGH                 | USHORT |  32     | Control register high
+base | RTC_ALARM_LOW                  | USHORT |  36     | Control register low
+
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+
+reg | RTC_CONTROL_HIGH     | OVERFLOW_INTERRUPT           | USHORT | 0 | 2:2 |  Overflow interrupt is enabled or masked. 0: Overflow interrupt is masked.
+1: Overflow interrupt is enabled.
+
+reg | RTC_CONTROL_HIGH     | ALARM_INTERRUPT              | USHORT | 0 | 1:1 |  Alarm interrupt is enabled or masked. 0: Alarm interrupt is masked.
+1: Alarm interrupt is enabled.
+reg | RTC_CONTROL_HIGH     | PPS_INTERRUPT                | USHORT | 0 | 0:0 |  Second interrupt is enabled or masked. 0: Second interrupt is masked.
+1: Second interrupt is enabled.
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+
+reg | RTC_CONTROL_LOW      | RTC_OPERATION_OFF            | USHORT | 4 | 5:5 |  With this bit the RTC reports the status of the last write operation performed on its registers,indicating if it has been completed or not. If its value is '0' then it is not possible to write to any of the RTC registers. This bit is read only. 0: Last write operation on RTC registers is still ongoing. 1: Last write operation on RTC registers terminated.
+
+reg | RTC_CONTROL_LOW      | RTC_CONFIGURATION_OFF        | USHORT | 4 | 4:4 |  This bit must be set by software to enter in configuration mode so as to allow new values to be written in the RTC_CNT, RTC_ALR or RTC_PRL registers. The write operation is only executed when the CNF bit is reset by software after has been set. 0: Exit configuration mode (start update of RTC registers). 1: Enter configuration mode.
+
+reg | RTC_CONTROL_LOW      | RTC_SYNCHRONIZED             | USHORT | 4 | 3:3 | This bit is set by hardware at each time the RTC_CNT and RTC_DIV registers are updated and cleared by software. Before any read operation after an APB1 reset or an APB1 clock stop, this bit must be cleared by software, and the user application must wait until it is set to be sure that the RTC_CNT, RTC_ALR or RTC_PRL registers are synchronized. 0: Registers not yet synchronized. 1: Registers synchronized.
+
+reg | RTC_CONTROL_LOW      | RTC_OVERFLOW                 | USHORT | 4 | 2:2 | This bit is set by hardware when the 32-bit programmable counter overflows. An interrupt is generated if OWIE=1 in the RTC_CRH register. It can be cleared only by software. Writing '1' no effect. 0: Overflow not detected 1: 32-bit programmable counter overflow occurred.
+
+reg | RTC_CONTROL_LOW      | RTC_ALARM                    | USHORT | 4 | 1:1 | This bit is set by hardware when the 32-bit programmable counter reaches the threshold set in the RTC_ALR register. An interrupt is generated if ALRIE=1 in the RTC_CRH register. It can be cleared only by software. Writing '1' has no effect. 0: Alarm not detected 1: Alarm detected
+
+reg | RTC_CONTROL_LOW      | RTC_PPS                      | USHORT | 4 | 0:0 | This bit is set by hardware when the 32-bit programmable counter reaches the threshold set in the RTC_ALR register. An interrupt is generated if ALRIE=1 in the RTC_CRH register. It can be cleared only by software. Writing '1' has no effect. 0: Alarm not detected 1: Alarm detected
+
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+
+
+end

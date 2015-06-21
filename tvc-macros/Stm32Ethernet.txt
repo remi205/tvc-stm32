@@ -1,0 +1,617 @@
+begin | Ethernet IP for Smt32F107
+
+standart-macros
+standart-types
+
+copyright |  Rémi PRUD'HOMME,  TVC audio
+
+base-register | ETHERNET_BASE | 0x40028000
+
+#################################################################################################################
+#################################################################################################################
+#################################################################################################################
+
+base | ETHERNET_CONFIGURATION           | ULONG | 0 | The MAC configuration register is the operation mode register of the MAC. It establishes receive and transmit operating modes.
+
+base | ETHERNET_FRAME_FILTER            | ULONG | 4 | The MAC frame filter register contains the filter controls for receiving frames. Some of the controls from this register go to the address check block of the MAC, which performs the first level of address filtering. The second level of filtering is performed on the incoming frame, based on other controls such as pass bad frames and pass control frames.
+
+base | ETHERNET_HASH_TABLE_HIGH         | ULONG | 8 | The 64-bit Hash table is used for group address filtering. For hash filtering, the contents of the destination address in the incoming frame are passed through the CRC logic, and the upper 6 bits in the CRC register are used to index the contents of the Hash table. This CRC is a 32-bit value coded by the following polynomial.
+
+base | ETHERNET_HASH_TABLE_LOW          | ULONG | 0xC | This field contains the lower 32 bits of the Hash table.
+
+base | ETHERNET_MII_ADDRESS             | ULONG | 0x10 | The MII address register controls the management cycles to the external PHY through the management interface.
+
+base | ETHERNET_MII_DATA                | ULONG | 0x14 | The MAC MII Data register stores write data to be written to the PHY register located at the address specified in ETH_MACMIIAR. ETH_MACMIIDR also stores read data from the PHY register located at the address specified by ETH_MACMIIAR.
+
+base | ETHERNET_FLOW_CONTROL            | ULONG | 0x18 | The Flow control register controls the generation and reception of the control (Pause Command) frames by the MAC. A write to a register with the Busy bit set to '1' causes the MAC to generate a pause control frame. The fields of the control frame are selected as specified in the 802.3x specification, and the Pause Time value from this register is used in the Pause Time field of the control frame. The Busy bit remains set until the control frame is transferred onto the cable. The Host must make sure that the Busy bit is cleared before writing to the register.
+
+base | ETHERNET_VLAN_TAG                | ULONG | 0x1C | The VLAN tag register contains the IEEE 802.1Q VLAN Tag to identify the VLAN frames. The MAC compares the 13th and 14th bytes of the receiving frame (Length/Type) with 0x8100, and the following 2 bytes are compared with the VLAN tag; if a match occurs, the received VLAN bit in the receive frame status is set. The legal length of the frame is increased from 1518 bytes to 1522 bytes.
+
+base | ETHERNET_REMOTE_WAKEUP_FRAME_FILTER | ULONG | 0x28 | This is the address through which the remote wakeup frame filter registers are written/read by the application. The Wakeup frame filter register is actually a pointer to eight (not transparent) such wakeup frame filter registers. Eight sequential write operations to this address with the offset (0x0028) will write all wakeup frame filter registers. Eight sequential read operations from this address with the offset (0x0028) will read all wakeup frame filter registers.
+
+base | ETHERNET_PMT_CONTROL_STATUS      | ULONG | 0x2C | The ETH_MACPMTCSR programs the request wakeup events and monitors the wakeup events.
+
+base | ETHERNET_INTERRUPT_STATUS        | ULONG | 0x38 | The ETH_MACSR register contents identify the events in the MAC that can generate an interrup.
+
+base | ETHERNET_INTERRUPT_MASK          | ULONG | 0x3C | The ETH_MACIMR register bits make it possible to mask the interrupt signal due to the corresponding event in the ETH_MACSR register.
+
+#################################################################################################################
+# ETHERNET_CONFIGURATION
+#################################################################################################################
+
+reg | ETHERNET_CONFIGURATION | WATCHDOG_DISABLE                      | ULONG |  0 | 23:23 |  When this bit is set, the MAC disables the watchdog timer on the receiver, and can receive frames of up to 16 384 bytes. When this bit is reset, the MAC allows no more than 2 048 bytes of the frame being received and cuts off any bytes received after that. 
+
+reg | ETHERNET_CONFIGURATION | JABBER_DISABLE                        | ULONG |  0 | 22:22 |  When this bit is set, the MAC disables the jabber timer on the transmitter, and can transfer frames of up to 16 384 bytes. When this bit is reset, the MAC cuts off the transmitter if the application sends out more than 2 048 bytes of data during transmission. 
+
+reg | ETHERNET_CONFIGURATION | INTER_FRAME                           | ULONG |  0 | 19:17 | These bits control the minimum interframe gap between frames during transmission
+
+reg | ETHERNET_CONFIGURATION | CARRIER_SENSE_DISABLE                 | ULONG |  0 | 16:16 | When set high, this bit makes the MAC transmitter ignore the MII CRS signal during frame transmission in Half-duplex mode. No error is generated due to Loss of Carrier or No Carrier during such transmission. When this bit is low, the MAC transmitter generates such errors due to Carrier Sense and even aborts the transmissions
+
+reg | ETHERNET_CONFIGURATION | FAST_ETHERNET_SPEED                   | ULONG |  0 | 14:14 | Indicates the speed in Fast Ethernet (MII) mode:\\0: 10 Mbit/s\\1: 100 Mbit/s
+
+define | SPEED_10_MBIT   | 0 
+define | SPEED_100_MBIT  | 1
+
+reg | ETHERNET_CONFIGURATION | RECEIVE_OWN_DISABLE                   | ULONG |  0 | 13:13 | When this bit is set, the MAC disables the reception of frames in Half-duplex mode. When this bit is reset, the MAC receives all packets that are given by the PHY while transmitting. This bit is not applicable if the MAC is operating in Full-duplex mode. 
+
+reg | ETHERNET_CONFIGURATION | LOOPBACK_MODE                         | ULONG |  0 | 12:12 | When this bit is set, the MAC operates in loopback mode at the MII. The MII receive clock input (RX_CLK) is required for the loopback to work properly, as the transmit clock is not looped-back internall 
+
+reg | ETHERNET_CONFIGURATION | DUPLEX_MODE                           | ULONG |  0 | 11:11 | When this bit is set, the MAC operates in a Full-duplex mode where it can transmit and receive simultaneously.
+
+reg | ETHERNET_CONFIGURATION | CHECKSUM_OFFLOAD                      | ULONG |  0 | 10:10 | When set, this bit enables IPv4 checksum checking for received frame payloads'TCP/UDP/ICMP headers. 
+
+reg | ETHERNET_CONFIGURATION | RETRY_DISABLE                         | ULONG |  0 |  9:9   | When this bit is set, the MAC attempts only 1 transmission. When a collision occurs on the MII, the MAC ignores the current frame transmission and reports a Frame Abort with excessive collision error in the transmit frame status. 
+
+reg | ETHERNET_CONFIGURATION | AUTOMATIC_PAD                         | ULONG |  0 |  7:7   | When this bit is set, the MAC strips the Pad/FCS field on incoming frames only if the length's field value is less than or equal to 1 500 bytes. All received frames with length field greater than or equal to 1 501 bytes are passed on to the application without stripping the Pad/FCS field. When this bit is reset, the MAC passes all incoming frames unmodified.
+
+reg | ETHERNET_CONFIGURATION | BACK_OFF_LIMIT                        | ULONG |  0 |  5:6   | The Back-off limit determines the random integer number (r) of slot time delays (4 096 bit times for 1000 Mbit/s and 512 bit times for 10/100 Mbit/s) the MAC waits before rescheduling a transmission attempt during retries after a collision.
+
+define | MIN_OF_N_10 | 0
+define | MIN_OF_N_8  | 1
+define | MIN_OF_N_4  | 2
+define | MIN_OF_N_2  | 3
+
+reg | ETHERNET_CONFIGURATION | DEFERRAL_CHECK                        | ULONG |  0 |  4:4   | When this bit is set, the deferral check function is enabled in the MAC. The MAC issues a Frame Abort status, along with the excessive deferral error bit set in the transmit frame status when the transmit state machine is deferred for more than 24 288 bit times in 10/100-Mbit/s  mode. Deferral begins when the transmitter is ready to transmit, but is prevented because of an active CRS (carrier sense) signal on the MII. Defer time is not cumulative. If the transmitter defers for 10 000 bit times, then transmits, collides, backs off, and then has to defer again after completion of back-off, the deferral timer resets to 0 and restarts. When this bit is reset, the deferral check function is disabled and the MAC defers until the CRS signal goes inactive. This bit is applicable only in Half-duplex mode 
+
+reg | ETHERNET_CONFIGURATION | TRANSMITTER_ENABLE                    | ULONG |  0 |  3:3   | When this bit is set, the transmit state machine of the MAC is enabled for transmission on the MII. When this bit is reset, the MAC transmit state machine is disabled after the completion of the transmission of the current frame, and does not transmit any further frames 
+
+reg | ETHERNET_CONFIGURATION | RECEIVER_ENABLE                       | ULONG |  0 |  2:2   | When this bit is set, the receiver state machine of the MAC is enabled for receiving frames from the MII. When this bit is reset, the MAC receive state machine is disabled after the completion of the reception of the current frame, and will not receive any further frames from the MII
+
+#################################################################################################################
+#  ETHERNET_FRAME_FILTER
+#################################################################################################################
+
+reg | ETHERNET_FRAME_FILTER | RECEIVE_ALL                            | ULONG |  4 | 31:31  | When this bit is set, the MAC receiver passes all received frames on to the application, irrespective of whether they have passed the address filter. The result of the SA/DA filtering is updated (pass or fail) in the corresponding bits in the receive status word. When this bit is reset, the MAC receiver passes on to the application only those frames that have passed the SA/DA address filter 
+
+
+reg | ETHERNET_FRAME_FILTER | HASH_OR_PERFECT_FILTER                 | ULONG |  4 | 10:10 | When this bit is set and if the HM or HU bit is set, the address filter passes frames that match either the perfect filtering or the hash filtering. When this bit is cleared and if the HU or HM bit is set, only frames that match the Hash filter are passed 
+
+define  | HASH_ONLY  | 0 
+define  | HASH_OR_PERFECT  | 1
+
+reg | ETHERNET_FRAME_FILTER | SOURCE_ADDRESS_FILTER                  | ULONG |  4 |  9:9  | The MAC core compares the SA field of the received frames with the values programmed in the enabled SA registers. If the comparison matches, then the SAMatch bit in the RxStatus word is set high. When this bit is set high and the SA filter fails, the MAC drops the frame. When this bit is reset, the MAC core forwards the received frame to the application. It also forwards the updated SA Match bit in RxStatus depending on the SA address comparison
+
+reg | ETHERNET_FRAME_FILTER | SOURCE_ADDRESS_INVERSE                 | ULONG |  4 |  8:8  | When this bit is set, the address check block operates in inverse filtering mode for the SA address comparison. The frames whose SA matches the SA registers are marked as failing the SA address filter. When this bit is reset, frames whose SA does not match the SA registers are marked as failing the SA address filter
+
+reg | ETHERNET_FRAME_FILTER | PASS_CONTROL_FRAMES                    | ULONG |  4 |  6:7  | These bits control the forwarding of all control frames, 00 or 01: MAC prevents all control frames from reaching the application\\10: MAC forwards all control frames to application even if they fail the address filter\\11: MAC forwards control frames that pass the address filter 
+
+define  | BLOCK_ALL_CONTROL_FRAME               | 0 
+define  | BLOCK_ALL_CONTROL_FRAME1              | 1 
+define  | FORWARD_ALWAYS_CONTROL_FRAME          | 2
+define  | FORWARD_CONTROL_FRAME_WITH_FILTERING  | 3
+
+reg | ETHERNET_FRAME_FILTER | BROADCAST_FRAMES_DISABLE               | ULONG |  4 |  5:5  | When this bit is set, the address filters filter all incoming broadcast frames. When this bit is reset, the address filters pass all received broadcast frames
+
+reg | ETHERNET_FRAME_FILTER | PASS_ALL_MULTICAST                     | ULONG |  4 |  4:4  | When set, this bit indicates that all received frames with a multicast destination address (first bit in the destination address field is '1') are passed. When reset, filtering of multicast frame depends on the HM bit.
+
+reg | ETHERNET_FRAME_FILTER | DESTINATION_ADDRESS_INVERSE_FILTERING  | ULONG |  4 |  3:3  | When this bit is set, the address check block operates in inverse filtering mode for the DA address comparison for both unicast and multicast frames. When reset, normal filtering of frames is performed.
+
+reg | ETHERNET_FRAME_FILTER | HASH_MULTICAST                         | ULONG |  4 |  2:2  | When set, MAC performs destination address filtering of received multicast frames according to the hash table. When reset, the MAC performs a perfect destination address filtering for multicast frames, that is, it compares the DA field with the values programmed in DA registers. 
+
+reg | ETHERNET_FRAME_FILTER | HASH_UNICAST                           | ULONG |  4 |  1:1  | When set, MAC performs destination address filtering of unicast frames according to the hash
+table. When reset, the MAC performs a perfect destination address filtering for unicast frames, that is, it compares the DA field with the values programmed in DA registers. 
+
+reg | ETHERNET_FRAME_FILTER | PROMISCUOUS_MODE                       | ULONG |  4 |  0:0  | When this bit is set, the address filters pass all incoming frames regardless of their destination or source address. The SA/DA filter fails status bits in the receive status word are always cleared when PM is set. 
+
+
+#################################################################################################################
+#  ETHERNET_MII_ADDRESS
+#################################################################################################################
+
+reg | ETHERNET_MII_ADDRESS | PHY_ADDRESS                            | ULONG |  0x10 |  15:11  | This field tells which of the 32 possible PHY devices are being accessed.
+reg | ETHERNET_MII_ADDRESS | MII_ADDRESS                            | ULONG |  0x10 |  10:6   | These bits select the desired MII register in the selected PHY device.
+reg | ETHERNET_MII_ADDRESS | CLOCK_RANGE                            | ULONG |  0x10 |   4:2   | The CR clock range selection determines the HCLK frequency and is used to decide the frequency of the MDC clock.
+
+define | HCLK_60_72_MHZ | 0 
+define | HCLK_20_35_MHZ | 2
+define | HCLK_35_60_MHZ | 3
+
+
+reg | ETHERNET_MII_ADDRESS | MII_WRITE                              | ULONG |  0x10 |   1:1   | When set, this bit tells the PHY that this will be a Write operation using the MII Data register. If this bit is not set, this will be a Read operation, placing the data in the MII Data register. 
+
+define |  MII_READ_OPERATION  | 0
+define |  MII_WRITE_OPERATION  | 1
+
+reg | ETHERNET_MII_ADDRESS | MII_BUSY                               | ULONG |  0x10 |   0:0   | This bit should read a logic 0 before writing to ETH_MACMIIAR and ETH_MACMIIDR. This bit must also be reset to 0 during a Write to ETH_MACMIIAR. During a PHY register access, this bit is set to 0b1 by the application to indicate that a read or write access is in progress.  ETH_MACMIIDR (MII Data) should be kept valid until this bit is cleared by the MAC during a PHY Write operation. The ETH_MACMIIDR is invalid until this bit is cleared by the MAC during a PHY Read operation. The ETH_MACMIIAR (MII Address) should not be written to until this bit is cleared.
+
+#define  | MII_READY |  0
+#define  | MII_BUSY  | 1
+
+
+#################################################################################################################
+# ETHERNET_INTERRUPT_STATUS
+#################################################################################################################
+reg | ETHERNET_INTERRUPT_STATUS | TIME_STAMP_TRIGGER_STATUS         | ULONG |  0x38 |   9:9   | This bit is set high when the system time value equals or exceeds the value specified in the Target time high and low registers. This bit is cleared when this register is read. 
+
+reg | ETHERNET_INTERRUPT_STATUS | MMC_TRANSMIT_STATUS              | ULONG |  0x38 |   6:6   | This bit is set high whenever an interrupt is generated in the ETH_MMCTIR Register. This bit is cleared when all the bits in this interrupt register (ETH_MMCTIR) are cleared.
+
+reg | ETHERNET_INTERRUPT_STATUS | MMC_RECEIVE_STATUS               | ULONG |  0x38 |   5:5   | This bit is set high whenever an interrupt is generated in the ETH_MMCRIR register. This bit is cleared when all the bits in this interrupt register (ETH_MMCRIR) are cleared. 
+
+reg | ETHERNET_INTERRUPT_STATUS | MMC_STATUS                       | ULONG |  0x38 |   4:4   | This bit is set high whenever any of bits 6:5 is set high. It is cleared only when both bits are low. 
+
+reg | ETHERNET_INTERRUPT_STATUS | PMT_STATUS                       | ULONG |  0x38 |   3:3   | This bit is set whenever a Magic packet or Wake-on-LAN frame is received in Power-down mode
+
+
+#################################################################################################################
+# ETHERNET_INTERRUPT_MASK 
+#################################################################################################################
+
+reg | ETHERNET_INTERRUPT_MASK | TIME_STAMP_TRIGGER_MASK            | ULONG |  0x3C |   9:9   | This bit is set high when the system time value equals or exceeds the value specified in the Target time high and low registers. This bit is cleared when this register is read. 
+
+reg | ETHERNET_INTERRUPT_STATUS | PMT_MASK                         | ULONG |  0x3C |   3:3   | This bit is set whenever a Magic packet or Wake-on-LAN frame is received in Power-down mode 
+
+
+#################################################################################################################
+#################################################################################################################
+#################################################################################################################
+#################################################################################################################
+# ETHERNET_ADDRESS_0_HIGH
+base | ETHERNET_ADDRESS_0_HIGH  | ULONG | 0x40 | The MAC address 0 high register holds the upper 16 bits of the 6-byte first MAC address of the station. Note that the first DA byte that is received on the MII interface corresponds to the LS Byte (bits [7:0]) of the MAC address low register. For example, if 0x1122 3344 5566 is received (0x11 is the first byte) on the MII as the destination address, then the MAC address 0 register [47:0] is compared with 0x6655 4433 2211.
+
+reg | ETHERNET_ADDRESS_0_HIGH  | MAC_ADDRESS_HIGH_0     | ULONG |  0x40 |  15:0  | This field contains the upper 16 bits (47:32) of the 6-byte MAC address0
+
+
+#################################################################################################################
+# ETHERNET_ADDRESS_0_LOW
+base | ETHERNET_ADDRESS_0_LOW | ULONG | 0x44 | The MAC address 0 low register holds the lower 32 bits of the 6-byte first MAC address of the station
+
+
+#################################################################################################################
+# ETHERNET_ADDRESS_1_HIGH
+base | ETHERNET_ADDRESS_1_HIGH | ULONG | 0x48 | The MAC address 1 high register holds the lower 32 bits of the 6-byte first MAC address of the station
+
+reg | ETHERNET_ADDRESS_1_HIGH  | ADDRESS_ENABLE1        | ULONG |  0x48 |  31:31  | When this bit is set, the address filters use the MAC address1 for perfect filtering. When this bit is cleared, the address filters ignore the address for filtering
+
+reg | ETHERNET_ADDRESS_1_HIGH  | SOURCE_ADDRESS_1       | ULONG |  0x48 |  30:30  | When this bit is set, the MAC address1[47:0] is used for comparison with the SA fields of the received frame. When this bit is cleared, the MAC address1[47:0] is used for comparison with the DA fields of the received frame
+
+reg | ETHERNET_ADDRESS_1_HIGH  | MASK_ADDRESS_1       | ULONG |  0x48 |  29:24  | These bits are mask control bits for comparison of each of the MAC address1 bytes. When they are set high, the MAC core does not compare the corresponding byte of received DA/SA with the contents of the MAC address1 registers. Each bit controls the masking of the bytes as follows
+: \\ Bit 29: ETH_MACA1HR [15:8]\\t 28: ETH_MACA1HR [7:0]\\Bit 27: ETH_MACA1LR [31:24] \\ Bit 24: ETH_MACA1LR [7:0]
+
+reg | ETHERNET_ADDRESS_1_HIGH  | MAC_ADDRESS_HIGH_1      | ULONG |  0x48 |  15:0  | This field contains the upper 16 bits (47:32) of the 6-byte MAC address1
+
+
+#################################################################################################################
+# ETHERNET_ADDRESS_1_LOW
+base | ETHERNET_ADDRESS_1_LOW | ULONG | 0x4c | The MAC address 1 low register holds the lower 32 bits of the 6-byte first MAC address of the station
+
+
+#################################################################################################################
+# ETHERNET_ADDRESS_2_HIGH
+base | ETHERNET_ADDRESS_2_HIGH | ULONG | 0x50 | The MAC address 2 high register holds the lower 32 bits of the 6-byte first MAC address of the station
+
+reg | ETHERNET_ADDRESS_2_HIGH  | ADDRESS_ENABLE_2       | ULONG |  0x50 |  31:31  | When this bit is set, the address filters use the MAC address2 for perfect filtering. When this bit is cleared, the address filters ignore the address for filtering
+
+reg | ETHERNET_ADDRESS_2_HIGH  | SOURCE_ADDRESS_2       | ULONG |  0x50 |  30:30  | When this bit is set, the MAC address2[47:0] is used for comparison with the SA fields of the received frame. When this bit is cleared, the MAC address1[47:0] is used for comparison with the DA fields of the received frame
+
+reg | ETHERNET_ADDRESS_2_HIGH  | MASK_ADDRESS_2       | ULONG |  0x50 |  29:24  | These bits are mask control bits for comparison of each of the MAC address2 bytes. When they are set high, the MAC core does not compare the corresponding byte of received DA/SA with the contents of the MAC address1 registers. Each bit controls the masking of the bytes as follows
+: \\ Bit 29: ETH_MACA1HR [15:8]\\t 28: ETH_MACA1HR [7:0]\\Bit 27: ETH_MACA1LR [31:24] \\ Bit 24: ETH_MACA1LR [7:0]
+
+reg | ETHERNET_ADDRESS_2_HIGH  | MAC_ADDRESS_HIGH_2      | ULONG |  0x50 |  15:0  | This field contains the upper 16 bits (47:32) of the 6-byte MAC address2
+
+
+#################################################################################################################
+# ETHERNET_ADDRESS_2_LOW
+base | ETHERNET_ADDRESS_2_LOW | ULONG | 0x54 | The MAC address 2 low register holds the lower 32 bits of the 6-byte first MAC address of the station
+
+#################################################################################################################
+# ETHERNET_ADDRESS_3_HIGH
+base | ETHERNET_ADDRESS_3_HIGH | ULONG | 0x58 | The MAC address 3 high register holds the lower 32 bits of the 6-byte first MAC address of the station
+
+
+reg | ETHERNET_ADDRESS_3_HIGH  | ADDRESS_ENABLE_3        | ULONG |  0x58 |  31:31  | When this bit is set, the address filters use the MAC address3 for perfect filtering. When this bit is cleared, the address filters ignore the address for filtering.
+
+reg | ETHERNET_ADDRESS_3_HIGH  | SOURCE_ADDRESS_3       | ULONG |  0x58 |  30:30  | When this bit is set, the MAC address3[47:0] is used for comparison with the SA fields of the received frame. When this bit is cleared, the MAC address1[47:0] is used for comparison with the DA fields of the received frame
+
+reg | ETHERNET_ADDRESS_3_HIGH  | MASK_ADDRESS_3       | ULONG |  0x58 |  29:24  | These bits are mask control bits for comparison of each of the MAC address3 bytes. When they are set high, the MAC core does not compare the corresponding byte of received DA/SA with the contents of the MAC address1 registers. Each bit controls the masking of the bytes as follows
+: \\ Bit 29: ETH_MACA1HR [15:8]\\t 28: ETH_MACA1HR [7:0]\\Bit 27: ETH_MACA1LR [31:24] \\ Bit 24: ETH_MACA1LR [7:0]
+
+reg | ETHERNET_ADDRESS_2_HIGH  | MAC_ADDRESS_HIGH_3      | ULONG |  0x58 |  15:0  | This field contains the upper 16 bits (47:32) of the 6-byte MAC address3
+
+
+#################################################################################################################
+#
+base | ETHERNET_ADDRESS_3_LOW | ULONG | 0x5C | The MAC address 3 low register holds the lower 32 bits of the 6-byte first MAC address of the station.
+
+
+
+#################################################################################################################
+#################################################################################################################
+#################################################################################################################
+
+
+base | ETHERNET_MMC_CONTROL |  ULONG | 0x100 | The Ethernet MMC Control register establishes the operating mode of the management counters.
+
+base | ETHERNET_MMC_RECEIVE_INTERRUPT |  ULONG | 0x104 | The Ethernet MMC receive interrupt register maintains the interrupts generated when receive statistic counters reach half their maximum values.
+
+base | ETHERNET_MMC_TRANSMIT_INTERRUPT |  ULONG | 0x108 | The Ethernet MMC transmit Interrupt register maintains the interrupts generated when transmit statistic counters reach half their maximum values.
+
+base | ETHERNET_MMC_RECEIVE_INTERRUPT_MASK |  ULONG | 0x10C | The Ethernet MMC receive interrupt mask register maintains the masks for interrupts generated when the receive statistic counters reach half their maximum value.
+
+base | ETHERNET_MMC_TRANSMIT_INTERRUPT_MASK |  ULONG | 0x110 | The Ethernet MMC transmit interrupt mask register maintains the masks for interrupts generated when the transmit statistic counters reach half their maximum value.
+
+base | ETHERNET_MMC_TRANSMITTED_GOOD_FRAMES |  ULONG | 0x14C | This register contains the number of successfully transmitted frames after a single collision in Half-duplex mode.
+
+base | ETHERNET_MMC_TRANSMITTED_GOOD_FRAMES_AFTER_MORE_THAN_A_SINGLE_COLLISION_COUNTER |  ULONG | 0x150 | This register contains the number of successfully transmitted frames after more than a single collision in Half-duplex mode.
+
+base | ETHERNET_MMC_TRANSMITTED_GOOD_FRAMES_COUNTER | ULONG | 0x168 | This register contains the number of good frames transmitted.
+
+base | ETHERNET_MMC_RECEIVED_FRAMES_WITH_CRC_ERROR_COUNTER | ULONG | 0x194 | This register contains the number of frames received with CRC error.
+
+base | ETHERNET_MMC_RECEIVED_FRAMES_WITH_ALIGNMENT_ERROR_COUNTER | ULONG | 0x198 | This register contains the number of frames received with alignment (dribble) error.
+
+base | ETHERNET_MMC_ RECEIVED_GOOD_UNICAST_FRAMES_COUNTER | ULONG | 0x1C4 | This register contains the number of good unicast frames received.
+
+
+#################################################################################################################
+#################################################################################################################
+#################################################################################################################
+
+base | ETHERNET_PTP_TIME_STAMP_CONTROL  | ULONG | 0x700 | This register controls the time stamp generation and update logic
+
+base | ETHERNET_PTP_SUBSECOND_INCREMENT  | ULONG | 0x704 | This register contains the 8-bit value by which the subsecond register is incremented. In Coarse update mode (TSFCU bit in ETH_PTPTSCR), the value in this register is added to the system time every clock cycle of HCLK. In Fine update mode, the value in this register is added to the system time whenever the accumulator gets an overflow.
+
+base | ETHERNET_PTP_TIME_STAMP_HIGH | ULONG | 0x708 | This register contains the most significant (higher) 32 time bits. This read-only register contains the seconds system time value. The Time stamp high register, along with Time stamp low register, indicates the current value of the system time maintained by the MAC. Though it is updated on a continuous basis.
+
+base | ETHERNET_PTP_TIME_STAMP_LOW |  ULONG | 0x70C | This register contains the least significant (lower) 32 time bits. This read-only register contains the subsecond system time value. 
+
+base | ETHERNET_PTP_TIME_STAMP_HIGH_UPDATE |  ULONG | 0x710 | This register contains the most significant (higher) 32 bits of the time to be written to, added to, or subtracted from the System Time value. The Time stamp high update register, along with the Time stamp update low register, initializes or updates the system time maintained by the MAC. You have to write both of these registers before setting the TSSTI or TSSTU bits in the Time stamp control register.
+
+base | ETHERNET_PTP_TIME_STAMP_LOW_UPDATE  | ULONG | 0x714 | This register contains the least significant (lower) 32 bits of the time to be written to, added to, or subtracted from the System Time value.
+
+base | ETHERNET_PTP_TIME_STAMP_ADDEND | ULONG | 0x718 | This register is used by the software to readjust the clock frequency linearly to match the master clock frequency. This register value is used only when the system time is configured for Fine update mode (TSFCU bit in ETH_PTPTSCR). This register content is added to a 32-bit accumulator in every clock cycle and the system time is updated whenever the accumulator overflows.
+
+base | ETHERNET_PTP_TARGET_TIME_HIGH | ULONG | 0x71C | This register contains the higher 32 bits of time to be compared with the system time for interrupt event generation.
+
+base | ETHERNET_PTP_TARGET_TIME_LOW | ULONG | 0x720 | This register contains the lower 32 bits of time to be compared with the system time for interrupt event generation.
+
+
+#################################################################################################################
+#################################################################################################################
+#################################################################################################################
+
+base | ETHERNET_DMA_BUS_MODE | ULONG | 0x1000 | The bus mode register establishes the bus operating modes for the DMA.
+
+base | ETHERNET_DMA_TRANSMIT_POLL_DEMAND | ULONG | 0x1004 | This register is used by the application to instruct the DMA to poll the transmit descriptor list. The transmit poll demand register enables the Transmit DMA to check whether or not the current descriptor is owned by DMA. The Transmit Poll Demand command is given to wake up the TxDMA if it is in Suspend mode. The TxDMA can go into Suspend mode due to an underflow error in a transmitted frame or due to the unavailability of descriptors owned by transmit DMA. You can issue this command anytime and the TxDMA resets it once it starts re-fetching the current descriptor from host memory.
+
+base | EHERNET_DMA_RECEIVE_POLL_DEMAND | ULONG | 0x1008 | This register is used by the application to instruct the DMA to poll the receive descriptor list. The Receive poll demand register enables the receive DMA to check for new descriptors. This command is given to wake up the RxDMA from Suspend state. The RxDMA can go into Suspend state only due to the unavailability of descriptors owned by it.
+
+base | ETHERNET_DMA_RECEIVE_DESCRIPTOR_LIST_ADDRESS_REGISTER | ULONG | 0x100C | The Receive descriptor list address register points to the start of the receive descriptor list. The descriptor lists reside in the STM32F107xx's physical memory space and must be word-aligned.
+
+base | ETHERNET_DMA_TRANSMIT_DESCRIPTOR_LIST_ADDRESS | ULONG | 0x1010 | The Transmit descriptor list address register points to the start of the transmit descriptor list. The descriptor lists reside in the STM32F107xx's physical memory space and must be word-aligned.  The DMA internally converts it to bus-width-aligned address by taking the corresponding LSB to low.
+
+base | ETHERNET_DMA_STATUS  | ULONG | 0x1014 | The Status register contains all the status bits that the DMA reports to the application
+
+base | ETHERNET_DMA_OPERATION_MODE_STATUS    | ULONG | 0x1018 | The operation mode register establishes the Transmit and Receive operating modes and commands. The ETH_DMAOMR register should be the last CSR to be written as part of DMA initialization.
+
+base | ETHERNET_DMA_INTERRUPT_ENABLE         | ULONG | 0x101C | The Interrupt enable register enables the interrupts reported by ETH_DMASR. Setting a bit to 1 enables a corresponding interrupt. After a hardware or software reset, all interrupts are disabled.
+
+base | ETHERNET_DMA_MISSED_FRAME_OVERFLOW    | ULONG | 0x1020 | The DMA maintains two counters to track the number of missed frames during reception. This register reports the current value of the counter. The counter is used for diagnostic purposes
+
+base | ETHERNET_DMA_CURRENT_DESCRIPTOR       | ULONG | 0x1048 | The Current host transmit descriptor register points to the start address of the current transmit descriptor read by the DMA. 
+base | ETHERNET_DMA_CURRENT_TRANSMIT_ADDRESS | ULONG | 0x1050 | The Current host transmit buffer address register points to the current transmit buffer  address being read by the DMA.
+base | ETHERNET_DMA_CURRENT_RECEIVE_ADDRESS  | ULONG | 0x1054 | The current host receive buffer address register points to the current receive buffer address being read by the DMA.
+
+
+#################################################################################################################
+reg | ETHERNET_DMA_BUS_MODE | DMA_ADDRESS_ALIGNED_BEATS                  | ULONG |  0x1000 | 25:25  | When this bit is set high and the FB bit equals 1, the AHB interface generates all bursts aligned to the start address LS bits. If the FB bit equals 0, the first burst (accessing the data buffer's start address) is not aligned, but subsequent bursts are aligned to the address.
+
+reg | ETHERNET_DMA_BUS_MODE | DMA_FOUR_PBL_MODE                          | ULONG |  0x1000 | 24:24  | When set high, this bit multiplies the PBL value programmed (bits [22:17] and bits [13:8]) four times. Thus the DMA transfers data in a maximum of 4, 8, 16, 32, 64 and 128 beats depending on the PBL value.
+
+reg | ETHERNET_DMA_BUS_MODE | DMA_USE_SEPARATE_PBL                       | ULONG |  0x1000 | 23:23  | When set high, it configures the RxDMA to use the value configured in bits [22:17] as PBL while the PBL value in bits [13:8] is applicable to TxDMA operations only. When this bit is cleared, the PBL value in bits [13:8] is applicable for both DMA engines. 
+
+reg | ETHERNET_DMA_BUS_MODE | DMA_RX_DMA_PBL                             | ULONG |  0x1000 | 22:17  | These bits indicate the maximum number of beats to be transferred in one RxDMA transaction. This is the maximum value that is used in a single block read/write operation. The RxDMA always attempts to burst as specified in RDP each time it starts a burst transfer on the host bus. RDP can be programmed with permissible values of 1, 2, 4, 8, 16, and 32. Any other value results in undefined behavior.
+
+reg | ETHERNET_DMA_BUS_MODE | DMA_MULTIPLE_BURST                         | ULONG |  0x1000 | 16:16  | This bit controls whether the AHB Master interface performs fixed burst transfers or not. When set, the AHB uses only SINGLE, INCR4, INCR8 or INCR16 during start of normal burst transfers. When reset, the AHB uses SINGLE and INCR burst transfer operations. 
+
+reg | ETHERNET_DMA_BUS_MODE | DMA_RX_TX_PRIORITY_RATIO                   | ULONG |  0x1000 | 15:14  | RxDMA requests are given priority over TxDMA requests in the following ratio:\\00: 1:1\\01: 2:1\\10: 3:1\\11: 4:1 
+
+define | RATIO_1_TO_1 | 0
+define | RATIO_2_TO_1 | 1 
+define | RATIO_3_TO_1 | 2 
+define | RATIO_4_TO_1 | 3
+
+reg | ETHERNET_DMA_BUS_MODE | DMA_BURST_LENGTH                           | ULONG |  0x1000 | 13:8   | These bits indicate the maximum number of beats to be transferred in one DMA transaction. This is the maximum value that is used in a single block read/write operation. The DMA always attempts to burst as specified in PBL each time it starts a burst transfer on the host bus. PBL can be programmed with permissible values of 1, 2, 4, 8, 16, and 32. Any other value results in undefined behavior. When USP is set, this PBL value is applicable for TxDMA transactions only.
+
+reg | ETHERNET_DMA_BUS_MODE | DMA_DESCRIPTOR_SKIP_LENGTH                 | ULONG |  0x1000 |  6:2   | This bit specifies the number of words to skip between two unchained descriptors. The
+address skipping starts from the end of current descriptor to the start of next descriptor. When DSL value equals zero, the descriptor table is taken as contiguous by the DMA, in Ring mode. 
+
+reg | ETHERNET_DMA_BUS_MODE | DMA_ARBITRATION                            | ULONG |  0x1000 |  1:1   | DMA Arbitration\\0: Round-robin with Rx:Tx priority given in bits [15:14]\\1: Rx has priority over Tx 
+
+reg | ETHERNET_DMA_BUS_MODE | DMA_SOFTWARE_RESET                         | ULONG |  0x1000 |  0:0   | When this bit is set, the MAC DMA controller resets all MAC Subsystem internal registers and logic. It is cleared automatically after the reset operation has completed in all of the core clock domains. Read a 0 value in this bit before re-programming any register of the core.
+
+#################################################################################################################
+# ETHERNET_DMA_STATUS
+reg | ETHERNET_DMA_STATUS | DMA_TIME_STAMP_TRIGGER_STATUS              | ULONG | 0x1014 |  29:29   | This bit indicates an interrupt event in the MAC core's Time stamp generator block. The software must read the MAC core's status register, clearing its source (bit 9), to reset this bit to 0. When this bit is high an interrupt is generated if enabled.
+reg | ETHERNET_DMA_STATUS | DMA_PMT_STATUS                             | ULONG | 0x1014 |  28:28   | This bit indicates an event in the MAC core's PMT.
+reg | ETHERNET_DMA_STATUS | DMA_ERROR_BITS_STATUS                      | ULONG | 0x1014 |  25:23   | These bits indicate the type of error that caused a bus error (error response on the AHB interface). Valid only with the fatal bus error bit set. This field does not generate an interrupt. | PmtStatus | ES | 
+
+define |  WRITE_DATA_TRANSFER_BY_TXDMA           |  0
+define | WRITE_DATA_TRANSFER DESCRIPTOR_ACCESS  |  1
+
+reg | ETHERNET_DMA_STATUS | DMA_TRANSMIT_PROCESS_STATE                 | ULONG | 0x1014 |  22:20   | These bits indicate the Transmit DMA FSM state. This field does not generate an interrupt
+
+define | RESET_OR_STOP                          | 0
+define | FETCHING_TRANSMIT_TRANSFER_DESCRIPTOR  | 1
+define | WAITING_FOR_STATUS                     | 2
+define | READING_DATA_FROM_HOST_MEMORY          | 3
+define | TRANSMIT_DESCRIPTOR_UNAVAILABLE        | 6
+define | CLOSING_TRANSMIT_DESCRIPTOR            | 7
+
+reg | ETHERNET_DMA_STATUS | DMA_FSM__STATUS                             | ULONG | 0x1014 |  19:17   | These bits indicate the Receive DMA FSM state. This field does not generate an interrupt
+
+define | RESET_OR_STOP_RECEIVE_COMMAND_ISSUED | 0
+define | FETCHING_RECEIVE_TRANSFER_DESCRIPTOR | 1
+define | WAITING_FOR_RECEIVE_PACKET | 3 
+define | RECEIVE_DESCRIPTOR_UNAVAILABLE | 4
+define | CLOSING_RECEIVE_DESCRIPTOR | 5
+define | TRANSFERRING_THE_RECEIVE_PACKET_TO_HOST_MEMORY | 7
+
+reg | ETHERNET_DMA_STATUS | DMA_NORMAL_INTERRUPT_SUMMARY               | ULONG | 0x1014 |  16:16   | The normal interrupt summary bit value is the logical OR of the following when the corresponding interrupt bits are enabled in the ETH_DMAIER register.
+
+reg | ETHERNET_DMA_STATUS | DMA_ABNORMAL_INTERRUPT_SUMMARY             | ULONG | 0x1014 |  15:15   | The abnormal interrupt summary bit value is the logical OR of the following when the corresponding interrupt bits are enabled in the ETH_DMAIER register.
+
+reg | ETHERNET_DMA_STATUS | DMA_EARLY_RECEIVE_STATUS                   | ULONG | 0x1014 |  14:14   | This bit indicates that the DMA had filled the first data buffer of the packet. Receive Interrupt ETH_DMASR [6] automatically clears this bit.
+
+reg | ETHERNET_DMA_STATUS | DMA_FATAL_BUS_ERROR_STATUS                 | ULONG | 0x1014 |  13:13   | This bit indicates that a bus error occurred, as detailed in [25:23]. When this bit is set, the corresponding DMA engine disables all its bus accesses.
+
+reg | ETHERNET_DMA_STATUS | DMA_EARLY_TRANSMIT_STATUS                  | ULONG | 0x1014 |  10:10   | This bit indicates that the frame to be transmitted was fully transferred to the Transmit FIFO.
+
+reg | ETHERNET_DMA_STATUS | DMA_RECEIVE_WATCHDOG_TIMEOUT_STATUS        | ULONG | 0x1014 |   9:9    | This bit is asserted when a frame with a length greater than 2 048 bytes is received.
+
+reg | ETHERNET_DMA_STATUS | DMA_RECEIVE_PROCESS_STOPPED_STATUS         | ULONG | 0x1014 |   8:8    | This bit is asserted when the receive process enters the Stopped state.
+
+reg | ETHERNET_DMA_STATUS | DMA_RECEIVE_UNAVAILABLE_STATUS             | ULONG | 0x1014 |   7:7    | This bit indicates that the next descriptor in the receive list is owned by the host and cannot be acquired by the DMA. Receive process is suspended. To resume processing receive descriptors, the host should change the ownership of the descriptor and issue a Receive Poll Demand command. If no Receive Poll Demand is issued, receive process resumes when the next recognized incoming frame is received. ETH_DMASR [7] is set only when the previous receive descriptor was owned by the DMA.
+
+reg | ETHERNET_DMA_STATUS | DMA_RECEIVE_STATUS                         | ULONG | 0x1014 |   6:6    | This bit indicates the completion of the frame reception. Specific frame status information has been posted in the descriptor. Reception remains in the Running state.
+
+reg | ETHERNET_DMA_STATUS | DMA_TRANSMIT_UNDERFLOW_STATUS              | ULONG | 0x1014 |   5:5    | This bit indicates that the transmit buffer had an underflow during frame transmission. Transmission is suspended and an underflow error TDES0[1] is set.
+
+
+reg | ETHERNET_DMA_STATUS | DMA_RECEIVE_UNDERFLOW_STATUS               | ULONG | 0x1014 |   4:4    | This bit indicates that the receive buffer had an overflow during frame reception. If the partial frame is transferred to the application, the overflow status is set in RDES0[11].
+
+
+reg | ETHERNET_DMA_STATUS | DMA_TRANSMIT_JABBER_TIMEOUT_STATUS         | ULONG | 0x1014 |   3:3    | This bit indicates that the transmit jabber timer expired, meaning that the transmitter had been excessively active. The transmission process is aborted and placed in the Stopped state. This causes the transmit jabber timeout TDES0[14] flag to be asserted
+
+reg | ETHERNET_DMA_STATUS | DMA_TRANSMIT_BUFFER_UNAVAILABLE_STATUS     | ULONG | 0x1014 |   2:2    | This bit indicates that the next descriptor in the transmit list is owned by the host and cannot be acquired by the DMA. Transmission is suspended. Bits [22:20] explain the transmit process state transitions. To resume processing transmit descriptors, the host should change the ownership of the bit of the descriptor and then issue a Transmit Poll Demand command.
+
+reg | ETHERNET_DMA_STATUS | DMA_TRANSMIT_PROCESS_STOPPED_STATUS        | ULONG | 0x1014 |   1:1    | This bit is set when the transmission is stopped.
+
+reg | ETHERNET_DMA_STATUS | DMA_TRANSMIT_STATUS                        | ULONG | 0x1014 |   0:0    | This bit indicates that frame transmission is finished and TDES1[31] is set in the first descriptor.
+
+#################################################################################################################
+# ETHERNET_DMA_OPERATION_MODE_STATUS
+
+reg | ETHERNET_DMA_OPERATION_MODE_STATUS | DMA_DROPPING_CHECKSUM_ERROR | ULONG | 0x1018 |  26:26   | When this bit is set, the core does not drop frames that only have errors detected by the receive checksum offload engine. Such frames do not have any errors (including FCS error) in the Ethernet frame received by the MAC but have errors in the encapsulated payload only. When this bit is cleared, all error frames are dropped if the FEF bit is reset.
+
+reg | ETHERNET_DMA_OPERATION_MODE_STATUS | DMA_RECEIVE_STORE_AND_FORWARD | ULONG | 0x1018 |  25:25   | When this bit is set, a frame is read from the Rx FIFO after the complete frame has been written to it, ignoring RTC bits. When this bit is cleared, the Rx FIFO operates in Cut-through mode, subject to the threshold specified by the RTC bits.
+
+reg | ETHERNET_DMA_OPERATION_MODE_STATUS | DMA_DISABLE_FLUSHING_RECEIVED_FRAMES | ULONG | 0x1018 |  24:24   | When this bit is set, the RxDMA does not flush any frames due to the unavailability of receive descriptors/buffers as it does normally when this bit is cleared.
+
+reg | ETHERNET_DMA_OPERATION_MODE_STATUS | DMA_TRANSMIT_STORE_AND_FORWARD | ULONG | 0x1018 |  21:21   | When this bit is set, transmission starts when a full frame resides in the Transmit FIFO. When this bit is set, the TTC values specified by the ETH_DMAOMR register bits [16:14] are ignored. When this bit is cleared, the TTC values specified by the ETH_DMAOMR register bits [16:14] are taken into account.
+
+reg | ETHERNET_DMA_OPERATION_MODE_STATUS | DMA_FLUSH_TRANSMIT_FIFO | ULONG | 0x1018 |  20:20   | When this bit is set, the transmit FIFO controller logic is reset to its default values and thus all data in the Tx FIFO are lost/flushed. This bit is cleared internally when the flushing operation is complete. The Operation mode register should not be written to until this bit is cleared.
+
+reg | ETHERNET_DMA_OPERATION_MODE_STATUS | DMA_TRANSMIT_THRESHOLD_CONTROL | ULONG | 0x1018 |  16:14   | These three bits control the threshold level of the Transmit FIFO. Transmission starts when the frame size within the Transmit FIFO is larger than the threshold. In addition, full frames with a length less than the threshold are also transmitted
+
+reg | ETHERNET_DMA_OPERATION_MODE_STATUS | DMA_START_STOP_TRANSMISSION    | ULONG | 0x1018 |  13:13   | When this bit is set, transmission is placed in the Running state, and the DMA checks the transmit list at the current position for a frame to be transmitted.
+
+reg | ETHERNET_DMA_OPERATION_MODE_STATUS | DMA_FORWARD_ERROR_FRAMES       | ULONG | 0x1018 |   7:7    | When this bit is set, all frames except runt error frames are forwarded to the DMA.
+
+reg | ETHERNET_DMA_OPERATION_MODE_STATUS | DMA_FORWARD_UNDERSIZED_GOOD_FRAMES | ULONG | 0x1018 |   6:6    | When this bit is set, the Rx FIFO forwards undersized frames (frames with no error and length less than 64 bytes) including pad-bytes and CRC). When this bit is cleared, the Rx FIFO drops all frames of less than 64 bytes, unless such a frame has already been transferred due to lower value of receive threshold (e.g., RTC = 01).
+
+reg | ETHERNET_DMA_OPERATION_MODE_STATUS | DMA_RECEIVE_THRESHOLD         | ULONG | 0x1018 |   4:3    | These two bits control the threshold level of the Receive FIFO. Transfer (request) to DMA starts when the frame size within the Receive FIFO is larger than the threshold. In addition, full frames with a length less than the threshold are transferred automatically.
+
+reg | ETHERNET_DMA_OPERATION_MODE_STATUS | DMA_OPERATE_ON_SECOND_FRAME   | ULONG | 0x1018 |   2:2    | When this bit is set, this bit instructs the DMA to process a second frame of Transmit data even before status for first frame is obtained.
+
+
+reg | ETHERNET_DMA_OPERATION_MODE_STATUS | DMA_START_STOP_RECEIVE        | ULONG | 0x1018 |   1:1    | When this bit is set, the receive process is placed in the Running state. The DMA attempts to acquire the descriptor from the receive list and processes incoming frames.
+
+#################################################################################################################
+# ETHERNET_DMA_INTERRUPT_ENABLE
+
+reg | ETHERNET_DMA_INTERRUPT_ENABLE | DMA_NORMAL_INTERRUPT_SUMMARY_ENABLE   | ULONG | 0x101C |  16:16   | When this bit is set, a normal interrupt is enabled. When this bit is cleared, a normal interrupt is disabled.
+
+reg | ETHERNET_DMA_INTERRUPT_ENABLE | DMA_ABNORMAL_INTERRUPT_SUMMARY_ENABLE | ULONG | 0x101C |  15:15   | When this bit is set, an abnormal interrupt is enabled. When this bit is cleared, an abnormal interrupt is disabled. This bit enables the following bits
+
+reg | ETHERNET_DMA_INTERRUPT_ENABLE | DMA_EARLY_RECEIVE_INTERRUPT_ENABLE | ULONG | 0x101C |  14:14   | When this bit is set with the normal interrupt summary enable bit (ETH_DMAIER register[16]),the early receive interrupt is enabled. When this bit is cleared, the early receive interrupt is disabled.
+
+reg | ETHERNET_DMA_INTERRUPT_ENABLE | DMA_FATAL_BUS_ERROR_INTERRUPT_ENABLE | ULONG | 0x101C |  13:13   | When this bit is set with the abnormal interrupt summary enable bit (ETH_DMAIER
+register[15]), the fatal bus error interrupt is enabled. When this bit is cleared, the fatal bus error enable interrupt is disabled.
+
+reg | ETHERNET_DMA_INTERRUPT_ENABLE | DMA_EARLY_TRANSMIT_INTERRUPT_ENABLE | ULONG | 0x101C |  10:10   | When this bit is set with the abnormal interrupt summary enable bit (ETH_DMAIER register [15]), the early transmit interrupt is enabled. When this bit is cleared, the early transmit interrupt is disabled.
+
+reg | ETHERNET_DMA_INTERRUPT_ENABLE | DMA_RECEIVE_WATCHDOG_TIMEOUT_INTERRUPT_ENABLE | ULONG | 0x101C |   9:9    | When this bit is set with the abnormal interrupt summary enable bit (ETH_DMAIER register[15]), the receive watchdog timeout interrupt is enabled. When this bit is cleared, the receive watchdog timeout interrupt is disabled.
+
+reg | ETHERNET_DMA_INTERRUPT_ENABLE | DMA_RECEIVE_PROCESS_STOPPED_INTERRUPT_ENABLE | ULONG | 0x101C |   8:8    | When this bit is set with the abnormal interrupt summary enable bit (ETH_DMAIER register[15]), the receive stopped interrupt is enabled. When this bit is cleared, the receive stopped interrupt is disabled.
+
+reg | ETHERNET_DMA_INTERRUPT_ENABLE | DMA_RECEIVE_BUFFER_UNAVAILABLE_INTERRUPT_ENABLE | ULONG | 0x101C |   7:7    | When this bit is set with the abnormal interrupt summary enable bit (ETH_DMAIER register[15]), the receive buffer unavailable interrupt is enabled. When this bit is cleared, the receive buffer unavailable interrupt is disabled.
+
+
+reg | ETHERNET_DMA_INTERRUPT_ENABLE | DMA_RECEIVE_INTERRUPT_ENABLE | ULONG | 0x101C |   6:6    | When this bit is set with the normal interrupt summary enable bit (ETH_DMAIER register[16]), the receive interrupt is enabled. When this bit is cleared, the receive interrupt is disabled.
+
+reg | ETHERNET_DMA_INTERRUPT_ENABLE | DMA_UNDERFLOW_INTERRUPT_ENABLE | ULONG | 0x101C |   5:5    | When this bit is set with the abnormal interrupt summary enable bit (ETH_DMAIER
+register[15]), the transmit underflow interrupt is enabled. When this bit is cleared, the underflow interrupt is disabled.
+
+
+reg | ETHERNET_DMA_INTERRUPT_ENABLE | DMA_OVERFLOW_INTERRUPT_ENABLE | ULONG | 0x101C |   4:4    | When this bit is set with the abnormal interrupt summary enable bit (ETH_DMAIER
+register[15]), the receive overflow interrupt is enabled. When this bit is cleared, the overflow interrupt is disabled.
+
+
+reg | ETHERNET_DMA_INTERRUPT_ENABLE | DMA_TRANSMIT_JABBER_TIMEOUT_INTERRUPT_ENABLE | ULONG | 0x101C |   3:3    | When this bit is set with the abnormal interrupt summary enable bit (ETH_DMAIER register[15]), the transmit jabber timeout interrupt is enabled. When this bit is cleared, the transmit jabber timeout interrupt is disabled.
+
+reg | ETHERNET_DMA_INTERRUPT_ENABLE | DMA_TRANSMIT_BUFFER_UNAVAILABLE_INTERRUPT_ENABLE | ULONG | 0x101C |   2:2    | When this bit is set with the normal interrupt summary enable bit (ETH_DMAIER register[16]), the transmit buffer unavailable interrupt is enabled. When this bit is cleared, the transmit buffer unavailable interrupt is disabled.
+
+
+reg | ETHERNET_DMA_INTERRUPT_ENABLE | DMA_TRANSMIT_PROCESS_STOPPED_INTERRUPT_ENABLE | ULONG | 0x101C |   1:1    | When this bit is set with the abnormal interrupt summary enable bit (ETH_DMAIER register[15]), the transmission stopped interrupt is enabled. When this bit is cleared, the transmission stopped interrupt is disabled.
+
+reg | ETHERNET_DMA_INTERRUPT_ENABLE | DMA_TRANSMIT_INTERRUPT_ENABLE | ULONG | 0x101C |   0:0    | When this bit is set with the normal interrupt summary enable bit (ETH_DMAIER register[16]),the transmit interrupt is enabled. When this bit is cleared, the transmit interrupt is disabled.
+
+
+
+#################################################################################################################
+#################################################################################################################
+#################################################################################################################
+#################################################################################################################
+
+#################################################################################################################
+#################################################################################################################
+#################################################################################################################
+#################################################################################################################
+#################################################################################################################
+#################################################################################################################
+
+use-discret-address | ETHERNET_DMA_DESCRIPTOR | 0x100000000 0x100000000
+
+
+base | ETHERNET_DMA_DESCRIPTOR_TDES0 | ULONG | 0  | TDES0
+base | ETHERNET_DMA_DESCRIPTOR_TDES1 | ULONG | 4  | TDES1
+base | ETHERNET_DMA_DESCRIPTOR_TDES2 | ULONG | 8  | TDES2
+base | ETHERNET_DMA_DESCRIPTOR_TDES3 | ULONG | 12 | TDES3
+
+base | ETHERNET_DMA_DESCRIPTOR_RDES0 | ULONG | 0  | RDES0
+base | ETHERNET_DMA_DESCRIPTOR_RDES1 | ULONG | 4  | RDES1
+base | ETHERNET_DMA_DESCRIPTOR_RDES2 | ULONG | 8  | RDES2
+base | ETHERNET_DMA_DESCRIPTOR_RDES3 | ULONG | 12 | RDES3
+
+
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL | OWNER                                        | ULONG | 0 | 31:31 | Descriptor is owned by DMA engine
+reg | TRANSMIT_DESCRIPTOR_CONTROL | TRANSMIT_DESCRIPTOR_INTERRUPT_ON_COMPLETION  | ULONG | 0 | 30:30 | When set, this bit sets the Transmit Interrupt (Register 5[0]) after the present frame has been transmitted.
+reg | TRANSMIT_DESCRIPTOR_CONTROL | LAST_SEGMENT                                 | ULONG | 0 | 29:29 | When set, this bit indicates that the buffer contains the last segment of the frame. 
+reg | TRANSMIT_DESCRIPTOR_CONTROL | FIRST_SEGMENT                                | ULONG | 0 | 28:28 | When set, this bit indicates that the buffer contains the first segment of a frame. 
+reg | TRANSMIT_DESCRIPTOR_CONTROL | DISABLE_CRC                                  | ULONG | 0 | 27:27 | When this bit is set, the MAC does not append a cyclic redundancy check (CRC) to the end of the transmitted frame. 
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL | DISABLE_PAD                                  | ULONG | 0 | 26:26 | When set, the MAC does not automatically add padding to a frame shorter than 64 bytes. When this bit is reset, the DMA automatically adds padding and CRC to a frame shorter than 64 bytes, and the CRC field is added despite the state of the DC
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL | TIME_STAMP_ENABLE                            | ULONG | 0 | 25:25 | When TTSE is set and when TSE is set (ETH_PTPTSCR bit 0), IEEE1588 hardware time
+stamping is activated for the transmit frame described by the descriptor 
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL | CHECKSUM_INSERTION_CONTROL                   | ULONG | 0 | 23:22 | These bits control the checksum calculation and insertion. Bit encoding is as shown below:\\00: Checksum Insertion disabled\\01: Only IP header checksum calculation and insertion are enabled\\10: IP header checksum and payload checksum calculation and insertion are enabled, but pseudo-header checksum is not calculated in hardware\\11: IP Header checksum and payload checksum calculation and insertion are enabled, and pseudo-header checksum is calculated in hardware.
+
+define | INSERTION_DISABLED | 0
+define | ONLY_IP_CALCULATION_AND_INSTERTION | 1
+define | IP_AND_PLAYLOAD_CALCULATION_AND_INSTERTION_WITHOUT_PSEUDO_HEADER | 2 
+define | IP_AND_PLAYLOAD_CALCULATION_AND_INSTERTION_WITH_PSEUDO_HEADER  | 3
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL | TRANSMIT_END_OF_RING                         | ULONG | 0 | 21:21 | When set, this bit indicates that the descriptor list reached its final descriptor. The DMA returns to the base address of the list, creating a descriptor ring 
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL | SECOND_ADDR_CHAINED                          | ULONG | 0 | 20:20 | When set, this bit indicates that the second address in the descriptor is the next descriptor address rather than the second buffer address 
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL | TRANSMIT_TIMESTAMP_STATUS                    | ULONG | 0 | 17:17 | This field is used as a status bit to indicate that a time stamp was captured for the described transmit frame. When this bit is set, TDES2 and TDES3 have a time stamp value captured for the transmit frame. 
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL | IP_HEADER_ERROR                              | ULONG | 0 | 16:16 | When set, this bit indicates that the MAC transmitter detected an error in the IP datagram header. The transmitter checks the header length in the IPv4 packet against the number of header bytes received from the application and indicates an error status if there is a mismatch. 
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL | ERROR_SUMMARY                                | ULONG | 0 | 15:15 | Indicates the logical 
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL | JABBER_TIMEOUT                               | ULONG | 0 | 14:14 | When set, this bit indicates the MAC transmitter has experienced a jabber timeout.
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL | FRAME_FLUSHED                                | ULONG | 0 | 13:13 | When set, this bit indicates that the DMA/MTL flushed the frame due to a software Flush command given by the CPU
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL | IP_PLAYLOAD_ERROR                            | ULONG | 0 | 12:12 | When set, this bit indicates that MAC transmitter detected an error in the TCP, UDP, or ICMP IP datagram payload. The transmitter checks the payload length received in the IPv4 or IPv6 header against the actual number of TCP, UDP or ICMP packet bytes received from the application and issues an error status in case of a mismatch.
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL | LOSS_OF_CARRIER                              | ULONG | 0 | 11:11 | When set, this bit indicates that a loss of carrier occurred during frame transmission (that is, the MII_CRS signal was inactive for one or more transmit clock periods during frame transmission). This is valid only for the frames transmitted without collision when the MAC operates in Half-duplex mode.
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL | NO_CARRIER                                   | ULONG | 0 | 10:10 | When set, this bit indicates that the Carrier Sense signal form the PHY was not asserted during transmission.
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL | LATE_COLLISION_STATUS                        | ULONG | 0 |  9:9  | When set, this bit indicates that frame transmission was aborted due to a collision occurring after the collision window (64 byte times, including preamble, in MII mode). This bit is not valid if the Underflow Error bit is set.
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL | EXCESSIVE_COLLISION                          | ULONG | 0 |  8:8  | When set, this bit indicates that the transmission was aborted after 16 successive collisions while attempting to transmit the current frame. If the RD (Disable retry) bit in the MAC Configuration register is set, this bit is set after the first collision, and the transmission of the frame is aborted.
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL | VLANE_FRAME                                  | ULONG | 0 |  7:7  | When set, this bit indicates that the transmitted frame was a VLAN-type frame.
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL | COLLISION_COUNT                              | ULONG | 0 |  6:3  | This 4-bit counter value indicates the number of collisions occurring before the frame was transmitted. The count is not valid when the Excessive collisions bit (TDES0[8]) is set.
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL | EXCESSIVE_DEFERRAL                           | ULONG | 0 |  2:2  | When set, this bit indicates that the transmission has ended because of excessive deferral of over 24 288 bit times if the Deferral check (DC) bit in the MAC Control register is set high.
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL | UNDERFLOW_ERROR                              | ULONG | 0 |  1:1  | When set, this bit indicates that the MAC aborted the frame because data arrived late from the RAM memory. Underflow error indicates that the DMA encountered an empty transmit buffer while transmitting the frame. The transmission process enters the Suspended state and sets both Transmit underflow (Register 5[5]) and Transmit interrupt (Register 5[0]).
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL | DEFERRED_BIT                                 | ULONG | 0 |  0:0  | When set, this bit indicates that the MAC defers before transmission because of the presence of the carrier. This bit is valid only in Half-duplex mode.
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL2 | TRANSMIT_BUFFER_2_SIZE                      | ULONG | 4 | 28:16 | These bits indicate the second data buffer size in bytes. This field is not valid if TDES0[20] is set.
+
+reg | TRANSMIT_DESCRIPTOR_CONTROL2 | TRANSMIT_BUFFER_1_SIZE                      | ULONG | 4 | 12:0  | These bits indicate the first data buffer byte size, in bytes. If this field is 0, the DMA ignores this buffer and uses Buffer 2 or the next descriptor, depending on the value of TCH (TDES0[20]).
+
+
+
+reg | RECEIVE_DESCRIPTOR_CONTROL | DESTINATION_ADDRESS_FAIL                      | ULONG | 0 | 30:30 | When set, this bit sets the Transmit Interrupt (Register 5[0]) after the present frame has been transmitted.
+ 
+reg | RECEIVE_DESCRIPTOR_CONTROL | DESTINATION_ADDRESS_LENGTH                    | ULONG | 0 | 29:16 | These bits indicate the byte length of the received frame that was transferred to host memory (including CRC). This field is valid only when last descriptor (RDES0[8]) is set and descriptor error (RDES0[14]) is reset.
+
+
+
+
+reg | RECEIVE_DESCRIPTOR_CONTROL | ERROR_SUMMARY                                | ULONG | 0 | 15:15 | Indicates the logical 
+
+reg | RECEIVE_DESCRIPTOR_CONTROL | DESCRIPTOR_ERROR                             | ULONG | 0 | 14:14 |When set, this bit indicates a frame truncation caused by a frame that does not fit within the current descriptor buffers, and that the DMA does not own the next descriptor. The frame is truncated. This field is valid only when the last descriptor (RDES0[8]) is set.
+
+reg | RECEIVE_DESCRIPTOR_CONTROL | SOURCE_ADDRESS_FILTER_FAIL                   | ULONG | 0 | 13:13 | When set, this bit indicates that the SA field of frame failed the SA filter in the MAC Core.
+
+reg | RECEIVE_DESCRIPTOR_CONTROL | LENTGH_ERROR                                 | ULONG | 0 | 12:12 | When set, this bit indicates that the actual length of the received frame does not match the value in the Length/ Type field. This bit is valid only when the Frame type (RDES0[5]) bit is reset.
+
+reg | RECEIVE_DESCRIPTOR_CONTROL | OVERFLOW_ERROR                               | ULONG | 0 | 11:11 | When set, this bit indicates that the received frame was damaged due to buffer overflow.
+
+reg | RECEIVE_DESCRIPTOR_CONTROL | VLAN_TAG                                     | ULONG | 0 | 10:10 | When set, this bit indicates that the frame pointed to by this descriptor is a VLAN frame tagged by the MAC core.
+
+reg | RECEIVE_DESCRIPTOR_CONTROL | FIRST_DESCRIPTOR                             | ULONG | 0 |  9:9  | When set, this bit indicates that this descriptor contains the first buffer of the frame. If the size of the first buffer is 0, the second buffer contains the beginning of the frame. If the size of the second buffer is also 0, the next descriptor contains the beginning of the frame.
+
+reg | RECEIVE_DESCRIPTOR_CONTROL | LAST_DESCRIPTOR                              | ULONG | 0 |  8:8  | When set, this bit indicates that the buffers pointed to by this descriptor are the last buffers of the frame.
+
+reg | RECEIVE_DESCRIPTOR_CONTROL | IP_HEADER_CHECKSUM_ERROR                     | ULONG | 0 |  7:7  | When set, this bit indicates that the transmitted frame was a VLAN-type frame.
+
+reg | RECEIVE_DESCRIPTOR_CONTROL | LATE_COLLISION                               | ULONG | 0 |  6:6  | When set, this bit indicates that a late collision has occurred while receiving the frame in Halfduplex mode.
+
+reg | RECEIVE_DESCRIPTOR_CONTROL | FRAME_TYPE                                   | ULONG | 0 |  5:5  | When set, this bit indicates that the Receive frame is an Ethernet-type frame (the LT field is greater than or equal to 0x0600). When this bit is reset, it indicates that the received frame is an IEEE802.3 frame. This bit is not valid for Runt frames less than 14 bytes.
+
+reg | RECEIVE_DESCRIPTOR_CONTROL | RECEIVE_WATCHDOG_TIMEOUT                     | ULONG | 0 |  4:4  | When set, this bit indicates that the Receive watchdog timer has expired while receiving the current frame and the current frame is truncated after the watchdog timeout.
+
+reg | RECEIVE_DESCRIPTOR_CONTROL | RECEIVE_ERROR                                | ULONG | 0 |  3:3  | When set, this bit indicates that the RX_ERR signal is asserted while RX_DV is asserted during frame reception.
+
+reg | RECEIVE_DESCRIPTOR_CONTROL | DRIBBLE_BIT_ERROR                            | ULONG | 0 |  2:2  | When set, this bit indicates that the received frame has a non-integer multiple of bytes (odd nibbles). This bit is valid only in MII mode.
+
+reg | RECEIVE_DESCRIPTOR_CONTROL | CRC_ERROR                                    | ULONG | 0 |  1:1  | When set, this bit indicates that a cyclic redundancy check (CRC) error occurred on the received frame. This field is valid only when the last descriptor (RDES0[8]) is set.
+
+reg | RECEIVE_DESCRIPTOR_CONTROL | PAYLOAD_CHECKSUM_ERROR                       | ULONG | 0 |  0:0  | When set, it indicates that the TCP, UDP or ICMP checksum the core calculated does not match the received encapsulated TCP, UDP or ICMP segment's Checksum field. This bit is also set when the received number of payload bytes does not match the value indicated in the Length field of the encapsulated IPv4 or IPv6 datagram in the received Ethernet frame.
+
+
+
+
+
+reg | RECEIVE_DESCRIPTOR_CONTROL2 | DISABLE_INTERRUPT_ON_COMPLETION             | ULONG | 4 | 31:31 | When set, this bit prevents setting the Status register’s RS bit (CSR5[6]) for the received frame ending in the buffer indicated by this descriptor. This, in turn, disables the assertion of the interrupt to Host due to RS for that frame.
+
+reg | RECEIVE_DESCRIPTOR_CONTROL2 | RECEIVE_BUFFER_2_SIZE                       | ULONG | 4 | 28:16 | These bits indicate the second data buffer size, in bytes. The buffer size must be a multiple of 4, 8, or 16, depending on the bus widths (32, 64 or 128, respectively), even if the value of RDES3 (buffer2 address pointer) is not aligned to bus width. If the buffer size is not an appropriate multiple of 4, 8 or 16, the resulting behavior is undefined. This field is not valid if RDES1 [14] is set.
+
+reg | RECEIVE_DESCRIPTOR_CONTROL2 | RECEIVE_END_OF_RING                        | ULONG | 4 | 15:15 | When set, this bit indicates that the descriptor list reached its final descriptor. The DMA returns to the base address of the list, creating a descriptor ring.
+
+reg | RECEIVE_DESCRIPTOR_CONTROL2 | SECOND_ADDRESS_CHAINED                     | ULONG | 4 | 14:14 | When set, this bit indicates that the second address in the descriptor is the next descriptor address rather than the second buffer address. When this bit is set, RBS2 (RDES1[28:16]) is a 'don't care' value. RDES1[15] takes precedence over RDES1[14].
+
+reg | RECEIVE_DESCRIPTOR_CONTROL2 | TRANSMIT_BUFFER_1_SIZE                      | ULONG | 4 | 12:0  | These bits indicate the first data buffer byte size, in bytes. If this field is 0, the DMA ignores this buffer and uses Buffer 2 or the next descriptor, depending on the value of TCH (TDES0[20]).
+
+
+#################################################################################################################
+#################################################################################################################
+#################################################################################################################
+#################################################################################################################
+#################################################################################################################
+#################################################################################################################
+
+end

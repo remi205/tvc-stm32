@@ -1,0 +1,68 @@
+#                                   Port A     Port B     Port C    Port D      Port E      Port F     Port G
+use-discret-address | GPIO_BASE | 0x40010800 0x40010C00 0x40011000 0x40011400 0x40011800 0x40011C00 0x40012000 | A
+
+use-prefix-for-function-name | gpio
+
+copyright | Rémi PRUD'HOMME, TVC Expertise
+
+
+
+################################################################################
+################################################################################
+################################################################################
+register | PortConfigurationLow  | 0 | L  | Port Configuration Register Low (GPIOX_CRL) (X=A..G) | GPIOX_CRL | 0x44444444
+register | PortConfigurationHigh | 4 | L  | Port configuration register high (GPIOx_CRH) (x=A..G)| GPIOx_CRH | 0x44444444
+register | PortInputData         | 8 | L  | Port input data register (GPIOx_IDR) (x=A..G )       | GPIOx_IDR | 0
+register | PortOutputData        | 12| L  | Port output data register (GPIOx_ODR) (x=A..G)       | GPIOx_ODR | 0
+register | PortSetReset          | 16| W  | Port bit set/reset register (GPIOx_BSRR) (x=A..G)    | GPIOx_BSRR| 0
+register | PortLock              | 20| L  | Each lock bit freezes the corresponding 4 bits of the control register | GPIOx_LCKR | 0
+
+
+################################################################################
+################################################################################
+################################################################################
+type | PortConfiguration | ES | OUTPUT_PUSH_PULL OUTPUT_OPEN_DRAIN ALTERNATE_PUSH_PULL ALTERNATE_FUNCTION_OUTPUT_OPEN_DRAIN
+type | PortMode | ES | INPUT_MODE OUTPUT_MODE_10_MHZ OUTPUT_MODE_2_MHZ OUTPUT_MODE_50_MHZ
+
+
+################################################################################
+
+field | PortConfigurationLow | Mode7            | MODE7 | rw | 29:28 | These bits are written by software to set the mode of the corresponding I/O port. | PortMode | Y1
+field | PortConfigurationLow | Mode6            | MODE6 | rw | 25:24 | These bits are written by software to set the mode the corresponding I/O port. | PortMode | Y1
+field | PortConfigurationLow | Mode5            | MODE5 | rw | 21:20 | These bits are written by software to set the mode the corresponding I/O port. | PortMode | Y1
+field | PortConfigurationLow | Mode4            | MODE4 | rw | 17:16 | These bits are written by software to set the mode the corresponding I/O port. | PortMode | Y1
+field | PortConfigurationLow | Mode3            | MODE3 | rw | 13:12 | These bits are written by software to set the mode the corresponding I/O port. | PortMode | Y1
+field | PortConfigurationLow | Mode2            | MODE2 | rw |  9:8  | These bits are written by software to set the mode the corresponding I/O port. | PortMode | Y1
+field | PortConfigurationLow | Mode1            | MODE1 | rw |  5:4  | These bits are written by software to set the mode the corresponding I/O port. | PortMode | Y1
+field | PortConfigurationLow | Mode0            | MODE0 | rw |  1:0  | These bits are written by software to set the mode the corresponding I/O port. | PortMode | Y1
+field | PortConfigurationLow | Configuration7   | CONF7 | rw | 31:30 | These bits are written by software to configure the corresponding I/O port. | PortConfiguration | Y1
+field | PortConfigurationLow | Configuration6   | CONF6 | rw | 27:26 | These bits are written by software to configure the corresponding I/O port. | PortConfiguration | Y1
+field | PortConfigurationLow | Configuration5   | CONF5 | rw | 23:22 | These bits are written by software to configure the corresponding I/O port. | PortConfiguration | Y1
+field | PortConfigurationLow | Configuration4   | CONF4 | rw | 19:18 | These bits are written by software to configure the corresponding I/O port. | PortConfiguration | Y1
+field | PortConfigurationLow | Configuration3   | CONF3 | rw | 15:14 | These bits are written by software to configure the corresponding I/O port. | PortConfiguration | Y1
+field | PortConfigurationLow | Configuration2   | CONF2 | rw | 11:10 | These bits are written by software to configure the corresponding I/O port. | PortConfiguration | Y1
+field | PortConfigurationLow | Configuration1   | CONF1 | rw |  7:6  | These bits are written by software to configure the corresponding I/O port. | PortConfiguration | Y1
+field | PortConfigurationLow | Configuration0   | CONF0 | rw |  3:2  | These bits are written by software to configure the corresponding I/O port. | PortConfiguration | Y1
+
+################################################################################
+field | PortConfigurationHigh | Mode15          | MODE15 | rw | 29:28 | These bits are written by software to set the mode the corresponding I/O port. | PortMode | Y1
+field | PortConfigurationHigh | Mode14          | MODE14 | rw | 25:24 | These bits are written by software to set the mode the corresponding I/O port. | PortMode | Y1
+field | PortConfigurationHigh | Mode13          | MODE13 | rw | 21:20 | These bits are written by software to set the mode the corresponding I/O port. | PortMode | Y1
+field | PortConfigurationHigh | Mode12          | MODE12 | rw | 17:16 | These bits are written by software to set the mode the corresponding I/O port. | PortMode | Y1
+field | PortConfigurationHigh | Mode11          | MODE11 | rw | 13:12 | These bits are written by software to set the mode the corresponding I/O port.| PortMode | Y1
+field | PortConfigurationHigh | Mode10          | MODE10 | rw |  9:8  | These bits are written by software to set the mode the corresponding I/O port. | PortMode | Y1
+field | PortConfigurationHigh | Mode9           | MODE9  | rw |  5:4  | These bits are written by software to set the mode the corresponding I/O port. | PortMode | Y1
+field | PortConfigurationHigh | Mode8           | MODE8  | rw |  1:0  | These bits are written by software to set the mode the corresponding I/O port. | PortMode | Y1
+field | PortConfigurationHigh | Configuration15 | CONF15 | rw | 31:30 | These bits are written by software to configure the corresponding I/O port | PortConfiguration | Y1
+field | PortConfigurationHigh | Configuration14 | CONF14 | rw | 27:26 | These bits are written by software to configure the corresponding I/O port | PortConfiguration | Y1
+field | PortConfigurationHigh | Configuration13 | CONF13 | rw | 23:22 | These bits are written by software to configure the corresponding I/O port | PortConfiguration | Y1
+field | PortConfigurationHigh | Configuration12 | CONF12 | rw | 19:18 | These bits are written by software to configure the corresponding I/O port | PortConfiguration | Y1
+field | PortConfigurationHigh | Configuration11 | CONF11 | rw | 15:14 | These bits are written by software to configure the corresponding I/O port | PortConfiguration | Y1
+field | PortConfigurationHigh | Configuration10 | CONF10 | rw | 11:10 | These bits are written by software to configure the corresponding I/O port | PortConfiguration | Y1
+field | PortConfigurationHigh | Configuration9  | CONF9  | rw |  7:6  | These bits are written by software to configure the corresponding I/O port | PortConfiguration | Y1
+field | PortConfigurationHigh | Configuration8  | CONF8  | rw |  3:2  | These bits are written by software to configure the corresponding I/O port | PortConfiguration | Y1
+
+################################################################################
+field | PortSetReset | BitReset  | BR | w |   0:15  | Reset the corresponding ODRx bit. | BitReset | W
+field | PortSetReset | BitSet    | BS | w |   0:15  | Set the corresponding ODRx bit    | BitSet   | W
+

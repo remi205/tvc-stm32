@@ -1,0 +1,39 @@
+begin | The universal synchronous asynchronous receiver transmitter (USART) offers a flexible means of full-duplex data exchange with external equipment requiring an industry standard NRZ asynchronous serial data format. The USART offers a very wide range of baud rates using a fractional baud rate generator
+
+# (do-c-macro2 gen "UART" "c:/Lisp/Production/Stm32/stm32_Uart_sci3.h")
+
+copyright | tvc-stm32, Grenoble
+
+# rm 0315 F373
+use-discret-address| UART | 0x40013800 0x40004400 0x40004800 | 1
+
+register | UartControl1          |    0  | W  | Control register 1                | USART_CR1  | 0
+register | UartControl2          |    4  | W  | Control register 2                | USART_CR2  | 0
+register | UartControl3          |  0x8  | W  | Control register 3                | USART_CR3  | 0
+register | UartBaudRate          |  0xC  | W  | Baud rate register                | USART_BBR  | 0
+register | UartPrescaler         |  0x10 | W  | Guard Time And Prescaler Register | Usart_Gtpr | 0
+register | UartTimeout           |  0x14 | W  | Receiver Timeout Register         | Usart_Rtor | 0
+register | UartPrescaler         |  0x18 | W  | Request Register                  | Usart_Rqr  | 0
+register | UartIsr               |  0x1c | W  | Interrupt & Status Register       | Usart_Isr  | 0
+register | UartIcr               |  0x20 | W  | Interrupt Flag Clear Register     | Usart_Icr  | 0
+register | UartReceiveData       |  0x24 | W  | Receive Data Register             | Usart_Rdr  | 0
+register | UartTransmitData      |  0x28 | W  | Transmit data register            | USART_TDR  | 0
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+field |  UartControl1 | CharacterMatchInterruptEnable | CMIE | rw | 14:14 | This bit is set and cleared by software.\\0: Interrupt is inhibited\\1: A USART interrupt is generated when the CMF bit is set in the USART_ISR register. | C
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+field | UartControl2 | CharacterMatch | ADD | rw | 31:24 | The whole received character (8-bit) is compared
+to the ADD[7:0] value and CMF flag is set on match. | W
+
+##########################################################################################
+##########################################################################################
+##########################################################################################
+field |  UartIsr | CharacterMatchDetected | CMF | rw | 17:17 | Character match flag. This bit is set by hardware, when a the character defined by ADD[7:0] is received. It is cleared by software, writing 1 to the CMCF in the USART_ICR register. An interrupt is generated if CMIE=1in the USART_CR1 register. | C
+
+##########################################################################################
+field | UartIcr | CharacterMatchClear     | CMCF | rw | 17:17 | Character match flag. This bit is set by hardware, when a the character defined by ADD[7:0] is received. It is cleared by software, writing 1 to the CMCF in the USART_ICR register. An interrupt is generated if CMIE=1in the USART_CR1 register. | C

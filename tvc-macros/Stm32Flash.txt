@@ -1,0 +1,67 @@
+
+begin | program to the STM32F10xxx embedded Flash Memory
+
+##standart-type
+standart-macros
+
+copyright | Rémi PRUD'HOMME Tvc audio
+
+define | RDPRT | 0x00A5
+define | KEY1  | 0x45670123
+define | KEY2  | 0xCDEF89AB
+
+
+base-register | FLASH_CONTROLER_BASE | 0x40022000
+
+#--------------------------------------------------------------
+# 32 bits access to all registers
+#--------------------------------------------------------------
+
+base | FLASH_ACCESS_CONTROL |  ULONG |  0   | Flash access control register (FLASH_ACR)
+base | FLASH_FPEC_KEY       |  ULONG |  4   | These bits represent the keys to unlock the FPEC. These bits are all write-only and will return a 0 when read.
+base | FLASH_OPTKEYC_KEY    |  ULONG |  8   | These bits represent the keys to unlock the OPTWRE. These bits are all write-only and will return a 0 when read
+base | FLASH_STATUS         |  ULONG | 12   | Flash Status Register  FALSH_SR
+base | FLASH_CONTROL        |  ULONG | 0x10 | Flash control register
+base | FLASH_ADDRESS        |  ULONG | 0x14 | Updated by hardware with the currently/last used address. For Page Erase operations, this should be updated by software to indicate the chosen page
+base | OPTION_BYTE          |  ULONG | 0x1C | The reset value of this register depends on the value programmed in the option byte and the OPTERR bit reset value depends on the comparison of the option byte and its complement during the option byte loading phase.
+base | FLASH_PROTECTION     |  ULONG | 0x20 | This register contains the write-protection option bytes loaded by the OBL. 0: Write protection active; 1: Write protection not active
+
+
+reg | FLASH_ACCESS_CONTROL | PREFETCH_BUFFER_STATUS  | ULONG | 0 | 5:5 | This bit provides the status of the prefetch buffer.
+reg | FLASH_ACCESS_CONTROL | PREFETCH_BUFFER_ENABLE  | ULONG | 0 | 4:4 | Prefetch buffer enable.
+reg | FLASH_ACCESS_CONTROL | FLASH_HALF_CYCLE_ENABLE | ULONG | 0 | 3:3 | Flash half cycle access enable
+reg | FLASH_ACCESS_CONTROL | LATENCY                 | ULONG | 0 | 2:0 | These bits represent the ratio of the SYSCLK (system clock) period to the Flash access time.
+
+define | ZERO_WAIT_STATE | 0
+define | ONE_WAIT_STATE  | 1
+define | TWO_WAIT_STATE  | 2
+
+
+reg | FLASH_STATUS        | END_OF_OPERATION            | ULONG | 12 | 5:5 | Set by hardware when a Flash operation (programming / erase) is completed. Reset by writing a 1. Note: EOP is asserted at the end of each successful program or erase operation
+reg | FLASH_STATUS        | WRITE_PROTECTION_ERROR      | ULONG | 12 | 4:4 | Set by hardware when programming a write-protected address of the Flash memory. Reset by writing 1.
+reg | FLASH_STATUS        | PROGRAMMING_ERROR           | ULONG | 12 | 2:2 | Set by hardware when an address to be programmed contains a value different from '0xFFFF' before programming. Reset by writing 1. Note: The STRT bit in the FLASH_CR register should be reset before starting a programming operation.
+reg | FLASH_STATUS        | BUSY                        | ULONG | 12 | 0:0 | This indicates that a Flash operation is in progress. This is set on the beginning of a Flash operation and reset when the operation finishes or when an error occurs.
+
+
+reg | FLASH_CONTROL       | EOP_INTERRUPT_ENABLE        | ULONG | 16 | 12:12 | This bit enables the interrupt generation when the EOP bit in the FLASH_SR register goes to 1.
+reg | FLASH_CONTROL       | ERROR_INTERRUPT_ENABLE      | ULONG | 16 | 10:10 | This bit enables the interrupt generation on an FPEC error (when PGERR / WRPRTERR are set in the FLASH_SR register).
+reg | FLASH_CONTROL       | OPTION_BYTES_WRITE_ENABLE   | ULONG | 16 |  9:9  | When set, the option bytes can be programmed. This bit is set on writing the correct key sequence to the FLASH_OPTKEYR register. This bit can be reset by software.
+reg | FLASH_CONTROL       | LOCK                        | ULONG | 16 |  7:7  | Write to 1 only. When it is set, it indicates that the FPEC and FLASH_CR are locked. This bit is reset by hardware after detecting the unlock sequence. In the event of unsuccessful unlock operation, this bit remains set until the next reset.
+
+reg | FLASH_CONTROL       | START                        | ULONG | 16 | 6:6  | This bit triggers an ERASE operation when set. This bit is set only by software and reset when the BSY bit is reset
+reg | FLASH_CONTROL       | OPTION_BYTE_ERASE            | ULONG | 16 | 5:5  | Option byte erase chosen.
+reg | FLASH_CONTROL       | OPTION_BYTE_PROGRAM          | ULONG | 16 | 4:4  | Option byte programming chosen.
+reg | FLASH_CONTROL       | MASS_ERASE                   | ULONG | 16 | 2:2  | Erase of all user pages chosen.
+reg | FLASH_CONTROL       | PAGE_ERASE                   | ULONG | 16 | 1:1  | Page Erase chosen
+reg | FLASH_CONTROL       | PROGRAMMING                  | ULONG | 16 | 0:0  | Flash programming chosen.
+
+
+reg | OPTION_BYTE        |  NON_RESET_STAND_BY       | ULONG | 0x1C |  4:4 | nRST_STDBY
+reg | OPTION_BYTE        |  NON_RESET_STOP           | ULONG | 0x1C |  3:3 | nRST_STOP
+reg | OPTION_BYTE        |  WATCHDOG_SOFTWARE        | ULONG | 0x1C |  2:2 | nRST_STOP
+
+reg | OPTION_BYTE        |  READ_PROTECTION          | ULONG | 0x1C |  1:1 | When set, this indicates that the Flash memory is read-protected
+reg | OPTION_BYTE        |  OPTION_BYTE_ERROR        | ULONG | 0x1C |  0:0 | When set, this indicates that the loaded option byte and its complement do not match. Note: This bit is read-only.
+
+
+end

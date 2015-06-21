@@ -1,0 +1,14 @@
+begin | The external interrupt/event controller consists of up to 18 edge detectors for generating event/interrupt requests. Each input line can be independently configured to select the type (pulse or pending) and the corresponding trigger event (rising or falling or both). Each line can also masked independently. A pending register maintains the status line of the interrupt requests 
+
+
+base-register | EXTI | 0x40010400
+
+use-prefix-for-function-name | exti
+
+register | InterruptMask    |  0x0  | L | Interrupt Mask on line (0-17)             |  EXTI_IMR   | 0
+register | EventMask        |  0x4  | L | Event mask on line (0-17)                 |  EXTI_EMR   | 0
+register | RisingTrigger    |  0x8  | L | Rising trigger selection register (0-17)  |  EXTI_RTSR  | 0
+register | FallingTrigger   |  0xC  | L | Falling trigger selection register (0-17) |  EXTI_FTSR  | 0
+register | SoftwareEvent    |  0x10 | L | Software interrupt event register ( (0-17)|  EXTI_SWIER | 0
+register | PendingInterrupt |  0x14 | L | Software interrupt event register ( (0-17)|  EXTI_PR    | 0
+

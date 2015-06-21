@@ -1,0 +1,120 @@
+use-discret-address | TIM | 0x40012C00 0x40000000 0x40000400 0x40000800 0x40000C00  0x40001000  0x40001400  | 1
+#                              TIM1       TIM2         TIM3      TIM4        TIM5        TIM6      TIM7
+
+use-prefix-for-function-name | Timer
+
+copyright | Rémi PRUD'HOMME, tvc audio, Grenoble
+
+
+#
+# dans l'état la description ne couvre que le timer 6, pas les autres. 
+# des que possible, le complément sera fait
+
+#############################################################################################################################
+register | TimerControl1             |  0x0  | W | TIM control register 1              | TIMx_CR1   | 0
+register | TimerControl2             |  0x4  | W | TIM control register 2              | TIMx_CR2   | 0
+register | TimerSlaveModeControl     |  0x8  | W | TIM slave mode control register     | TIMx_CR2   | 0
+register | TimerDmaInterrupt         |  0xC  | W | TIM DMA/interrupt enable register   | TIMx_DIER  | 0
+register | TimerStatus               |  0x10 | W | TIM status register                 | TIMx_SR    | 0
+register | TimerEvent                |  0x14 | W | TIM event generation register       | TIMx_EGSR  | 0
+register | TimerCaptureCompareMode1  |  0x18 | W | TIM capture/compare mode register1  | TIMx_CCMR1 | 0
+register | TimerCaptureCompareMode2  |  0x1C | W | TIM capture/compare mode registe2   | TIMx_CCMR2 | 0  
+register | TimerCaptureCompareEnable |  0x20 | W | TIM capture/compare enable register | TIMx_CCER  | 0
+register | TimerCounter              |  0x24 | W | TIM counter                         | TIMx_CNT   | 0
+register | TimerPrescaler            |  0x28 | W | TIM prescaler                       | TIMx_PSC   | 0 
+register | TimerReload               |  0x2C | W | TIM auto-reload register            | TIMx_ARR   | 0
+register | TimerRepetitionCounter    |  0x30 | W | TIM repetition counter register     | TIMx_RCR   | 0
+register | TimerCaptureCompare1      |  0x34 | W | TIM capture/compare register 1      | TIMx_CCR1  | 0
+register | TimerCaptureCompare2      |  0x38 | W | TIM capture/compare register 2      | TIMx_CCR2  | 0
+register | TimerCaptureCompare3      |  0x3C | W | TIM capture/compare register 3      | TIMx_CCR3  | 0 
+register | TimerCaptureCompare4      |  0x40 | W | TIM capture/compare register 4      | TIMx_CCR4  | 0 
+register | TimerBreak                |  0x44 | W | TIM DMA control register            | TIMx_DCR   | 0
+register | TimerDmaAddress           |  0x48 | W | TIM DMA address                     | TIM_DCR    | 0
+
+#############################################################################################################################
+#############################################################################################################################
+#############################################################################################################################
+
+field | TimerControl1 | ClockDivision        | CDK  | rw | 9:8 | This bit-field indicates the division ratio between the timer clock (CK_INT) frequency and the dead-time and sampling clock (tDTS)used by the dead-time generators and the digital filters | ClockDivision | ES | TCK_INT TCK_INT_BY_2 TCK_INT_BY_4 
+field | TimerControl1 | AutoReload           | ARPE | rw | 7:7 | Auto-reload preload enable\\0: TIMx_ARR register is not buffered\\1: TIMx_ARR register is buffered | ReloadEnable | C
+field | TimerControl1 | CenterAlignedMode    | CMS  | rw | 6:5 | 00: Edge-aligned mode. The counter counts up or down depending on the direction bit (DIR).\\01: Center-aligned mode 1. The counter counts up and down alternatively. Output compare interrupt flags of channels configured in output (CCxS=00 in TIMx_CCMRx register) are set only when the counter is counting down.\\10: Center-aligned mode 2. The counter counts up and down alternatively. Output compare interrupt flags of channels configured in output (CCxS=00 in TIMx_CCMRx register) are set only when the counter is counting up.\\11: Center-aligned mode 3. The counter counts up and down alternatively. Output compare interrupt flags of channels configured in output (CCxS=00 in TIMx_CCMRx register) are set both when the counter is counting up or down. | CenterAlignedMode | ES | EDGE_ALIGNED_MODE CENTER_ALIGNED_MOD_1 CENTER_ALIGNED_MOD_2 CENTER_ALIGNED_MOD_3
+
+field | TimerControl1 | Direction           | DIR  | rw | 4:4 | 0: Counter used as upcounter\\1: Counter used as downcounter | Direction | B | UPCOUNTER DOWNCOUNTER
+field | TimerControl1 | OnePulseMode        | OPM  | rw | 3:3 | : One pulse mode\\0: Counter is not stopped at update event\\1: Counter stops counting at the next update event (clearing the bit CEN) | OnePulseMode | B | COUNTER_IS_NOT_STOPPED COUNTER_STOPS_COUNTING_AT_THE_NEXT_UPDATE
+field | TimerControl1 | UpdateRequestSource  | OPM  | rw | 2:2 | This bit is set and cleared by software to select the UEV event sources\\ 0: Any of the following events generate an update interrupt or DMA request if enabled. These events can be: \\Counter overflow/underflow\\ Setting the UG bit \\ Update generation through the slave mode controller\\1: Only counter overflow/underflow generates an update interrupt or DMA request if enabled | EventSources | B  | ANY_SOURCE ONLY_OVERFLOW_OR_UNDERFLOW 
+field | TimerControl1 | UpdateEnable        | OPM  | rw | 1:1 | This bit is set and cleared by software to enable/disable UEV event generation. | UpdateEnable | CN
+field | TimerControl1 | CounterEnable       | CEN  | rw | 0:0 | Counter enable\\0: Counter disabled\\1: Counter enabled | CounterEnable | C
+
+#############################################################################################################################
+field | TimerControl2 |  T1sSelection           | TI1S  | rw |  7:7 | TI1 selection\\0: The TIMx_CH1 pin is connected to TI1 input\\1: The TIMx_CH1, CH2 and CH3 pins (xor) are connected to the TI1 input | T1sSelection | B | TIMx_CH1_CONNECTED_TI1_INPUT TIMx_CH1_CH2_CH3_CONNECTED_TI1_INPUT
+field | TimerControl2 |  MasterModeSelection    | MMS   | rw |  6:4 | Master mode selection | MasterMode | ES | RESET ENABLE UPDATE
+
+field | TimerControl2 |  CaptureCompareDmaSelection | CCDS  | rw |  3:3 | Capture/compare DMA selection\\0: CCx DMA request sent when CCx event occurs\\1: CCx DMA requests sent when update event occurs | CaptureCompareDmaSelection | B | DMA_REQUEST_SENT_WHEN_CC_EVENT DMA_REQUEST_SENT_WHEN_CC_UPDATE
+
+#############################################################################################################################
+
+field | TimerSlaveModeControl | TriggerPolarity | ETP  | rw | 15:15 | This bit selects whether ETR or ETR is used for trigger operations\\0: ETR is non-inverted, active at high level or rising edge\\1: ETR is inverted, active at low level or falling edge   | TriggerPolarity | B |  ETR_NON_INVERTED ETR_INVERTED
+
+field | TimerSlaveModeControl | External clock  | ECE  | rw | 14:14 | This bit enables External clock mode 2\\0: External clock mode 2 disabled\\1: External clock mode 2 enabled. The counter is clocked by any active edge on the ETRF signal.\\1: Setting the ECE bit has the same effect as selecting external clock mode 1 with TRGI connected to ETRF (SMS=111 and TS=111).\\2: It is possible to simultaneously use external clock mode 2 with the following slave modes: \\reset mode, gated mode and trigger mode. Nevertheless, TRGI must not be connected to ETRF in this case (TS bits must not be 111).\\3: If external clock mode 1 and external clock mode 2 are enabled at the same time, the external clock input is ETRF.   | ExternalClockEnable  | C
+
+field | TimerSlaveModeControl | TriggerPrescaler | ETPS | rw | 13:12 | External trigger signal ETRP frequency must be at most 1/4 of CK_INT frequency. A prescaler can be enabled to reduce ETRP frequency. It is useful when inputting fast external clocks.\\00: Prescaler OFF\\01: ETRP frequency divided by 2\\10: ETRP frequency divided by 4\\11: ETRP frequency divided by 8   |TriggerPrescaler | ES | PRESCALER_OFF  FREQUENCY_DIVIDED_BY_2 FREQUENCY_DIVIDED_BY_4 FREQUENCY_DIVIDED_BY_8 
+field | TimerSlaveModeControl | TriggerFilter    | ETF  | rw | 11:8  | This bit-field then defines the frequency used to sample ETRP signal and the length of the digital filter applied to ETRP. The digital filter is made of an event counter in which N events are needed to validate a transition on the output   | Factor | W
+field | TimerSlaveModeControl | MasterSlaveMode  | MSM  | rw |  7:7  | Master/Slave mode\\0: No action\\1: The effect of an event on the trigger input (TRGI) is delayed to allow a perfect synchronization between the current timer and its slaves (through TRGO). It is useful if we want to synchronize several timers on a single external event.   | MasterSlaveMode | B | NO_ACTION SYNCHRONISE_MASTER_AND_SLAVE
+field | TimerSlaveModeControl | TriggerSelection | TS   | rw |  6:4  |This bit-field selects the trigger input to be used to synchronize the counter   | TriggerSelection | ES | INTERNAL_TRIGGER_0  INTERNAL_TRIGGER_1  INTERNAL_TRIGGER_2 INTERNAL_TRIGGER_3 TI1_EDGE_DETECTOR FILTERED_TIMER_INPUT_1  FILTERED_TIMER_INPUT_2 EXTERNAL_TRIGGER_INPUT
+field | TimerSlaveModeControl | ClearSource      | OCCS | rw |  3:3  | This bit is used to select the OCREF clear source\\0: OCREF_CLR_INT is connected to the OCREF_CLR input\\1: OCREF_CLR_INT is connected to ETRF   | ClearSource | B | OCREF_CLR_INT_CONNECTED_TO_OCREF_CLR OCREF_CLR_INT_CONNECTED_TO_ETRF
+field | TimerSlaveModeControl | SlaveModeSelection| SMS | rw |  2:0  | When external signals are selected the active edge of the trigger signal (TRGI) is linked to the polarity selected on the external input (see Input Control register and Control Register description.   | SlaveModeSelection | ES | SLAVE_MODE_DISABLED ENCODER_MODE_1 ENCODER_MODE_2 ENCODER_MODE_3 RESET_MODE GATED_MODE TRIGGER_MODE EXTERNAL_CLOCK_MODE_1
+
+
+#############################################################################################################################
+field | TimerDmaInterrupt | TriggerDmaRequest           | TDE   | rw |  14:14 | Trigger DMA request enable           | TriggerDmaRequestEnable         | C
+field | TimerDmaInterrupt | CaptureCompare4DmaRequest   | CC4DE | rw |  12:12 | Capture/Compare 4 DMA request enable | CaptureCompare4DmaRequestEnable | C
+field | TimerDmaInterrupt | CaptureCompare3DmaRequest   | CC3DE | rw |  11:11 | Capture/Compare 3 DMA request enable | CaptureCompare3DmaRequestEnable | C
+field | TimerDmaInterrupt | CaptureCompare2DmaRequest   | CC2DE | rw |  10:10 | Capture/Compare 2 DMA request enable | CaptureCompare2DmaRequestEnable | C
+field | TimerDmaInterrupt | CaptureCompare1DmaRequest   | CC1DE | rw |   9:9  | Capture/Compare 1 DMA request enable | CaptureCompare1DmaRequestEnable | C
+field | TimerDmaInterrupt | UpdateDmaRequest            | UDE   | rw |   8:8  | Update DMA request enable            | UpdateDmaRequestEnable          | C
+field | TimerDmaInterrupt | TriggerInterrupt            | TIE   | rw |   6:6  | Trigger interrupt enable             | TriggerInterruptEnable          | C
+
+field | TimerDmaInterrupt | CaptureCompare4Interrupt    | CC4IE | rw |   4:4  | Capture/Compare 4 interrupt enable   | CaptureCompare4InterruptEnable  | C
+field | TimerDmaInterrupt | CaptureCompare3Interrupt    | CC3IE | rw |   3:3  | Capture/Compare 3 interrupt enable   | CaptureCompare3InterruptEnable  | C
+field | TimerDmaInterrupt | CaptureCompare2Interrupt    | CC2IE | rw |   2:2  | Capture/Compare 2 interrupt enable   | CaptureCompare2InterruptEnable  | C
+field | TimerDmaInterrupt | CaptureCompare1Interrupt    | CC1IE | rw |   1:1  | Capture/Compare 1 interrupt enable   | CaptureCompare1InterruptEnable  | C
+field | TimerDmaInterrupt | UpdateInterrupt             | UIE   | rw |   0:0  | Update interrupt enable              | UpdateInterruptEnable           | C
+
+#############################################################################################################################
+type | OverCapture | B | NOTHING OVERCAPTURE
+type | InterruptFlag| B | NO_EVENT_OCCURRED INTERRUPT_PENDING
+type | InterruptEvent | B | NO_EVENT_OCCURRED EVENT_GENERATION
+
+field | TimerStatus | CaptureCompare4OverFlag         | CC4OF | rw |  12:12 | This flag is set by hardware only when the corresponding channel is configured in input capture mode. It is cleared by software by writing it to 0. | OverCapture | Y1
+field | TimerStatus | CaptureCompare3OverFlag         | CC3OF | rw |  11:11 | This flag is set by hardware only when the corresponding channel is configured in input capture mode. It is cleared by software by writing it to 0. | OverCapture | Y1
+field | TimerStatus | CaptureCompare2OverFlag         | CC2OF | rw |  10:10 | This flag is set by hardware only when the corresponding channel is configured in input capture mode. It is cleared by software by writing it to 0. | OverCapture | Y1
+field | TimerStatus | CaptureCompare1OverFlag         | CC1OF | rw |   9:9  | This flag is set by hardware only when the corresponding channel is configured in input capture mode. It is cleared by software by writing it to 0. | OverCapture | Y1
+field | TimerStatus | TriggerInterruptFlag            | TIF   | rw |   6:6  | This flag is set by hardware on trigger event (active edge detected on TRGI input when the slave mode controller is enabled in all modes but gated mode. It is set when the counter  starts or stops when gated mode is selected. It is cleared by software. | InterruptFlag | Y1
+field | TimerStatus | CaptureCompare4InterruptFlag    | CC4IF | rw |   4:4  | Capture/Compare 4 interrupt flag   | InterruptFlag      | Y1
+field | TimerStatus | CaptureCompare3InterruptFlag    | CC3IF | rw |   3:3  | Capture/Compare 3 interrupt flag   | InterruptFlag      | Y1
+field | TimerStatus | CaptureCompare2InterruptFlag    | CC2IF | rw |   2:2  | Capture/Compare 2 interrupt flag   | InterruptFlag      | Y1
+field | TimerStatus | CaptureCompare1InterruptFlag    | CC1IF | rw |   1:1  | Capture/Compare 1 interrupt flag   | InterruptFlag      | Y1
+field | TimerStatus | UpdateInterruptFlag            | UIF   | rw |  0:0 | Update interrupt pending. This bit is set by hardware when the registers are updated | InterruptFlag | Y1
+
+#############################################################################################################################
+
+field | TimerEvent | TriggerInterruptEvent            | TG   | rw |   6:6  | Trigger generation. This bit is set by software in order to generate an event, it is automatically cleared by hardware | InterruptEvent | Y1
+field | TimerEvent | CaptureCompare4InterruptEvent    | CC4IG | rw |   4:4  | Capture/Compare 4 interrupt Event generation                                                                          | InterruptEvent | Y1
+field | TimerEvent | CaptureCompare3InterruptEvent    | CC3IG | rw |   3:3  | Capture/Compare 3 interrupt Event generation                                                                          | InterruptEvent | Y1
+field | TimerEvent | CaptureCompare2InterruptEvent    | CC2IG | rw |   2:2  | Capture/Compare 2 interrupt Event generation                                                                          | InterruptEvent | Y1
+field | TimerEvent | CaptureCompare1InterruptEvent    | CC1IG | rw |   1:1  | Capture/Compare 1 interrupt Event generation                                                                          | InterruptEvent | Y1
+field | TimerEvent | UpdateInterruptEvent             | UG    | rw |   0:0  | Update interrupt pending. This bit is set by hardware when the registers are updated                                  | InterruptEvent | Y1
+
+
+#############################################################################################################################
+
+#field | TimerCaptureCompareMode1 |             | OC2CE   | rw |   15:15  | Output compare 2 clear enable
+#field | TimerCaptureCompareMode1 |             | OC2CM   | rw |   14:12  | Output compare 2 mode 
+#field | TimerCaptureCompareMode1 |             | OC2PE   | rw |   11:11  | Output compare 2 preload enable
+#field | TimerCaptureCompareMode1 |             | OC2FE   | rw |   10:10  | Output compare 2 fast enable
+#field | TimerCaptureCompareMode1 |             | CC2S    | rw |    9:8   | Capture/Compare 2 selection
+#field | TimerCaptureCompareMode1 |             | OC1CE   | rw |    7:7   | Output compare 1 clear enable
+#field | TimerCaptureCompareMode1 |             | OC1M    | rw |    6:4   | Output compare 1 mode
+#field | TimerCaptureCompareMode1 |             | OC1PE   | rw |    3:3   | Output compare 1 preload enable
+#field | TimerCaptureCompareMode1 |             | OC1FE   | rw |    2:2   | Output compare 1 fast enable
+#field | TimerCaptureCompareMode1 |             | CC1S    | rw |    1:0   | Capture/Compare 1 selection
