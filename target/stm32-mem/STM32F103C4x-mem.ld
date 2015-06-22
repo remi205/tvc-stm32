@@ -7,6 +7,10 @@
  */
 MEMORY
 {
-   FLASH (rx)  : ORIGIN =  0x8000000, LENGTH = 16K
+   FLASH (rx)  : ORIGIN = 0x8000000, LENGTH = 16K
    SRAM  (rxw) : ORIGIN = 0x20000000, LENGTH = 10K
 }
+_estack = 0x20002800;   /* end of 10K RAM on AHB bus*/
+/* Generate a link error if heap and stack don't fit into RAM */
+Min_Heap_Size = 0;      /* required amount of heap  */
+Min_Stack_Size = 0x400; /* required amount of stack */
