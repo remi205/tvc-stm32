@@ -9,7 +9,6 @@ AM_CFLAGS = -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/Inc -I$(top_srcdir)/CMS
 AM_CPPFLAGS = -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/Inc -I$(top_srcdir)/CMSIS/Device/ST/STM32$(FAMILLY)xx/Include 
 
 if L4XX
-F = L4
 AM_CFLAGS +=  -D__CORTEX_M=4 -D__FPU_PRESENT -D__FPU_USED=1 -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 
 AM_CPPFLAGS +=  -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 PORT_INC = FreeRTOS/Source/portable/GCC/ARM_CM4F
@@ -17,7 +16,6 @@ LIBPORT  = FreeRTOS/Source/portable/GCC/ARM_CM4F/libport.a
 LD_SCRIPT = $(top_srcdir)/target/target-stm32-$(ROMRAM)-8.ld 
 else
 if F3XX
-F = L3
 AM_CFLAGS +=  -D__CORTEX_M=4 -D__FPU_PRESENT -D__FPU_USED=1 -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 
 AM_CPPFLAGS += -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mfpu=fpv4-sp-d16 
 PORT_INC = FreeRTOS/Source/portable/GCC/ARM_CM4F
@@ -25,7 +23,6 @@ LIBPORT  =  FreeRTOS/Source/portable/GCC/ARM_CM4F/libport.a
 LD_SCRIPT = $(top_srcdir)/target/target-stm32-$(ROMRAM)-2.ld 
 else
 if F7XX 
-F = L7
 AM_CFLAGS += -D__CORTEX_M=7 -D__FPU_PRESENT -D__FPU_USED=1 -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-sp-d16
 AM_CPPFLAGS += -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-sp-d16
 PORT_INC = FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1
@@ -33,7 +30,6 @@ LIBPORT =  FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1/libport.a
 LD_SCRIPT = $(top_srcdir)/target/target-stm32-$(ROMRAM)-4.ld 
 else
 if L0XX 
-F = L0
 AM_CFLAGS += -D__CORTEX_M=0 -D__FPU_USED=0 -mcpu=cortex-m0 -mthumb 
 AM_CPPFLAGS +=  -mcpu=cortex-m0 -mthumb  -mfloat-abi=soft
 PORT_INC = FreeRTOS/Source/portable/GCC/ARM_CM0
@@ -41,7 +37,6 @@ LIBPORT = FreeRTOS/Source/portable/GCC/ARM_CM0/libport.a
 LD_SCRIPT = $(top_srcdir)/target/target-stm32-$(ROMRAM)-4.ld 
 else
 ### par defaut c'est le F4
-F = F4
 AM_CFLAGS += -D__CORTEX_M=4 -D__FPU_PRESENT -D__FPU_USED=1 -mcpu=cortex-m4 -mthumb  
 AM_CPPFLAGS += -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 PORT_INC = FreeRTOS/Source/portable/GCC/ARM_CM4F 
@@ -58,30 +53,27 @@ SUBDIRS = application bsp over-hal $(HAL_PATH)
 
 if WANT_IPV4
 SUBDIRS += LwIP Common
-LIB_IP = LwIP/src/core/ipv4/libipv4.a 
 AM_CFLAGS += -I$(top_srcdir)/LwIP/src/include/ipv4 -DIPV4
 INC_IP = -I$(top_srcdir)/LwIP/src/include
-LIB_IP = LwIP/src/api/libapi.a LwIP/src/core/libcore.a LwIP/src/netif/libnetif.a LwIP/system/OS/libsysarch.a LwIP/src/core/ipv4/libipv4.a LwIP/src/core/raw.o $(HAL_PATH)/Src/STM32$(FAMILLY)xx_hal_eth.o 
+LIB_IP =  LwIP/src/core/ipv4/libipv4.a  LwIP/src/api/libapi.a LwIP/src/core/libcore.a LwIP/src/netif/libnetif.a LwIP/system/OS/libsysarch.a LwIP/src/core/ipv4/libipv4.a LwIP/src/core/raw.o $(HAL_PATH)/Src/STM32$(FAMILLY)xx_hal_eth.o 
 endif
 
 if WANT_IPV6
 SUBDIRS += LwIP Common
-LIB_IP = LwIP/src/core/ipv6/libipv6.a 
 AM_CFLAGS += -I$(top_srcdir)/LwIP/src/include/ipv6 -DIPV6
 INC_IP = -I$(top_srcdir)/LwIP/src/include
-LIB_IP = LwIP/src/api/libapi.a LwIP/src/core/libcore.a LwIP/src/netif/libnetif.a LwIP/system/OS/libsysarch.a LwIP/src/core/ipv4/libipv6.a LwIP/src/core/raw.o $(HAL_PATH)/Src/STM32$(FAMILLY)xx_hal_eth.o 
+LIB_IP =  LwIP/src/core/ipv6/libipv6.a LwIP/src/api/libapi.a LwIP/src/core/libcore.a LwIP/src/netif/libnetif.a LwIP/system/OS/libsysarch.a LwIP/src/core/ipv4/libipv6.a LwIP/src/core/raw.o $(HAL_PATH)/Src/STM32$(FAMILLY)xx_hal_eth.o 
 endif
 
 if WANT_FREERTOS  
 SUBDIRS += FreeRTOS CMSIS
 LIB_FREERTOS = FreeRTOS/Source/libfreertos.a FreeRTOS/Source/portable/MemMang/libmem.a FreeRTOS/Source/CMSIS_RTOS/libcmsis_os.a
 INC_FREERTOS = -I$(top_srcdir)/CMSIS/Include -I$(top_srcdir)/FreeRTOS/Source/CMSIS_RTOS -I$(top_srcdir)/FreeRTOS/Source/include
-LIB_FREERTOS = 
+SUBDIRS += FreeRTOS
 endif
 
-AM_CFLAGS += -Wall -Wpointer-arith -Wstrict-prototypes -Winline -Wundef -g -I$(top_srcdir)/Inc -I../Inc -I$(top_srcdir)/$(PORT_INC) -I$(top_srcdir)/tvc-macros $(INC_IP) $(INC_FREERTOS)
-
-AM_CPPFLAGS += -O3 -ffunction-sections -fdata-sections -fno-exceptions  -I$(top_srcdir)/Inc -I../Inc  -I$(top_srcdir)/$(PORT_INC)  -I$(top_srcdir)/tvc-macros $(INC_IP) $(INC_FREERTOS)
+AM_CFLAGS += -Wall -Wpointer-arith -Wstrict-prototypes -Winline -Wundef -g -I$(top_srcdir)/Inc -I../Inc -I$(top_srcdir)/$(PORT_INC) -I$(top_srcdir)/tvc-macros $(INC_IP) $(INC_FREERTOS) -DSTM32$(STM32)xx
+AM_CPPFLAGS += -O3 -ffunction-sections -fdata-sections -fno-exceptions  -I$(top_srcdir)/Inc -I../Inc  -I$(top_srcdir)/$(PORT_INC)  -I$(top_srcdir)/tvc-macros $(INC_IP) $(INC_FREERTOS) -DSTM32$(STM32)xx
 
 ## -fno-rtti
 bin_PROGRAMS = essai_stm32

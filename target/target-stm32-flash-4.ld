@@ -130,8 +130,8 @@ SECTIONS
     PROVIDE ( end = . );
     PROVIDE ( _end = . );
 		*(.heap*)    
-    . = . + _Min_Heap_Size;
-    . = . + _Min_Stack_Size;
+    . = . + Min_Heap_Size;
+    . = . + Min_Stack_Size;
     . = ALIGN(4);
   } >SRAM
 
