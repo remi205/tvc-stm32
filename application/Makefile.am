@@ -1,9 +1,8 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 lib_LIBRARIES = libapplication.a
 
-AM_CFLAGS =-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -O3 -Wall -Wpointer-arith  -Winline -Wundef -g  -ffunction-sections -fdata-sections -DSTM32$(STM32)xx -ISTM32$(FAMILLY)xx_HAL_Driver/Src/STM32$(FAMILLY)
-
-AM_CPPFLAGS =-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -O3 -Wall -Wpointer-arith  -Winline -Wundef -g  -ffunction-sections -fdata-sections -DSTM32$(STM32)xx -ISTM32$(FAMILLY)xx_HAL_Driver/Src/STM32$(FAMILLY)
+AM_CFLAGS =-Wall -Wpointer-arith  -Winline -Wundef -g  -ffunction-sections -fdata-sections -DSTM32$(PRODUCT)xx -DFAMILLY$(FAMILLY)  -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/Inc
+AM_CPPFLAGS = -Wall -Wpointer-arith  -Winline -Wundef -g -ffunction-sections -fdata-sections -DSTM32$(PRODUCT)xx -DFAMILLY$(FAMILLY) -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/Inc
 
 CPPFLAGS += -I$(top_srcdir)/inc -I$(top_srcdir)  -I$(top_srcdir)/STM32F4xx_HAL_Driver/inc -I$(top_srcdir)/Drivers/CMSIS/Include -I$(top_srcdir)/CMSIS/Device/ST/STM32F4xx/Include -I$(top_srcdir)/LwIP/src/include -I$(top_srcdir)/LwIP/system -I$(top_srcdir)/FreeRTOS/Source/CMSIS_RTOS -I$(top_srcdir)/FreeRTOS/Source/include
 
