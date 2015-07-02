@@ -40,8 +40,7 @@ AC_DEFINE([freertos],["$want_string"],[Specify the target type])
 AC_DEFINE([stm32_serie],["$want_string"],[Specify the serie of stm32])
 AC_DEFINE([stm32_product],["$want_string"],[Specify the product of stm32])
 
-
-AM_CONDITIONAL([WANT_FREERTOS], [test "WANT_FREERTOS" = "yes"])
+AM_CONDITIONAL([FREERTOS], [test "$WANT_FREERTOS" = "yes"])
 
 AM_CONDITIONAL([F3XX], [test "$enable_stm32_serie" = F3])
 AM_CONDITIONAL([F4XX], [test "$enable_stm32_serie" = F4])
@@ -50,9 +49,9 @@ AM_CONDITIONAL([L0XX], [test "$enable_stm32_serie" = L0])
 AM_CONDITIONAL([L4XX], [test "$enable_stm32_serie" = L4])
 
 
-AM_CONDITIONAL([WANT_LWIP],  [test "$lwip" = true])
-AM_CONDITIONAL([WANT_IPV4],  [test "$ipv4" = true ])
-AM_CONDITIONAL([WANT_IPV6],  [test "$ipv6" = true ])
+AM_CONDITIONAL([LWIP],  [test "$lwip" = true])
+AM_CONDITIONAL([IPV4],  [test "$ipv4" = true ])
+AM_CONDITIONAL([IPV6],  [test "$ipv6" = true ])
 
 ## generate all the Makefile
 AC_CONFIG_FILES([Makefile LwIP/system/OS/Makefile CMSIS/Device/Makefile CMSIS/Device/ST/Makefile CMSIS/Device/ST/STM32F4xx/Makefile CMSIS/Device/ST/STM32F4xx/Source/Makefile CMSIS/Device/ST/STM32F4xx/Source/Templates/Makefile CMSIS/Makefile STM32F4xx_HAL_Driver/Makefile STM32F4xx_HAL_Driver/Src/Makefile FreeRTOS/Makefile FreeRTOS/Source/Makefile FreeRTOS/Source/CMSIS_RTOS/Makefile LwIP/Makefile LwIP/src/api/Makefile LwIP/src/core/ipv4/Makefile over-hal/Makefile application/Makefile bsp/Makefile Common/Makefile Common/Utils/Makefile Common/TCP_IP/Makefile FreeRTOS/Source/portable/MemMang/Makefile FreeRTOS/Source/portable/Makefile FreeRTOS/Source/portable/GCC/Makefile LwIP/src/Makefile LwIP/src/core/Makefile LwIP/src/netif/Makefile LwIP/system/Makefile FreeRTOS/Source/portable/GCC/ARM_CM4F/Makefile STM32F3xx_HAL_Driver/Makefile STM32F3xx_HAL_Driver/Src/Makefile STM32F7xx_HAL_Driver/Makefile STM32F7xx_HAL_Driver/Src/Makefile STM32L0xx_HAL_Driver/Makefile STM32L0xx_HAL_Driver/Src/Makefile STM32L4xx_HAL_Driver/Makefile STM32L4xx_HAL_Driver/Src/Makefile])

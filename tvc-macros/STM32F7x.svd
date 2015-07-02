@@ -1,24 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="CMSIS-SVD_Schema_1_1.xsd">
 <name>STM32F7x</name>
-<peripherals>
+<version>1.0</version>
+<description>STM32F7x</description>
+<!--Bus Interface Properties--><!--Cortex-M3 is byte addressable--><addressUnitBits>8</addressUnitBits>
+<!--the maximum data bit width accessible within a single transfer--><width>32</width>
+<!--Register Default Properties-->
+<size>0x20</size>
+<resetValue>0x0
+</resetValue>
+<resetMask>0xFFFFFFFF
+</resetMask><peripherals>
 <peripheral>
 <name>RNG</name>
 <description>Random number generator</description>
 <groupName>RNG</groupName>
-<baseAddress>0x50060800</baseAddress>
-<addressBlock>
-<offset>0x0</offset>
-<size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
-<interrupt>
-<name>HASH_RNG_IRQ</name>
-<description>Hash and Rng global interrupt</description>
-<value>80</value>
-</interrupt>
-<registers>
-<register>
+        <baseAddress>0x50060800</baseAddress>
+                <addressBlock>
+                <offset>0x0</offset>
+                <size>0x400</size>
+                <usage>registers</usage></addressBlock>
+        <interrupt>
+                <name>HASH_RNG_IRQ</name>
+                <description>Hash and Rng global interrupt</description>
+                <value>80</value></interrupt>
+        <registers>
+                <register>
+
 <name>CR</name>
 <displayName>CR</displayName>
 <description>control register</description>
@@ -102,9 +110,7 @@
 <bitWidth>32</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>HASH</name>
 <description>Hash processor</description>
@@ -113,8 +119,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>CR</name>
@@ -1436,9 +1441,7 @@
 <bitWidth>32</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>CRYP</name>
 <description>Cryptographic processor</description>
@@ -1447,8 +1450,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>CR</name>
@@ -4390,9 +4392,7 @@
 <bitWidth>32</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>DCMI</name>
 <description>Digital camera interface</description>
@@ -4401,13 +4401,11 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <interrupt>
 <name>DCMI_IRQ</name>
 <description>DCMI global interrupt</description>
-<value>78</value>
-</interrupt>
+<value>78</value></interrupt>
 <registers>
 <register>
 <name>CR</name>
@@ -4829,9 +4827,7 @@
 <bitWidth>8</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>FMC</name>
 <description>Flexible memory controller</description>
@@ -4840,13 +4836,11 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x1000</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <interrupt>
 <name>FMC_IRQ</name>
 <description>FMC global interrupt</description>
-<value>48</value>
-</interrupt>
+<value>48</value></interrupt>
 <registers>
 <register>
 <name>BCR1</name>
@@ -6179,9 +6173,7 @@
 <bitWidth>1</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>DBG</name>
 <description>Debug support</description>
@@ -6190,8 +6182,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>DBGMCU_IDCODE</name>
@@ -6404,9 +6395,7 @@
 <bitWidth>1</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>DMA2</name>
 <description>DMA controller</description>
@@ -6415,48 +6404,39 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <interrupt>
 <name>DMA2_Stream0_IRQ</name>
 <description>DMA2 Stream0 global interrupt</description>
-<value>56</value>
-</interrupt>
+<value>56</value></interrupt>
 <interrupt>
 <name>DMA2_Stream1_IRQ</name>
 <description>DMA2 Stream1 global interrupt</description>
-<value>57</value>
-</interrupt>
+<value>57</value></interrupt>
 <interrupt>
 <name>DMA2_Stream2_IRQ</name>
 <description>DMA2 Stream2 global interrupt</description>
-<value>58</value>
-</interrupt>
+<value>58</value></interrupt>
 <interrupt>
 <name>DMA2_Stream3_IRQ</name>
 <description>DMA2 Stream3 global interrupt</description>
-<value>59</value>
-</interrupt>
+<value>59</value></interrupt>
 <interrupt>
 <name>DMA2_Stream4_IRQ</name>
 <description>DMA2 Stream4 global interrupt</description>
-<value>60</value>
-</interrupt>
+<value>60</value></interrupt>
 <interrupt>
 <name>DMA2_Stream5_IRQ</name>
 <description>DMA2 Stream5 global interrupt</description>
-<value>68</value>
-</interrupt>
+<value>68</value></interrupt>
 <interrupt>
 <name>DMA2_Stream6_IRQ</name>
 <description>DMA2 Stream6 global interrupt</description>
-<value>69</value>
-</interrupt>
+<value>69</value></interrupt>
 <interrupt>
 <name>DMA2_Stream7_IRQ</name>
 <description>DMA2 Stream7 global interrupt</description>
-<value>70</value>
-</interrupt>
+<value>70</value></interrupt>
 <registers>
 <register>
 <name>LISR</name>
@@ -8871,53 +8851,42 @@
 <access>read-write</access>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral derivedFrom="DMA2">
 <name>DMA1</name>
 <baseAddress>0x40026000</baseAddress>
 <interrupt>
 <name>DMA1_Stream0_IRQ</name>
 <description>DMA1 Stream0 global interrupt</description>
-<value>11</value>
-</interrupt>
+<value>11</value></interrupt>
 <interrupt>
 <name>DMA1_Stream1_IRQ</name>
 <description>DMA1 Stream1 global interrupt</description>
-<value>12</value>
-</interrupt>
+<value>12</value></interrupt>
 <interrupt>
 <name>DMA1_Stream2_IRQ</name>
 <description>DMA1 Stream2 global interrupt</description>
-<value>13</value>
-</interrupt>
+<value>13</value></interrupt>
 <interrupt>
 <name>DMA1_Stream3_IRQ</name>
 <description>DMA1 Stream3 global interrupt</description>
-<value>14</value>
-</interrupt>
+<value>14</value></interrupt>
 <interrupt>
 <name>DMA1_Stream4_IRQ</name>
 <description>DMA1 Stream4 global interrupt</description>
-<value>15</value>
-</interrupt>
+<value>15</value></interrupt>
 <interrupt>
 <name>DMA1_Stream5_IRQ</name>
 <description>DMA1 Stream5 global interrupt</description>
-<value>16</value>
-</interrupt>
+<value>16</value></interrupt>
 <interrupt>
 <name>DMA1_Stream6_IRQ</name>
 <description>DMA1 Stream6 global interrupt</description>
-<value>17</value>
-</interrupt>
+<value>17</value></interrupt>
 <interrupt>
 <name>DMA1_Stream7_IRQ</name>
 <description>DMA1 Stream7 global interrupt</description>
-<value>47</value>
-</interrupt>
-</peripheral>
+<value>47</value></interrupt></peripheral>
 <peripheral>
 <name>RCC</name>
 <description>Reset and clock control</description>
@@ -8926,13 +8895,11 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <interrupt>
 <name>RCC_IRQ</name>
 <description>RCC global interrupt</description>
-<value>5</value>
-</interrupt>
+<value>5</value></interrupt>
 <registers>
 <register>
 <name>CR</name>
@@ -11373,9 +11340,7 @@
 <bitWidth>1</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>GPIOD</name>
 <description>General-purpose I/Os</description>
@@ -11384,8 +11349,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>MODER</name>
@@ -12569,41 +12533,31 @@
 <bitWidth>1</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral derivedFrom="GPIOD">
 <name>GPIOC</name>
-<baseAddress>0x40020800</baseAddress>
-</peripheral>
+<baseAddress>0x40020800</baseAddress></peripheral>
 <peripheral derivedFrom="GPIOD">
 <name>GPIOK</name>
-<baseAddress>0X40022800</baseAddress>
-</peripheral>
+<baseAddress>0X40022800</baseAddress></peripheral>
 <peripheral derivedFrom="GPIOD">
 <name>GPIOJ</name>
-<baseAddress>0X40022400</baseAddress>
-</peripheral>
+<baseAddress>0X40022400</baseAddress></peripheral>
 <peripheral derivedFrom="GPIOD">
 <name>GPIOI</name>
-<baseAddress>0X40022000</baseAddress>
-</peripheral>
+<baseAddress>0X40022000</baseAddress></peripheral>
 <peripheral derivedFrom="GPIOD">
 <name>GPIOH</name>
-<baseAddress>0X40021C00</baseAddress>
-</peripheral>
+<baseAddress>0X40021C00</baseAddress></peripheral>
 <peripheral derivedFrom="GPIOD">
 <name>GPIOG</name>
-<baseAddress>0X40021800</baseAddress>
-</peripheral>
+<baseAddress>0X40021800</baseAddress></peripheral>
 <peripheral derivedFrom="GPIOD">
 <name>GPIOF</name>
-<baseAddress>0X40021400</baseAddress>
-</peripheral>
+<baseAddress>0X40021400</baseAddress></peripheral>
 <peripheral derivedFrom="GPIOD">
 <name>GPIOE</name>
-<baseAddress>0X40021000</baseAddress>
-</peripheral>
+<baseAddress>0X40021000</baseAddress></peripheral>
 <peripheral>
 <name>GPIOB</name>
 <description>General-purpose I/Os</description>
@@ -12612,8 +12566,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>MODER</name>
@@ -13797,9 +13750,7 @@
 <bitWidth>1</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>GPIOA</name>
 <description>General-purpose I/Os</description>
@@ -13808,8 +13759,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>MODER</name>
@@ -14993,9 +14943,7 @@
 <bitWidth>1</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>SYSCFG</name>
 <description>System configuration controller</description>
@@ -15004,8 +14952,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>MEMRM</name>
@@ -15233,9 +15180,7 @@
 <bitWidth>1</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>SPI1</name>
 <description>Serial peripheral interface</description>
@@ -15244,13 +15189,11 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <interrupt>
 <name>SPI1_IRQ</name>
 <description>SPI1 global interrupt</description>
-<value>35</value>
-</interrupt>
+<value>35</value></interrupt>
 <registers>
 <register>
 <name>CR1</name>
@@ -15628,54 +15571,42 @@
 <bitWidth>8</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral derivedFrom="SPI1">
 <name>SPI2</name>
 <baseAddress>0x40003800</baseAddress>
 <interrupt>
 <name>SPI2_IRQ</name>
 <description>SPI2 global interrupt</description>
-<value>36</value>
-</interrupt>
-</peripheral>
+<value>36</value></interrupt></peripheral>
 <peripheral derivedFrom="SPI1">
 <name>SPI3</name>
 <baseAddress>0x40003C00</baseAddress>
 <interrupt>
 <name>SPI3_IRQ</name>
 <description>SPI3 global interrupt</description>
-<value>51</value>
-</interrupt>
-</peripheral>
+<value>51</value></interrupt></peripheral>
 <peripheral derivedFrom="SPI1">
 <name>SPI4</name>
 <baseAddress>0x40013400</baseAddress>
 <interrupt>
 <name>SPI4_IRQ</name>
 <description>SPI 4 global interrupt</description>
-<value>84</value>
-</interrupt>
-</peripheral>
+<value>84</value></interrupt></peripheral>
 <peripheral derivedFrom="SPI1">
 <name>SPI5</name>
 <baseAddress>0x40015000</baseAddress>
 <interrupt>
 <name>SPI5_IRQ</name>
 <description>SPI 5 global interrupt</description>
-<value>85</value>
-</interrupt>
-</peripheral>
+<value>85</value></interrupt></peripheral>
 <peripheral derivedFrom="SPI1">
 <name>SPI6</name>
 <baseAddress>0x40015400</baseAddress>
 <interrupt>
 <name>SPI6_IRQ</name>
 <description>SPI 6 global interrupt</description>
-<value>86</value>
-</interrupt>
-</peripheral>
+<value>86</value></interrupt></peripheral>
 <peripheral>
 <name>ADC1</name>
 <description>Analog-to-digital converter</description>
@@ -15684,8 +15615,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>SR</name>
@@ -16308,22 +16238,17 @@
 <bitWidth>16</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral derivedFrom="ADC1">
 <name>ADC2</name>
-<baseAddress>0x40012100</baseAddress>
-</peripheral>
+<baseAddress>0x40012100</baseAddress></peripheral>
 <peripheral derivedFrom="ADC1">
 <name>ADC3</name>
 <baseAddress>0x40012200</baseAddress>
 <interrupt>
 <name>SDIO_IRQ</name>
 <description>SDIO global interrupt</description>
-<value>49</value>
-</interrupt>
-</peripheral>
+<value>49</value></interrupt></peripheral>
 <peripheral>
 <name>DAC</name>
 <description>Digital-to-analog converter</description>
@@ -16332,13 +16257,11 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <interrupt>
 <name>ADC_IRQ</name>
 <description>ADC1 global interrupt</description>
-<value>18</value>
-</interrupt>
+<value>18</value></interrupt>
 <registers>
 <register>
 <name>CR</name>
@@ -16697,9 +16620,7 @@
 <bitWidth>1</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>PWR</name>
 <description>Power control</description>
@@ -16708,8 +16629,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>CR1</name>
@@ -17066,9 +16986,7 @@
 <access>read-write</access>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>IWDG</name>
 <description>Independent watchdog</description>
@@ -17077,8 +16995,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>KR</name>
@@ -17170,9 +17087,7 @@
 <bitWidth>12</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>WWDG</name>
 <description>Window watchdog</description>
@@ -17181,19 +17096,16 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <interrupt>
 <name>WWDG_IRQ</name>
 <description>Window Watchdog interrupt</description>
-<value>0</value>
-</interrupt>
+<value>0</value></interrupt>
 <interrupt>
 <name>TIM6_DAC_IRQ</name>
 <description>TIM6 global interrupt, DAC1 and DAC2 underrun
-        error interrupt</description>
-<value>54</value>
-</interrupt>
+ error interrupt</description>
+<value>54</value></interrupt>
 <registers>
 <register>
 <name>CR</name>
@@ -17269,9 +17181,7 @@
 <bitWidth>1</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>C_ADC</name>
 <description>Common ADC registers</description>
@@ -17280,8 +17190,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>CSR</name>
@@ -17477,9 +17386,7 @@
 <bitWidth>16</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>TIM1</name>
 <description>Advanced-timers</description>
@@ -17488,8 +17395,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>CR1</name>
@@ -18619,18 +18525,14 @@
 <bitWidth>16</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral derivedFrom="TIM1">
 <name>TIM8</name>
 <baseAddress>0x40010400</baseAddress>
 <interrupt>
 <name>UART5_IRQ</name>
 <description>UART5 global interrupt</description>
-<value>53</value>
-</interrupt>
-</peripheral>
+<value>53</value></interrupt></peripheral>
 <peripheral>
 <name>TIM2</name>
 <description>General purpose timers</description>
@@ -18639,8 +18541,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>CR1</name>
@@ -19545,9 +19446,7 @@
 <bitWidth>3</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>TIM3</name>
 <description>General purpose timers</description>
@@ -19556,8 +19455,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>CR1</name>
@@ -20450,9 +20348,7 @@
 <bitWidth>3</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>TIM4</name>
 <description>General purpose timers</description>
@@ -20461,25 +20357,21 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <interrupt>
 <name>TIM8_UP_TIM13_IRQ</name>
 <description>TIM8 Update interrupt and TIM13 global
-        interrupt</description>
-<value>44</value>
-</interrupt>
+ interrupt</description>
+<value>44</value></interrupt>
 <interrupt>
 <name>TIM8_TRG_COM_TIM14_IRQ</name>
 <description>TIM8 Trigger and Commutation interrupts and
-        TIM14 global interrupt</description>
-<value>45</value>
-</interrupt>
+ TIM14 global interrupt</description>
+<value>45</value></interrupt>
 <interrupt>
 <name>TIM8_CC_IRQ</name>
 <description>TIM8 Capture Compare interrupt</description>
-<value>46</value>
-</interrupt>
+<value>46</value></interrupt>
 <registers>
 <register>
 <name>CR1</name>
@@ -21338,18 +21230,14 @@
 <bitWidth>16</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral derivedFrom="TIM4">
 <name>TIM5</name>
 <baseAddress>0x40000C00</baseAddress>
 <interrupt>
 <name>TIM2_IRQ</name>
 <description>TIM2 global interrupt</description>
-<value>28</value>
-</interrupt>
-</peripheral>
+<value>28</value></interrupt></peripheral>
 <peripheral>
 <name>TIM9</name>
 <description>General purpose timers</description>
@@ -21358,13 +21246,11 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <interrupt>
 <name>TIM3_IRQ</name>
 <description>TIM3 global interrupt</description>
-<value>29</value>
-</interrupt>
+<value>29</value></interrupt>
 <registers>
 <register>
 <name>CR1</name>
@@ -21797,18 +21683,14 @@
 <bitWidth>16</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral derivedFrom="TIM9">
 <name>TIM12</name>
 <baseAddress>0x40001800</baseAddress>
 <interrupt>
 <name>TIM4_IRQ</name>
 <description>TIM4 global interrupt</description>
-<value>30</value>
-</interrupt>
-</peripheral>
+<value>30</value></interrupt></peripheral>
 <peripheral>
 <name>TIM10</name>
 <description>General-purpose-timers</description>
@@ -21817,13 +21699,11 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <interrupt>
 <name>TIM5_IRQ</name>
 <description>TIM5 global interrupt</description>
-<value>50</value>
-</interrupt>
+<value>50</value></interrupt>
 <registers>
 <register>
 <name>CR1</name>
@@ -22178,33 +22058,26 @@
 <bitWidth>2</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral derivedFrom="TIM10">
 <name>TIM11</name>
 <baseAddress>0x40014800</baseAddress>
 <interrupt>
 <name>TIM1_BRK_TIM9_IRQ</name>
 <description>TIM1 Break interrupt and TIM9 global
-        interrupt</description>
-<value>24</value>
-</interrupt>
-</peripheral>
+ interrupt</description>
+<value>24</value></interrupt></peripheral>
 <peripheral derivedFrom="TIM10">
 <name>TIM13</name>
 <baseAddress>0x40001C00</baseAddress>
 <interrupt>
 <name>TIM8_BRK_TIM12_IRQ</name>
 <description>TIM8 Break interrupt and TIM12 global
-        interrupt</description>
-<value>43</value>
-</interrupt>
-</peripheral>
+ interrupt</description>
+<value>43</value></interrupt></peripheral>
 <peripheral derivedFrom="TIM10">
 <name>TIM14</name>
-<baseAddress>0x40002000</baseAddress>
-</peripheral>
+<baseAddress>0x40002000</baseAddress></peripheral>
 <peripheral>
 <name>TIM6</name>
 <description>Basic timers</description>
@@ -22213,8 +22086,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>CR1</name>
@@ -22381,29 +22253,24 @@
 <bitWidth>16</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral derivedFrom="TIM6">
 <name>TIM7</name>
-<baseAddress>0x40001400</baseAddress>
-</peripheral>
+<baseAddress>0x40001400</baseAddress></peripheral>
 <peripheral>
 <name>Ethernet_MAC</name>
-<description>Ethernet: media access control       (MAC)</description>
+<description>Ethernet: media access control (MAC)</description>
 <groupName>Ethernet</groupName>
 <baseAddress>0x40028000</baseAddress>
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <interrupt>
 <name>TIM1_TRG_COM_TIM11_IRQ</name>
 <description>TIM1 Trigger and Commutation interrupts and
-        TIM11 global interrupt</description>
-<value>26</value>
-</interrupt>
+ TIM11 global interrupt</description>
+<value>26</value></interrupt>
 <registers>
 <register>
 <name>MACCR</name>
@@ -23129,10 +22996,7 @@
 <addressOffset>0x60</addressOffset>
 <size>0x20</size>
 <access>read-write</access>
-<resetValue>0xFFFFFFFF</resetValue>
-</register>
-</registers>
-</peripheral>
+<resetValue>0xFFFFFFFF</resetValue></register></registers></peripheral>
 <peripheral>
 <name>Ethernet_MMC</name>
 <description>Ethernet: MAC management counters</description>
@@ -23141,8 +23005,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>MMCCR</name>
@@ -23408,9 +23271,7 @@
 <bitWidth>32</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>Ethernet_PTP</name>
 <description>Ethernet: Precision time protocol</description>
@@ -23419,13 +23280,11 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <interrupt>
 <name>TIM7_IRQ</name>
 <description>TIM7 global interrupt</description>
-<value>55</value>
-</interrupt>
+<value>55</value></interrupt>
 <registers>
 <register>
 <name>PTPTSCR</name>
@@ -23727,9 +23586,7 @@
 <bitWidth>1</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>Ethernet_DMA</name>
 <description>Ethernet: DMA controller operation</description>
@@ -23738,19 +23595,16 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <interrupt>
 <name>ETH_IRQ</name>
 <description>Ethernet global interrupt</description>
-<value>61</value>
-</interrupt>
+<value>61</value></interrupt>
 <interrupt>
 <name>ETH_WKUP_IRQ</name>
 <description>Ethernet Wakeup through EXTI line
-        interrupt</description>
-<value>62</value>
-</interrupt>
+ interrupt</description>
+<value>62</value></interrupt>
 <registers>
 <register>
 <name>DMABMR</name>
@@ -24363,9 +24217,7 @@
 <bitWidth>32</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>CRC</name>
 <description>Cryptographic processor</description>
@@ -24374,8 +24226,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>DR</name>
@@ -24461,9 +24312,7 @@
 <bitWidth>32</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>CAN1</name>
 <description>Controller area network</description>
@@ -24472,8 +24321,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>MCR</name>
@@ -37847,23 +37695,19 @@
 <bitWidth>1</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral derivedFrom="CAN1">
 <name>CAN2</name>
-<baseAddress>0x40006800</baseAddress>
-</peripheral>
+<baseAddress>0x40006800</baseAddress></peripheral>
 <peripheral>
 <name>NVIC</name>
-<description>Nested Vectored Interrupt       Controller</description>
+<description>Nested Vectored Interrupt Controller</description>
 <groupName>NVIC</groupName>
 <baseAddress>0xE000E000</baseAddress>
 <addressBlock>
 <offset>0x0</offset>
 <size>0x1001</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>ICTR</name>
@@ -38888,9 +38732,7 @@
 <bitWidth>8</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>FLASH</name>
 <description>FLASH</description>
@@ -38899,33 +38741,27 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <interrupt>
 <name>FLASH_IRQ</name>
 <description>Flash global interrupt</description>
-<value>4</value>
-</interrupt>
+<value>4</value></interrupt>
 <interrupt>
 <name>CAN1_TX_IRQ</name>
 <description>CAN1 TX interrupts</description>
-<value>19</value>
-</interrupt>
+<value>19</value></interrupt>
 <interrupt>
 <name>CAN1_RX0_IRQ</name>
 <description>CAN1 RX0 interrupts</description>
-<value>20</value>
-</interrupt>
+<value>20</value></interrupt>
 <interrupt>
 <name>CAN1_RX1_IRQ</name>
 <description>CAN1 RX1 interrupts</description>
-<value>21</value>
-</interrupt>
+<value>21</value></interrupt>
 <interrupt>
 <name>CAN1_SCE_IRQ</name>
 <description>CAN1 SCE interrupt</description>
-<value>22</value>
-</interrupt>
+<value>22</value></interrupt>
 <registers>
 <register>
 <name>ACR</name>
@@ -39218,39 +39054,32 @@
 <bitWidth>12</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>EXTI</name>
-<description>External interrupt/event       controller</description>
+<description>External interrupt/event controller</description>
 <groupName>EXTI</groupName>
 <baseAddress>0x40013C00</baseAddress>
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <interrupt>
 <name>CAN2_TX_IRQ</name>
 <description>CAN2 TX interrupts</description>
-<value>63</value>
-</interrupt>
+<value>63</value></interrupt>
 <interrupt>
 <name>CAN2_RX0_IRQ</name>
 <description>CAN2 RX0 interrupts</description>
-<value>64</value>
-</interrupt>
+<value>64</value></interrupt>
 <interrupt>
 <name>CAN2_RX1_IRQ</name>
 <description>CAN2 RX1 interrupts</description>
-<value>65</value>
-</interrupt>
+<value>65</value></interrupt>
 <interrupt>
 <name>CAN2_SCE_IRQ</name>
 <description>CAN2 SCE interrupt</description>
-<value>66</value>
-</interrupt>
+<value>66</value></interrupt>
 <registers>
 <register>
 <name>IMR</name>
@@ -40145,9 +39974,7 @@
 <bitWidth>1</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>LTDC</name>
 <description>LCD-TFT Controller</description>
@@ -40156,13 +39983,11 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <interrupt>
 <name>LCD_TFT</name>
 <description>LTDC global interrupt</description>
-<value>88</value>
-</interrupt>
+<value>88</value></interrupt>
 <registers>
 <register>
 <name>SSCR</name>
@@ -41124,9 +40949,7 @@
 <bitWidth>8</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>SAI1</name>
 <description>Serial audio interface</description>
@@ -41135,13 +40958,11 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <interrupt>
 <name>SAI1</name>
 <description>SAI1 global interrupt</description>
-<value>87</value>
-</interrupt>
+<value>87</value></interrupt>
 <registers>
 <register>
 <name>BCR1</name>
@@ -41953,13 +41774,10 @@
 <bitWidth>2</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral derivedFrom="SAI1">
 <name>SAI2</name>
-<baseAddress>0x40015C00</baseAddress>
-</peripheral>
+<baseAddress>0x40015C00</baseAddress></peripheral>
 <peripheral>
 <name>DMA2D</name>
 <description>DMA2D controller</description>
@@ -41968,13 +41786,11 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0xC00</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <interrupt>
 <name>DMA2D</name>
 <description>DMA2D global interrupt</description>
-<value>90</value>
-</interrupt>
+<value>90</value></interrupt>
 <registers>
 <register>
 <name>CR</name>
@@ -42613,9 +42429,7 @@
 <bitWidth>8</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>QUADSPI</name>
 <description>QuadSPI interface</description>
@@ -42624,8 +42438,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x1000</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>CR</name>
@@ -43069,9 +42882,7 @@
 <bitWidth>16</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>CEC</name>
 <description>HDMI-CEC controller</description>
@@ -43080,8 +42891,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>CR</name>
@@ -43388,9 +43198,7 @@
 <bitWidth>1</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>SPDIF_RX</name>
 <description>Receiver Interface</description>
@@ -43399,8 +43207,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>CR</name>
@@ -43748,19 +43555,16 @@
 <bitWidth>13</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>SDMMC1</name>
-<description>Secure digital input/output       interface</description>
+<description>Secure digital input/output interface</description>
 <groupName>SDMMC</groupName>
 <baseAddress>0x40012C00</baseAddress>
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>POWER</name>
@@ -44547,9 +44351,7 @@
 <bitWidth>32</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>LPTIM1</name>
 <description>Low power timer</description>
@@ -44558,8 +44360,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>ISR</name>
@@ -44888,9 +44689,7 @@
 <bitWidth>16</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>I2C1</name>
 <description>Inter-integrated circuit</description>
@@ -44899,8 +44698,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>CR1</name>
@@ -45494,26 +45292,20 @@
 <bitWidth>8</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral derivedFrom="I2C1">
 <name>I2C2</name>
-<baseAddress>0x40005800</baseAddress>
-</peripheral>
+<baseAddress>0x40005800</baseAddress></peripheral>
 <peripheral derivedFrom="I2C1">
 <name>I2C3</name>
-<baseAddress>0x40005C00</baseAddress>
-</peripheral>
+<baseAddress>0x40005C00</baseAddress></peripheral>
 <peripheral derivedFrom="I2C1">
 <name>I2C4</name>
 <baseAddress>0x40006000</baseAddress>
 <interrupt>
 <name>I2C1_ER</name>
 <description>I2C1 error interrupt</description>
-<value>32</value>
-</interrupt>
-</peripheral>
+<value>32</value></interrupt></peripheral>
 <peripheral>
 <name>RTC</name>
 <description>Real-time clock</description>
@@ -45522,19 +45314,16 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <interrupt>
 <name>RTC_WKUP</name>
 <description>RTC Tamper or TimeStamp /CSS on LSE through
-        EXTI line 19 interrupts</description>
-<value>3</value>
-</interrupt>
+ EXTI line 19 interrupts</description>
+<value>3</value></interrupt>
 <interrupt>
 <name>I2C1_EV</name>
 <description>I2C1 event interrupt</description>
-<value>31</value>
-</interrupt>
+<value>31</value></interrupt>
 <registers>
 <register>
 <name>TR</name>
@@ -47090,19 +46879,16 @@
 <bitWidth>32</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>USART6</name>
-<description>Universal synchronous asynchronous receiver       transmitter</description>
+<description>Universal synchronous asynchronous receiver transmitter</description>
 <groupName>USART</groupName>
 <baseAddress>0x40011400</baseAddress>
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>CR1</name>
@@ -47914,63 +47700,49 @@
 <bitWidth>9</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral derivedFrom="USART6">
 <name>USART1</name>
 <baseAddress>0x40011000</baseAddress>
 <interrupt>
 <name>RTC_ALARM</name>
 <description>RTC alarms through EXTI line 18
-        interrupts</description>
-<value>41</value>
-</interrupt>
-</peripheral>
+ interrupts</description>
+<value>41</value></interrupt></peripheral>
 <peripheral derivedFrom="USART6">
 <name>USART3</name>
 <baseAddress>0x40004800</baseAddress>
 <interrupt>
 <name>USART1</name>
 <description>USART1 global interrupt</description>
-<value>37</value>
-</interrupt>
-</peripheral>
+<value>37</value></interrupt></peripheral>
 <peripheral derivedFrom="USART6">
 <name>USART2</name>
 <baseAddress>0x40004400</baseAddress>
 <interrupt>
 <name>USART2</name>
 <description>USART2 global interrupt</description>
-<value>38</value>
-</interrupt>
-</peripheral>
+<value>38</value></interrupt></peripheral>
 <peripheral derivedFrom="USART6">
 <name>UART5</name>
-<baseAddress>0x40005000</baseAddress>
-</peripheral>
+<baseAddress>0x40005000</baseAddress></peripheral>
 <peripheral derivedFrom="USART6">
 <name>UART4</name>
 <baseAddress>0x40004C00</baseAddress>
 <interrupt>
 <name>USART3</name>
 <description>USART3 global interrupt</description>
-<value>39</value>
-</interrupt>
-</peripheral>
+<value>39</value></interrupt></peripheral>
 <peripheral derivedFrom="USART6">
 <name>UART8</name>
 <baseAddress>0x40007C00</baseAddress>
 <interrupt>
 <name>UART8_IRQ</name>
 <description>UART 8 global interrupt</description>
-<value>83</value>
-</interrupt>
-</peripheral>
+<value>83</value></interrupt></peripheral>
 <peripheral derivedFrom="USART6">
 <name>UART7</name>
-<baseAddress>0x40007800</baseAddress>
-</peripheral>
+<baseAddress>0x40007800</baseAddress></peripheral>
 <peripheral>
 <name>OTG_FS_GLOBAL</name>
 <description>USB on the go full speed</description>
@@ -47979,8 +47751,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>OTG_FS_GOTGCTL</name>
@@ -49492,9 +49263,7 @@
 <access>read-write</access>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>OTG_FS_HOST</name>
 <description>USB on the go full speed</description>
@@ -49503,8 +49272,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>OTG_FS_HCFG</name>
@@ -52567,9 +52335,7 @@
 <bitWidth>2</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>OTG_FS_DEVICE</name>
 <description>USB on the go full speed</description>
@@ -52578,8 +52344,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>OTG_FS_DCFG</name>
@@ -55081,9 +54846,7 @@
 <bitWidth>19</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>OTG_FS_PWRCLK</name>
 <description>USB on the go full speed</description>
@@ -55092,20 +54855,17 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <interrupt>
 <name>OTG_FS_WKUP_IRQ</name>
 <description>USB On-The-Go FS Wakeup through EXTI line
-        interrupt</description>
-<value>42</value>
-</interrupt>
+ interrupt</description>
+<value>42</value></interrupt>
 <interrupt>
 <name>OTG_FS_IRQ</name>
 <description>USB On The Go FS global
-        interrupt</description>
-<value>67</value>
-</interrupt>
+ interrupt</description>
+<value>67</value></interrupt>
 <registers>
 <register>
 <name>OTG_FS_PCGCCTL</name>
@@ -55135,9 +54895,7 @@
 <bitWidth>1</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>OTG_HS_GLOBAL</name>
 <description>USB on the go high speed</description>
@@ -55146,8 +54904,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>OTG_HS_GOTGCTL</name>
@@ -56549,9 +56306,7 @@
 <access>read-write</access>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>OTG_HS_HOST</name>
 <description>USB on the go high speed</description>
@@ -56560,8 +56315,7 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <registers>
 <register>
 <name>OTG_HS_HCFG</name>
@@ -61784,9 +61538,7 @@
 <bitWidth>32</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>OTG_HS_DEVICE</name>
 <description>USB on the go high speed</description>
@@ -61795,49 +61547,40 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x400</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <interrupt>
 <name>TAMP_STAMP_IRQ</name>
 <description>Tamper and TimeStamp interrupts through the
-        EXTI line</description>
-<value>2</value>
-</interrupt>
+ EXTI line</description>
+<value>2</value></interrupt>
 <interrupt>
 <name>EXTI0_IRQ</name>
 <description>EXTI Line0 interrupt</description>
-<value>6</value>
-</interrupt>
+<value>6</value></interrupt>
 <interrupt>
 <name>EXTI1_IRQ</name>
 <description>EXTI Line1 interrupt</description>
-<value>7</value>
-</interrupt>
+<value>7</value></interrupt>
 <interrupt>
 <name>EXTI2_IRQ</name>
 <description>EXTI Line2 interrupt</description>
-<value>8</value>
-</interrupt>
+<value>8</value></interrupt>
 <interrupt>
 <name>EXTI3_IRQ</name>
 <description>EXTI Line3 interrupt</description>
-<value>9</value>
-</interrupt>
+<value>9</value></interrupt>
 <interrupt>
 <name>EXTI4_IRQ</name>
 <description>EXTI Line4 interrupt</description>
-<value>10</value>
-</interrupt>
+<value>10</value></interrupt>
 <interrupt>
 <name>EXTI9_5_IRQ</name>
 <description>EXTI Line[9:5] interrupts</description>
-<value>23</value>
-</interrupt>
+<value>23</value></interrupt>
 <interrupt>
 <name>EXTI15_10_IRQ</name>
 <description>EXTI Line[15:10] interrupts</description>
-<value>40</value>
-</interrupt>
+<value>40</value></interrupt>
 <registers>
 <register>
 <name>OTG_HS_DCFG</name>
@@ -65644,9 +65387,7 @@
 <bitWidth>2</bitWidth>
 </field>
 </fields>
-</register>
-</registers>
-</peripheral>
+</register></registers></peripheral>
 <peripheral>
 <name>OTG_HS_PWRCLK</name>
 <description>USB on the go high speed</description>
@@ -65655,28 +65396,27 @@
 <addressBlock>
 <offset>0x0</offset>
 <size>0x3F200</size>
-<usage>registers</usage>
-</addressBlock>
+<usage>registers</usage></addressBlock>
 <interrupt>
 <name>OTG_HS_EP1_OUT_IRQ</name>
-<description>USB On The Go HS End Point 1 Out global interrupt</description>
-<value>74</value>
-</interrupt>
+<description>USB On The Go HS End Point 1 Out global
+ interrupt</description>
+<value>74</value></interrupt>
 <interrupt>
 <name>OTG_HS_EP1_IN_IRQ</name>
-<description>USB On The Go HS End Point 1 In global interrupt</description>
-<value>75</value>
-</interrupt>
+<description>USB On The Go HS End Point 1 In global
+ interrupt</description>
+<value>75</value></interrupt>
 <interrupt>
 <name>OTG_HS_WKUP_IRQ</name>
-<description>USB On The Go HS Wakeup through EXTI interrupt</description>
-<value>76</value>
-</interrupt>
+<description>USB On The Go HS Wakeup through EXTI
+ interrupt</description>
+<value>76</value></interrupt>
 <interrupt>
 <name>OTG_HS_IRQ</name>
-<description>USB On The Go HS global interrupt</description>
-<value>77</value>
-</interrupt>
+<description>USB On The Go HS global
+ interrupt</description>
+<value>77</value></interrupt>
 <registers>
 <register>
 <name>OTG_HS_PCGCR</name>
