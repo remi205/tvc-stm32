@@ -1,6 +1,6 @@
 
 ## Makefile.am -- Process this file with automake to produce Makefile.in
-SUBDIRS = ipv4
+SUBDIRS = 
 
 if IPV4
 SUBDIRS += ipv4 
