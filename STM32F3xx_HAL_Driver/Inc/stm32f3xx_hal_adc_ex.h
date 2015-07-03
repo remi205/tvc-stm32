@@ -336,7 +336,7 @@ typedef struct
        /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
        /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
 
-#if defined(STM32F373xC) || defined(STM32F378xx)
+#if defined(STM32F373xx) || defined(STM32F378xx)
 /** 
   * @brief  Structure definition of ADC and regular group initialization 
   * @note   Parameters of this structure are shared within 2 scopes:
@@ -486,7 +486,7 @@ typedef struct
                                    This parameter must be a number between Min_Data = 0x000 and Max_Data = 0xFFF. */
   uint32_t WatchdogNumber;    /*!< Reserved for future use, can be set to 0 */
 }ADC_AnalogWDGConfTypeDef;
-#endif /* STM32F373xC || STM32F378xx */
+#endif /* STM32F373xx || STM32F378xx */
 /**
   * @}
   */
@@ -2069,7 +2069,7 @@ typedef struct
        /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
 
 
-#if defined(STM32F373xC) || defined(STM32F378xx)
+#if defined(STM32F373xx) || defined(STM32F378xx)
 /** @defgroup ADCEx_Data_align ADC Extended Data Alignment
   * @{
   */
@@ -2511,7 +2511,7 @@ typedef struct
 /**
   * @}
   */
-#endif /* STM32F373xC || STM32F378xx */
+#endif /* STM32F373xx || STM32F378xx */
 
 /**
   * @}
@@ -2646,7 +2646,7 @@ typedef struct
        /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
        /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
       
-#if defined(STM32F373xC) || defined(STM32F378xx)
+#if defined(STM32F373xx) || defined(STM32F378xx)
 /**
   * @brief Verification of ADC state: enabled or disabled
   * @param __HANDLE__: ADC handle
@@ -2724,7 +2724,7 @@ typedef struct
   */
 #define __HAL_ADC_CLEAR_ERRORCODE(__HANDLE__) ((__HANDLE__)->ErrorCode = HAL_ADC_ERROR_NONE)
       
-#endif /* STM32F373xC || STM32F378xx */
+#endif /* STM32F373xx || STM32F378xx */
 /**
   * @}
   */
@@ -3371,7 +3371,7 @@ typedef struct
        /* STM32F301x8 || STM32F302x8 || STM32F318xx */
 
 
-#if defined(STM32F373xC) || defined(STM32F378xx)
+#if defined(STM32F373xx) || defined(STM32F378xx)
 /**
   * @brief Set ADC number of conversions into regular channel sequence length.
   * @param _NbrOfConversion_: Regular channel sequence length 
@@ -3543,7 +3543,7 @@ typedef struct
 #define __HAL_ADC_DISABLE(__HANDLE__)                                        \
             (__HANDLE__)->Instance->CR2 &= ~ADC_CR2_ADON
       
-#endif /* STM32F373xC || STM32F378xx */
+#endif /* STM32F373xx || STM32F378xx */
 /**
   * @}
   */
@@ -3575,9 +3575,9 @@ HAL_StatusTypeDef       HAL_ADCEx_Calibration_SetValue(struct __ADC_HandleTypeDe
        /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
        /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
 
-#if defined(STM32F373xC) || defined(STM32F378xx)
+#if defined(STM32F373xx) || defined(STM32F378xx)
 HAL_StatusTypeDef       HAL_ADCEx_Calibration_Start(struct __ADC_HandleTypeDef* hadc);
-#endif /* STM32F373xC || STM32F378xx */
+#endif /* STM32F373xx || STM32F378xx */
 
 /* Blocking mode: Polling */
 HAL_StatusTypeDef       HAL_ADCEx_InjectedStart(struct __ADC_HandleTypeDef* hadc);

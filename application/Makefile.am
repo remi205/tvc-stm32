@@ -1,8 +1,17 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 lib_LIBRARIES = libapplication.a
 
-AM_CFLAGS =-Wall -Wpointer-arith  -Winline -Wundef -g  -ffunction-sections -fdata-sections -DSTM32$(PRODUCT)xx -DFAMILLY$(FAMILLY)  -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/Inc -mfloat-abi=hard -mfpu=fpv4-sp-d16
+libapplication_a_SOURCES = es.c
 
-CFLAGS +=  -I$(top_srcdir)/Inc -I$(top_srcdir)/over-hal  -I$(top_srcdir)/STM32F4xx_HAL_Driver/Inc -I$(top_srcdir)/CMSIS/Include  -I$(top_srcdir)/CMSIS/Device/ST/STM32F4xx/Include -I$(top_srcdir)/LwIP/src/include -I$(top_srcdir)/LwIP/system -I$(top_srcdir)/FreeRTOS/Source/CMSIS_RTOS -I$(top_srcdir)/FreeRTOS/Source/include -I$(top_srcdir)/FreeRTOS/Source/portable/GCC/ARM_CM4F -I$(top_srcdir)/LwIP/src/include/ipv4 -I$(top_srcdir)/LwIP/src/include/netif -I$(top_srcdir)/LwIP/src/include/lwip 
+if IPV4
+libapplication_a_SOURCES  += StartThread.c
+INC_IPV = -I$(top_srcdir)/LwIP/src/include/ipv4 -I$(top_srcdir)/LwIP/src/include/lwip -I$(top_srcdir)/LwIP/src/include/netif -I$(top_srcdir)/LwIP/src/include -I$(top_srcdir)/LwIP/system
+endif
+if IPV6
+libapplication_a_SOURCES  += StartThread.c
+INC_IPV = -I$(top_srcdir)/LwIP/src/include/ipv6 -I$(top_srcdir)/LwIP/src/include/lwip -I$(top_srcdir)/LwIP/src/include/netif -I$(top_srcdir)/LwIP/src/include -I$(top_srcdir)/LwIP/system
+endif
 
-libapplication_a_SOURCES = StartThread.c
+AM_CFLAGS =-Wall -Wpointer-arith  -Winline -Wundef -g  -ffunction-sections -fdata-sections -DSTM32$(PRODUCT)xx -DFAMILLY$(FAMILLY) -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/Inc -mfloat-abi=hard -mfpu=fpv4-sp-d16
+
+CFLAGS += -I$(top_srcdir)/Inc -I$(top_srcdir)/over-hal -I$(top_srcdir)/CMSIS/Include -I$(top_srcdir)/CMSIS/Device/ST/STM32$(FAMILLY)xx/Include  -I$(top_srcdir)/FreeRTOS/Source/CMSIS_RTOS -I$(top_srcdir)/FreeRTOS/Source/include -I$(top_srcdir)/FreeRTOS/Source/portable/GCC/ARM_CM4F $(INC_IPV)  

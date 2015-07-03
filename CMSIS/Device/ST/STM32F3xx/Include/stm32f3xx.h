@@ -72,7 +72,7 @@
     !defined (STM32F302xC) && !defined (STM32F303xC) && !defined (STM32F358xx) && \
     !defined (STM32F303x8) && !defined (STM32F334x8) && !defined (STM32F328xx) && \
     !defined (STM32F302xE) && !defined (STM32F303xE) && !defined (STM32F398xx) && \
-    !defined (STM32F373xC) && !defined (STM32F378xx)
+    !defined (STM32F373xx) && !defined (STM32F378xx)
     
   /* #define STM32F301x8 */   /*!< STM32F301K6, STM32F301K8, STM32F301C6, STM32F301C8,
                                    STM32F301R6 and STM32F301R8 Devices */
@@ -84,7 +84,7 @@
                                    STM32F303R6 and STM32F303R8 Devices */
   /* #define STM32F303xC */   /*!< STM32F303CB, STM32F303CC, STM32F303RB, STM32F303RC, STM32F303VB and STM32F303VC Devices */
   /* #define STM32F303xE */   /*!< STM32F303RE, STM32F303VE and STM32F303ZE Devices */
-  /* #define STM32F373xC */   /*!< STM32F373C8, STM32F373CB, STM32F373CC, STM32F373R8, STM32F373RB, STM32F373RC,
+  /* #define STM32F373xx */   /*!< STM32F373C8, STM32F373CB, STM32F373CC, STM32F373R8, STM32F373RB, STM32F373RC,
                                    STM32F373V8, STM32F373VB and STM32F373VC Devices */
   /* #define STM32F334x8 */   /*!< STM32F334C4, STM32F334C6, STM32F334C8, STM32F334R4, STM32F334R6 and STM32F334R8 Devices */
   /* #define STM32F318xx */   /*!< STM32F318K8, STM32F318C8: STM32F301x8 with regulator off: STM32F318xx Devices */
@@ -140,8 +140,8 @@
   #include "stm32f303xc.h"
 #elif defined(STM32F303xE)
   #include "stm32f303xe.h"
-#elif defined(STM32F373xC)
-  #include "stm32f373xc.h"
+#elif defined(STM32F373xx)
+  #include "stm32f373xx.h"
 #elif defined(STM32F334x8)
   #include "stm32f334x8.h"
 #elif defined(STM32F318xx)

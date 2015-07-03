@@ -142,8 +142,8 @@
 /**
   * @}
   */
-#elif defined(STM32F373xC) || defined(STM32F378xx)
-/** @defgroup COMPEx_InvertingInput COMP Extended InvertingInput (STM32F373xC/STM32F378xx Product devices)
+#elif defined(STM32F373xx) || defined(STM32F378xx)
+/** @defgroup COMPEx_InvertingInput COMP Extended InvertingInput (STM32F373xx/STM32F378xx Product devices)
   * @{
   */
 #define COMP_INVERTINGINPUT_1_4VREFINT  ((uint32_t)0x00000000)                        /*!< 1/4 VREFINT connected to comparator inverting input */
@@ -224,8 +224,8 @@
 /**
   * @}
   */ 
-#elif defined(STM32F373xC) || defined(STM32F378xx)
-/** @defgroup COMPEx_NonInvertingInput COMP Extended NonInvertingInput (STM32F373xC/STM32F378xx Product devices)
+#elif defined(STM32F373xx) || defined(STM32F378xx)
+/** @defgroup COMPEx_NonInvertingInput COMP Extended NonInvertingInput (STM32F373xx/STM32F378xx Product devices)
   * @{
   */
 #define COMP_NONINVERTINGINPUT_IO1               ((uint32_t)0x00000000) /*!< I/O1 (PA1 for COMP1, PA3 for COMP2) 
@@ -512,8 +512,8 @@
 /**
   * @}
   */ 
-#elif  defined(STM32F373xC) || defined(STM32F378xx)
-/** @defgroup COMPEx_Output COMP Extended Output (STM32F373xC/STM32F378xx Product devices)
+#elif  defined(STM32F373xx) || defined(STM32F378xx)
+/** @defgroup COMPEx_Output COMP Extended Output (STM32F373xx/STM32F378xx Product devices)
   * @{
   */
 /* Output Redirection common for all comparators COMP1 and COMP2 */
@@ -703,8 +703,8 @@
 /**
   * @}
   */
-#elif defined(STM32F373xC) || defined(STM32F378xx)
-/** @defgroup COMPEx_WindowMode COMP Extended WindowMode (STM32F373xC/STM32F378xx Product devices)
+#elif defined(STM32F373xx) || defined(STM32F378xx)
+/** @defgroup COMPEx_WindowMode COMP Extended WindowMode (STM32F373xx/STM32F378xx Product devices)
   * @{
   */
 #define COMP_WINDOWMODE_DISABLED               ((uint32_t)0x00000000)  /*!< Window mode disabled */
@@ -735,7 +735,7 @@
   * @{
   */
 #if defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
-    defined(STM32F373xC) || defined(STM32F378xx)
+    defined(STM32F373xx) || defined(STM32F378xx)
 
 /* Please refer to the electrical characteristics in the device datasheet for
    the power consumption values */
@@ -759,7 +759,7 @@
 #define COMP_CSR_COMPxMODE_MASK           ((uint32_t)0x00000000) /*!< Mask empty: feature not available */
 
 #endif /* STM32F302xC || STM32F303xC || STM32F358xx || */
-       /* STM32F373xC || STM32F378xx */
+       /* STM32F373xx || STM32F378xx */
 /**
   * @}
   */
@@ -768,7 +768,7 @@
   * @{
   */
 #if defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
-    defined(STM32F373xC) || defined(STM32F378xx)
+    defined(STM32F373xx) || defined(STM32F378xx)
 
 #define COMP_HYSTERESIS_NONE              ((uint32_t)0x00000000)  /*!< No hysteresis */
 #define COMP_HYSTERESIS_LOW               COMP_CSR_COMPxHYST_0    /*!< Hysteresis level low */
@@ -791,7 +791,7 @@
 #define COMP_CSR_COMPxHYST_MASK           ((uint32_t)0x00000000) /*!< Mask empty: feature not available */
 
 #endif /* STM32F302xC || STM32F303xC || STM32F358xx || */
-       /* STM32F373xC || STM32F378xx */
+       /* STM32F373xx || STM32F378xx */
 /**
   * @}
   */
@@ -1042,8 +1042,8 @@
 #endif /* STM32F303xE || STM32F398xx || */
        /* STM32F303xC || STM32F358xx    */
 
-#if defined(STM32F373xC) ||defined(STM32F378xx)
-/** @defgroup COMPEx_BlankingSrce COMP Extended Blanking Source (STM32F373xC/STM32F378xx Product devices)
+#if defined(STM32F373xx) ||defined(STM32F378xx)
+/** @defgroup COMPEx_BlankingSrce COMP Extended Blanking Source (STM32F373xx/STM32F378xx Product devices)
   * @{
   */
 /* No blanking source can be selected for all comparators */
@@ -1051,7 +1051,7 @@
 
 #define IS_COMP_BLANKINGSRCE(SOURCE) ((SOURCE) == (SOURCE)) /*!< Not available: check always true */
 
-/* STM32F373xB/STM32F373xC/STM32F378xx devices comparator instances blanking source values */
+/* STM32F373xB/STM32F373xx/STM32F378xx devices comparator instances blanking source values */
 #define IS_COMP_BLANKINGSRCE_INSTANCE(INSTANCE, BLANKINGSRCE) \
    ((((INSTANCE) == COMP1) || ((INSTANCE) == COMP2))  &&     \
      ((BLANKINGSRCE) == COMP_BLANKINGSRCE_NONE))         
@@ -1062,7 +1062,7 @@
   * @}
   */
 
-/** @defgroup COMPEx_ExtiLineEvent COMP Extended EXTI Line Event (STM32F373xC/STM32F378xx Product devices)
+/** @defgroup COMPEx_ExtiLineEvent COMP Extended EXTI Line Event (STM32F373xx/STM32F378xx Product devices)
   *        Elements values convention: XXXX0000
   *           - XXXX : Interrupt mask in the EMR/IMR/RTSR/FTSR register
   * @{   
@@ -1073,9 +1073,9 @@
 /**
   * @}
   */
-#endif /* STM32F373xC || STM32F378xx */
+#endif /* STM32F373xx || STM32F378xx */
 
-#if  defined(STM32F373xC) || defined(STM32F378xx)
+#if  defined(STM32F373xx) || defined(STM32F378xx)
 /* CSR register reset value */ 
 #define COMP_CSR_RESET_VALUE                  ((uint32_t)0x00000000)
 #define COMP_CSR_RESET_PARAMETERS_MASK        ((uint32_t)0x00003FFF)
@@ -1086,7 +1086,7 @@
 #else
 /* CSR register reset value */ 
 #define COMP_CSR_RESET_VALUE                  ((uint32_t)0x00000000)
-#endif /* STM32F373xC || STM32F378xx */
+#endif /* STM32F373xx || STM32F378xx */
 /* CSR masks redefinition for internal use */
 #define COMP_CSR_COMPxINSEL_MASK              COMP_CSR_COMPxINSEL   /*!< COMP_CSR_COMPxINSEL Mask */
 #define COMP_CSR_COMPxOUTSEL_MASK             COMP_CSR_COMPxOUTSEL  /*!< COMP_CSR_COMPxOUTSEL Mask */  
@@ -1100,7 +1100,7 @@
 /** @defgroup USARTEx_Exported_Macros USART Extended Exported Macros
   * @{
   */
-#if defined(STM32F373xC) ||defined(STM32F378xx)
+#if defined(STM32F373xx) ||defined(STM32F378xx)
 /**
   * @brief  Checks whether the specified EXTI line flag is set or not.
   * @param  __FLAG__: specifies the COMP Exti sources to be checked.
@@ -1409,7 +1409,7 @@
   */                                         
 #define COMP_LOCK(__HANDLE__)      SET_BIT((__HANDLE__)->Instance->CSR, COMP_CSR_COMPxLOCK)
 
-#endif /* STM32F373xC || STM32F378xx */
+#endif /* STM32F373xx || STM32F378xx */
 
 #if defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx) || \
     defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx)
@@ -1455,7 +1455,7 @@
 #endif /* STM32F303xE || STM32F398xx || */
        /* STM32F303xC || STM32F358xx    */
                                                  
-#if defined(STM32F373xC) ||defined(STM32F378xx)
+#if defined(STM32F373xx) ||defined(STM32F378xx)
 /**
   * @brief  Get the specified EXTI line for a comparator instance
   * @param  __INSTANCE__: specifies the COMP instance.
@@ -1463,7 +1463,7 @@
   */
 #define __HAL_COMP_GET_EXTI_LINE(__INSTANCE__) (((__INSTANCE__) == COMP1) ? COMP_EXTI_LINE_COMP1_EVENT : \
                                                 COMP_EXTI_LINE_COMP2_EVENT)
-#endif /* STM32F373xC || STM32F378xx */
+#endif /* STM32F373xx || STM32F378xx */
 
 /**
   * @}

@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include "stm32f4xx_hal.h"
+#include "stm32.h"
  
 /*Static IP ADDRESS*/
 #define IP_ADDR0   192
