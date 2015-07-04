@@ -177,6 +177,11 @@ typedef enum
 #define  GPIO_SPEED_LOW         ((uint32_t)0x00000000)  /*!< Low speed     */
 #define  GPIO_SPEED_MEDIUM      ((uint32_t)0x00000001)  /*!< Medium speed  */
 #define  GPIO_SPEED_HIGH        ((uint32_t)0x00000003)  /*!< High speed    */
+/* tvc hack */
+#define  GPIO_SPEED_FAST        ((uint32_t)0x00000001)  /*!< Medium speed    */
+
+
+
 
 #define IS_GPIO_SPEED(SPEED) (((SPEED) == GPIO_SPEED_LOW)  || ((SPEED) == GPIO_SPEED_MEDIUM) || \
                               ((SPEED) == GPIO_SPEED_HIGH))

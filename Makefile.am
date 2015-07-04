@@ -22,7 +22,7 @@ AM_CFLAGS += -D__CORTEX_M=4 -D__FPU_PRESENT -D__FPU_USED=1 -mcpu=cortex-m4 -mthu
 AM_CPPFLAGS += -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mfpu=fpv4-sp-d16 
 PORT_INC = FreeRTOS/Source/portable/GCC/ARM_CM4F
 LIBPORT  =  FreeRTOS/Source/portable/GCC/ARM_CM4F/libport.a
-LD_SCRIPT = $(top_srcdir)/target/target-stm32-$(ROMRAM)-2.ld 
+LD_SCRIPT = $(top_srcdir)/target/target-stm32-$(ROMRAM)-4.ld 
 SUBDIRS = STM32F3xx_HAL_Driver
 else
 if F7XX 
@@ -57,14 +57,14 @@ if IPV4
 SUBDIRS += LwIP Common
 AM_CFLAGS += -I$(top_srcdir)/LwIP/src/include/ipv4 -DIPV4
 INC_IP = -I$(top_srcdir)/LwIP/src/include
-LIB_IP =  LwIP/src/core/ipv4/libipv4.a LwIP/src/api/libapi.a LwIP/src/core/libcore.a LwIP/src/netif/libnetif.a LwIP/system/OS/libsysarch.a LwIP/src/core/ipv4/libipv4.a LwIP/src/core/raw.o $(HAL_PATH)/Src/stm32$(FAMILLY)xx_hal_eth.o 
+LIB_IP =  LwIP/src/core/ipv4/libipv4.a LwIP/src/api/libapi.a LwIP/src/core/libcore.a LwIP/src/netif/libnetif.a LwIP/system/OS/libsysarch.a LwIP/src/core/ipv4/libipv4.a LwIP/src/core/raw.o $(HAL_PATH)/Src/stm32$(FAMILLY)xx_hal_eth.o bsp/dhcp_config.o
 endif
 
 if IPV6
 SUBDIRS += LwIP Common
 AM_CFLAGS += -I$(top_srcdir)/LwIP/src/include/ipv6 -DIPV6
 INC_IP = -I$(top_srcdir)/LwIP/src/include
-LIB_IP =  LwIP/src/core/ipv6/libipv6.a LwIP/src/api/libapi.a LwIP/src/core/libcore.a LwIP/src/netif/libnetif.a LwIP/system/OS/libsysarch.a LwIP/src/core/ipv6/libipv6.a LwIP/src/core/raw.o $(HAL_PATH)/Src/stm32$(FAMILLY)xx_hal_eth.o 
+LIB_IP =  LwIP/src/core/ipv6/libipv6.a LwIP/src/api/libapi.a LwIP/src/core/libcore.a LwIP/src/netif/libnetif.a LwIP/system/OS/libsysarch.a LwIP/src/core/ipv6/libipv6.a LwIP/src/core/raw.o $(HAL_PATH)/Src/stm32$(FAMILLY)xx_hal_eth.o bsp/dhcp_config.o
 endif
 
 if FREERTOS
@@ -92,4 +92,4 @@ essai_stm32_SOURCES =
 ##  -DSTM32$(STM32)xx donne STM32F407xx pour la HAL
 essai_stm32_LDFLAGS =-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Wl,-Map,essai_stm32.map -T$(top_srcdir)/target/stm32-mem/$(WANT_STM32) -T$(LD_SCRIPT) -DSTM32$(PRODUCT)xx $(LIB_FREERTOS) 
 
-essai_stm32_LDADD = bsp/libbsp.a application/libapplication.a over-hal/libover_hal.a bsp/dhcp_config.o $(LIB_HAL) $(LIBPORT) $(LIB_FREERTOS) $(LIB_IP) FreeRTOS/Source/libfreertos.a FreeRTOS/Source/portable/MemMang/libmem.a FreeRTOS/Source/CMSIS_RTOS/libcmsis_os.a LwIP/src/api/libapi.a LwIP/src/core/libcore.a LwIP/src/netif/libnetif.a LwIP/system/OS/libsysarch.a LwIP/src/core/ipv4/libipv4.a
+essai_stm32_LDADD = bsp/libbsp.a application/libapplication.a over-hal/libover_hal.a  $(LIB_HAL) $(LIBPORT) $(LIB_FREERTOS) $(LIB_IP) FreeRTOS/Source/libfreertos.a FreeRTOS/Source/portable/MemMang/libmem.a FreeRTOS/Source/CMSIS_RTOS/libcmsis_os.a 

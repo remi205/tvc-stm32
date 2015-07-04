@@ -41,7 +41,7 @@
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f4xx_hal_conf.h"
+#include "stm32.h"
 
 void MX_DMA_Init(void);
 

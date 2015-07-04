@@ -40,7 +40,7 @@
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f4xx_hal.h"
+#include "stm32.h"
 
 extern UART_HandleTypeDef huart5;
 extern UART_HandleTypeDef huart2;

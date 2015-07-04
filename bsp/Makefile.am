@@ -15,7 +15,7 @@ if L0XX
 libbsp_a_SOURCES = stm32l0xx_hal_msp.c stm32l0xx_it.c system_stm32l0xx.c stm32l0xx_crt0.s
 else
 ### par defaut c'est le F4
-libbsp_a_SOURCES = stm32f4xx_hal_msp.c stm32f4xx_it.c system_stm32f4xx.c stm32f4xx_crt0.s
+libbsp_a_SOURCES = stm32f4xx_hal_msp.c stm32f4xx_it.c system_stm32f4xx.c stm32f4xx_crt0.s usart.c gpio.c i2c.c spi.c dma.c  main.c
 endif
 endif
 endif
@@ -26,7 +26,7 @@ libbsp_a_SOURCES  += eth_init.c dhcp_config.c
 INC_IPV = -I$(top_srcdir)/LwIP/src/include/ipv4
 endif
 if IPV6
-libbsp_a_SOURCES  +=  eth_init.c dhcp_config.c
+libbsp_a_SOURCES  += eth_init.c dhcp_config.c
 INC_IPV = -I$(top_srcdir)/LwIP/src/include/ipv6
 endif
 
@@ -34,8 +34,8 @@ endif
 ##
 AM_CFLAGS =-Wall -Wpointer-arith  -Winline -Wundef -g  -ffunction-sections -fdata-sections -I$(top_srcdir)/Inc -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/Inc -I$(top_srcdir)/CMSIS/Device/ST/STM32$(FAMILLY)xx/Include -DFAMILLY$(FAMILLY) -DSTM32$(PRODUCT)xx -mfloat-abi=hard -mfpu=fpv4-sp-d16
 
-CFLAGS += -I$(top_srcdir)/Inc -I$(top_srcdir)/CMSIS/Include -I$(top_srcdir)/LwIP/src/include/lwip -I$(top_srcdir)/LwIP/system -I$(top_srcdir)/FreeRTOS/Source/CMSIS_RTOS -I$(top_srcdir)/FreeRTOS/Source/include -I$(top_srcdir)/FreeRTOS/Source/portable/GCC/ARM_CM4F $(INC_IPV) -I$(top_srcdir)/LwIP/system/OS -I$(top_srcdir)/LwIP/src/include/netif -I$(top_srcdir)/over-hal -I$(top_srcdir)/LwIP/src/include
+CFLAGS +=-I$(top_srcdir)/CMSIS/Include -I$(top_srcdir)/LwIP/src/include/lwip -I$(top_srcdir)/LwIP/system -I$(top_srcdir)/FreeRTOS/Source/CMSIS_RTOS -I$(top_srcdir)/FreeRTOS/Source/include -I$(top_srcdir)/FreeRTOS/Source/portable/GCC/ARM_CM4F $(INC_IPV) -I$(top_srcdir)/LwIP/system/OS -I$(top_srcdir)/LwIP/src/include/netif -I$(top_srcdir)/over-hal -I$(top_srcdir)/LwIP/src/include
 
-libbsp_a_SOURCES += usart.c gpio.c i2c.c spi.c dma.c newlib_stub.c main.c
+libbsp_a_SOURCES +=  newlib_stub.c
 
 
