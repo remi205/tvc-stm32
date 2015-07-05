@@ -44,7 +44,7 @@
  extern "C" {
 #endif
 
-#if defined(STM32F373xC) || defined(STM32F378xx)
+#if defined(STM32F373xx) || defined(STM32F378xx)
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f3xx_hal_def.h"
@@ -584,7 +584,7 @@ uint32_t               HAL_SDADC_GetError(SDADC_HandleTypeDef* hsdadc);
   * @}
   */
 
-#endif /* defined(STM32F373xC) || defined(STM32F378xx) */
+#endif /* defined(STM32F373xx) || defined(STM32F378xx) */
 
 #ifdef __cplusplus
 }

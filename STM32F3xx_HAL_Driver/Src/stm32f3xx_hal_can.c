@@ -118,7 +118,7 @@
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
     defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
     defined(STM32F302x8)                                                 || \
-    defined(STM32F373xC) || defined(STM32F378xx)
+    defined(STM32F373xx) || defined(STM32F378xx)
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -1376,7 +1376,7 @@ static HAL_StatusTypeDef CAN_Receive_IT(CAN_HandleTypeDef* hcan, uint8_t FIFONum
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
        /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
        /* STM32F302x8                               || */
-       /* STM32F373xC || STM32F378xx                   */
+       /* STM32F373xx || STM32F378xx                   */
 
 #endif /* HAL_CAN_MODULE_ENABLED */
 /**

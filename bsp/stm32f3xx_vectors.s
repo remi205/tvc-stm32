@@ -22,7 +22,7 @@ Infinite_Loop:
    .section  .isr_vector,"a",%progbits
   .type  g_pfnVectors, %object
   .size  g_pfnVectors, .-g_pfnVectors
-_pfnVectors:
+g_pfnVectors:
 	.word	_estack
 	.word	Reset_Handler
 	.word	NMI_Handler
@@ -347,4 +347,5 @@ _pfnVectors:
 	.thumb_set TIM19_IRQHandler,Default_Handler
   	
 	.weak	FPU_IRQHandler
-	.thumb_set FPU_IRQHandler,Default_Handler        
+	.thumb_set FPU_IRQHandler,Default_Handler
+        

@@ -6,7 +6,7 @@ if L4XX
 libbsp_a_SOURCES = stm32l4xx_hal_msp.c stm32l4xx_it.c system_stm32l4xx.c stm32l4xx_crt0.s
 else
 if F3XX
-libbsp_a_SOURCES = stm32f3xx_hal_msp.c stm32f3xx_it.c system_stm32f3xx.c stm32f3xx_crt0.s
+libbsp_a_SOURCES = stm32f3xx_hal_msp.c stm32f3xx_it.c system_stm32f3xx.c stm32f3xx_crt0.s stm32f3xx_vectors.s main_f3.c
 else
 if F7XX 
 libbsp_a_SOURCES = stm32f7xx_hal_msp.c stm32f7xx_it.c system_stm32f7xx.c stm32f7xx_crt0.s

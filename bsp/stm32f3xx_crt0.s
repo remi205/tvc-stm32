@@ -68,5 +68,6 @@ LoopFillZerobss:
     bx  lr  
     
 .size	Reset_Handler, .-Reset_Handler
-.include "stm32f3xx_vectors.s"
+/*.include "stm32f3xx_vectors.s"*/
+        
         

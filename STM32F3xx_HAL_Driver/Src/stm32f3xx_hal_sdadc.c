@@ -198,7 +198,7 @@
   */
 
 #ifdef HAL_SDADC_MODULE_ENABLED
-#if defined(STM32F373xC) || defined(STM32F378xx)
+#if defined(STM32F373xx) || defined(STM32F378xx)
 /** @defgroup SDADC SDADC HAL module driver
   * @brief SDADC HAL driver modules
   * @{
@@ -2639,7 +2639,7 @@ static HAL_StatusTypeDef SDADC_InjConvStop(SDADC_HandleTypeDef* hsdadc)
   * @}
   */ 
 
-#endif /* defined(STM32F373xC) || defined(STM32F378xx) */
+#endif /* defined(STM32F373xx) || defined(STM32F378xx) */
 #endif /* HAL_SDADC_MODULE_ENABLED */
 /**
   * @}

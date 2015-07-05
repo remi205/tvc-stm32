@@ -88,7 +88,7 @@
 #if defined(STM32F302xE) || defined(STM32F303xE) || \
     defined(STM32F302xC) || defined(STM32F303xC) || \
     defined(STM32F302x8)                         || \
-    defined(STM32F373xC)
+    defined(STM32F373xx)
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -1288,7 +1288,7 @@ PCD_StateTypeDef HAL_PCD_GetState(PCD_HandleTypeDef *hpcd)
 #endif /* STM32F302xE || STM32F303xE || */
        /* STM32F302xC || STM32F303xC || */
        /* STM32F302x8                || */
-       /* STM32F373xC                   */
+       /* STM32F373xx                   */
 
 #endif /* HAL_PCD_MODULE_ENABLED */
 /**

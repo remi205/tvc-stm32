@@ -121,7 +121,7 @@
 
     *** SDADC power configuration ***
     ================================
-      (+) On STM32F373xC/STM32F378xx devices, there are up to 
+      (+) On STM32F373xx/STM32F378xx devices, there are up to 
           3 SDADC instances that can be enabled/disabled.
 
 @endverbatim
@@ -132,7 +132,7 @@
     defined(STM32F302xC) || defined(STM32F303xC) || \
     defined(STM32F303x8) || defined(STM32F334x8) || \
     defined(STM32F301x8) || defined(STM32F302x8) || \
-    defined(STM32F373xC)
+    defined(STM32F373xx)
 
 /**
   * @brief Configures the voltage threshold detected by the Power Voltage Detector(PVD).
@@ -232,9 +232,9 @@ __weak void HAL_PWR_PVDCallback(void)
        /* STM32F302xC || STM32F303xC || */
        /* STM32F303x8 || STM32F334x8 || */
        /* STM32F301x8 || STM32F302x8 || */
-       /* STM32F373xC                   */
+       /* STM32F373xx                   */
 
-#if defined(STM32F373xC) || defined(STM32F378xx)
+#if defined(STM32F373xx) || defined(STM32F378xx)
 
 /**
   * @brief  Enables the SDADC peripheral functionaliy
@@ -267,7 +267,7 @@ void HAL_PWREx_DisableSDADCAnalog(uint32_t Analogx)
   PWR->CR &= ~Analogx;
 }
 
-#endif /* STM32F373xC || STM32F378xx */
+#endif /* STM32F373xx || STM32F378xx */
 
 /**
   * @}

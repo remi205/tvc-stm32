@@ -46,7 +46,7 @@
 #if defined(STM32F302xE) || defined(STM32F303xE) || \
     defined(STM32F302xC) || defined(STM32F303xC) || \
     defined(STM32F302x8)                         || \
-    defined(STM32F373xC)
+    defined(STM32F373xx)
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f3xx_hal_def.h"
@@ -73,7 +73,7 @@
   */
    
 #if defined(STM32F302xC) || defined(STM32F303xC) || \
-    defined(STM32F373xC)
+    defined(STM32F373xx)
       
 #define PCD_EP_TX_ADDRESS(USBx, bEpNum) ((uint32_t *)((USBx->BTABLE+bEpNum*8)*2+     ((uint32_t)USBx + 0x400)))
 #define PCD_EP_TX_CNT(USBx, bEpNum) ((uint32_t *)((USBx->BTABLE+bEpNum*8+2)*2+  ((uint32_t)USBx + 0x400)))
@@ -86,7 +86,7 @@
   }    
 
 #endif /* STM32F302xC || STM32F303xC || */
-       /* STM32F373xC                   */
+       /* STM32F373xx                   */
    
       
 #if defined(STM32F302xE) || defined(STM32F303xE) || \
@@ -142,7 +142,7 @@ HAL_StatusTypeDef HAL_PCDEx_PMAConfig(PCD_HandleTypeDef *hpcd,
 #endif /* STM32F302xE || STM32F303xE || */
        /* STM32F302xC || STM32F303xC || */
        /* STM32F302x8                || */
-       /* STM32F373xC                   */
+       /* STM32F373xx                   */
 
 #ifdef __cplusplus
 }
