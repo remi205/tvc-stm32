@@ -45,7 +45,7 @@
 
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
-    defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
+    defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
     defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx) 
                   
 /* Includes ------------------------------------------------------------------*/
@@ -497,7 +497,7 @@ OPAMP_TrimmingValueTypeDef HAL_OPAMP_GetTrimOffset (OPAMP_HandleTypeDef *hopamp,
 
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
-       /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
+       /* STM32F303x8 || STM32F334xx || STM32F328xx || */
        /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
 
 #ifdef __cplusplus

@@ -146,7 +146,7 @@ HAL_StatusTypeDef  HAL_PCDEx_PMAConfig(PCD_HandleTypeDef *hpcd,
   * @{
   */
 #if defined(STM32F303xC)                         || \
-    defined(STM32F303x8) || defined(STM32F334x8) || \
+    defined(STM32F303x8) || defined(STM32F334xx) || \
     defined(STM32F301x8)                         || \
     defined(STM32F373xx) || defined(STM32F378xx)
       
@@ -197,7 +197,7 @@ void PCD_ReadPMA(USB_TypeDef  *USBx, uint8_t *pbUsrBuf, uint16_t wPMABufAddr, ui
   }
 }
 #endif /* STM32F303xC                || */
-       /* STM32F303x8 || STM32F334x8 || */
+       /* STM32F303x8 || STM32F334xx || */
        /* STM32F301x8                || */
        /* STM32F373xx || STM32F378xx    */
 

@@ -716,12 +716,12 @@ static HAL_StatusTypeDef FLASH_OB_UserConfig(uint8_t UserConfig)
            
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
-    defined(STM32F303x8) || defined(STM32F334x8)                         || \
+    defined(STM32F303x8) || defined(STM32F334xx)                         || \
     defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
     OB->USER = (UserConfig | 0x88);
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
-       /* STM32F303x8 || STM32F334x8                || */
+       /* STM32F303x8 || STM32F334xx                || */
        /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
 
 #if defined(STM32F373xx) || defined(STM32F378xx)
@@ -801,12 +801,12 @@ static FlagStatus FLASH_OB_GetRDP(void)
 
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
-    defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
+    defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
     defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
   if ((uint8_t)READ_BIT(FLASH->OBR, FLASH_OBR_RDPRT) != RESET)
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
-       /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
+       /* STM32F303x8 || STM32F334xx || STM32F328xx || */
        /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
     
 #if defined(STM32F373xx) || defined(STM32F378xx)

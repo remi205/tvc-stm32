@@ -324,7 +324,7 @@
 
 #ifdef HAL_HRTIM_MODULE_ENABLED
 
-#if defined(STM32F334x8)
+#if defined(STM32F334xx)
 
 /** @defgroup HRTIM HRTIM HAL module driver
   * @brief HRTIM HAL module driver
@@ -7925,7 +7925,7 @@ static void HRTIM_BurstDMACplt(DMA_HandleTypeDef *hdma)
 /**
   * @}
   */
-#endif /* STM32F334x8 */
+#endif /* STM32F334xx */
 
 #endif /* HAL_HRTIM_MODULE_ENABLED */
 
