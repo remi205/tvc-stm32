@@ -163,7 +163,7 @@
 
 #else
 
-/** @defgroup STM32F301x8_STM32F302x8_STM32F318xx_STM32F303x8_STM32F334x8_STM32F328xx Product devices
+/** @defgroup STM32F301xx_STM32F302x8_STM32F318xx_STM32F303x8_STM32F334xx_STM32F328xx Product devices
   * @{
   */
 #define __HAL_DMA_GET_TC_FLAG_INDEX(__HANDLE__) \

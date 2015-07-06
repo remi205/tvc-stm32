@@ -67,7 +67,7 @@
   * @param  __CLOCKSOURCE__ : output variable   
   * @retval the SMARTCARD clocking source, written in __CLOCKSOURCE__.
   */
-#if defined(STM32F334x8) || defined(STM32F303x8) || defined(STM32F328xx)
+#if defined(STM32F334xx) || defined(STM32F303x8) || defined(STM32F328xx)
 #define __HAL_SMARTCARD_GETCLOCKSOURCE(__HANDLE__,__CLOCKSOURCE__) \
   do {                                                         \
     if((__HANDLE__)->Instance == USART1)                       \

@@ -117,8 +117,8 @@ typedef struct
 
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
-    defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+    defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 /** 
   * @brief  TIM Break input(s) and Dead time configuration Structure definition  
   * @note   2 break inputs can be configured (BKIN and BKIN2) with configurable 
@@ -165,8 +165,8 @@ typedef struct {
 }TIM_MasterConfigTypeDef;
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
-       /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
+       /* STM32F303x8 || STM32F334xx || STM32F328xx || */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx    */
 /**
   * @}
   */
@@ -331,8 +331,8 @@ typedef struct {
 
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
-    defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+    defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 /** @defgroup TIMEx_Channel TIM  Extended Channel
   * @{
   */
@@ -584,13 +584,13 @@ typedef struct {
   */ 
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
-       /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
+       /* STM32F303x8 || STM32F334xx || STM32F328xx || */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx    */
 
 #if defined(STM32F302xE)                                                 || \
     defined(STM32F302xC)                                                 || \
-    defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+    defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 /** @defgroup TIMEx_Remap TIM  Extended Remapping
   * @{
   */
@@ -616,8 +616,8 @@ typedef struct {
   */ 
 #endif /* STM32F302xE                               || */
        /* STM32F302xC                               || */
-       /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx || */
+       /* STM32F303x8 || STM32F334xx || STM32F328xx || */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx || */
 
 #if defined(STM32F303xC) || defined(STM32F358xx)
 /** @defgroup TIMEx_Remap TIM  Extended Remapping 1
@@ -786,8 +786,8 @@ typedef struct {
 
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
-    defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+    defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 /** @defgroup TIMEx_Group_Channel5 Group Channel 5 and Channel 1, 2 or 3
   * @{
   */
@@ -802,8 +802,8 @@ typedef struct {
   */
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
-       /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
+       /* STM32F303x8 || STM32F334xx || STM32F328xx || */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx    */
       
 /** @defgroup TIM_Clock_Filter TIM Clock Filter
   * @{
@@ -856,8 +856,8 @@ typedef struct {
    
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
-    defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+    defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 /**
   * @brief  Sets the TIM Capture Compare Register value on runtime without
   *         calling another time ConfigChannel function.
@@ -903,8 +903,8 @@ typedef struct {
  ((__HANDLE__)->Instance->CCR6))
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
-       /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
+       /* STM32F303x8 || STM32F334xx || STM32F328xx || */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx    */
 /**
   * @}
   */ 
@@ -1012,25 +1012,25 @@ HAL_StatusTypeDef HAL_TIMEx_RemapConfig(TIM_HandleTypeDef *htim, uint32_t Remap1
 
 #if defined(STM32F302xE)                                                 || \
     defined(STM32F302xC)                                                 || \
-    defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx) || \
+    defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx) || \
     defined(STM32F373xx) || defined(STM32F378xx)
 HAL_StatusTypeDef HAL_TIMEx_RemapConfig(TIM_HandleTypeDef *htim, uint32_t Remap);
 #endif /* STM32F302xE                               || */
        /* STM32F302xC                               || */
-       /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx || */
+       /* STM32F303x8 || STM32F334xx || STM32F328xx || */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx || */
        /* STM32F373xx || STM32F378xx                   */
 
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
-    defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+    defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 HAL_StatusTypeDef HAL_TIMEx_GroupChannel5(TIM_HandleTypeDef *htim, uint32_t Channels);
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
-       /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
+       /* STM32F303x8 || STM32F334xx || STM32F328xx || */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx    */
 /**
   * @}
   */

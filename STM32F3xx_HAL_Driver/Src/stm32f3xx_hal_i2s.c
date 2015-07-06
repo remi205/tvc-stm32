@@ -152,7 +152,7 @@
 
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx) || \
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx) || \
     defined(STM32F373xx) || defined(STM32F378xx)
 
 /* Private typedef -----------------------------------------------------------*/
@@ -1184,7 +1184,7 @@ static void I2S_Receive_IT(I2S_HandleTypeDef *hi2s)
 
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx || */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx || */
        /* STM32F373xx || STM32F378xx                   */
 
 #endif /* HAL_I2S_MODULE_ENABLED */

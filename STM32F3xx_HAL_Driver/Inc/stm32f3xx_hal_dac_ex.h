@@ -64,7 +64,7 @@
   * @{
   */
 
-#if defined(STM32F301x8) || defined(STM32F318xx)
+#if defined(STM32F301xx) || defined(STM32F318xx)
 #define DAC_TRIGGER_NONE                   ((uint32_t)0x00000000) /*!< Conversion is automatic once the DAC1_DHRxxxx register 
                                                                      has been loaded, and not by external trigger */
 #define DAC_TRIGGER_T6_TRGO                ((uint32_t)DAC_CR_TEN1) /*!< TIM6 TRGO selected as external conversion trigger for DAC channel */
@@ -79,7 +79,7 @@
                                  ((TRIGGER) == DAC_TRIGGER_T15_TRGO) || \
                                  ((TRIGGER) == DAC_TRIGGER_EXT_IT9) || \
                                  ((TRIGGER) == DAC_TRIGGER_SOFTWARE))
-#endif /* STM32F301x8 || STM32F318xx */
+#endif /* STM32F301xx || STM32F318xx */
 
 #if defined(STM32F302xE) || \
     defined(STM32F302xC) || \
@@ -192,7 +192,7 @@
                                  ((TRIGGER) == DAC_TRIGGER_SOFTWARE))
 #endif /* STM32F373xx || STM32F378xx */
 
-#if defined(STM32F334x8)
+#if defined(STM32F334xx)
 
 #define DAC_TRIGGER_NONE                   ((uint32_t)0x00000000) /*!< Conversion is automatic once the DAC1_DHRxxxx register 
                                                                      has been loaded, and not by external trigger */
@@ -224,7 +224,7 @@
                                  ((TRIGGER) == DAC_TRIGGER_EXT_IT9) || \
                                  ((TRIGGER) == DAC_TRIGGER_SOFTWARE))
 
-#endif /* STM32F334x8 */
+#endif /* STM32F334xx */
 
 /**
   * @}
@@ -236,7 +236,7 @@
  
 #if defined(STM32F302xE) || \
     defined(STM32F302xC) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 #define DAC_CHANNEL_1                      ((uint32_t)0x00000000)               /*!< DAC Channel 1 */
 /* Aliases for compatibility */
 #define DAC1_CHANNEL_1                     DAC_CHANNEL_1                        /*!< DAC1 Channel 1 */
@@ -244,7 +244,7 @@
 #define IS_DAC_CHANNEL(CHANNEL) ((CHANNEL) == DAC_CHANNEL_1)            
 #endif  /* STM32F302xE                               || */
         /* STM32F302xC                               || */
-        /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
+        /* STM32F301xx || STM32F302x8 || STM32F318xx    */
 
 
 #if defined(STM32F303xE) || defined(STM32F398xx) || \
@@ -260,7 +260,7 @@
 #endif /* STM32F303xE || STM32F398xx || */
        /* STM32F303xC || STM32F358xx    */
    
-#if defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
+#if defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
     defined(STM32F373xx) || defined(STM32F378xx)
 
 #define DAC_CHANNEL_1                     ((uint32_t)0x00000000)       /*!< DAC Channel 1 */
@@ -273,7 +273,7 @@
 
 #define IS_DAC_CHANNEL(CHANNEL) (((CHANNEL) == DAC_CHANNEL_1) || \
                                  ((CHANNEL) == DAC_CHANNEL_2))
-#endif /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
+#endif /* STM32F303x8 || STM32F334xx || STM32F328xx || */
        /* STM32F373xx || STM32F378xx                   */
    
 /**

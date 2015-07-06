@@ -71,7 +71,7 @@ static void DAC_DMAHalfConvCpltCh1(DMA_HandleTypeDef *hdma);
 
 #if defined(STM32F303xE) || defined(STM32F398xx)                         || \
     defined(STM32F303xC) || defined(STM32F358xx)                         || \
-    defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
+    defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
     defined(STM32F373xx) || defined(STM32F378xx) 
 /* DAC channel 2 is available on top of DAC channel 1 */
 static void DAC_DMAConvCpltCh2(DMA_HandleTypeDef *hdma);
@@ -79,7 +79,7 @@ static void DAC_DMAErrorCh2(DMA_HandleTypeDef *hdma);
 static void DAC_DMAHalfConvCpltCh2(DMA_HandleTypeDef *hdma); 
 #endif /* STM32F303xE || STM32F398xx                || */
        /* STM32F303xC || STM32F358xx                || */
-       /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
+       /* STM32F303x8 || STM32F334xx || STM32F328xx || */
        /* STM32F373xx || STM32F378xx                   */
 /**
   * @}
@@ -146,7 +146,7 @@ HAL_StatusTypeDef HAL_DAC_SetValue(DAC_HandleTypeDef* hdac, uint32_t channel, ui
   }
 #if defined(STM32F303xE) || defined(STM32F398xx)                         || \
     defined(STM32F303xC) || defined(STM32F358xx)                         || \
-    defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
+    defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
     defined(STM32F373xx) || defined(STM32F378xx)
   else /* channel = DAC_CHANNEL_2  */
   {
@@ -154,7 +154,7 @@ HAL_StatusTypeDef HAL_DAC_SetValue(DAC_HandleTypeDef* hdac, uint32_t channel, ui
   }
 #endif /* STM32F303xE || STM32F398xx                || */
        /* STM32F303xC || STM32F358xx                || */
-       /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
+       /* STM32F303x8 || STM32F334xx || STM32F328xx || */
        /* STM32F373xx || STM32F378xx                   */
 
   /* Set the DAC channel1 selected data holding register */
@@ -189,7 +189,7 @@ HAL_StatusTypeDef HAL_DAC_SetValue(DAC_HandleTypeDef* hdac, uint32_t channel, ui
 /* DAC 1 has 2 channels 1 & 2 - DAC 2 has one channel 1 */
 #if  defined(STM32F303xE) || defined(STM32F398xx)                         || \
      defined(STM32F303xC) || defined(STM32F358xx)                         || \
-     defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
+     defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
      defined(STM32F373xx) || defined(STM32F378xx)
 /* DAC 1 has 2 channels 1 & 2 */
 
@@ -248,12 +248,12 @@ HAL_StatusTypeDef HAL_DAC_Start(DAC_HandleTypeDef* hdac, uint32_t channel)
 }
 #endif /* STM32F303xE || STM32F398xx                || */
        /* STM32F303xC || STM32F358xx                || */
-       /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
+       /* STM32F303x8 || STM32F334xx || STM32F328xx || */
        /* STM32F373xx || STM32F378xx                   */
 
 #if defined(STM32F302xE) || \
     defined(STM32F302xC) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 /* DAC 1 has 1 channels 1 */
 
 /**
@@ -298,12 +298,12 @@ HAL_StatusTypeDef HAL_DAC_Start(DAC_HandleTypeDef* hdac, uint32_t channel)
 }
 #endif /* STM32F302xE                               || */
        /* STM32F302xC                               || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx    */
 
 /* DAC 1 has 2 channels 1 & 2 - DAC 2 has one channel 1 */
 #if defined(STM32F303xE) || defined(STM32F398xx)                         || \
     defined(STM32F303xC) || defined(STM32F358xx)                         || \
-    defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
+    defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
     defined(STM32F373xx) || defined(STM32F378xx)
     
 /* DAC 1 has 2 channels 1 & 2 */
@@ -441,12 +441,12 @@ HAL_StatusTypeDef HAL_DAC_Start_DMA(DAC_HandleTypeDef* hdac, uint32_t channel, u
 }
 #endif /* STM32F303xE || STM32F398xx                || */
        /* STM32F303xC || STM32F358xx                || */
-       /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
+       /* STM32F303x8 || STM32F334xx || STM32F328xx || */
        /* STM32F373xx || STM32F378xx                   */
 
 #if defined(STM32F302xE) || \
     defined(STM32F302xC) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 /* DAC 1 has 1 channels 1 */
 
 /**
@@ -529,12 +529,12 @@ HAL_StatusTypeDef HAL_DAC_Start_DMA(DAC_HandleTypeDef* hdac, uint32_t channel, u
 }
 #endif /* STM32F302xE                               || */
        /* STM32F302xC                               || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx    */
 
 /* DAC 1 has 2 channels 1 & 2 - DAC 2 has one channel 1 */
 #if  defined(STM32F303xE) || defined(STM32F398xx)                         || \
      defined(STM32F303xC) || defined(STM32F358xx)                         || \
-     defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
+     defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
      defined(STM32F373xx) || defined(STM32F378xx)
      
 /* DAC 1 has 2 channels 1 & 2 */
@@ -579,12 +579,12 @@ uint32_t HAL_DAC_GetValue(DAC_HandleTypeDef* hdac, uint32_t channel)
 
 #endif /* STM32F303xE || STM32F398xx                || */
        /* STM32F303xC || STM32F358xx                || */
-       /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
+       /* STM32F303x8 || STM32F334xx || STM32F328xx || */
        /* STM32F373xx || STM32F378xx                   */
 
 #if defined(STM32F302xE) || \
     defined(STM32F302xC) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 /* DAC 1 has 1 channel (channel 1)  */
 /**
   * @brief  Returns the last data output value of the selected DAC channel.
@@ -605,11 +605,11 @@ uint32_t HAL_DAC_GetValue(DAC_HandleTypeDef* hdac, uint32_t channel)
 }
 #endif /* STM32F302xE                               || */
        /* STM32F302xC                               || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx    */
 
 #if defined(STM32F302xE) || \
     defined(STM32F302xC) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 /* DAC channel 2 is NOT available. Only DAC channel 1 is available */
 
 /**
@@ -642,11 +642,11 @@ void HAL_DAC_IRQHandler(struct __DAC_HandleTypeDef* hdac)
 }
 #endif /* STM32F302xE                               || */
        /* STM32F302xC                               || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx    */
 
 #if  defined(STM32F303xE) || defined(STM32F398xx)                         || \
      defined(STM32F303xC) || defined(STM32F358xx)                         || \
-     defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
+     defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
      defined(STM32F373xx) || defined(STM32F378xx)
 /* DAC channel 2 is available on top of DAC channel 1 */
 
@@ -699,7 +699,7 @@ void HAL_DAC_IRQHandler(struct __DAC_HandleTypeDef* hdac)
 }
 #endif /* STM32F303xE || STM32F398xx                || */
        /* STM32F303xC || STM32F358xx                || */
-       /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
+       /* STM32F303x8 || STM32F334xx || STM32F328xx || */
        /* STM32F373xx || STM32F378xx                   */
 
 /**
@@ -726,7 +726,7 @@ void HAL_DAC_IRQHandler(struct __DAC_HandleTypeDef* hdac)
 
 #if  defined(STM32F303xE) || defined(STM32F398xx)                         || \
      defined(STM32F303xC) || defined(STM32F358xx)                         || \
-     defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
+     defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
      defined(STM32F373xx) || defined(STM32F378xx)
 /* DAC channel 2 is present in DAC 1 */
 /**
@@ -774,7 +774,7 @@ HAL_StatusTypeDef HAL_DACEx_DualSetValue(DAC_HandleTypeDef* hdac, uint32_t align
 }
 #endif /* STM32F303xE || STM32F398xx                || */
        /* STM32F303xC || STM32F358xx                || */
-       /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
+       /* STM32F303x8 || STM32F334xx || STM32F328xx || */
        /* STM32F373xx || STM32F378xx                   */
 
 /**
@@ -791,13 +791,13 @@ uint32_t HAL_DACEx_DualGetValue(DAC_HandleTypeDef* hdac)
 
 #if  defined(STM32F303xE) || defined(STM32F398xx)                         || \
      defined(STM32F303xC) || defined(STM32F358xx)                         || \
-     defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
+     defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
      defined(STM32F373xx) || defined(STM32F378xx)
 /* DAC channel 2 is present in DAC 1 */
   tmp |= hdac->Instance->DOR2 << 16;
 #endif /* STM32F303xE || STM32F398xx                || */
        /* STM32F303xC || STM32F358xx                || */
-       /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
+       /* STM32F303x8 || STM32F334xx || STM32F328xx || */
        /* STM32F373xx || STM32F378xx                   */
 
   /* Returns the DAC channel data output register value */
@@ -1000,7 +1000,7 @@ static void DAC_DMAErrorCh1(DMA_HandleTypeDef *hdma)
 
 #if  defined(STM32F303xE) || defined(STM32F398xx)                         || \
      defined(STM32F303xC) || defined(STM32F358xx)                         || \
-     defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
+     defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
      defined(STM32F373xx) || defined(STM32F378xx)
 /* DAC channel 2 is available on top of DAC channel 1 */
 
@@ -1048,7 +1048,7 @@ static void DAC_DMAErrorCh2(DMA_HandleTypeDef *hdma)
 }
 #endif /* STM32F303xE || STM32F398xx                || */
        /* STM32F303xC || STM32F358xx                || */
-       /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
+       /* STM32F303x8 || STM32F334xx || STM32F328xx || */
        /* STM32F373xx || STM32F378xx                   */
 
 /**

@@ -43,7 +43,7 @@
  extern "C" {
 #endif
 
-#if defined(STM32F334x8)
+#if defined(STM32F334xx)
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f3xx_hal_def.h"
@@ -3578,7 +3578,7 @@ void HAL_HRTIM_ErrorCallback(HRTIM_HandleTypeDef *hhrtim);
   * @}
   */ 
 
-#endif /* defined(STM32F334x8) */
+#endif /* defined(STM32F334xx) */
 
 #ifdef __cplusplus
 }

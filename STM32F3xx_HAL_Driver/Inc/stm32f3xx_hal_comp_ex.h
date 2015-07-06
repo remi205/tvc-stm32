@@ -91,8 +91,8 @@
 /**
   * @}
   */ 
-#elif defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
-/** @defgroup COMPEx_InvertingInput COMP Extended InvertingInput (STM32F301x8/STM32F302x8/STM32F318xx Product devices)
+#elif defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
+/** @defgroup COMPEx_InvertingInput COMP Extended InvertingInput (STM32F301xx/STM32F302x8/STM32F318xx Product devices)
   * @{
   */
 #define COMP_INVERTINGINPUT_1_4VREFINT     ((uint32_t)0x00000000)                        /*!< 1/4 VREFINT connected to comparator inverting input */
@@ -114,8 +114,8 @@
 /**
   * @}
   */
-#elif defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx)
-/** @defgroup COMPEx_InvertingInput COMP Extended InvertingInput (STM32F303x8/STM32F334x8/STM32F328xx Product devices)
+#elif defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx)
+/** @defgroup COMPEx_InvertingInput COMP Extended InvertingInput (STM32F303x8/STM32F334xx/STM32F328xx Product devices)
   * @{
   */
 #define COMP_INVERTINGINPUT_1_4VREFINT     ((uint32_t)0x00000000)                        /*!< 1/4 VREFINT connected to comparator inverting input */
@@ -201,8 +201,8 @@
 /**
   * @}
   */ 
-#elif defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
-/** @defgroup COMPEx_NonInvertingInput COMP Extended NonInvertingInput (STM32F301x8/STM32F302x8/STM32F318xx Product devices)
+#elif defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
+/** @defgroup COMPEx_NonInvertingInput COMP Extended NonInvertingInput (STM32F301xx/STM32F302x8/STM32F318xx Product devices)
   * @{
   */
 #define COMP_NONINVERTINGINPUT_IO1               ((uint32_t)0x00000000) /*!< I/O1 (PA7 for COMP2, PB0 for COMP4, PB11 for COMP6)
@@ -429,8 +429,8 @@
 /**
   * @}
   */ 
-#elif defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
-/** @defgroup COMPEx_Output COMP Extended Output (STM32F301x8/STM32F302x8/STM32F318xx Product devices)
+#elif defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
+/** @defgroup COMPEx_Output COMP Extended Output (STM32F301xx/STM32F302x8/STM32F318xx Product devices)
   * @{
   */
 #define COMP_OUTPUT_NONE                  ((uint32_t)0x00000000)   /*!< COMP output isn't connected to other peripherals */
@@ -467,8 +467,8 @@
 /**
   * @}
   */ 
-#elif  defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx)
-/** @defgroup COMPEx_Output COMP Extended Output (STM32F303x8/STM32F334x8/STM32F328xx Product devices)
+#elif  defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx)
+/** @defgroup COMPEx_Output COMP Extended Output (STM32F303x8/STM32F334xx/STM32F328xx Product devices)
   * @{
   */
 #define COMP_OUTPUT_NONE                  ((uint32_t)0x00000000)   /*!< COMP output isn't connected to other peripherals */
@@ -796,9 +796,9 @@
   * @}
   */
 
-#if defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx) || \
-    defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx)
-/** @defgroup COMPEx_BlankingSrce  COMP Extended Blanking Source (STM32F301x8/STM32F302x8/STM32F303x8/STM32F334x8/STM32F318xx/STM32F328xx Product devices)
+#if defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx) || \
+    defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx)
+/** @defgroup COMPEx_BlankingSrce  COMP Extended Blanking Source (STM32F301xx/STM32F302x8/STM32F303x8/STM32F334xx/STM32F318xx/STM32F328xx Product devices)
   * @{
   */
 /* No blanking source can be selected for all comparators */
@@ -846,7 +846,7 @@
   * @}
   */
 
-/** @defgroup COMPEx_ExtiLineEvent COMP Extended EXTI Line Event (STM32F301x8/STM32F302x8/STM32F303x8/STM32F334x8/STM32F318xx/STM32F328xx Product devices)
+/** @defgroup COMPEx_ExtiLineEvent COMP Extended EXTI Line Event (STM32F301xx/STM32F302x8/STM32F303x8/STM32F334xx/STM32F318xx/STM32F328xx Product devices)
   *        Elements values convention: XXXXZYYY
   *           - XXXX : Interrupt mask in the register list where Z equal 0x0
   *           - YYY : Interrupt mask in the register list where Z equal 0x1
@@ -864,8 +864,8 @@
 /**
   * @}
   */
-#endif /* STM32F301x8 || STM32F302x8 || STM32F318xx || */
-       /* STM32F303x8 || STM32F334x8 || STM32F328xx */
+#endif /* STM32F301xx || STM32F302x8 || STM32F318xx || */
+       /* STM32F303x8 || STM32F334xx || STM32F328xx */
 
 #if defined(STM32F302xE) ||\
     defined(STM32F302xC)
@@ -1411,8 +1411,8 @@
 
 #endif /* STM32F373xx || STM32F378xx */
 
-#if defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx) || \
-    defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx)
+#if defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx) || \
+    defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx)
 /**
   * @brief  Get the specified EXTI line for a comparator instance
   * @param  __INSTANCE__: specifies the COMP instance.
@@ -1421,8 +1421,8 @@
 #define __HAL_COMP_GET_EXTI_LINE(__INSTANCE__) (((__INSTANCE__) == COMP2) ? COMP_EXTI_LINE_COMP2_EVENT : \
                                                 ((__INSTANCE__) == COMP4) ? COMP_EXTI_LINE_COMP4_EVENT : \
                                                 COMP_EXTI_LINE_COMP6_EVENT)
-#endif /* STM32F301x8 || STM32F302x8 || STM32F318xx || */
-       /* STM32F303x8 || STM32F334x8 || STM32F328xx */
+#endif /* STM32F301xx || STM32F302x8 || STM32F318xx || */
+       /* STM32F303x8 || STM32F334xx || STM32F328xx */
 
 #if defined(STM32F302xE) || \
     defined(STM32F302xC)
