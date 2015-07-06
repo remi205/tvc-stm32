@@ -127,7 +127,7 @@
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
     defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx) || \
-    defined(STM32F373xC) || defined(STM32F378xx)
+    defined(STM32F373xx) || defined(STM32F378xx)
 
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx)
@@ -308,7 +308,7 @@ HAL_StatusTypeDef HAL_I2S_Init(I2S_HandleTypeDef *hi2s)
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F302xC || STM32F303xC || STM32F358xx    */
 
-#if defined (STM32F373xC) || defined (STM32F378xx)
+#if defined (STM32F373xx) || defined (STM32F378xx)
     if(hi2s->Instance == SPI1)
     {
       i2sclk = HAL_RCC_GetPCLK2Freq();
@@ -317,7 +317,7 @@ HAL_StatusTypeDef HAL_I2S_Init(I2S_HandleTypeDef *hi2s)
     {
       i2sclk = HAL_RCC_GetPCLK1Freq();
     }
-#endif /* STM32F373xC || STM32F378xx */
+#endif /* STM32F373xx || STM32F378xx */
     
     /* Compute the Real divider depending on the MCLK output state, with a floating point */
     if(hi2s->Init.MCLKOutput == I2S_MCLKOUTPUT_ENABLE)
@@ -1546,7 +1546,7 @@ static HAL_StatusTypeDef I2S_FullDuplexWaitFlagStateUntilTimeout(I2S_HandleTypeD
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
        /* STM32F301x8 || STM32F302x8 || STM32F318xx || */
-       /* STM32F373xC || STM32F378xx                   */
+       /* STM32F373xx || STM32F378xx                   */
 
 #endif /* HAL_I2S_MODULE_ENABLED */
 

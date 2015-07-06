@@ -223,7 +223,7 @@ HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClk
 #if defined(STM32F302xE) || defined(STM32F303xE) || \
     defined(STM32F302xC) || defined(STM32F303xC) || \
     defined(STM32F302x8)                         || \
-    defined(STM32F373xC)
+    defined(STM32F373xx)
   /*------------------------------ USB Configuration ------------------------*/ 
   if(((PeriphClkInit->PeriphClockSelection) & RCC_PERIPHCLK_USB) == RCC_PERIPHCLK_USB)
   {
@@ -237,12 +237,12 @@ HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClk
 #endif /* STM32F302xE || STM32F303xE || */
        /* STM32F302xC || STM32F303xC || */
        /* STM32F302x8                || */
-       /* STM32F373xC                   */
+       /* STM32F373xx                   */
 
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
     defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx) || \
-    defined(STM32F373xC) || defined(STM32F378xx)
+    defined(STM32F373xx) || defined(STM32F378xx)
 
   /*------------------------------ I2C2 Configuration ------------------------*/ 
   if(((PeriphClkInit->PeriphClockSelection) & RCC_PERIPHCLK_I2C2) == RCC_PERIPHCLK_I2C2)
@@ -257,7 +257,7 @@ HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClk
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
        /* STM32F301x8 || STM32F302x8 || STM32F318xx || */
-       /* STM32F373xC || STM32F378xx                   */
+       /* STM32F373xx || STM32F378xx                   */
   
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
@@ -365,7 +365,7 @@ HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClk
 #endif /* STM32F303xE || STM32F398xx || */
        /* STM32F303xC || STM32F358xx    */
 
-#if defined(STM32F373xC) || defined(STM32F378xx)
+#if defined(STM32F373xx) || defined(STM32F378xx)
       
   /*------------------------------ ADC1 clock Configuration ------------------*/ 
   if(((PeriphClkInit->PeriphClockSelection) & RCC_PERIPHCLK_ADC1) == RCC_PERIPHCLK_ADC1)
@@ -377,7 +377,7 @@ HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClk
     __HAL_RCC_ADC1_CONFIG(PeriphClkInit->Adc1ClockSelection);
   }
 
-#endif /* STM32F373xC || STM32F378xx */
+#endif /* STM32F373xx || STM32F378xx */
 
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
@@ -463,7 +463,7 @@ HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClk
 
 #endif /* STM32F334x8 */
 
-#if defined(STM32F373xC) || defined(STM32F378xx)
+#if defined(STM32F373xx) || defined(STM32F378xx)
   
   /*------------------------------ SDADC clock Configuration -------------------*/ 
   if(((PeriphClkInit->PeriphClockSelection) & RCC_PERIPHCLK_SDADC) == RCC_PERIPHCLK_SDADC)
@@ -485,7 +485,7 @@ HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClk
     __HAL_RCC_CEC_CONFIG(PeriphClkInit->CecClockSelection);
   }
 
-#endif /* STM32F373xC || STM32F378xx */
+#endif /* STM32F373xx || STM32F378xx */
   
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx)
   
@@ -586,7 +586,7 @@ void HAL_RCCEx_GetPeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClkInit)
 #if defined(STM32F302xE) || defined(STM32F303xE) || \
     defined(STM32F302xC) || defined(STM32F303xC) || \
     defined(STM32F302x8)                         || \
-    defined(STM32F373xC)
+    defined(STM32F373xx)
 
   PeriphClkInit->PeriphClockSelection |= RCC_PERIPHCLK_USB;
   /* Get the USB clock configuration -----------------------------------------*/
@@ -595,12 +595,12 @@ void HAL_RCCEx_GetPeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClkInit)
 #endif /* STM32F302xE || STM32F303xE || */
        /* STM32F302xC || STM32F303xC || */
        /* STM32F302x8                || */
-       /* STM32F373xC                   */
+       /* STM32F373xx                   */
 
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
     defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx) || \
-    defined(STM32F373xC) || defined(STM32F378xx)
+    defined(STM32F373xx) || defined(STM32F378xx)
 
   PeriphClkInit->PeriphClockSelection |= RCC_PERIPHCLK_I2C2;
   /* Get the I2C2 clock configuration -----------------------------------------*/
@@ -609,7 +609,7 @@ void HAL_RCCEx_GetPeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClkInit)
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
        /* STM32F301x8 || STM32F302x8 || STM32F318xx || */
-       /* STM32F373xC || STM32F378xx                   */
+       /* STM32F373xx || STM32F378xx                   */
   
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
@@ -646,14 +646,14 @@ void HAL_RCCEx_GetPeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClkInit)
        /* STM32F301x8 || STM32F302x8 || STM32F318xx || */
   
 #if defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx) || \
-    defined(STM32F373xC) || defined(STM32F378xx)
+    defined(STM32F373xx) || defined(STM32F378xx)
       
   PeriphClkInit->PeriphClockSelection |= RCC_PERIPHCLK_ADC1;
   /* Get the ADC1 clock configuration -----------------------------------------*/
   PeriphClkInit->Adc1ClockSelection = __HAL_RCC_GET_ADC1_SOURCE();
 
 #endif /* STM32F301x8 || STM32F302x8 || STM32F318xx || */
-       /* STM32F373xC || STM32F378xx                   */
+       /* STM32F373xx || STM32F378xx                   */
 
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
@@ -721,7 +721,7 @@ void HAL_RCCEx_GetPeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClkInit)
 
 #endif /* STM32F334x8 */
 
-#if defined(STM32F373xC) || defined(STM32F378xx)
+#if defined(STM32F373xx) || defined(STM32F378xx)
 
   PeriphClkInit->PeriphClockSelection |= RCC_PERIPHCLK_SDADC;
   /* Get the SDADC clock configuration -----------------------------------------*/
@@ -731,7 +731,7 @@ void HAL_RCCEx_GetPeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClkInit)
   /* Get the CEC clock configuration -----------------------------------------*/
   PeriphClkInit->CecClockSelection = __HAL_RCC_GET_CEC_SOURCE();
 
-#endif /* STM32F373xC || STM32F378xx */
+#endif /* STM32F373xx || STM32F378xx */
 
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx)
 
@@ -816,13 +816,13 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
 #if defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
     defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
     defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx) || \
-    defined(STM32F373xC) || defined(STM32F378xx)
+    defined(STM32F373xx) || defined(STM32F378xx)
       /* Configure the HSE predivision factor --------------------------------*/
       __HAL_RCC_HSE_PREDIV_CONFIG(RCC_OscInitStruct->HSEPredivValue);
 #endif /* STM32F302xC || STM32F303xC || STM32F358xx || */
        /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
        /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
-       /* STM32F373xC || STM32F378xx                   */
+       /* STM32F373xx || STM32F378xx                   */
 
       /* Check the HSE State */
       if(RCC_OscInitStruct->HSEState == RCC_HSE_ON)
@@ -1066,7 +1066,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
 #if defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
     defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
     defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx) || \
-    defined(STM32F373xC) || defined(STM32F378xx)
+    defined(STM32F373xx) || defined(STM32F378xx)
       /* Configure the main PLL clock source and multiplication factor. */
       __HAL_RCC_PLL_CONFIG(RCC_OscInitStruct->PLL.PLLSource,
                            RCC_OscInitStruct->PLL.PLLMUL);
@@ -1078,7 +1078,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
 #endif /* STM32F302xC || STM32F303xC || STM32F358xx || */
        /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
        /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
-       /* STM32F373xC || STM32F378xx                   */
+       /* STM32F373xx || STM32F378xx                   */
         
         /* Enable the main PLL. */
         __HAL_RCC_PLL_ENABLE();
@@ -1152,12 +1152,12 @@ void HAL_RCC_GetOscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
 #if defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
     defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
     defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx) || \
-    defined(STM32F373xC) || defined(STM32F378xx)
+    defined(STM32F373xx) || defined(STM32F378xx)
   RCC_OscInitStruct->HSEPredivValue = (uint32_t)(RCC->CFGR2 & RCC_CFGR2_PREDIV);
 #endif /* STM32F302xC || STM32F303xC || STM32F358xx || */
        /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
        /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
-       /* STM32F373xC || STM32F378xx                   */
+       /* STM32F373xx || STM32F378xx                   */
 
   /* Get the HSI configuration -----------------------------------------------*/
   if((RCC->CR & RCC_CR_HSION) == RCC_CR_HSION)
@@ -1260,7 +1260,7 @@ uint32_t HAL_RCC_GetSysClockFreq(void)
 #if defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
     defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
     defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx) || \
-    defined(STM32F373xC) || defined(STM32F378xx)
+    defined(STM32F373xx) || defined(STM32F378xx)
     if ((tmpreg & RCC_CFGR_PLLSRC) != RCC_PLLSOURCE_HSI)
     {
       /* HSE used as PLL clock source : PLLCLK = HSE/PREDIV * PLLMUL */
@@ -1285,7 +1285,7 @@ uint32_t HAL_RCC_GetSysClockFreq(void)
 #endif /* STM32F302xC || STM32F303xC || STM32F358xx || */
        /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
        /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
-       /* STM32F373xC || STM32F378xx                   */
+       /* STM32F373xx || STM32F378xx                   */
     sysclockfreq = pllclk;
     break;
 

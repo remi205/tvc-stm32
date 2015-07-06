@@ -2215,7 +2215,7 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *htim,
        /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
        /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
 
-#if defined(STM32F373xC) || defined(STM32F378xx)
+#if defined(STM32F373xx) || defined(STM32F378xx)
 /**
   * @brief  Configures the TIM in master mode.
   * @param  htim: TIM handle.   
@@ -2251,7 +2251,7 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *htim,
   
   return HAL_OK;
 }
-#endif /* STM32F373xC || STM32F378xx */
+#endif /* STM32F373xx || STM32F378xx */
 
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
@@ -2342,7 +2342,7 @@ HAL_StatusTypeDef HAL_TIMEx_ConfigBreakDeadTime(TIM_HandleTypeDef *htim,
        /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
        /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
 
-#if defined(STM32F373xC) || defined(STM32F378xx)
+#if defined(STM32F373xx) || defined(STM32F378xx)
 /**
   * @brief   Configures the Break feature, dead time, Lock level, OSSI/OSSR State
   *          and the AOE(automatic output enable).
@@ -2386,7 +2386,7 @@ HAL_StatusTypeDef HAL_TIMEx_ConfigBreakDeadTime(TIM_HandleTypeDef *htim,
   
   return HAL_OK;
 }
-#endif /* STM32F373xC || STM32F378xx */
+#endif /* STM32F373xx || STM32F378xx */
 
 #if defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F303xC) || defined(STM32F358xx)
@@ -2486,7 +2486,7 @@ HAL_StatusTypeDef HAL_TIMEx_RemapConfig(TIM_HandleTypeDef *htim, uint32_t Remap1
     defined(STM32F302xC)                                                 || \
     defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
     defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx) || \
-    defined(STM32F373xC) || defined(STM32F378xx)
+    defined(STM32F373xx) || defined(STM32F378xx)
 #if defined(STM32F302xE)                                                 || \
     defined(STM32F302xC)                                                 || \
     defined(STM32F303x8) || defined(STM32F334x8) || defined(STM32F328xx) || \
@@ -2506,13 +2506,13 @@ HAL_StatusTypeDef HAL_TIMEx_RemapConfig(TIM_HandleTypeDef *htim, uint32_t Remap1
   *            @arg TIM_TIM16_MCO: TIM16 TI1 is connected to MCO
   * @retval HAL status
   */
-#else /* STM32F373xC || STM32F378xx */       
+#else /* STM32F373xx || STM32F378xx */       
 /**
   * @brief  Configures the TIM2 and TIM14 Remapping input capabilities.
   * @param  htim: TIM handle.
   * @param  Remap: specifies the TIM remapping source.
   *          This parameter can be one of the following values:
-  *          STM32F373xC, STM32F378xx:
+  *          STM32F373xx, STM32F378xx:
   *            @arg TIM_TIM2_TIM8_TRGO: TIM8 TRGOUT is connected to TIM2_ITR1
   *            @arg TIM_TIM2_ETH_PTP: PTP trigger output is connected to TIM2_ITR1
   *            @arg TIM_TIM2_USBFS_SOF: OTG FS SOF is connected to the TIM2_ITR1 input
@@ -2548,7 +2548,7 @@ HAL_StatusTypeDef HAL_TIMEx_RemapConfig(TIM_HandleTypeDef *htim, uint32_t Remap)
        /* STM32F302xC                               || */
        /* STM32F303x8 || STM32F334x8 || STM32F328xx || */
        /* STM32F301x8 || STM32F302x8 || STM32F318xx || */
-       /* STM32F373xC || STM32F378xx                   */
+       /* STM32F373xx || STM32F378xx                   */
 
 
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \

@@ -130,7 +130,7 @@ typedef struct
 #define RTC_BKP_DR13                      ((uint32_t)0x0000000D)
 #define RTC_BKP_DR14                      ((uint32_t)0x0000000E)
 #define RTC_BKP_DR15                      ((uint32_t)0x0000000F)
-#if defined(STM32F373xC) || defined(STM32F378xx)
+#if defined(STM32F373xx) || defined(STM32F378xx)
 #define RTC_BKP_DR16                      ((uint32_t)0x00000010)
 #define RTC_BKP_DR17                      ((uint32_t)0x00000011)
 #define RTC_BKP_DR18                      ((uint32_t)0x00000012)
@@ -147,7 +147,7 @@ typedef struct
 #define RTC_BKP_DR29                      ((uint32_t)0x0000001D)
 #define RTC_BKP_DR30                      ((uint32_t)0x0000001E)
 #define RTC_BKP_DR31                      ((uint32_t)0x0000001F)
-#endif /* STM32F373xC || STM32F378xx */
+#endif /* STM32F373xx || STM32F378xx */
 
 #define IS_RTC_BKP(BKP)                   ((BKP) < (uint32_t) RTC_BKP_NUMBER)
 /**

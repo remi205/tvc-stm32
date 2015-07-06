@@ -85,7 +85,7 @@
 
 #ifdef HAL_CEC_MODULE_ENABLED
 
-#if defined(STM32F373xC) || defined(STM32F378xx)
+#if defined(STM32F373xx) || defined(STM32F378xx)
 /** @defgroup CEC CEC HAL module driver
   * @brief HAL CEC module driver
   * @{
@@ -1095,7 +1095,7 @@ static HAL_StatusTypeDef CEC_Receive_IT(CEC_HandleTypeDef *hcec)
   * @}
   */
 
-#endif /* defined(STM32F373xC) || defined(STM32F378xx) */
+#endif /* defined(STM32F373xx) || defined(STM32F378xx) */
 
 #endif /* HAL_CEC_MODULE_ENABLED */
 /**

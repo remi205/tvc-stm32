@@ -70,8 +70,8 @@
 
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
-    defined(STM32F373xC) || defined(STM32F378xx)
-/** @defgroup STM32F302xE_STM32F303xE_STM32F398xx_STM32F302xC_STM32F303xC_STM32F3058xx_STM32F373xC_STM32F378xx Product devices
+    defined(STM32F373xx) || defined(STM32F378xx)
+/** @defgroup STM32F302xE_STM32F303xE_STM32F398xx_STM32F302xC_STM32F303xC_STM32F3058xx_STM32F373xx_STM32F378xx Product devices
   * @{
   */
 #define __HAL_DMA_GET_TC_FLAG_INDEX(__HANDLE__) \
@@ -252,7 +252,7 @@
 }
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
-       /* STM32F373xC || STM32F378xx                   */
+       /* STM32F373xx || STM32F378xx                   */
 
 #endif /* __STM32F3xx_HAL_DMA_H */
 

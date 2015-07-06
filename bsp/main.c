@@ -1,5 +1,5 @@
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f4xx_hal.h"
+#include "stm32.h"
 #include "cmsis_os.h"
 
 
