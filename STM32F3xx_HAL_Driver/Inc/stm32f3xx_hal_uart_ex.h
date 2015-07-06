@@ -65,7 +65,7 @@
   */
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 #define UART_WORDLENGTH_7B                  ((uint32_t)USART_CR1_M1)
 #define UART_WORDLENGTH_8B                  ((uint32_t)0x00000000)
 #define UART_WORDLENGTH_9B                  ((uint32_t)USART_CR1_M0)
@@ -79,7 +79,7 @@
                                      ((LENGTH) == UART_WORDLENGTH_9B))
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F303x8 || STM32F334xx || STM32F328xx || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx   */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx   */
 /**
   * @}
   */ 
@@ -338,7 +338,7 @@
   */  
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 #define __HAL_UART_MASK_COMPUTATION(__HANDLE__)                       \
   do {                                                                \
   if ((__HANDLE__)->Init.WordLength == UART_WORDLENGTH_9B)            \
@@ -403,7 +403,7 @@
 } while(0) 
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F303x8 || STM32F334xx || STM32F328xx || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx    */
 /**
   * @}
   */                                

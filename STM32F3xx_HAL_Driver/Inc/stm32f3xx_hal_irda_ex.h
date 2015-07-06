@@ -65,7 +65,7 @@
   */
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F334xx)                                                 || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 #define IRDA_WORDLENGTH_7B                  ((uint32_t)USART_CR1_M1)
 #define IRDA_WORDLENGTH_8B                  ((uint32_t)0x00000000)
 #define IRDA_WORDLENGTH_9B                  ((uint32_t)USART_CR1_M0)
@@ -79,7 +79,7 @@
                                      ((LENGTH) == IRDA_WORDLENGTH_9B))
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F334xx                               || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx    */
 /**
   * @}
   */
@@ -321,7 +321,7 @@
   * @retval none
   */  
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx) || \
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx) || \
     defined(STM32F334xx)
 #define __HAL_IRDA_MASK_COMPUTATION(__HANDLE__)                       \
   do {                                                                \
@@ -386,7 +386,7 @@
   }                                                                   \
 } while(0) 
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx || */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx || */
        /* STM32F334xx                                  */
 /**
   * @}

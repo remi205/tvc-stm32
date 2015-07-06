@@ -63,7 +63,7 @@ struct __ADC_HandleTypeDef;
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
     defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 /**
   * @brief  Structure definition of ADC initialization and regular group  
   * @note   Parameters of this structure are shared within 2 scopes:
@@ -334,7 +334,7 @@ typedef struct
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
        /* STM32F303x8 || STM32F334xx || STM32F328xx || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx    */
 
 #if defined(STM32F373xx) || defined(STM32F378xx)
 /** 
@@ -513,7 +513,7 @@ typedef struct
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
     defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 /** @defgroup ADCEx_ClockPrescaler ADC Extended Clock Prescaler
   * @{
   */
@@ -529,11 +529,11 @@ typedef struct
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
        /* STM32F303x8 || STM32F334xx || STM32F328xx    */
 
-#if defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+#if defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 #define ADC_CLOCK_SYNC_PCLK_DIV1      ((uint32_t)ADC1_CCR_CKMODE_0)   /*!< ADC synchronous clock derived from AHB clock without prescaler */
 #define ADC_CLOCK_SYNC_PCLK_DIV2      ((uint32_t)ADC1_CCR_CKMODE_1)   /*!< ADC synchronous clock derived from AHB clock divided by a prescaler of 2 */
 #define ADC_CLOCK_SYNC_PCLK_DIV4      ((uint32_t)ADC1_CCR_CKMODE)     /*!< ADC synchronous clock derived from AHB clock divided by a prescaler of 4 */
-#endif /* STM32F301x8 || STM32F318xx || STM32F302x8 */
+#endif /* STM32F301xx || STM32F318xx || STM32F302x8 */
 
 #define ADC_CLOCKPRESCALER_PCLK_DIV1   ADC_CLOCK_SYNC_PCLK_DIV1   /* Obsolete naming, kept for compatibility with some other devices */
 #define ADC_CLOCKPRESCALER_PCLK_DIV2   ADC_CLOCK_SYNC_PCLK_DIV2   /* Obsolete naming, kept for compatibility with some other devices */
@@ -919,7 +919,7 @@ typedef struct
                                  ((REGTRIG) == ADC_SOFTWARE_START)               )
 #endif /* STM32F334xx */
 
-#if defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+#if defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 /* List of external triggers with generic trigger name, sorted by trigger     */
 /* name:                                                                      */
 
@@ -945,7 +945,7 @@ typedef struct
                                  ((REGTRIG) == ADC_EXTERNALTRIGCONV_T6_TRGO)  || \
                                  ((REGTRIG) == ADC_EXTERNALTRIGCONV_T15_TRGO) || \
                                  ((REGTRIG) == ADC_SOFTWARE_START)              )
-#endif /* STM32F301x8 || STM32F302x8 || STM32F318xx */
+#endif /* STM32F301xx || STM32F302x8 || STM32F318xx */
 /**
   * @}
   */
@@ -1057,7 +1057,7 @@ typedef struct
 #define ADC1_2_EXTERNALTRIG_T3_CC4           ((uint32_t)ADC_CFGR_EXTSEL)
 #endif /* STM32F334xx */
 
-#if defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+#if defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 /* List of external triggers of regular group for ADC1:                       */
 /* (used internally by HAL driver. To not use into HAL structure parameters)  */
 #define ADC1_EXTERNALTRIG_T1_CC1           ((uint32_t)0x00000000)
@@ -1070,7 +1070,7 @@ typedef struct
 #define ADC1_EXTERNALTRIG_T6_TRGO          ((uint32_t)(ADC_CFGR_EXTSEL_3 | ADC_CFGR_EXTSEL_2 | ADC_CFGR_EXTSEL_0))
 #define ADC1_EXTERNALTRIG_T15_TRGO         ((uint32_t)(ADC_CFGR_EXTSEL_3 | ADC_CFGR_EXTSEL_2 | ADC_CFGR_EXTSEL_1))
 #define ADC_SOFTWARE_START                 ((uint32_t)0x00000001)
-#endif /* STM32F301x8 || STM32F302x8 || STM32F318xx */
+#endif /* STM32F301xx || STM32F302x8 || STM32F318xx */
 /**
   * @}
   */
@@ -1593,7 +1593,7 @@ typedef struct
                                       ((INJTRIG) == ADC_INJECTED_SOFTWARE_START)            )
 #endif /* STM32F334xx */
 
-#if defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+#if defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 /* List of external triggers with generic trigger name, sorted by trigger     */
 /* name:                                                                      */
 
@@ -1614,7 +1614,7 @@ typedef struct
                                       ((INJTRIG) == ADC_EXTERNALTRIGINJECCONV_T6_TRGO)  || \
                                       ((INJTRIG) == ADC_EXTERNALTRIGINJECCONV_T15_TRGO) || \
                                       ((INJTRIG) == ADC_INJECTED_SOFTWARE_START)          )
-#endif /* STM32F301x8 || STM32F302x8 || STM32F318xx */
+#endif /* STM32F301xx || STM32F302x8 || STM32F318xx */
 /**
   * @}
   */
@@ -1736,7 +1736,7 @@ typedef struct
 #define ADC1_2_EXTERNALTRIGINJEC_T15_TRGO    ((uint32_t)ADC_JSQR_JEXTSEL)
 #endif /* STM32F334xx */
 
-#if defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+#if defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 /* List of external triggers of injected group for ADC1:                      */
 /* (used internally by HAL driver. To not use into HAL structure parameters)  */
 #define ADC1_EXTERNALTRIGINJEC_T1_TRGO    ((uint32_t)0x00000000)
@@ -1745,7 +1745,7 @@ typedef struct
 #define ADC1_EXTERNALTRIGINJEC_T1_TRGO2   ((uint32_t)ADC_JSQR_JEXTSEL_3)
 #define ADC1_EXTERNALTRIGINJEC_T6_TRGO    ((uint32_t)(ADC_JSQR_JEXTSEL_3 | ADC_JSQR_JEXTSEL_2 | ADC_JSQR_JEXTSEL_1))
 #define ADC1_EXTERNALTRIGINJEC_T15_TRGO   ((uint32_t)ADC_JSQR_JEXTSEL)
-#endif /* STM32F301x8 || STM32F302x8 || STM32F318xx */
+#endif /* STM32F301xx || STM32F302x8 || STM32F318xx */
 /**
   * @}
   */
@@ -1985,7 +1985,7 @@ typedef struct
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
        /* STM32F303x8 || STM32F334xx || STM32F328xx    */
 
-#if defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+#if defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 #define ADC_CCR_MULTI             ADC1_CCR_MULTI        /*!< Multi ADC mode selection */
 #define ADC_CCR_MULTI_0           ADC1_CCR_MULTI_0      /*!< MULTI bit 0 */
 #define ADC_CCR_MULTI_1           ADC1_CCR_MULTI_1      /*!< MULTI bit 1 */
@@ -2007,7 +2007,7 @@ typedef struct
 #define ADC_CCR_VREFEN            ADC1_CCR_VREFEN       /*!< VREFINT enable */
 #define ADC_CCR_TSEN              ADC1_CCR_TSEN         /*!< Temperature sensor enable */
 #define ADC_CCR_VBATEN            ADC1_CCR_VBATEN       /*!< VBAT enable */
-#endif /* STM32F301x8 || STM32F302x8 || STM32F318xx */
+#endif /* STM32F301xx || STM32F302x8 || STM32F318xx */
 
 
 /**
@@ -2066,7 +2066,7 @@ typedef struct
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
        /* STM32F303x8 || STM32F334xx || STM32F328xx || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx    */
 
 
 #if defined(STM32F373xx) || defined(STM32F378xx)
@@ -2528,7 +2528,7 @@ typedef struct
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
     defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 /**
   * @brief Verification of ADC state: enabled or disabled
   * @param __HANDLE__: ADC handle
@@ -2644,7 +2644,7 @@ typedef struct
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
        /* STM32F303x8 || STM32F334xx || STM32F328xx || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx    */
       
 #if defined(STM32F373xx) || defined(STM32F378xx)
 /**
@@ -2739,7 +2739,7 @@ typedef struct
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
     defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 
 /**
   * @brief Set the ADC's sample time for Channels numbers between 0 and 9.
@@ -3219,10 +3219,10 @@ typedef struct
        /* STM32F302xC                               || */
        /* STM32F303x8 || STM32F328xx || STM32F334xx    */
        
-#if defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+#if defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 #define __HAL_ADC_COMMON_REGISTER(__HANDLE__)                                       \
      (ADC1_COMMON)
-#endif /* STM32F301x8 || STM32F302x8 || STM32F318xx */
+#endif /* STM32F301xx || STM32F302x8 || STM32F318xx */
        
 /**
   * @brief Selection of ADC common register CCR bits MULTI[4:0]corresponding to the selected ADC (applicable for devices with several ADCs)
@@ -3250,10 +3250,10 @@ typedef struct
        /* STM32F302xC                               || */
        /* STM32F303x8 || STM32F328xx || STM32F334xx    */
 
-#if defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+#if defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 #define __HAL_ADC_COMMON_CCR_MULTI(__HANDLE__)                                   \
   (RESET)
-#endif /* STM32F301x8 || STM32F302x8 || STM32F318xx */
+#endif /* STM32F301xx || STM32F302x8 || STM32F318xx */
 
 /**
   * @brief Verification of condition for ADC start conversion: ADC must be in non-multimode, or multimode with handle of ADC master (applicable for devices with several ADCs)
@@ -3269,10 +3269,10 @@ typedef struct
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
        /* STM32F303x8 || STM32F334xx || STM32F328xx    */
 
-#if defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+#if defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 #define __HAL_ADC_NONMULTIMODE_OR_MULTIMODEMASTER(__HANDLE__)                                   \
   (!RESET)
-#endif /* STM32F301x8 || STM32F302x8 || STM32F318xx */
+#endif /* STM32F301xx || STM32F302x8 || STM32F318xx */
 
 /**
   * @brief Set handle of the other ADC sharing the same common register ADC1_2 or ADC3_4
@@ -3322,10 +3322,10 @@ typedef struct
        /* STM32F302xC                               || */
        /* STM32F303x8 || STM32F328xx || STM32F334xx    */
 
-#if defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+#if defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 #define __HAL_ADC_COMMON_ADC_OTHER(__HANDLE__, __HANDLE_OTHER_ADC__)           \
   ((__HANDLE_OTHER_ADC__)->Instance = NULL)
-#endif /* STM32F301x8 || STM32F302x8 || STM32F318xx */
+#endif /* STM32F301xx || STM32F302x8 || STM32F318xx */
 
 /**
   * @brief Set handle of the ADC slave associated to the ADC master
@@ -3368,7 +3368,7 @@ typedef struct
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
        /* STM32F303x8 || STM32F334xx || STM32F328xx || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx */
 
 
 #if defined(STM32F373xx) || defined(STM32F378xx)
@@ -3566,14 +3566,14 @@ typedef struct
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
     defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 HAL_StatusTypeDef       HAL_ADCEx_Calibration_Start(struct __ADC_HandleTypeDef* hadc, uint32_t SingleDiff);
 uint32_t        HAL_ADCEx_Calibration_GetValue(struct __ADC_HandleTypeDef *hadc, uint32_t SingleDiff);
 HAL_StatusTypeDef       HAL_ADCEx_Calibration_SetValue(struct __ADC_HandleTypeDef *hadc, uint32_t SingleDiff, uint32_t CalibrationFactor);
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
        /* STM32F303x8 || STM32F334xx || STM32F328xx || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx    */
 
 #if defined(STM32F373xx) || defined(STM32F378xx)
 HAL_StatusTypeDef       HAL_ADCEx_Calibration_Start(struct __ADC_HandleTypeDef* hadc);
@@ -3591,7 +3591,7 @@ HAL_StatusTypeDef       HAL_ADCEx_InjectedStop_IT(struct __ADC_HandleTypeDef* ha
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
     defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx) 
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx) 
 /* ADC multimode */
 HAL_StatusTypeDef       HAL_ADCEx_MultiModeStart_DMA(struct __ADC_HandleTypeDef *hadc, uint32_t *pData, uint32_t Length);
 HAL_StatusTypeDef       HAL_ADCEx_MultiModeStop_DMA(struct __ADC_HandleTypeDef *hadc); 
@@ -3599,7 +3599,7 @@ uint32_t                HAL_ADCEx_MultiModeGetValue(struct __ADC_HandleTypeDef *
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
        /* STM32F303x8 || STM32F334xx || STM32F328xx || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx    */
 
 /* ADC retrieve conversion value intended to be used with polling or interruption */
 uint32_t                HAL_ADCEx_InjectedGetValue(struct __ADC_HandleTypeDef* hadc, uint32_t InjectedRank);
@@ -3610,12 +3610,12 @@ void                    HAL_ADCEx_InjectedConvCpltCallback(struct __ADC_HandleTy
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
     defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 void                    HAL_ADCEx_InjectedQueueOverflowCallback(struct __ADC_HandleTypeDef* hadc);
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
        /* STM32F303x8 || STM32F334xx || STM32F328xx || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx    */
 /**
   * @}
   */
@@ -3630,12 +3630,12 @@ HAL_StatusTypeDef       HAL_ADCEx_InjectedConfigChannel(struct __ADC_HandleTypeD
 #if defined(STM32F302xE) || defined(STM32F303xE) || defined(STM32F398xx) || \
     defined(STM32F302xC) || defined(STM32F303xC) || defined(STM32F358xx) || \
     defined(STM32F303x8) || defined(STM32F334xx) || defined(STM32F328xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || defined(STM32F318xx)
+    defined(STM32F301xx) || defined(STM32F302x8) || defined(STM32F318xx)
 HAL_StatusTypeDef       HAL_ADCEx_MultiModeConfigChannel(struct __ADC_HandleTypeDef *hadc, ADC_MultiModeTypeDef *multimode);
 #endif /* STM32F302xE || STM32F303xE || STM32F398xx || */
        /* STM32F302xC || STM32F303xC || STM32F358xx || */
        /* STM32F303x8 || STM32F334xx || STM32F328xx || */
-       /* STM32F301x8 || STM32F302x8 || STM32F318xx    */
+       /* STM32F301xx || STM32F302x8 || STM32F318xx    */
 /**
   * @}
   */

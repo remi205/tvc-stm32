@@ -62,7 +62,7 @@
 #if defined(STM32F302xE) || defined(STM32F303xE) || \
     defined(STM32F302xC) || defined(STM32F303xC) || \
     defined(STM32F303x8) || defined(STM32F334xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || \
+    defined(STM32F301xx) || defined(STM32F302x8) || \
     defined(STM32F373xx) 
 /**
   * @brief  PWR PVD configuration structure definition
@@ -78,7 +78,7 @@ typedef struct
 #endif /* STM32F302xE || STM32F303xE || */
        /* STM32F302xC || STM32F303xC || */
        /* STM32F303x8 || STM32F334xx || */
-       /* STM32F301x8 || STM32F302x8 || */
+       /* STM32F301xx || STM32F302x8 || */
        /* STM32F373xx                   */
 
 /**
@@ -93,7 +93,7 @@ typedef struct
 #if defined(STM32F302xE) || defined(STM32F303xE) || \
     defined(STM32F302xC) || defined(STM32F303xC) || \
     defined(STM32F303x8) || defined(STM32F334xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || \
+    defined(STM32F301xx) || defined(STM32F302x8) || \
     defined(STM32F373xx)
     
 /** @defgroup PWREx_PVD_detection_level PWR Extended PVD detection level
@@ -139,7 +139,7 @@ typedef struct
 #endif /* STM32F302xE || STM32F303xE || */
        /* STM32F302xC || STM32F303xC || */
        /* STM32F303x8 || STM32F334xx || */
-       /* STM32F301x8 || STM32F302x8 || */
+       /* STM32F301xx || STM32F302x8 || */
        /* STM32F373xx                   */
 
 #if defined(STM32F373xx) || defined(STM32F378xx)
@@ -169,7 +169,7 @@ typedef struct
 #if defined(STM32F302xE) || defined(STM32F303xE) || \
     defined(STM32F302xC) || defined(STM32F303xC) || \
     defined(STM32F303x8) || defined(STM32F334xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || \
+    defined(STM32F301xx) || defined(STM32F302x8) || \
     defined(STM32F373xx)
     
 /**
@@ -236,7 +236,7 @@ typedef struct
 #endif /* STM32F302xE || STM32F303xE || */
        /* STM32F302xC || STM32F303xC || */
        /* STM32F303x8 || STM32F334xx || */
-       /* STM32F301x8 || STM32F302x8 || */
+       /* STM32F301xx || STM32F302x8 || */
        /* STM32F373xx                   */
 
 /**
@@ -256,7 +256,7 @@ typedef struct
 #if defined(STM32F302xE) || defined(STM32F303xE) || \
     defined(STM32F302xC) || defined(STM32F303xC) || \
     defined(STM32F303x8) || defined(STM32F334xx) || \
-    defined(STM32F301x8) || defined(STM32F302x8) || \
+    defined(STM32F301xx) || defined(STM32F302x8) || \
     defined(STM32F373xx)
 void HAL_PWR_PVDConfig(PWR_PVDTypeDef *sConfigPVD);
 void HAL_PWR_EnablePVD(void);
@@ -266,7 +266,7 @@ void HAL_PWR_PVDCallback(void);
 #endif /* STM32F302xE || STM32F303xE || */
        /* STM32F302xC || STM32F303xC || */
        /* STM32F303x8 || STM32F334xx || */
-       /* STM32F301x8 || STM32F302x8 || */
+       /* STM32F301xx || STM32F302x8 || */
        /* STM32F373xx                   */
 
 #if defined(STM32F373xx) || defined(STM32F378xx)
