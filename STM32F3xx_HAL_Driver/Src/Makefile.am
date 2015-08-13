@@ -4,7 +4,7 @@ lib_LIBRARIES = libSTM32F3xx.a
 
 AM_CFLAGS =-O3 -Wall -Wpointer-arith  -Winline -Wundef -g  -ffunction-sections -fdata-sections -DSTM32$(PRODUCT)xx
 
-AM_CFLAGS =-Wall -Wpointer-arith  -Winline -Wundef -g -ffunction-sections -fdata-sections -DSTM32$(PRODUCT)xx -DFAMILLY$(FAMILLY) -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/Inc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
+AM_CFLAGS +=-Wall -Wpointer-arith  -Winline -Wundef -g -ffunction-sections -fdata-sections -DSTM32$(PRODUCT)xx -DFAMILLY$(FAMILLY) -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/Inc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 
 CFLAGS += -I$(top_srcdir)/Inc -I$(top_srcdir) -I$(top_srcdir)/STM32F3xx_HAL_Driver/Inc -I$(top_srcdir)/CMSIS/Device/ST/STM32F3xx/Include -I$(top_srcdir)/CMSIS/Include
 libSTM32F3xx_a_SOURCES =stm32f3xx_hal.c\

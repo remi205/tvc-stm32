@@ -33,21 +33,9 @@
   ******************************************************************************
   */
  
-/* Define to prevent recursive inclusion --------------------------------------*/
-#ifndef __LWIPOPTS__H__
-#define __LWIPOPTS__H__
+#pragma once
 
 #include "stm32.h"
-
-/* Within 'USER CODE' section, code will be kept by default at each generation */
-/* USER CODE BEGIN 0 */
-
-/* USER CODE END 0 */
-
-#ifdef __cplusplus
- extern "C" {
-#endif
-
 
 #define ETHARP_STATS 0
 #define LWIP_DHCP_BOOTP_FILE 0
@@ -57,7 +45,7 @@
 /* Parameters set in STM32CubeMX LwIP Configuration GUI -*/
 /*----- WITH_RTOS enabled (Since FREERTOS is set) -----*/
 #define WITH_RTOS 1
-/*----- CHECKSUM_BY_HARDWARE enabled -----*/
+/*----- CHECKSUM_BY_HARDWARE disabled -----*/
 #define CHECKSUM_BY_HARDWARE 1
 /*-----------------------------------------------------------------------------*/
 
@@ -69,16 +57,34 @@
 #define NO_SYS 0
 /*----- Value in opt.h for MEM_ALIGNMENT: 1 -----*/
 #define MEM_ALIGNMENT 4
+/*----- Default Value for MEM_SIZE: 1600 -*/
+#define MEM_SIZE 32768
+/*----- Value in opt.h for MEMP_NUM_SYS_TIMEOUT: (LWIP_TCP + IP_REASSEMBLY + LWIP_ARP + (2*LWIP_DHCP) + LWIP_AUTOIP + LWIP_IGMP + LWIP_DNS + PPP_SUPPORT) -*/
+#define MEMP_NUM_SYS_TIMEOUT 5
 /*----- Value in opt.h for LWIP_ETHERNET: (LWIP_ARP || PPPOE_SUPPORT) -*/
 #define LWIP_ETHERNET 1
-/*----- Default Value for LWIP_DNS: 0 -*/
-#define LWIP_DNS 0
+/*----- Default Value for LWIP_AUTOIP: 0 -*/
+#define LWIP_AUTOIP 1
+/*----- Default Value for LWIP_TCP: 1 -*/
+#define LWIP_TCP 0
+/*----- Default Value for LWIP_NETIF_HOSTNAME: 0 -*/
+#define LWIP_NETIF_HOSTNAME 1
 /*----- Value in opt.h for TCPIP_THREAD_STACKSIZE: 0 -----*/
 #define TCPIP_THREAD_STACKSIZE 1024
+/*----- Value in opt.h for TCPIP_THREAD_PRIO: 1 -----*/
+#define TCPIP_THREAD_PRIO 3
+/*----- Value in opt.h for DEFAULT_THREAD_STACKSIZE: 0 -----*/
+#define DEFAULT_THREAD_STACKSIZE 1024
+/*----- Value in opt.h for DEFAULT_THREAD_PRIO: 1 -----*/
+#define DEFAULT_THREAD_PRIO 3
 /*----- Value in opt.h for LWIP_NETCONN: 1 -----*/
 #define LWIP_NETCONN 1
-/*----- Value in opt.h for LWIP_SOCKET: 1 -----*/
-#define LWIP_SOCKET 1
+/*----- Default Value for LWIP_SOCKET: 1 -*/
+#define LWIP_SOCKET 0
+/*----- Default Value for LWIP_COMPAT_SOCKETS: 1 -*/
+#define LWIP_COMPAT_SOCKETS 0
+/*----- Default Value for LWIP_POSIX_SOCKETS_IO_NAMES: 1 -*/
+#define LWIP_POSIX_SOCKETS_IO_NAMES 0
 /*----- Value in opt.h for LWIP_STATS: 1 -----*/
 #define LWIP_STATS 0
 /*----- Value in opt.h for CHECKSUM_GEN_IP: 1 -----*/
@@ -95,24 +101,11 @@
 #define CHECKSUM_CHECK_UDP 0
 /*----- Value in opt.h for CHECKSUM_CHECK_TCP: 1 -----*/
 #define CHECKSUM_CHECK_TCP 0
-/*----- Default Value for LWIP_DBG_MIN_LEVEL: LWIP_DBG_LEVEL_ALL -*/
-#define LWIP_DBG_MIN_LEVEL LWIP_DBG_LEVEL_SERIOUS
 /*-----------------------------------------------------------------------------*/ 
  
 /* Parameter(s) not set in STM32CubeMX LwIP Configuration GUI -*/
 /* LwIP Parameter(s) not in opt.h -----------------------------*/
 #define LWIP_PROVIDE_ERRNO  1
 
-
-#define LWIP_NETIF_HOSTNAME 1
-#define LWIP_CALLBACK_API 1
-#define LWIP_NOASSERT 1
-
-/* USER CODE BEGIN 1 */
-
-/* USER CODE END 1 */
-
-#ifdef __cplusplus
-}
-#endif
-#endif /*__ LWIPOPTS__H_H */
+#define LWIP_CALLBACK_API   1
+#define LWIP_NOASSERT       1
