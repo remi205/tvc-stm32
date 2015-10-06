@@ -737,6 +737,10 @@ HAL_StatusTypeDef HAL_RTCEx_SetWakeUpTimer_IT(RTC_HandleTypeDef *hrtc, uint32_t 
     }
   }
 
+
+  /* Bug fix. Tvc-stm32 */  
+   __HAL_RTC_WAKEUPTIMER_CLEAR_FLAG(hrtc,RTC_FLAG_WUTF);
+
   /* Configure the Wakeup Timer counter */
   hrtc->Instance->WUTR = (uint32_t)WakeUpCounter;
 
