@@ -6,6 +6,8 @@ AM_CFLAGS =-Wall -Wpointer-arith  -Winline -Wundef -g  -ffunction-sections -fdat
 
 CFLAGS += -I$(top_srcdir)/Inc -I$(top_srcdir) -I$(top_srcdir)/STM32F4xx_HAL_Driver/Inc -I$(top_srcdir)/CMSIS/Device/ST/STM32F4xx/Include -I$(top_srcdir)/CMSIS/Include/  
 libSTM32F4xx_a_SOURCES =stm32f4xx_hal.c\
+			stm32f4xx_hal_dsi.c\
+			stm32f4xx_hal_dfsdm.c\
 		        stm32f4xx_hal_cryp.c\
 			stm32f4xx_hal_dma_ex.c\
 			stm32f4xx_hal_gpio.c\
