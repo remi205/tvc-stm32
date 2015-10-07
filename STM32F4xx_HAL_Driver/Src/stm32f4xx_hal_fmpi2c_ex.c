@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_fmpi2c_ex.c
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   Extended FMPI2C HAL module driver.
   *    
   *          This file provides firmware functions to manage the following 
@@ -30,7 +30,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -71,7 +71,7 @@
 
 #ifdef HAL_FMPI2C_MODULE_ENABLED
 
-#if defined(STM32F446xx)
+#if defined(STM32F446xx) || defined(STM32F412xG)
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -90,7 +90,7 @@
  *
 @verbatim   
  ===============================================================================
-                      ##### Peripheral Control methods #####
+                      ##### Extension features functions #####
  ===============================================================================  
     [..] This section provides functions allowing to:
       (+) Configure Noise Filters 
@@ -271,13 +271,49 @@ HAL_StatusTypeDef HAL_FMPI2CEx_DisableWakeUp (FMPI2C_HandleTypeDef *hfmpi2c)
 }  
 
 /**
+  * @brief Enable the FMPI2C1 fast mode plus driving capability.
+  * @param ConfigFastModePlus: selects the pin.
+  *   This parameter can be one of the @ref FMPI2CEx_FastModePlus values
+  * @retval None
+  */
+void HAL_FMPI2CEx_EnableFastModePlus(uint32_t ConfigFastModePlus)
+{
+  /* Check the parameter */
+  assert_param(IS_FMPI2C_FASTMODEPLUS(ConfigFastModePlus));
+  
+  /* Enable SYSCFG clock */
+  __HAL_RCC_SYSCFG_CLK_ENABLE();
+  
+  /* Enable fast mode plus driving capability for selected pin */
+  SET_BIT(SYSCFG->CFGR, (uint32_t)ConfigFastModePlus);
+}
+
+/**
+  * @brief Disable the FMPI2C1 fast mode plus driving capability.
+  * @param ConfigFastModePlus: selects the pin.
+  *   This parameter can be one of the @ref FMPI2CEx_FastModePlus values
+  * @retval None
+  */
+void HAL_FMPI2CEx_DisableFastModePlus(uint32_t ConfigFastModePlus)
+{
+  /* Check the parameter */
+  assert_param(IS_FMPI2C_FASTMODEPLUS(ConfigFastModePlus));
+  
+  /* Enable SYSCFG clock */
+  __HAL_RCC_SYSCFG_CLK_ENABLE();
+
+  /* Disable fast mode plus driving capability for selected pin */
+  CLEAR_BIT(SYSCFG->CFGR, (uint32_t)ConfigFastModePlus);
+}
+
+/**
   * @}
   */  
 
 /**
   * @}
   */  
-#endif /* STM32F446xx */
+#endif /* STM32F446xx || STM32F412xG */
 #endif /* HAL_FMPI2C_MODULE_ENABLED */
 /**
   * @}

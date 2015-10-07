@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_dma_ex.h
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   Header file of DMA HAL extension module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -55,7 +55,7 @@
   */ 
 
 /* Exported types ------------------------------------------------------------*/
-/** @defgroup DMAEx_Exported_Types Exported Types
+/** @defgroup DMAEx_Exported_Types DMAEx Exported Types
   * @brief DMAEx Exported types
   * @{
   */
@@ -80,7 +80,7 @@ typedef enum
   * @{
   */
 
-/** @defgroup DMAEx_Group1 Extended features functions
+/** @defgroup DMAEx_Exported_Functions_Group1 Extended features functions
   * @brief   Extended features functions
   * @{
   */

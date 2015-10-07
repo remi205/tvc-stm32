@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_sai_ex.h
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   Header file of SAI Extension HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -54,7 +54,8 @@
   * @{
   */ 
   
-#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F446xx) || defined(STM32F469xx)
+#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) ||\
+    defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx)
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/   
@@ -67,7 +68,8 @@
   * @{
   */
 
-/* Extended features functions **************************************************/
+/* Extended features functions ************************************************/
+void SAI_BlockSynchroConfig(SAI_HandleTypeDef *hsai);
 uint32_t SAI_GetInputClock(SAI_HandleTypeDef *hsai);
 /**
   * @}
@@ -82,7 +84,7 @@ uint32_t SAI_GetInputClock(SAI_HandleTypeDef *hsai);
 /* Private macros ------------------------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
-#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx  || STM32F446xx || STM32F469xx*/
+#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F446xx || STM32F469xx || STM32F479xx */
 /**
   * @}
   */ 

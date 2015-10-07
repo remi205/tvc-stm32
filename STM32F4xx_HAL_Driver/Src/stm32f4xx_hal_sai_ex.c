@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_sai_ex.c
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   SAI Extension HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of SAI extension peripheral:
@@ -27,7 +27,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -68,7 +68,8 @@
 
 #ifdef HAL_SAI_MODULE_ENABLED
 
-#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F446xx) || defined(STM32F469xx)
+#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) ||\
+    defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx)
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -105,6 +106,61 @@
   * @{
   */
 
+/**
+  * @brief  Configure SAI Block synchronization mode
+  * @param  hsai: pointer to a SAI_HandleTypeDef structure that contains
+  *               the configuration information for SAI module.   
+  * @retval SAI Clock Input 
+  */
+void SAI_BlockSynchroConfig(SAI_HandleTypeDef *hsai)
+{
+  uint32_t tmpregisterGCR = 0;
+  
+#if defined(STM32F446xx)  
+  /* This setting must be done with both audio block (A & B) disabled     */
+  switch(hsai->Init.SynchroExt)
+  {
+  case SAI_SYNCEXT_DISABLE :
+    tmpregisterGCR = 0;
+    break;
+  case SAI_SYNCEXT_IN_ENABLE :
+    tmpregisterGCR = SAI_GCR_SYNCIN_0;
+    break;
+  case SAI_SYNCEXT_OUTBLOCKA_ENABLE :
+    tmpregisterGCR = SAI_GCR_SYNCOUT_0;
+    break;
+  case SAI_SYNCEXT_OUTBLOCKB_ENABLE :
+    tmpregisterGCR = SAI_GCR_SYNCOUT_1;
+    break;
+  }
+  
+  if((hsai->Instance == SAI1_Block_A) || (hsai->Instance == SAI1_Block_B))
+  {
+    SAI1->GCR = tmpregisterGCR;
+  }
+  else 
+  {
+    SAI2->GCR = tmpregisterGCR;
+  }
+#endif /* STM32F446xx */
+#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) ||\
+    defined(STM32F469xx) || defined(STM32F479xx)
+  /* This setting must be done with both audio block (A & B) disabled                   */
+  switch(hsai->Init.SynchroExt)
+  {
+  case SAI_SYNCEXT_DISABLE :
+    tmpregisterGCR = 0;
+    break;
+  case SAI_SYNCEXT_OUTBLOCKA_ENABLE :
+    tmpregisterGCR = SAI_GCR_SYNCOUT_0;
+    break;
+  case SAI_SYNCEXT_OUTBLOCKB_ENABLE :
+    tmpregisterGCR = SAI_GCR_SYNCOUT_1;
+    break;
+  }
+  SAI1->GCR = tmpregisterGCR;
+#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F469xx || STM32F479xx */ 
+}
   /**
   * @brief  Get SAI Input Clock based on SAI source clock selection
   * @param  hsai: pointer to a SAI_HandleTypeDef structure that contains
@@ -113,101 +169,26 @@
   */
 uint32_t SAI_GetInputClock(SAI_HandleTypeDef *hsai)   
 {
-  uint32_t tmpreg = 0;
-  /* This variable used to store the VCO Input (value in Hz) */
-  uint32_t vcoinput = 0;
   /* This variable used to store the SAI_CK_x (value in Hz) */
   uint32_t saiclocksource = 0;
-
-  /* Configure SAI Clock based on SAI source clock selection */ 
-#if defined(STM32F446xx)
   
-  /* SAI_CLK_x : SAI Block Clock configuration for different clock sources selected */
-  switch(hsai->Init.ClockSource)
+#if defined(STM32F446xx)
+  if ((hsai->Instance == SAI1_Block_A) || (hsai->Instance == SAI1_Block_B))
   {
-    case SAI_CLKSOURCE_PLLSAI :
-    {
-      /* Configure the PLLSAI division factor */
-      /* PLLSAI_VCO Input  = PLL_SOURCE/PLLSAIM */ 
-      if((RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC) == RCC_PLLSOURCE_HSI)
-      {
-        /* In Case the PLL Source is HSI (Internal Clock) */
-        vcoinput = (HSI_VALUE / (uint32_t)(RCC->PLLSAICFGR & RCC_PLLSAICFGR_PLLSAIM));
-      }
-      else
-      {
-        /* In Case the PLL Source is HSE (External Clock) */
-        vcoinput = ((HSE_VALUE / (uint32_t)(RCC->PLLSAICFGR & RCC_PLLSAICFGR_PLLSAIM)));
-      }   
-      /* PLLSAI_VCO Output = PLLSAI_VCO Input * PLLSAIN */
-      /* SAI_CLK(first level) = PLLSAI_VCO Output/PLLSAIQ */
-      tmpreg = (RCC->PLLSAICFGR & RCC_PLLSAICFGR_PLLSAIQ) >> 24;
-      saiclocksource = (vcoinput * ((RCC->PLLSAICFGR & RCC_PLLSAICFGR_PLLSAIN) >> 6))/(tmpreg);
-    
-      /* SAI_CLK_x = SAI_CLK(first level)/PLLSAIDIVQ */
-      tmpreg = (((RCC->DCKCFGR & RCC_DCKCFGR_PLLSAIDIVQ) >> 8) + 1);
-      saiclocksource = saiclocksource/(tmpreg); 
-      break;
-    }
-    case SAI_CLKSOURCE_PLLI2S :
-    {
-      /* Configure the PLLI2S division factor */
-      /* PLLI2S_VCO Input  = PLL_SOURCE/PLLI2SM */ 
-      if((RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC) == RCC_PLLSOURCE_HSI)
-      {
-        /* In Case the PLL Source is HSI (Internal Clock) */
-        vcoinput = (HSI_VALUE / (uint32_t)(RCC->PLLI2SCFGR & RCC_PLLI2SCFGR_PLLI2SM));
-      }
-      else
-      {
-        /* In Case the PLL Source is HSE (External Clock) */
-        vcoinput = ((HSE_VALUE / (uint32_t)(RCC->PLLI2SCFGR & RCC_PLLI2SCFGR_PLLI2SM)));
-      }
-
-      /* PLLI2S_VCO Output = PLLI2S_VCO Input * PLLI2SN */
-      /* SAI_CLK(first level) = PLLI2S_VCO Output/PLLI2SQ */
-      tmpreg = (RCC->PLLI2SCFGR & RCC_PLLI2SCFGR_PLLI2SQ) >> 24;
-      saiclocksource = (vcoinput * ((RCC->PLLI2SCFGR & RCC_PLLI2SCFGR_PLLI2SN) >> 6))/(tmpreg);
-    
-      /* SAI_CLK_x = SAI_CLK(first level)/PLLI2SDIVQ */
-      tmpreg = ((RCC->DCKCFGR & RCC_DCKCFGR_PLLI2SDIVQ) + 1); 
-      saiclocksource = saiclocksource/(tmpreg);
-      break;
-    }
-    case SAI_CLKSOURCE_PLLR :
-    {
-      /* Configure the PLLI2S division factor */
-      /* PLL_VCO Input  = PLL_SOURCE/PLLM */ 
-      if((RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC) == RCC_PLLSOURCE_HSI)
-      {
-        /* In Case the PLL Source is HSI (Internal Clock) */
-        vcoinput = (HSI_VALUE / (uint32_t)(RCC->PLLCFGR & RCC_PLLCFGR_PLLM));
-      }
-      else
-      {
-        /* In Case the PLL Source is HSE (External Clock) */
-        vcoinput = ((HSE_VALUE / (uint32_t)(RCC->PLLCFGR & RCC_PLLCFGR_PLLM)));
-      }
-
-      /* PLL_VCO Output = PLL_VCO Input * PLLN */
-      /* SAI_CLK_x = PLL_VCO Output/PLLR */
-      tmpreg = (RCC->PLLCFGR & RCC_PLLCFGR_PLLR) >> 28;
-      saiclocksource = (vcoinput * ((RCC->PLLCFGR & RCC_PLLCFGR_PLLN) >> 6))/(tmpreg);
-      break;
-    }
-    case SAI_CLKSOURCE_EXT :
-    {
-      saiclocksource = EXTERNAL_CLOCK_VALUE;
-      break;
-    }
-    default :
-    {
-      break;
-    }
+    saiclocksource = HAL_RCCEx_GetPeriphCLKFreq(RCC_PERIPHCLK_SAI1);
+  }
+  else /* SAI2_Block_A || SAI2_Block_B*/
+  {
+    saiclocksource = HAL_RCCEx_GetPeriphCLKFreq(RCC_PERIPHCLK_SAI2); 
   }
 #endif /* STM32F446xx */
-
-#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx)
+#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) ||\
+    defined(STM32F469xx) || defined(STM32F479xx)
+  uint32_t vcoinput = 0, tmpreg = 0;
+  
+  /* Check the SAI Block parameters */
+  assert_param(IS_SAI_CLK_SOURCE(hsai->Init.ClockSource));
+  
   /* SAI Block clock source selection */
   if(hsai->Instance == SAI1_Block_A)
   {
@@ -229,17 +210,17 @@ uint32_t SAI_GetInputClock(SAI_HandleTypeDef *hsai)
     /* In Case the PLL Source is HSE (External Clock) */
     vcoinput = ((HSE_VALUE / (uint32_t)(RCC->PLLCFGR & RCC_PLLCFGR_PLLM)));
   }
-  
+
   /* SAI_CLK_x : SAI Block Clock configuration for different clock sources selected */
   if(hsai->Init.ClockSource == SAI_CLKSOURCE_PLLSAI)
-  {    
+  {
     /* Configure the PLLI2S division factor */
     /* PLLSAI_VCO Input  = PLL_SOURCE/PLLM */
     /* PLLSAI_VCO Output = PLLSAI_VCO Input * PLLSAIN */
     /* SAI_CLK(first level) = PLLSAI_VCO Output/PLLSAIQ */
     tmpreg = (RCC->PLLSAICFGR & RCC_PLLSAICFGR_PLLSAIQ) >> 24;
     saiclocksource = (vcoinput * ((RCC->PLLSAICFGR & RCC_PLLSAICFGR_PLLSAIN) >> 6))/(tmpreg);
-    
+
     /* SAI_CLK_x = SAI_CLK(first level)/PLLSAIDIVQ */
     tmpreg = (((RCC->DCKCFGR & RCC_DCKCFGR_PLLSAIDIVQ) >> 8) + 1);
     saiclocksource = saiclocksource/(tmpreg); 
@@ -265,9 +246,9 @@ uint32_t SAI_GetInputClock(SAI_HandleTypeDef *hsai)
     
     saiclocksource = EXTERNAL_CLOCK_VALUE;
   }
-#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx */
-  /* the return result is the value of SAI clock */
-  return saiclocksource; 
+#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F469xx || STM32F479xx */
+       /* the return result is the value of SAI clock */
+  return saiclocksource;        
 }
 
 /**
@@ -278,7 +259,7 @@ uint32_t SAI_GetInputClock(SAI_HandleTypeDef *hsai)
   * @}
   */
 
-#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx  || STM32F446xx || STM32F469xx */
+#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx  || STM32F446xx || STM32F469xx || STM32F479xx */
 #endif /* HAL_SAI_MODULE_ENABLED */
 /**
   * @}

@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_usart.c
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   USART HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Universal Synchronous Asynchronous Receiver Transmitter (USART) peripheral:
@@ -45,7 +45,7 @@
                     
         -@@- The specific USART interrupts (Transmission complete interrupt, 
              RXNE interrupt and Error Interrupts) will be managed using the macros
-             __USART_ENABLE_IT() and __USART_DISABLE_IT() inside the transmit and receive process.
+             __HAL_USART_ENABLE_IT() and __HAL_USART_DISABLE_IT() inside the transmit and receive process.
           
     (#) Three operation modes are available within this driver :     
   
@@ -105,7 +105,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -232,6 +232,8 @@ HAL_StatusTypeDef HAL_USART_Init(USART_HandleTypeDef *husart)
 
   if(husart->State == HAL_USART_STATE_RESET)
   {
+    /* Allocate lock resource and initialize it */
+    husart->Lock = HAL_UNLOCKED;
     /* Init the low level hardware */
     HAL_USART_MspInit(husart);
   }
@@ -704,7 +706,7 @@ HAL_StatusTypeDef HAL_USART_Transmit_IT(USART_HandleTypeDef *husart, uint8_t *pT
        when the USART mode is configured for transmit and receive "USART_MODE_TX_RX"
        to benefit for the frame error and noise interrupts the USART mode should be
        configured only for transmit "USART_MODE_TX"
-       The __USART_ENABLE_IT(husart, USART_IT_ERR) can be used to enable the Frame error,
+       The __HAL_USART_ENABLE_IT(husart, USART_IT_ERR) can be used to enable the Frame error,
        Noise error interrupt */
 
     /* Process Unlocked */

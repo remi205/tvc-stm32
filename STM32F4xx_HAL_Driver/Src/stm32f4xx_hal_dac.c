@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_dac.c
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   DAC HAL module driver.
   *         This file provides firmware functions to manage the following 
   *         functionalities of the Digital to Analog Converter (DAC) peripheral:
@@ -141,7 +141,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -185,8 +185,7 @@
 
 #if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) ||\
     defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) ||\
-	defined(STM32F446xx) || defined(STM32F469xx)
-	
+	defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx)
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -241,6 +240,8 @@ HAL_StatusTypeDef HAL_DAC_Init(DAC_HandleTypeDef* hdac)
   
   if(hdac->State == HAL_DAC_STATE_RESET)
   {  
+    /* Allocate lock resource and initialize it */
+    hdac->Lock = HAL_UNLOCKED;
     /* Init the low level hardware */
     HAL_DAC_MspInit(hdac);
   }
@@ -354,8 +355,6 @@ __weak void HAL_DAC_MspDeInit(DAC_HandleTypeDef* hdac)
   */
 HAL_StatusTypeDef HAL_DAC_Start(DAC_HandleTypeDef* hdac, uint32_t Channel)
 {
-  uint32_t tmp1 = 0, tmp2 = 0;
-  
   /* Check the parameters */
   assert_param(IS_DAC_CHANNEL(Channel));
   
@@ -367,29 +366,6 @@ HAL_StatusTypeDef HAL_DAC_Start(DAC_HandleTypeDef* hdac, uint32_t Channel)
   
   /* Enable the Peripheral */
   __HAL_DAC_ENABLE(hdac, Channel);
-  
-  if(Channel == DAC_CHANNEL_1)
-  {
-    tmp1 = hdac->Instance->CR & DAC_CR_TEN1;
-    tmp2 = hdac->Instance->CR & DAC_CR_TSEL1;
-    /* Check if software trigger enabled */
-    if((tmp1 ==  DAC_CR_TEN1) && (tmp2 ==  DAC_CR_TSEL1))
-    {
-      /* Enable the selected DAC software conversion */
-      hdac->Instance->SWTRIGR |= (uint32_t)DAC_SWTRIGR_SWTRIG1;
-    }
-  }
-  else
-  {
-    tmp1 = hdac->Instance->CR & DAC_CR_TEN2;
-    tmp2 = hdac->Instance->CR & DAC_CR_TSEL2;    
-    /* Check if software trigger enabled */
-    if((tmp1 == DAC_CR_TEN2) && (tmp2 == DAC_CR_TSEL2))
-    {
-      /* Enable the selected DAC software conversion*/
-      hdac->Instance->SWTRIGR |= (uint32_t)DAC_SWTRIGR_SWTRIG2;
-    }
-  }
   
   /* Change DAC state */
   hdac->State = HAL_DAC_STATE_READY;
@@ -418,7 +394,7 @@ HAL_StatusTypeDef HAL_DAC_Stop(DAC_HandleTypeDef* hdac, uint32_t Channel)
   
   /* Disable the Peripheral */
   __HAL_DAC_DISABLE(hdac, Channel);
-  
+ 
   /* Change DAC state */
   hdac->State = HAL_DAC_STATE_READY;
   
@@ -683,7 +659,7 @@ void HAL_DAC_IRQHandler(DAC_HandleTypeDef* hdac)
 __weak void HAL_DAC_ConvCpltCallbackCh1(DAC_HandleTypeDef* hdac)
 {
   /* NOTE : This function Should not be modified, when the callback is needed,
-            the HAL_DAC_ConvCpltCallbackCh1 could be implemented in the user file
+            the HAL_DAC_ConvCpltCallback could be implemented in the user file
    */
 }
 
@@ -935,7 +911,9 @@ static void DAC_DMAErrorCh1(DMA_HandleTypeDef *hdma)
 /**
   * @}
   */
-#endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx || STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F446xx || STM32F469xx */
+#endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx ||\
+          STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx ||\
+          STM32F446xx || STM32F469xx || STM32F479xx */
 #endif /* HAL_DAC_MODULE_ENABLED */
 
 /**

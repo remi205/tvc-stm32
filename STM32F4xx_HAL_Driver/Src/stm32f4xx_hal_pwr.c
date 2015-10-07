@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_pwr.c
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   PWR HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Power Controller (PWR) peripheral:
@@ -13,7 +13,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -96,7 +96,7 @@
       write accesses. 
       To enable access to the RTC Domain and RTC registers, proceed as follows:
         (+) Enable the Power Controller (PWR) APB1 interface clock using the
-            __PWR_CLK_ENABLE() macro.
+            __HAL_RCC_PWR_CLK_ENABLE() macro.
         (+) Enable access to RTC domain using the HAL_PWR_EnableBkUpAccess() function.
  
 @endverbatim
@@ -158,7 +158,7 @@ void HAL_PWR_DisableBkUpAccess(void)
       (+) A PVDO flag is available to indicate if VDD/VDDA is higher or lower 
           than the PVD threshold. This event is internally connected to the EXTI 
           line16 and can generate an interrupt if enabled. This is done through
-          __HAL_PVD_EXTI_ENABLE_IT() macro.
+          __HAL_PWR_PVD_EXTI_ENABLE_IT() macro.
       (+) The PVD is stopped in Standby mode.
 
     *** Wake-up pin configuration ***
@@ -167,8 +167,8 @@ void HAL_PWR_DisableBkUpAccess(void)
       (+) Wake-up pin is used to wake up the system from Standby mode. This pin is 
           forced in input pull-down configuration and is active on rising edges.
       (+) There is one Wake-up pin: Wake-up Pin 1 on PA.00.
-	      Only for STM32F446xx there are two Wake-Up pins: Pin1 on PA.00 and Pin 2 on PC.13
-	  
+	   (++) For STM32F446xx there are two Wake-Up pins: Pin1 on PA.00 and Pin2 on PC.13
+           (++) For STM32F412xG there are three Wake-Up pins: Pin1 on PA.00, Pin2 on PC.00 and Pin3 on PC.01
 
     *** Low Power modes configuration ***
     =====================================
@@ -203,9 +203,9 @@ void HAL_PWR_DisableBkUpAccess(void)
       are preserved.
       The voltage regulator can be configured either in normal or low-power mode.
       To minimize the consumption In Stop mode, FLASH can be powered off before 
-      entering the Stop mode using the HAL_PWR_EnableFlashPowerDown() function.
+      entering the Stop mode using the HAL_PWREx_EnableFlashPowerDown() function.
       It can be switched on again by software after exiting the Stop mode using
-      the HAL_PWR_DisableFlashPowerDown() function. 
+      the HAL_PWREx_DisableFlashPowerDown() function. 
 
       (+) Entry:
          The Stop mode is entered using the HAL_PWR_EnterSTOPMode(PWR_MAINREGULATOR_ON) 
@@ -329,14 +329,15 @@ void HAL_PWR_DisablePVD(void)
   * @param WakeUpPinx: Specifies the Power Wake-Up pin to enable.
   *         This parameter can be one of the following values:
   *           @arg PWR_WAKEUP_PIN1
-  *           @arg PWR_WAKEUP_PIN2 only available in case of STM32F446xx devices
+  *           @arg PWR_WAKEUP_PIN2 available only on STM32F446xx/STM32F412xG devices
+  *           @arg PWR_WAKEUP_PIN3 available only on STM32F412xG devices
   * @retval None
   */
 void HAL_PWR_EnableWakeUpPin(uint32_t WakeUpPinx)
 {
   /* Check the parameter */
   assert_param(IS_PWR_WAKEUP_PIN(WakeUpPinx));
-  
+
   /* Enable the wake up pin */
   SET_BIT(PWR->CSR, WakeUpPinx);
 }
@@ -346,14 +347,15 @@ void HAL_PWR_EnableWakeUpPin(uint32_t WakeUpPinx)
   * @param WakeUpPinx: Specifies the Power Wake-Up pin to disable.
   *         This parameter can be one of the following values:
   *           @arg PWR_WAKEUP_PIN1
-  *           @arg PWR_WAKEUP_PIN2 only available in case of STM32F446xx devices
+  *           @arg PWR_WAKEUP_PIN2 available only on STM32F446xx/STM32F412xG devices
+  *           @arg PWR_WAKEUP_PIN3 available only on STM32F412xG devices
   * @retval None
   */
 void HAL_PWR_DisableWakeUpPin(uint32_t WakeUpPinx)
 {
   /* Check the parameter */
   assert_param(IS_PWR_WAKEUP_PIN(WakeUpPinx));  
- 
+
   /* Disable the wake up pin */
   CLEAR_BIT(PWR->CSR, WakeUpPinx);
 }

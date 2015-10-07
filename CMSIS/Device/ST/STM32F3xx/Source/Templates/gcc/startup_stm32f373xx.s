@@ -200,14 +200,19 @@ g_pfnVectors:
 	.word	TIM13_IRQHandler
 	.word	TIM14_IRQHandler
 	.word	0
+	.word	TIM8_BRK_IRQHandler
+	.word	TIM8_UP_IRQHandler
+	.word	TIM8_TRG_COM_IRQHandler
+	.word	TIM8_CC_IRQHandler
+	.word	ADC3_IRQHandler
 	.word	0
 	.word	0
 	.word	0
 	.word	TIM5_IRQHandler
 	.word	SPI3_IRQHandler
-	.word	0
-	.word	0
-	.word	TIM6_DAC1_IRQHandler
+	.word	UART4_IRQHandler
+	.word	UART5_IRQHandler
+	.word	TIM6_DAC_IRQHandler
 	.word	TIM7_IRQHandler
 	.word	DMA2_Channel1_IRQHandler
 	.word	DMA2_Channel2_IRQHandler

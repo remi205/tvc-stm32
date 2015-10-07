@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_tim.c
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   TIM HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Timer (TIM) peripheral:
@@ -98,7 +98,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -220,6 +220,8 @@ HAL_StatusTypeDef HAL_TIM_Base_Init(TIM_HandleTypeDef *htim)
   
   if(htim->State == HAL_TIM_STATE_RESET)
   {  
+    /* Allocate lock resource and initialize it */
+    htim->Lock = HAL_UNLOCKED;
     /* Init the low level hardware : GPIO, CLOCK, NVIC */
     HAL_TIM_Base_MspInit(htim);
   }
@@ -495,7 +497,9 @@ HAL_StatusTypeDef HAL_TIM_OC_Init(TIM_HandleTypeDef* htim)
   assert_param(IS_TIM_CLOCKDIVISION_DIV(htim->Init.ClockDivision));
  
   if(htim->State == HAL_TIM_STATE_RESET)
-  {   
+  { 
+    /* Allocate lock resource and initialize it */
+    htim->Lock = HAL_UNLOCKED;
     /* Init the low level hardware : GPIO, CLOCK, NVIC and DMA */
     HAL_TIM_OC_MspInit(htim);
   }
@@ -1002,6 +1006,8 @@ HAL_StatusTypeDef HAL_TIM_PWM_Init(TIM_HandleTypeDef *htim)
 
   if(htim->State == HAL_TIM_STATE_RESET)
   {
+    /* Allocate lock resource and initialize it */
+    htim->Lock = HAL_UNLOCKED;
     /* Init the low level hardware : GPIO, CLOCK, NVIC and DMA */
     HAL_TIM_PWM_MspInit(htim);
   }
@@ -1510,7 +1516,9 @@ HAL_StatusTypeDef HAL_TIM_IC_Init(TIM_HandleTypeDef *htim)
   assert_param(IS_TIM_CLOCKDIVISION_DIV(htim->Init.ClockDivision)); 
 
   if(htim->State == HAL_TIM_STATE_RESET)
-  {  
+  { 
+    /* Allocate lock resource and initialize it */
+    htim->Lock = HAL_UNLOCKED;
     /* Init the low level hardware : GPIO, CLOCK, NVIC and DMA */
     HAL_TIM_IC_MspInit(htim);
   }
@@ -1987,7 +1995,9 @@ HAL_StatusTypeDef HAL_TIM_OnePulse_Init(TIM_HandleTypeDef *htim, uint32_t OnePul
   assert_param(IS_TIM_OPM_MODE(OnePulseMode));
   
   if(htim->State == HAL_TIM_STATE_RESET)
-  {   
+  { 
+    /* Allocate lock resource and initialize it */
+    htim->Lock = HAL_UNLOCKED;
     /* Init the low level hardware : GPIO, CLOCK, NVIC and DMA */
     HAL_TIM_OnePulse_MspInit(htim);
   }
@@ -2268,6 +2278,8 @@ HAL_StatusTypeDef HAL_TIM_Encoder_Init(TIM_HandleTypeDef *htim,  TIM_Encoder_Ini
 
   if(htim->State == HAL_TIM_STATE_RESET)
   { 
+    /* Allocate lock resource and initialize it */
+    htim->Lock = HAL_UNLOCKED;
     /* Init the low level hardware : GPIO, CLOCK, NVIC and DMA */
     HAL_TIM_Encoder_MspInit(htim);
   }
@@ -3301,25 +3313,25 @@ HAL_StatusTypeDef HAL_TIM_OnePulse_ConfigChannel(TIM_HandleTypeDef *htim,  TIM_O
   *                the configuration information for TIM module.
   * @param  BurstBaseAddress: TIM Base address from when the DMA will starts the Data write.
   *         This parameters can be on of the following values:
-  *            @arg TIM_DMABase_CR1  
-  *            @arg TIM_DMABase_CR2
-  *            @arg TIM_DMABase_SMCR
-  *            @arg TIM_DMABase_DIER
-  *            @arg TIM_DMABase_SR
-  *            @arg TIM_DMABase_EGR
-  *            @arg TIM_DMABase_CCMR1
-  *            @arg TIM_DMABase_CCMR2
-  *            @arg TIM_DMABase_CCER
-  *            @arg TIM_DMABase_CNT   
-  *            @arg TIM_DMABase_PSC   
-  *            @arg TIM_DMABase_ARR
-  *            @arg TIM_DMABase_RCR
-  *            @arg TIM_DMABase_CCR1
-  *            @arg TIM_DMABase_CCR2
-  *            @arg TIM_DMABase_CCR3  
-  *            @arg TIM_DMABase_CCR4
-  *            @arg TIM_DMABase_BDTR
-  *            @arg TIM_DMABase_DCR
+  *            @arg TIM_DMABASE_CR1  
+  *            @arg TIM_DMABASE_CR2
+  *            @arg TIM_DMABASE_SMCR
+  *            @arg TIM_DMABASE_DIER
+  *            @arg TIM_DMABASE_SR
+  *            @arg TIM_DMABASE_EGR
+  *            @arg TIM_DMABASE_CCMR1
+  *            @arg TIM_DMABASE_CCMR2
+  *            @arg TIM_DMABASE_CCER
+  *            @arg TIM_DMABASE_CNT   
+  *            @arg TIM_DMABASE_PSC   
+  *            @arg TIM_DMABASE_ARR
+  *            @arg TIM_DMABASE_RCR
+  *            @arg TIM_DMABASE_CCR1
+  *            @arg TIM_DMABASE_CCR2
+  *            @arg TIM_DMABASE_CCR3  
+  *            @arg TIM_DMABASE_CCR4
+  *            @arg TIM_DMABASE_BDTR
+  *            @arg TIM_DMABASE_DCR
   * @param  BurstRequestSrc: TIM DMA Request sources.
   *         This parameters can be on of the following values:
   *            @arg TIM_DMA_UPDATE: TIM update Interrupt source
@@ -3331,7 +3343,7 @@ HAL_StatusTypeDef HAL_TIM_OnePulse_ConfigChannel(TIM_HandleTypeDef *htim,  TIM_O
   *            @arg TIM_DMA_TRIGGER: TIM Trigger DMA source
   * @param  BurstBuffer: The Buffer address.
   * @param  BurstLength: DMA Burst length. This parameter can be one value
-  *         between TIM_DMABurstLength_1Transfer and TIM_DMABurstLength_18Transfers.
+  *         between TIM_DMABURSTLENGTH_1TRANSFER and TIM_DMABURSTLENGTH_18TRANSFERS.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_TIM_DMABurst_WriteStart(TIM_HandleTypeDef *htim, uint32_t BurstBaseAddress, uint32_t BurstRequestSrc,
@@ -3526,25 +3538,25 @@ HAL_StatusTypeDef HAL_TIM_DMABurst_WriteStop(TIM_HandleTypeDef *htim, uint32_t B
   *                the configuration information for TIM module.
   * @param  BurstBaseAddress: TIM Base address from when the DMA will starts the Data read.
   *         This parameters can be on of the following values:
-  *            @arg TIM_DMABase_CR1  
-  *            @arg TIM_DMABase_CR2
-  *            @arg TIM_DMABase_SMCR
-  *            @arg TIM_DMABase_DIER
-  *            @arg TIM_DMABase_SR
-  *            @arg TIM_DMABase_EGR
-  *            @arg TIM_DMABase_CCMR1
-  *            @arg TIM_DMABase_CCMR2
-  *            @arg TIM_DMABase_CCER
-  *            @arg TIM_DMABase_CNT   
-  *            @arg TIM_DMABase_PSC   
-  *            @arg TIM_DMABase_ARR
-  *            @arg TIM_DMABase_RCR
-  *            @arg TIM_DMABase_CCR1
-  *            @arg TIM_DMABase_CCR2
-  *            @arg TIM_DMABase_CCR3  
-  *            @arg TIM_DMABase_CCR4
-  *            @arg TIM_DMABase_BDTR
-  *            @arg TIM_DMABase_DCR
+  *            @arg TIM_DMABASE_CR1  
+  *            @arg TIM_DMABASE_CR2
+  *            @arg TIM_DMABASE_SMCR
+  *            @arg TIM_DMABASE_DIER
+  *            @arg TIM_DMABASE_SR
+  *            @arg TIM_DMABASE_EGR
+  *            @arg TIM_DMABASE_CCMR1
+  *            @arg TIM_DMABASE_CCMR2
+  *            @arg TIM_DMABASE_CCER
+  *            @arg TIM_DMABASE_CNT   
+  *            @arg TIM_DMABASE_PSC   
+  *            @arg TIM_DMABASE_ARR
+  *            @arg TIM_DMABASE_RCR
+  *            @arg TIM_DMABASE_CCR1
+  *            @arg TIM_DMABASE_CCR2
+  *            @arg TIM_DMABASE_CCR3  
+  *            @arg TIM_DMABASE_CCR4
+  *            @arg TIM_DMABASE_BDTR
+  *            @arg TIM_DMABASE_DCR
   * @param  BurstRequestSrc: TIM DMA Request sources.
   *         This parameters can be on of the following values:
   *            @arg TIM_DMA_UPDATE: TIM update Interrupt source
@@ -3556,7 +3568,7 @@ HAL_StatusTypeDef HAL_TIM_DMABurst_WriteStop(TIM_HandleTypeDef *htim, uint32_t B
   *            @arg TIM_DMA_TRIGGER: TIM Trigger DMA source
   * @param  BurstBuffer: The Buffer address.
   * @param  BurstLength: DMA Burst length. This parameter can be one value
-  *         between TIM_DMABurstLength_1Transfer and TIM_DMABurstLength_18Transfers.
+  *         between TIM_DMABURSTLENGTH_1TRANSFER and TIM_DMABURSTLENGTH_18TRANSFERS.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_TIM_DMABurst_ReadStart(TIM_HandleTypeDef *htim, uint32_t BurstBaseAddress, uint32_t BurstRequestSrc,
@@ -3752,16 +3764,16 @@ HAL_StatusTypeDef HAL_TIM_DMABurst_ReadStop(TIM_HandleTypeDef *htim, uint32_t Bu
   *                the configuration information for TIM module.
   * @param  EventSource: specifies the event source.
   *          This parameter can be one of the following values:
-  *            @arg TIM_EventSource_Update: Timer update Event source
-  *            @arg TIM_EventSource_CC1: Timer Capture Compare 1 Event source
-  *            @arg TIM_EventSource_CC2: Timer Capture Compare 2 Event source
-  *            @arg TIM_EventSource_CC3: Timer Capture Compare 3 Event source
-  *            @arg TIM_EventSource_CC4: Timer Capture Compare 4 Event source
-  *            @arg TIM_EventSource_COM: Timer COM event source  
-  *            @arg TIM_EventSource_Trigger: Timer Trigger Event source
-  *            @arg TIM_EventSource_Break: Timer Break event source
+  *            @arg TIM_EVENTSOURCE_UPDATE: Timer update Event source
+  *            @arg TIM_EVENTSOURCE_CC1: Timer Capture Compare 1 Event source
+  *            @arg TIM_EVENTSOURCE_CC2: Timer Capture Compare 2 Event source
+  *            @arg TIM_EVENTSOURCE_CC3: Timer Capture Compare 3 Event source
+  *            @arg TIM_EVENTSOURCE_CC4: Timer Capture Compare 4 Event source
+  *            @arg TIM_EVENTSOURCE_COM: Timer COM event source  
+  *            @arg TIM_EVENTSOURCE_TRIGGER: Timer Trigger Event source
+  *            @arg TIM_EVENTSOURCE_BREAK: Timer Break event source
   * @note   TIM6 and TIM7 can only generate an update event. 
-  * @note   TIM_EventSource_COM and TIM_EventSource_Break are used only with TIM1 and TIM8.
+  * @note   TIM_EVENTSOURCE_COM and TIM_EVENTSOURCE_BREAK are used only with TIM1 and TIM8.
   * @retval HAL status
   */ 
 

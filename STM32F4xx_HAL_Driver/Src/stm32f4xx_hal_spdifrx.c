@@ -1,9 +1,9 @@
 /**
   ******************************************************************************
-  * @file    stm32h7xx_hal_spdif.c
+  * @file    stm32f4xx_hal_spdifrx.c
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the SPDIFRX audio interface:
   *           + Initialization and Configuration
@@ -28,7 +28,7 @@
             (+++) Enable the NVIC SPDIFRX IRQ handle.
         (##) DMA Configuration if you need to use DMA process (HAL_SPDIFRX_ReceiveDataFlow_DMA() and HAL_SPDIFRX_ReceiveControlFlow_DMA() API's).
             (+++) Declare a DMA handle structure for the reception of the Data Flow channel.
-					  (+++) Declare a DMA handle structure for the reception of the Control Flow channel.
+                      (+++) Declare a DMA handle structure for the reception of the Control Flow channel.
             (+++) Enable the DMAx interface clock.
             (+++) Configure the declared DMA handle structure CtrlRx/DataRx with the required parameters.
             (+++) Configure the DMA Channel.
@@ -49,13 +49,13 @@
    ================================================================
    [..]    
      (+) Receive data flow in blocking mode using HAL_SPDIFRX_ReceiveDataFlow()
-		 (+) Receive control flow of data in blocking mode using HAL_SPDIFRX_ReceiveControlFlow()
+         (+) Receive control flow of data in blocking mode using HAL_SPDIFRX_ReceiveControlFlow()
    
    *** Interrupt mode for reception operation ***
    =========================================
    [..]    
      (+) Receive an amount of data (Data Flow) in non blocking mode using HAL_SPDIFRX_ReceiveDataFlow_IT() 
-		 (+) Receive an amount of data (Control Flow) in non blocking mode using HAL_SPDIFRX_ReceiveControlFlow_IT() 
+         (+) Receive an amount of data (Control Flow) in non blocking mode using HAL_SPDIFRX_ReceiveControlFlow_IT() 
      (+) At reception end of half transfer HAL_SPDIFRX_RxHalfCpltCallback is executed and user can 
          add his own code by customization of function pointer HAL_SPDIFRX_RxHalfCpltCallback 
      (+) At reception end of transfer HAL_SPDIFRX_RxCpltCallback is executed and user can 
@@ -67,7 +67,7 @@
    ========================================
    [..] 
      (+) Receive an amount of data (Data Flow) in non blocking mode (DMA) using HAL_SPDIFRX_ReceiveDataFlow_DMA() 
-		 (+) Receive an amount of data (Control Flow) in non blocking mode (DMA) using HAL_SPDIFRX_ReceiveControlFlow_DMA() 
+         (+) Receive an amount of data (Control Flow) in non blocking mode (DMA) using HAL_SPDIFRX_ReceiveControlFlow_DMA() 
      (+) At reception end of half transfer HAL_SPDIFRX_RxHalfCpltCallback is executed and user can 
          add his own code by customization of function pointer HAL_SPDIFRX_RxHalfCpltCallback 
      (+) At reception end of transfer HAL_SPDIFRX_RxCpltCallback is executed and user can 
@@ -94,7 +94,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -124,13 +124,13 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
 
-/** @addtogroup STM32H7xx_HAL_Driver
+/** @addtogroup STM32F4xx_HAL_Driver
   * @{
   */
-/** @defgroup SPDIFRX 
-* @brief SPDIFRX HAL module driver
-* @{
-*/
+/** @defgroup SPDIFRX SPDIFRX
+  * @brief SPDIFRX HAL module driver
+  * @{
+  */
 
 #ifdef HAL_SPDIFRX_MODULE_ENABLED
 
@@ -143,6 +143,9 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
+/** @addtogroup SPDIFRX_Private_Functions
+  * @{
+  */
 static void  SPDIFRX_DMARxCplt(DMA_HandleTypeDef *hdma);
 static void  SPDIFRX_DMARxHalfCplt(DMA_HandleTypeDef *hdma);
 static void  SPDIFRX_DMACxCplt(DMA_HandleTypeDef *hdma);
@@ -151,48 +154,50 @@ static void  SPDIFRX_DMAError(DMA_HandleTypeDef *hdma);
 static void  SPDIFRX_ReceiveControlFlow_IT(SPDIFRX_HandleTypeDef *hspdif);
 static void  SPDIFRX_ReceiveDataFlow_IT(SPDIFRX_HandleTypeDef *hspdif);
 static HAL_StatusTypeDef  SPDIFRX_WaitOnFlagUntilTimeout(SPDIFRX_HandleTypeDef *hspdif, uint32_t Flag, FlagStatus Status, uint32_t Timeout);
+/**
+  * @}
+  */
+/* Exported functions ---------------------------------------------------------*/
 
-/* Private functions ---------------------------------------------------------*/
+/** @defgroup SPDIFRX_Exported_Functions SPDIFRX Exported Functions
+  * @{
+  */
 
-/** @defgroup SPDIFRX_Private_Functions
-* @{
-*/
-
-/** @defgroup  SPDIFRX_Group1 Initialization and de-initialization functions 
-*  @brief    Initialization and Configuration functions 
-*
-@verbatim    
-===============================================================================
-##### Initialization and de-initialization functions #####
-===============================================================================
-[..]  This subsection provides a set of functions allowing to initialize and 
-      de-initialiaze the SPDIFRX peripheral:
-
-(+) User must Implement HAL_SPDIFRX_MspInit() function in which he configures 
-    all related peripherals resources (CLOCK, GPIO, DMA, IT and NVIC ).
-
-(+) Call the function HAL_SPDIFRX_Init() to configure the SPDIFRX peripheral with 
-    the selected configuration:
-    (++) Input Selection (IN0, IN1,...)
-    (++) Maximum allowed re-tries during synchronization phase
-    (++) Wait for activity on SPDIF selected input
-    (++) Channel status selection (from channel A or B)
-    (++) Data format (LSB, MSB, ...)
-    (++) Stereo mode
-    (++) User bits masking (PT,C,U,V,...)
-
-(+) Call the function HAL_SPDIFRX_DeInit() to restore the default configuration 
-    of the selected SPDIFRXx peripheral. 
-@endverbatim
-* @{
-*/
+/** @defgroup  SPDIFRX_Exported_Functions_Group1 Initialization and de-initialization functions 
+  *  @brief    Initialization and Configuration functions 
+  *
+  @verbatim    
+  ===============================================================================
+  ##### Initialization and de-initialization functions #####
+  ===============================================================================
+  [..]  This subsection provides a set of functions allowing to initialize and 
+  de-initialize the SPDIFRX peripheral:
+  
+  (+) User must Implement HAL_SPDIFRX_MspInit() function in which he configures 
+  all related peripherals resources (CLOCK, GPIO, DMA, IT and NVIC ).
+  
+  (+) Call the function HAL_SPDIFRX_Init() to configure the SPDIFRX peripheral with 
+  the selected configuration:
+  (++) Input Selection (IN0, IN1,...)
+  (++) Maximum allowed re-tries during synchronization phase
+  (++) Wait for activity on SPDIF selected input
+  (++) Channel status selection (from channel A or B)
+  (++) Data format (LSB, MSB, ...)
+  (++) Stereo mode
+  (++) User bits masking (PT,C,U,V,...)
+  
+  (+) Call the function HAL_SPDIFRX_DeInit() to restore the default configuration 
+  of the selected SPDIFRXx peripheral. 
+  @endverbatim
+  * @{
+  */
 
 /**
-* @brief Initializes the SPDIFRX according to the specified parameters 
-*        in the SPDIFRX_InitTypeDef and create the associated handle.
-* @param hspdif: SPDIFRX handle
-* @retval HAL status
-*/
+  * @brief Initializes the SPDIFRX according to the specified parameters 
+  *        in the SPDIFRX_InitTypeDef and create the associated handle.
+  * @param hspdif: SPDIFRX handle
+  * @retval HAL status
+  */
 HAL_StatusTypeDef HAL_SPDIFRX_Init(SPDIFRX_HandleTypeDef *hspdif)
 {
   uint32_t tmpreg = 0;
@@ -211,17 +216,19 @@ HAL_StatusTypeDef HAL_SPDIFRX_Init(SPDIFRX_HandleTypeDef *hspdif)
   assert_param(IS_SPDIFRX_CHANNEL(hspdif->Init.ChannelSelection));
   assert_param(IS_SPDIFRX_DATA_FORMAT(hspdif->Init.DataFormat));
   assert_param(IS_PREAMBLE_TYPE_MASK(hspdif->Init.PreambleTypeMask));
-	assert_param(IS_CHANNEL_STATUS_MASK(hspdif->Init.ChannelStatusMask));
-	assert_param(IS_VALIDITY_MASK(hspdif->Init.ValidityBitMask));
-	assert_param(IS_PARITY_ERROR_MASK(hspdif->Init.ParityErrorMask));
+  assert_param(IS_CHANNEL_STATUS_MASK(hspdif->Init.ChannelStatusMask));
+  assert_param(IS_VALIDITY_MASK(hspdif->Init.ValidityBitMask));
+  assert_param(IS_PARITY_ERROR_MASK(hspdif->Init.ParityErrorMask));
   
   if(hspdif->State == HAL_SPDIFRX_STATE_RESET)
   {
+    /* Allocate lock resource and initialize it */
+    hspdif->Lock = HAL_UNLOCKED;
     /* Init the low level hardware : GPIO, CLOCK, CORTEX...etc */
     HAL_SPDIFRX_MspInit(hspdif);
   }
   
-   /* SPDIFRX peripheral state is BUSY*/
+     /* SPDIFRX peripheral state is BUSY*/
    hspdif->State = HAL_SPDIFRX_STATE_BUSY;  
   
   /* Disable SPDIFRX interface (IDLE State) */
@@ -230,38 +237,38 @@ HAL_StatusTypeDef HAL_SPDIFRX_Init(SPDIFRX_HandleTypeDef *hspdif)
   /* Reset the old SPDIFRX CR configuration */
   tmpreg = hspdif->Instance->CR;
   
-  tmpreg &= ~((uint16_t) SPDIFRX_CR_RXSTEO  | SPDIFRX_CR_DRFMT  | SPDIFRX_CR_PMSK   |
-                         SPDIFRX_CR_VMSK    | SPDIFRX_CR_CUMSK  | SPDIFRX_CR_PTMSK  |
-                         SPDIFRX_CR_CHSEL   | SPDIFRX_CR_NBTR   | SPDIFRX_CR_WFA    |
+  tmpreg &= ~((uint16_t) SPDIFRX_CR_RXSTEO  | SPDIFRX_CR_DRFMT  | SPDIFRX_CR_PMSK |
+                         SPDIFRX_CR_VMSK | SPDIFRX_CR_CUMSK | SPDIFRX_CR_PTMSK  |
+                         SPDIFRX_CR_CHSEL | SPDIFRX_CR_NBTR | SPDIFRX_CR_WFA |
                          SPDIFRX_CR_INSEL); 
                   
   /* Sets the new configuration of the SPDIFRX peripheral */
-  tmpreg |= ((uint16_t) hspdif->Init.StereoMode        |
-                        hspdif->Init.InputSelection    |
-                        hspdif->Init.Retries           |
-                        hspdif->Init.WaitForActivity   |
-                        hspdif->Init.ChannelSelection  |
-                        hspdif->Init.DataFormat        |
-                        hspdif->Init.PreambleTypeMask  |
+  tmpreg |= ((uint16_t) hspdif->Init.StereoMode |
+                        hspdif->Init.InputSelection |
+                        hspdif->Init.Retries |
+                        hspdif->Init.WaitForActivity |
+                        hspdif->Init.ChannelSelection |
+                        hspdif->Init.DataFormat |
+                        hspdif->Init.PreambleTypeMask |
                         hspdif->Init.ChannelStatusMask |
-                        hspdif->Init.ValidityBitMask   |
+                        hspdif->Init.ValidityBitMask |
                         hspdif->Init.ParityErrorMask);
 
   hspdif->Instance->CR = tmpreg;  
   
   hspdif->ErrorCode = HAL_SPDIFRX_ERROR_NONE;
-
-  /* SPDIFRX peripheral state is READY*/
+    
+    /* SPDIFRX peripheral state is READY*/
   hspdif->State = HAL_SPDIFRX_STATE_READY;
   
   return HAL_OK;
 }
 
 /**
-* @brief DeInitializes the SPDIFRX peripheral 
-* @param hspdif: SPDIFRX handle
-* @retval HAL status
-*/
+  * @brief DeInitializes the SPDIFRX peripheral 
+  * @param hspdif: SPDIFRX handle
+  * @retval HAL status
+  */
 HAL_StatusTypeDef HAL_SPDIFRX_DeInit(SPDIFRX_HandleTypeDef *hspdif)
 {
   /* Check the SPDIFRX handle allocation */
@@ -282,8 +289,8 @@ HAL_StatusTypeDef HAL_SPDIFRX_DeInit(SPDIFRX_HandleTypeDef *hspdif)
   HAL_SPDIFRX_MspDeInit(hspdif);
   
   hspdif->ErrorCode = HAL_SPDIFRX_ERROR_NONE;
-  
-  /* SPDIFRX peripheral state is RESET*/
+    
+    /* SPDIFRX peripheral state is RESET*/
   hspdif->State = HAL_SPDIFRX_STATE_RESET;
   
   /* Release Lock */
@@ -293,10 +300,10 @@ HAL_StatusTypeDef HAL_SPDIFRX_DeInit(SPDIFRX_HandleTypeDef *hspdif)
 }
 
 /**
-* @brief SPDIFRX MSP Init
-* @param hspdif: SPDIFRX handle
-* @retval None
-*/
+  * @brief SPDIFRX MSP Init
+  * @param hspdif: SPDIFRX handle
+  * @retval None
+  */
 __weak void HAL_SPDIFRX_MspInit(SPDIFRX_HandleTypeDef *hspdif)
 {
   /* NOTE : This function Should not be modified, when the callback is needed,
@@ -305,10 +312,10 @@ __weak void HAL_SPDIFRX_MspInit(SPDIFRX_HandleTypeDef *hspdif)
 }
 
 /**
-* @brief SPDIFRX MSP DeInit
-* @param hspdif: SPDIFRX handle
-* @retval None
-*/
+  * @brief SPDIFRX MSP DeInit
+  * @param hspdif: SPDIFRX handle
+  * @retval None
+  */
 __weak void HAL_SPDIFRX_MspDeInit(SPDIFRX_HandleTypeDef *hspdif)
 {
   /* NOTE : This function Should not be modified, when the callback is needed,
@@ -317,12 +324,63 @@ __weak void HAL_SPDIFRX_MspDeInit(SPDIFRX_HandleTypeDef *hspdif)
 }
 
 /**
-* @}
-*/
+  * @brief Sets the SPDIFRX  dtat format according to the specified parameters 
+  *        in the SPDIFRX_InitTypeDef.
+  * @param hspdif: SPDIFRX handle
+  * @param sDataFormat: SPDIFRX data format
+  * @retval HAL status
+  */
+HAL_StatusTypeDef HAL_SPDIFRX_SetDataFormat(SPDIFRX_HandleTypeDef *hspdif, SPDIFRX_SetDataFormatTypeDef  sDataFormat)
+{
+  uint32_t tmpreg = 0;
+  
+  /* Check the SPDIFRX handle allocation */
+  if(hspdif == NULL)
+  {
+    return HAL_ERROR;
+  }
+  
+  /* Check the SPDIFRX parameters */
+  assert_param(IS_STEREO_MODE(sDataFormat.StereoMode));
+  assert_param(IS_SPDIFRX_DATA_FORMAT(sDataFormat.DataFormat));
+  assert_param(IS_PREAMBLE_TYPE_MASK(sDataFormat.PreambleTypeMask));
+  assert_param(IS_CHANNEL_STATUS_MASK(sDataFormat.ChannelStatusMask));
+  assert_param(IS_VALIDITY_MASK(sDataFormat.ValidityBitMask));
+  assert_param(IS_PARITY_ERROR_MASK(sDataFormat.ParityErrorMask));
+  
+  /* Reset the old SPDIFRX CR configuration */
+  tmpreg = hspdif->Instance->CR;
+  
+  if(((tmpreg & SPDIFRX_STATE_RCV) == SPDIFRX_STATE_RCV) &&
+    (((tmpreg & SPDIFRX_CR_DRFMT) != sDataFormat.DataFormat) ||
+    ((tmpreg & SPDIFRX_CR_RXSTEO) != sDataFormat.StereoMode)))  
+  {
+      return HAL_ERROR;    
+  }  
+  
+  tmpreg &= ~((uint16_t) SPDIFRX_CR_RXSTEO  | SPDIFRX_CR_DRFMT  | SPDIFRX_CR_PMSK |
+                         SPDIFRX_CR_VMSK | SPDIFRX_CR_CUMSK | SPDIFRX_CR_PTMSK);   
+  
+  /* Sets the new configuration of the SPDIFRX peripheral */
+  tmpreg |= ((uint16_t) sDataFormat.StereoMode |
+                        sDataFormat.DataFormat |
+                        sDataFormat.PreambleTypeMask |
+                        sDataFormat.ChannelStatusMask |
+                        sDataFormat.ValidityBitMask |
+                        sDataFormat.ParityErrorMask);
 
-/** @defgroup SPDIFRX_Group2 IO operation functions 
-*  @brief Data transfers functions 
-*
+  hspdif->Instance->CR = tmpreg;  
+  
+  return HAL_OK;
+}
+
+/**
+  * @}
+  */
+
+/** @defgroup SPDIFRX_Exported_Functions_Group2 IO operation functions 
+  *  @brief Data transfers functions 
+  *
 @verbatim   
 ===============================================================================
 ##### IO operation functions #####
@@ -336,7 +394,7 @@ __weak void HAL_SPDIFRX_MspDeInit(SPDIFRX_HandleTypeDef *hspdif)
              The status of all data processing is returned by the same function 
              after finishing transfer.  
         (++) No-Blocking mode : The communication is performed using Interrupts 
-             or DMA. These functions return the status of the transfer startup.
+             or DMA. These functions return the status of the transfer start-up.
              The end of the data processing will be indicated through the 
              dedicated SPDIFRX IRQ when using Interrupt mode or the DMA IRQ when 
              using DMA mode.
@@ -344,7 +402,7 @@ __weak void HAL_SPDIFRX_MspDeInit(SPDIFRX_HandleTypeDef *hspdif)
     (#) Blocking mode functions are :
         (++) HAL_SPDIFRX_ReceiveDataFlow()
         (++) HAL_SPDIFRX_ReceiveControlFlow()
-        (+@) Do not use blocking mode to receive both control and data flow at the same time.
+                (+@) Do not use blocking mode to receive both control and data flow at the same time.
 
     (#) No-Blocking mode functions with Interrupt are :
         (++) HAL_SPDIFRX_ReceiveControlFlow_IT()
@@ -359,9 +417,8 @@ __weak void HAL_SPDIFRX_MspDeInit(SPDIFRX_HandleTypeDef *hspdif)
         (++) HAL_SPDIFRX_ErrorCallback()
 
 @endverbatim
-* @{
-*/
-
+  * @{
+  */
 
 /**
   * @brief  Receives an amount of data (Data Flow) in blocking mode. 
@@ -387,18 +444,18 @@ HAL_StatusTypeDef HAL_SPDIFRX_ReceiveDataFlow(SPDIFRX_HandleTypeDef *hspdif, uin
     
      hspdif->State = HAL_SPDIFRX_STATE_BUSY;
 
-    /* Start syncronization */
-    __HAL_SPDIFRX_SYNC(hspdif);
- 
-      /* Wait until SYNCD flag is set */
+        /* Start synchronisation */
+        __HAL_SPDIFRX_SYNC(hspdif);
+        
+            /* Wait until SYNCD flag is set */
       if(SPDIFRX_WaitOnFlagUntilTimeout(hspdif, SPDIFRX_FLAG_SYNCD, RESET, Timeout) != HAL_OK)
       { 
         return HAL_TIMEOUT;
       }  
- 
-    /* Start reception */	
-    __HAL_SPDIFRX_RCV(hspdif);
- 
+    
+            /* Start reception */    
+      __HAL_SPDIFRX_RCV(hspdif);
+            
     /* Receive data flow */
     while(Size > 0)
     {      
@@ -447,21 +504,22 @@ HAL_StatusTypeDef HAL_SPDIFRX_ReceiveControlFlow(SPDIFRX_HandleTypeDef *hspdif, 
   { 
     /* Process Locked */
     __HAL_LOCK(hspdif);
-    hspdif->State = HAL_SPDIFRX_STATE_BUSY;
- 
-   /* Start syncronization */
-   __HAL_SPDIFRX_SYNC(hspdif);
+    
+     hspdif->State = HAL_SPDIFRX_STATE_BUSY;
+        
+        /* Start synchronization */
+        __HAL_SPDIFRX_SYNC(hspdif);
+        
+        /* Wait until SYNCD flag is set */
+      if(SPDIFRX_WaitOnFlagUntilTimeout(hspdif, SPDIFRX_FLAG_SYNCD, RESET, Timeout) != HAL_OK)
+      { 
+        return HAL_TIMEOUT;
+      }  
+            
+        /* Start reception */    
+      __HAL_SPDIFRX_RCV(hspdif);
    
-   /* Wait until SYNCD flag is set */
-   if(SPDIFRX_WaitOnFlagUntilTimeout(hspdif, SPDIFRX_FLAG_SYNCD, RESET, Timeout) != HAL_OK)
-   { 
-     return HAL_TIMEOUT;
-   }  
-
-   /* Start reception */	
-    __HAL_SPDIFRX_RCV(hspdif);
-   
-    /* Receive control flow */
+        /* Receive control flow */
     while(Size > 0)
     {      
       /* Wait until CSRNE flag is set */
@@ -488,15 +546,15 @@ HAL_StatusTypeDef HAL_SPDIFRX_ReceiveControlFlow(SPDIFRX_HandleTypeDef *hspdif, 
   }
 }
 /**
-* @brief Receive an amount of data (Data Flow) in non-blocking mode with Interrupt
-* @param hspdif: SPDIFRX handle
-* @param pData: a 32-bit pointer to the Receive data buffer.
-* @param Size: number of data sample to be received .
-* @retval HAL status
-*/
+  * @brief Receive an amount of data (Data Flow) in non-blocking mode with Interrupt
+  * @param hspdif: SPDIFRX handle
+  * @param pData: a 32-bit pointer to the Receive data buffer.
+  * @param Size: number of data sample to be received .
+  * @retval HAL status
+  */
 HAL_StatusTypeDef HAL_SPDIFRX_ReceiveDataFlow_IT(SPDIFRX_HandleTypeDef *hspdif, uint32_t *pData, uint16_t Size)
 {
-  if((hspdif->State == HAL_SPDIFRX_STATE_READY) || (hspdif->State == HAL_SPDIFRX_STATE_BUSY_CX))
+ if((hspdif->State == HAL_SPDIFRX_STATE_READY) || (hspdif->State == HAL_SPDIFRX_STATE_BUSY_CX))
   {
     if((pData == NULL) || (Size == 0)) 
     {
@@ -515,7 +573,7 @@ HAL_StatusTypeDef HAL_SPDIFRX_ReceiveDataFlow_IT(SPDIFRX_HandleTypeDef *hspdif, 
     /* Check if a receive process is ongoing or not */
      hspdif->State = HAL_SPDIFRX_STATE_BUSY_RX;
 
-		
+        
     /* Enable the SPDIFRX  PE Error Interrupt */
     __HAL_SPDIFRX_ENABLE_IT(hspdif, SPDIFRX_IT_PERRIE);
 
@@ -527,20 +585,22 @@ HAL_StatusTypeDef HAL_SPDIFRX_ReceiveDataFlow_IT(SPDIFRX_HandleTypeDef *hspdif, 
 
     /* Enable the SPDIFRX RXNE interrupt */
     __HAL_SPDIFRX_ENABLE_IT(hspdif, SPDIFRX_IT_RXNE);
- 
-    if ((SPDIFRX->CR & SPDIFRX_CR_SPDIFEN) != SPDIFRX_STATE_SYNC || (SPDIFRX->CR & SPDIFRX_CR_SPDIFEN) != 0x00) 
-    {
-      /* Start syncronization */
-      __HAL_SPDIFRX_SYNC(hspdif);
-      
-      /* Wait until SYNCD flag is set */
+        
+        if ((SPDIFRX->CR & SPDIFRX_CR_SPDIFEN) != SPDIFRX_STATE_SYNC || (SPDIFRX->CR & SPDIFRX_CR_SPDIFEN) != 0x00) 
+        {
+        /* Start synchronization */
+        __HAL_SPDIFRX_SYNC(hspdif);
+        
+        /* Wait until SYNCD flag is set */
       if(SPDIFRX_WaitOnFlagUntilTimeout(hspdif, SPDIFRX_FLAG_SYNCD, RESET, SPDIFRX_TIMEOUT_VALUE) != HAL_OK)
       { 
         return HAL_TIMEOUT;
       }  
-      /* Start reception */	
+            
+        /* Start reception */    
       __HAL_SPDIFRX_RCV(hspdif);
-    }
+        }
+
     return HAL_OK;
   }
   else
@@ -550,12 +610,12 @@ HAL_StatusTypeDef HAL_SPDIFRX_ReceiveDataFlow_IT(SPDIFRX_HandleTypeDef *hspdif, 
 }
 
 /**
-* @brief Receive an amount of data (Control Flow) with Interrupt
-* @param hspdif: SPDIFRX handle
-* @param pData: a 32-bit pointer to the Receive data buffer.
-* @param Size: number of data sample (Control Flow) to be received :
-* @retval HAL status
-*/
+  * @brief Receive an amount of data (Control Flow) with Interrupt
+  * @param hspdif: SPDIFRX handle
+  * @param pData: a 32-bit pointer to the Receive data buffer.
+  * @param Size: number of data sample (Control Flow) to be received :
+  * @retval HAL status
+  */
 HAL_StatusTypeDef HAL_SPDIFRX_ReceiveControlFlow_IT(SPDIFRX_HandleTypeDef *hspdif, uint32_t *pData, uint16_t Size)
 {
  if((hspdif->State == HAL_SPDIFRX_STATE_READY) || (hspdif->State == HAL_SPDIFRX_STATE_BUSY_RX))
@@ -589,20 +649,22 @@ HAL_StatusTypeDef HAL_SPDIFRX_ReceiveControlFlow_IT(SPDIFRX_HandleTypeDef *hspdi
 
     /* Enable the SPDIFRX CSRNE interrupt */
     __HAL_SPDIFRX_ENABLE_IT(hspdif, SPDIFRX_IT_CSRNE);
-
-    if ((SPDIFRX->CR & SPDIFRX_CR_SPDIFEN) != SPDIFRX_STATE_SYNC || (SPDIFRX->CR & SPDIFRX_CR_SPDIFEN) != 0x00) 
-    {
-      /* Start syncronization */
-      __HAL_SPDIFRX_SYNC(hspdif);
-
-      /* Wait until SYNCD flag is set */
+        
+        if ((SPDIFRX->CR & SPDIFRX_CR_SPDIFEN) != SPDIFRX_STATE_SYNC || (SPDIFRX->CR & SPDIFRX_CR_SPDIFEN) != 0x00) 
+        {
+        /* Start synchronization */
+        __HAL_SPDIFRX_SYNC(hspdif);
+        
+        /* Wait until SYNCD flag is set */
       if(SPDIFRX_WaitOnFlagUntilTimeout(hspdif, SPDIFRX_FLAG_SYNCD, RESET, SPDIFRX_TIMEOUT_VALUE) != HAL_OK)
       { 
         return HAL_TIMEOUT;
-      }
-      /* Start reception */	
+      }  
+                        
+        /* Start reception */    
       __HAL_SPDIFRX_RCV(hspdif);
-    }
+      }
+        
     return HAL_OK;
   }
   else
@@ -612,12 +674,12 @@ HAL_StatusTypeDef HAL_SPDIFRX_ReceiveControlFlow_IT(SPDIFRX_HandleTypeDef *hspdi
 }
 
 /**
-* @brief Receive an amount of data (Data Flow) mode with DMA 
-* @param hspdif: SPDIFRX handle
-* @param pData: a 32-bit pointer to the Receive data buffer.
-* @param Size: number of data sample to be received :
-* @retval HAL status
-*/
+  * @brief Receive an amount of data (Data Flow) mode with DMA 
+  * @param hspdif: SPDIFRX handle
+  * @param pData: a 32-bit pointer to the Receive data buffer.
+  * @param Size: number of data sample to be received :
+  * @retval HAL status
+  */
 HAL_StatusTypeDef HAL_SPDIFRX_ReceiveDataFlow_DMA(SPDIFRX_HandleTypeDef *hspdif, uint32_t *pData, uint16_t Size)
 {
   
@@ -638,10 +700,10 @@ HAL_StatusTypeDef HAL_SPDIFRX_ReceiveDataFlow_DMA(SPDIFRX_HandleTypeDef *hspdif,
     hspdif->ErrorCode = HAL_SPDIFRX_ERROR_NONE;
     hspdif->State = HAL_SPDIFRX_STATE_BUSY_RX;
     
-    /* Set the SPDIFRX Rx DMA Half transfert complete callback */
+    /* Set the SPDIFRX Rx DMA Half transfer complete callback */
     hspdif->hdmaDrRx->XferHalfCpltCallback = SPDIFRX_DMARxHalfCplt;
     
-    /* Set the SPDIFRX Rx DMA transfert complete callback */
+    /* Set the SPDIFRX Rx DMA transfer complete callback */
     hspdif->hdmaDrRx->XferCpltCallback = SPDIFRX_DMARxCplt;
     
     /* Set the DMA error callback */
@@ -652,21 +714,21 @@ HAL_StatusTypeDef HAL_SPDIFRX_ReceiveDataFlow_DMA(SPDIFRX_HandleTypeDef *hspdif,
 
     /* Enable RXDMAEN bit in SPDIFRX CR register for data flow reception*/
      hspdif->Instance->CR |= SPDIFRX_CR_RXDMAEN;
-		 	
-		if ((SPDIFRX->CR & SPDIFRX_CR_SPDIFEN) != SPDIFRX_STATE_SYNC || (SPDIFRX->CR & SPDIFRX_CR_SPDIFEN) != 0x00) 
-		{
-		/* Start syncronization */
-		__HAL_SPDIFRX_SYNC(hspdif);
-		
-		/* Wait until SYNCD flag is set */
+             
+        if ((SPDIFRX->CR & SPDIFRX_CR_SPDIFEN) != SPDIFRX_STATE_SYNC || (SPDIFRX->CR & SPDIFRX_CR_SPDIFEN) != 0x00) 
+        {
+        /* Start synchronization */
+        __HAL_SPDIFRX_SYNC(hspdif);
+        
+        /* Wait until SYNCD flag is set */
       if(SPDIFRX_WaitOnFlagUntilTimeout(hspdif, SPDIFRX_FLAG_SYNCD, RESET, SPDIFRX_TIMEOUT_VALUE) != HAL_OK)
       { 
         return HAL_TIMEOUT;
       }  
-			
-		/* Start reception */	
-	  __HAL_SPDIFRX_RCV(hspdif);
-		}
+            
+        /* Start reception */    
+      __HAL_SPDIFRX_RCV(hspdif);
+        }
     
     /* Process Unlocked */
     __HAL_UNLOCK(hspdif);
@@ -680,15 +742,14 @@ HAL_StatusTypeDef HAL_SPDIFRX_ReceiveDataFlow_DMA(SPDIFRX_HandleTypeDef *hspdif,
 }
 
 /**
-* @brief Receive an amount of data (Control Flow) with DMA 
-* @param hspdif: SPDIFRX handle
-* @param pData: a 32-bit pointer to the Receive data buffer.
-* @param Size: number of data (Control Flow) sample to be received :
-* @retval HAL status
-*/
+  * @brief Receive an amount of data (Control Flow) with DMA 
+  * @param hspdif: SPDIFRX handle
+  * @param pData: a 32-bit pointer to the Receive data buffer.
+  * @param Size: number of data (Control Flow) sample to be received :
+  * @retval HAL status
+  */
 HAL_StatusTypeDef HAL_SPDIFRX_ReceiveControlFlow_DMA(SPDIFRX_HandleTypeDef *hspdif, uint32_t *pData, uint16_t Size)
 {
-  
   if((pData == NULL) || (Size == 0)) 
   {
     return  HAL_ERROR;                                    
@@ -706,10 +767,10 @@ HAL_StatusTypeDef HAL_SPDIFRX_ReceiveControlFlow_DMA(SPDIFRX_HandleTypeDef *hspd
     hspdif->ErrorCode = HAL_SPDIFRX_ERROR_NONE;
     hspdif->State = HAL_SPDIFRX_STATE_BUSY_CX;
     
-    /* Set the SPDIFRX Rx DMA Half transfert complete callback */
+    /* Set the SPDIFRX Rx DMA Half transfer complete callback */
     hspdif->hdmaCsRx->XferHalfCpltCallback = SPDIFRX_DMACxHalfCplt;
     
-    /* Set the SPDIFRX Rx DMA transfert complete callback */
+    /* Set the SPDIFRX Rx DMA transfer complete callback */
     hspdif->hdmaCsRx->XferCpltCallback = SPDIFRX_DMACxCplt;
     
     /* Set the DMA error callback */
@@ -721,21 +782,21 @@ HAL_StatusTypeDef HAL_SPDIFRX_ReceiveControlFlow_DMA(SPDIFRX_HandleTypeDef *hspd
     /* Enable CBDMAEN bit in SPDIFRX CR register for control flow reception*/
     hspdif->Instance->CR |= SPDIFRX_CR_CBDMAEN;
     
-		if ((SPDIFRX->CR & SPDIFRX_CR_SPDIFEN) != SPDIFRX_STATE_SYNC || (SPDIFRX->CR & SPDIFRX_CR_SPDIFEN) != 0x00) 
-		{
-		/* Start syncronization */
-		__HAL_SPDIFRX_SYNC(hspdif);
-		
-		/* Wait until SYNCD flag is set */
+        if ((SPDIFRX->CR & SPDIFRX_CR_SPDIFEN) != SPDIFRX_STATE_SYNC || (SPDIFRX->CR & SPDIFRX_CR_SPDIFEN) != 0x00) 
+        {
+        /* Start synchronization */
+        __HAL_SPDIFRX_SYNC(hspdif);
+        
+        /* Wait until SYNCD flag is set */
       if(SPDIFRX_WaitOnFlagUntilTimeout(hspdif, SPDIFRX_FLAG_SYNCD, RESET, SPDIFRX_TIMEOUT_VALUE) != HAL_OK)
       { 
         return HAL_TIMEOUT;
       }  
-			
-		/* Start reception */	
-	  __HAL_SPDIFRX_RCV(hspdif);
-		}
-		
+            
+        /* Start reception */    
+      __HAL_SPDIFRX_RCV(hspdif);
+        }
+        
     /* Process Unlocked */
     __HAL_UNLOCK(hspdif);
     
@@ -748,10 +809,10 @@ HAL_StatusTypeDef HAL_SPDIFRX_ReceiveControlFlow_DMA(SPDIFRX_HandleTypeDef *hspd
 }
 
 /**
-* @brief stop the audio stream receive from the Media.
-* @param hspdif: SPDIFRX handle
-* @retval None
-*/
+  * @brief stop the audio stream receive from the Media.
+  * @param hspdif: SPDIFRX handle
+  * @retval None
+  */
 HAL_StatusTypeDef HAL_SPDIFRX_DMAStop(SPDIFRX_HandleTypeDef *hspdif)
 {
   /* Process Locked */
@@ -777,57 +838,57 @@ HAL_StatusTypeDef HAL_SPDIFRX_DMAStop(SPDIFRX_HandleTypeDef *hspdif)
 }
 
 /**
-* @brief  This function handles SPDIFRX interrupt request.
-* @param  hspdif: SPDIFRX handle
-* @retval HAL status
-*/
+  * @brief  This function handles SPDIFRX interrupt request.
+  * @param  hspdif: SPDIFRX handle
+  * @retval HAL status
+  */
 void HAL_SPDIFRX_IRQHandler(SPDIFRX_HandleTypeDef *hspdif)
 {  
   /* SPDIFRX in mode Data Flow Reception ------------------------------------------------*/
   if((__HAL_SPDIFRX_GET_FLAG(hspdif, SPDIFRX_FLAG_RXNE) != RESET) && (__HAL_SPDIFRX_GET_IT_SOURCE(hspdif, SPDIFRX_IT_RXNE) != RESET))
   {
-    __HAL_SPDIFRX_CLEAR_IT(hspdif, SPDIFRX_IT_RXNE);
+      __HAL_SPDIFRX_CLEAR_IT(hspdif, SPDIFRX_IT_RXNE);
     SPDIFRX_ReceiveDataFlow_IT(hspdif);
   }
   
    /* SPDIFRX in mode Control Flow Reception ------------------------------------------------*/
   if((__HAL_SPDIFRX_GET_FLAG(hspdif, SPDIFRX_FLAG_CSRNE) != RESET) && (__HAL_SPDIFRX_GET_IT_SOURCE(hspdif, SPDIFRX_IT_CSRNE) != RESET))
   {
-    __HAL_SPDIFRX_CLEAR_IT(hspdif, SPDIFRX_IT_CSRNE);
+        __HAL_SPDIFRX_CLEAR_IT(hspdif, SPDIFRX_IT_CSRNE);
     SPDIFRX_ReceiveControlFlow_IT(hspdif);
   }
-  
-  /* SPDIFRX Overrun error interrupt occured ---------------------------------*/
+    
+  /* SPDIFRX Overrun error interrupt occurred ---------------------------------*/
   if((__HAL_SPDIFRX_GET_FLAG(hspdif, SPDIFRX_FLAG_OVR) != RESET) && (__HAL_SPDIFRX_GET_IT_SOURCE(hspdif, SPDIFRX_IT_OVRIE) != RESET))
   {
     __HAL_SPDIFRX_CLEAR_IT(hspdif, SPDIFRX_FLAG_OVR);
     
-    /* Change the SPDIFRX error code */
+        /* Change the SPDIFRX error code */
     hspdif->ErrorCode |= HAL_SPDIFRX_ERROR_OVR;
     
-    /* the transfer is not stopped */
+        /* the transfer is not stopped */
     HAL_SPDIFRX_ErrorCallback(hspdif);
   } 
-
-   /* SPDIFRX Parity error interrupt occured ---------------------------------*/
+    
+      /* SPDIFRX Parity error interrupt occurred ---------------------------------*/
   if((__HAL_SPDIFRX_GET_FLAG(hspdif, SPDIFRX_FLAG_PERR) != RESET) && (__HAL_SPDIFRX_GET_IT_SOURCE(hspdif, SPDIFRX_IT_PERRIE) != RESET))
   {
     __HAL_SPDIFRX_CLEAR_IT(hspdif, SPDIFRX_FLAG_PERR);
     
-    /* Change the SPDIFRX error code */
+        /* Change the SPDIFRX error code */
     hspdif->ErrorCode |= HAL_SPDIFRX_ERROR_PE;
-    
-    /* the transfer is not stopped */
+        
+        /* the transfer is not stopped */
     HAL_SPDIFRX_ErrorCallback(hspdif);
   } 
   
 }
 
 /**
-* @brief Rx Transfer (Data flow) half completed callbacks
-* @param hspdif: SPDIFRX handle
-* @retval None
-*/
+  * @brief Rx Transfer (Data flow) half completed callbacks
+  * @param hspdif: SPDIFRX handle
+  * @retval None
+  */
 __weak void HAL_SPDIFRX_RxHalfCpltCallback(SPDIFRX_HandleTypeDef *hspdif)
 {
   /* NOTE : This function Should not be modified, when the callback is needed,
@@ -836,10 +897,10 @@ __weak void HAL_SPDIFRX_RxHalfCpltCallback(SPDIFRX_HandleTypeDef *hspdif)
 }
 
 /**
-* @brief Rx Transfer (Data flow) completed callbacks
-* @param hspdif: SPDIFRX handle
-* @retval None
-*/
+  * @brief Rx Transfer (Data flow) completed callbacks
+  * @param hspdif: SPDIFRX handle
+  * @retval None
+  */
 __weak void HAL_SPDIFRX_RxCpltCallback(SPDIFRX_HandleTypeDef *hspdif)
 {
   /* NOTE : This function Should not be modified, when the callback is needed,
@@ -848,10 +909,10 @@ __weak void HAL_SPDIFRX_RxCpltCallback(SPDIFRX_HandleTypeDef *hspdif)
 }
 
 /**
-* @brief Rx (Control flow) Transfer half completed callbacks
-* @param hspdif: SPDIFRX handle
-* @retval None
-*/
+  * @brief Rx (Control flow) Transfer half completed callbacks
+  * @param hspdif: SPDIFRX handle
+  * @retval None
+  */
 __weak void HAL_SPDIFRX_CxHalfCpltCallback(SPDIFRX_HandleTypeDef *hspdif)
 {
   /* NOTE : This function Should not be modified, when the callback is needed,
@@ -860,10 +921,10 @@ __weak void HAL_SPDIFRX_CxHalfCpltCallback(SPDIFRX_HandleTypeDef *hspdif)
 }
 
 /**
-* @brief Rx Transfer (Control flow) completed callbacks
-* @param hspdif: SPDIFRX handle
-* @retval None
-*/
+  * @brief Rx Transfer (Control flow) completed callbacks
+  * @param hspdif: SPDIFRX handle
+  * @retval None
+  */
 __weak void HAL_SPDIFRX_CxCpltCallback(SPDIFRX_HandleTypeDef *hspdif)
 {
   /* NOTE : This function Should not be modified, when the callback is needed,
@@ -872,10 +933,10 @@ __weak void HAL_SPDIFRX_CxCpltCallback(SPDIFRX_HandleTypeDef *hspdif)
 }
 
 /**
-* @brief SPDIFRX error callbacks
-* @param hspdif: SPDIFRX handle
-* @retval None
-*/
+  * @brief SPDIFRX error callbacks
+  * @param hspdif: SPDIFRX handle
+  * @retval None
+  */
 __weak void HAL_SPDIFRX_ErrorCallback(SPDIFRX_HandleTypeDef *hspdif)
 {
   /* NOTE : This function Should not be modified, when the callback is needed,
@@ -884,12 +945,12 @@ __weak void HAL_SPDIFRX_ErrorCallback(SPDIFRX_HandleTypeDef *hspdif)
 }
 
 /**
-* @}
-*/
+  * @}
+  */
 
-/** @defgroup SPDIFRX_Group3 Peripheral State and Errors functions 
-*  @brief   Peripheral State functions 
-*
+/** @defgroup SPDIFRX_Exported_Functions_Group3 Peripheral State and Errors functions 
+  *  @brief   Peripheral State functions 
+  *
 @verbatim   
 ===============================================================================
 ##### Peripheral State and Errors functions #####
@@ -899,38 +960,38 @@ This subsection permit to get in run-time the status of the peripheral
 and the data flow.
 
 @endverbatim
-* @{
-*/
+  * @{
+  */
 
 /**
-* @brief  Return the SPDIFRX state
-* @param  hspdif : SPDIFRX handle
-* @retval HAL state
-*/
+  * @brief  Return the SPDIFRX state
+  * @param  hspdif : SPDIFRX handle
+  * @retval HAL state
+  */
 HAL_SPDIFRX_StateTypeDef HAL_SPDIFRX_GetState(SPDIFRX_HandleTypeDef *hspdif)
 {
   return hspdif->State;
 }
 
 /**
-* @brief  Return the SPDIFRX error code
-* @param  hspdif : SPDIFRX handle
-* @retval SPDIFRX Error Code
-*/
-HAL_SPDIFRX_ErrorTypeDef HAL_SPDIFRX_GetError(SPDIFRX_HandleTypeDef *hspdif)
+  * @brief  Return the SPDIFRX error code
+  * @param  hspdif : SPDIFRX handle
+  * @retval SPDIFRX Error Code
+  */
+uint32_t HAL_SPDIFRX_GetError(SPDIFRX_HandleTypeDef *hspdif)
 {
   return hspdif->ErrorCode;
 }
 
 /**
-* @}
-*/  
+  * @}
+  */  
 
 /**
-* @brief DMA SPDIFRX receive process (Data flow) complete callback 
-* @param hdma : DMA handle
-* @retval None
-*/
+  * @brief DMA SPDIFRX receive process (Data flow) complete callback 
+  * @param hdma : DMA handle
+  * @retval None
+  */
 static void SPDIFRX_DMARxCplt(DMA_HandleTypeDef *hdma)
 {
   SPDIFRX_HandleTypeDef* hspdif = ( SPDIFRX_HandleTypeDef* )((DMA_HandleTypeDef* )hdma)->Parent;
@@ -944,10 +1005,10 @@ static void SPDIFRX_DMARxCplt(DMA_HandleTypeDef *hdma)
 }
 
 /**
-* @brief DMA SPDIFRX receive process (Data flow) half complete callback 
-* @param hdma : DMA handle
-* @retval None
-*/
+  * @brief DMA SPDIFRX receive process (Data flow) half complete callback 
+  * @param hdma : DMA handle
+  * @retval None
+  */
 static void SPDIFRX_DMARxHalfCplt(DMA_HandleTypeDef *hdma)
 {
   SPDIFRX_HandleTypeDef* hspdif = (SPDIFRX_HandleTypeDef*)((DMA_HandleTypeDef*)hdma)->Parent;
@@ -957,10 +1018,10 @@ static void SPDIFRX_DMARxHalfCplt(DMA_HandleTypeDef *hdma)
 
 
 /**
-* @brief DMA SPDIFRX receive process (Control flow) complete callback 
-* @param hdma : DMA handle
-* @retval None
-*/
+  * @brief DMA SPDIFRX receive process (Control flow) complete callback 
+  * @param hdma : DMA handle
+  * @retval None
+  */
 static void SPDIFRX_DMACxCplt(DMA_HandleTypeDef *hdma)
 {
   SPDIFRX_HandleTypeDef* hspdif = ( SPDIFRX_HandleTypeDef* )((DMA_HandleTypeDef* )hdma)->Parent;
@@ -974,10 +1035,10 @@ static void SPDIFRX_DMACxCplt(DMA_HandleTypeDef *hdma)
 }
 
 /**
-* @brief DMA SPDIFRX receive process (Control flow) half complete callback 
-* @param hdma : DMA handle
-* @retval None
-*/
+  * @brief DMA SPDIFRX receive process (Control flow) half complete callback 
+  * @param hdma : DMA handle
+  * @retval None
+  */
 static void SPDIFRX_DMACxHalfCplt(DMA_HandleTypeDef *hdma)
 {
   SPDIFRX_HandleTypeDef* hspdif = (SPDIFRX_HandleTypeDef*)((DMA_HandleTypeDef*)hdma)->Parent;
@@ -986,10 +1047,10 @@ static void SPDIFRX_DMACxHalfCplt(DMA_HandleTypeDef *hdma)
 }
 
 /**
-* @brief DMA SPDIFRX communication error callback 
-* @param hdma : DMA handle
-* @retval None
-*/
+  * @brief DMA SPDIFRX communication error callback 
+  * @param hdma : DMA handle
+  * @retval None
+  */
 static void SPDIFRX_DMAError(DMA_HandleTypeDef *hdma)
 {
   SPDIFRX_HandleTypeDef* hspdif = ( SPDIFRX_HandleTypeDef* )((DMA_HandleTypeDef* )hdma)->Parent;
@@ -1007,10 +1068,10 @@ static void SPDIFRX_DMAError(DMA_HandleTypeDef *hdma)
 
 
 /**
-* @brief Receive an amount of data (Data Flow) with Interrupt
-* @param hspdif: SPDIFRX handle
+  * @brief Receive an amount of data (Data Flow) with Interrupt
+  * @param hspdif: SPDIFRX handle
   * @retval None
-*/
+  */
 static void SPDIFRX_ReceiveDataFlow_IT(SPDIFRX_HandleTypeDef *hspdif)
 {
     /* Receive data */
@@ -1018,7 +1079,7 @@ static void SPDIFRX_ReceiveDataFlow_IT(SPDIFRX_HandleTypeDef *hspdif)
     hspdif->RxXferCount--;
 
     if(hspdif->RxXferCount == 0)
-    {			
+    {            
       /* Disable RXNE/PE and OVR interrupts */
       __HAL_SPDIFRX_DISABLE_IT(hspdif, SPDIFRX_IT_OVRIE | SPDIFRX_IT_PERRIE | SPDIFRX_IT_RXNE);
 
@@ -1032,10 +1093,10 @@ static void SPDIFRX_ReceiveDataFlow_IT(SPDIFRX_HandleTypeDef *hspdif)
 }
 
 /**
-* @brief Receive an amount of data (Control Flow) with Interrupt
-* @param hspdif: SPDIFRX handle
+  * @brief Receive an amount of data (Control Flow) with Interrupt
+  * @param hspdif: SPDIFRX handle
   * @retval None
-*/
+  */
 static void SPDIFRX_ReceiveControlFlow_IT(SPDIFRX_HandleTypeDef *hspdif)
 {
     /* Receive data */
@@ -1043,7 +1104,7 @@ static void SPDIFRX_ReceiveControlFlow_IT(SPDIFRX_HandleTypeDef *hspdif)
     hspdif->CsXferCount--;
 
     if(hspdif->CsXferCount == 0)
-    {		
+    {        
       /* Disable CSRNE interrupt */
       __HAL_SPDIFRX_DISABLE_IT(hspdif, SPDIFRX_IT_CSRNE);
 
@@ -1057,13 +1118,13 @@ static void SPDIFRX_ReceiveControlFlow_IT(SPDIFRX_HandleTypeDef *hspdif)
 }
 
 /**
-* @brief This function handles SPDIFRX Communication Timeout.
-* @param hspdif: SPDIFRX handle
-* @param Flag: Flag checked
-* @param State: Value of the flag expected
-* @param Timeout: Duration of the timeout
-* @retval HAL status
-*/
+  * @brief This function handles SPDIFRX Communication Timeout.
+  * @param hspdif: SPDIFRX handle
+  * @param Flag: Flag checked
+  * @param Status: Value of the flag expected
+  * @param Timeout: Duration of the timeout
+  * @retval HAL status
+  */
 static HAL_StatusTypeDef SPDIFRX_WaitOnFlagUntilTimeout(SPDIFRX_HandleTypeDef *hspdif, uint32_t Flag, FlagStatus Status, uint32_t Timeout)
 {
   uint32_t tickstart = 0;
@@ -1114,7 +1175,7 @@ static HAL_StatusTypeDef SPDIFRX_WaitOnFlagUntilTimeout(SPDIFRX_HandleTypeDef *h
           __HAL_SPDIFRX_DISABLE_IT(hspdif, SPDIFRX_IT_CSRNE);
           __HAL_SPDIFRX_DISABLE_IT(hspdif, SPDIFRX_IT_PERRIE);
           __HAL_SPDIFRX_DISABLE_IT(hspdif, SPDIFRX_IT_OVRIE);
-          __HAL_SPDIFRX_DISABLE_IT(hspdif, SPDIFRX_IT_SBLKIE);
+                    __HAL_SPDIFRX_DISABLE_IT(hspdif, SPDIFRX_IT_SBLKIE);
           __HAL_SPDIFRX_DISABLE_IT(hspdif, SPDIFRX_IT_SYNCDIE);
           __HAL_SPDIFRX_DISABLE_IT(hspdif, SPDIFRX_IT_IFEIE);
 
@@ -1132,9 +1193,8 @@ static HAL_StatusTypeDef SPDIFRX_WaitOnFlagUntilTimeout(SPDIFRX_HandleTypeDef *h
 }
 
 /**
-* @}
-*/
-
+  * @}
+  */
 #endif /* STM32F446xx */
 
 #endif /* HAL_SPDIFRX_MODULE_ENABLED */
@@ -1147,3 +1207,4 @@ static HAL_StatusTypeDef SPDIFRX_WaitOnFlagUntilTimeout(SPDIFRX_HandleTypeDef *h
   */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+

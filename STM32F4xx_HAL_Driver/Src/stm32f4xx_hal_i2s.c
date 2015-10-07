@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_i2s.c
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   I2S HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Integrated Interchip Sound (I2S) peripheral:
@@ -109,7 +109,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -158,6 +158,7 @@
 /** @addtogroup I2S_Private_Functions
   * @{
   */
+
 /**
   * @}
   */
@@ -225,6 +226,8 @@ __weak HAL_StatusTypeDef HAL_I2S_Init(I2S_HandleTypeDef *hi2s)
   
   if(hi2s->State == HAL_I2S_STATE_RESET)
   {
+    /* Allocate lock resource and initialize it */
+    hi2s->Lock = HAL_UNLOCKED;
     /* Init the low level hardware : GPIO, CLOCK, CORTEX...etc */
     HAL_I2S_MspInit(hi2s);
   }
@@ -296,8 +299,21 @@ __weak HAL_StatusTypeDef HAL_I2S_Init(I2S_HandleTypeDef *hi2s)
   /* Configure the I2S with the I2S_InitStruct values */
   tmpreg |= (uint32_t)(SPI_I2SCFGR_I2SMOD | hi2s->Init.Mode | hi2s->Init.Standard | hi2s->Init.DataFormat | hi2s->Init.CPOL);
   
+#if defined(SPI_I2SCFGR_ASTRTEN)
+  if (hi2s->Init.Standard == I2S_STANDARD_PCM_SHORT) 
+  {
+  /* Write to SPIx I2SCFGR */  
+  hi2s->Instance->I2SCFGR = tmpreg | SPI_I2SCFGR_ASTRTEN;
+  }
+  else
+  {
+  /* Write to SPIx I2SCFGR */  
+  hi2s->Instance->I2SCFGR = tmpreg;    
+  }
+#else
   /* Write to SPIx I2SCFGR */  
   hi2s->Instance->I2SCFGR = tmpreg;
+#endif
   
   hi2s->ErrorCode = HAL_I2S_ERROR_NONE;
   hi2s->State= HAL_I2S_STATE_READY;
@@ -1015,7 +1031,7 @@ __weak HAL_StatusTypeDef HAL_I2S_DMAStop(I2S_HandleTypeDef *hi2s)
   */
 __weak void HAL_I2S_IRQHandler(I2S_HandleTypeDef *hi2s)
 {  
-  uint32_t tmp1 = 0, tmp2 = 0;    
+  uint32_t tmp1 = 0, tmp2 = 0; 
 
     if(hi2s->State == HAL_I2S_STATE_BUSY_RX)
     {
@@ -1065,6 +1081,7 @@ __weak void HAL_I2S_IRQHandler(I2S_HandleTypeDef *hi2s)
     HAL_I2S_ErrorCallback(hi2s);
   }
 }
+
 /**
   * @brief Tx Transfer Half completed callbacks
   * @param  hi2s: pointer to a I2S_HandleTypeDef structure that contains
@@ -1172,7 +1189,6 @@ uint32_t HAL_I2S_GetError(I2S_HandleTypeDef *hi2s)
 /**
   * @}
   */
-
 
 /**
   * @brief DMA I2S transmit process half complete callback 

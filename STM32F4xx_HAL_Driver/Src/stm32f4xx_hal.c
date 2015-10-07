@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal.c
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   HAL module driver.
   *          This is the common part of the HAL initialization
   *
@@ -23,7 +23,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -68,10 +68,10 @@
   * @{
   */
 /**
-  * @brief STM32F4xx HAL Driver version number V1.2.0RC3
+  * @brief STM32F4xx HAL Driver version number V1.4.0RC3
   */
 #define __STM32F4xx_HAL_VERSION_MAIN   (0x01) /*!< [31:24] main version */
-#define __STM32F4xx_HAL_VERSION_SUB1   (0x02) /*!< [23:16] sub1 version */
+#define __STM32F4xx_HAL_VERSION_SUB1   (0x04) /*!< [23:16] sub1 version */
 #define __STM32F4xx_HAL_VERSION_SUB2   (0x00) /*!< [15:8]  sub2 version */
 #define __STM32F4xx_HAL_VERSION_RC     (0x03) /*!< [7:0]  release candidate */ 
 #define __STM32F4xx_HAL_VERSION         ((__STM32F4xx_HAL_VERSION_MAIN << 24)\
@@ -87,13 +87,13 @@
 /* Alias word address of UFB_MODE bit */ 
 #define MEMRMP_OFFSET             SYSCFG_OFFSET 
 #define UFB_MODE_BIT_NUMBER       POSITION_VAL(SYSCFG_MEMRMP_UFB_MODE)
-#define UFB_MODE_BB               (PERIPH_BB_BASE + (MEMRMP_OFFSET * 32) + (UFB_MODE_BIT_NUMBER * 4)) 
+#define UFB_MODE_BB               (uint32_t)(PERIPH_BB_BASE + (MEMRMP_OFFSET * 32) + (UFB_MODE_BIT_NUMBER * 4)) 
 
 /* ---  CMPCR Register ---*/ 
 /* Alias word address of CMP_PD bit */ 
 #define CMPCR_OFFSET              (SYSCFG_OFFSET + 0x20) 
 #define CMP_PD_BIT_NUMBER         POSITION_VAL(SYSCFG_CMPCR_CMP_PD)
-#define CMPCR_CMP_PD_BB           (PERIPH_BB_BASE + (CMPCR_OFFSET * 32) + (CMP_PD_BIT_NUMBER * 4))
+#define CMPCR_CMP_PD_BB           (uint32_t)(PERIPH_BB_BASE + (CMPCR_OFFSET * 32) + (CMP_PD_BIT_NUMBER * 4))
 /**
   * @}
   */
@@ -407,7 +407,7 @@ uint32_t HAL_GetDEVID(void)
   * @brief  Enable the Debug Module during SLEEP mode
   * @retval None
   */
-void HAL_EnableDBGSleepMode(void)
+void HAL_DBGMCU_EnableDBGSleepMode(void)
 {
   SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_SLEEP);
 }
@@ -416,7 +416,7 @@ void HAL_EnableDBGSleepMode(void)
   * @brief  Disable the Debug Module during SLEEP mode
   * @retval None
   */
-void HAL_DisableDBGSleepMode(void)
+void HAL_DBGMCU_DisableDBGSleepMode(void)
 {
   CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_SLEEP);
 }
@@ -425,7 +425,7 @@ void HAL_DisableDBGSleepMode(void)
   * @brief  Enable the Debug Module during STOP mode
   * @retval None
   */
-void HAL_EnableDBGStopMode(void)
+void HAL_DBGMCU_EnableDBGStopMode(void)
 {
   SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_STOP);
 }
@@ -434,7 +434,7 @@ void HAL_EnableDBGStopMode(void)
   * @brief  Disable the Debug Module during STOP mode
   * @retval None
   */
-void HAL_DisableDBGStopMode(void)
+void HAL_DBGMCU_DisableDBGStopMode(void)
 {
   CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_STOP);
 }
@@ -443,7 +443,7 @@ void HAL_DisableDBGStopMode(void)
   * @brief  Enable the Debug Module during STANDBY mode
   * @retval None
   */
-void HAL_EnableDBGStandbyMode(void)
+void HAL_DBGMCU_EnableDBGStandbyMode(void)
 {
   SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_STANDBY);
 }
@@ -452,7 +452,7 @@ void HAL_EnableDBGStandbyMode(void)
   * @brief  Disable the Debug Module during STANDBY mode
   * @retval None
   */
-void HAL_DisableDBGStandbyMode(void)
+void HAL_DBGMCU_DisableDBGStandbyMode(void)
 {
   CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_STANDBY);
 }
@@ -479,7 +479,8 @@ void HAL_DisableCompensationCell(void)
   *(__IO uint32_t *)CMPCR_CMP_PD_BB = (uint32_t)DISABLE;
 }
 
-#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx)|| defined(STM32F439xx) || defined(STM32F469xx)
+#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx)|| defined(STM32F439xx) ||\
+    defined(STM32F469xx) || defined(STM32F479xx)
 /**
   * @brief  Enables the Internal FLASH Bank Swapping.
   *   
@@ -510,7 +511,7 @@ void HAL_DisableMemorySwappingBank(void)
 
   *(__IO uint32_t *)UFB_MODE_BB = (uint32_t)DISABLE;
 }
-#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F469xx */
+#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F469xx || STM32F479xx */
 
 /**
   * @}

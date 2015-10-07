@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_flash.c
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   FLASH HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the internal FLASH memory:
@@ -65,7 +65,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -315,7 +315,8 @@ void HAL_FLASH_IRQHandler(void)
          FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR| FLASH_FLAG_PGSERR);  
 
         /*Increment sector number*/
-        temp = ++pFlash.Sector;
+        pFlash.Sector++;
+        temp = pFlash.Sector;
         FLASH_Erase_Sector(temp, pFlash.VoltageForErase);
       }
       else
@@ -600,7 +601,7 @@ HAL_StatusTypeDef FLASH_WaitForLastOperation(uint32_t Timeout)
     return HAL_ERROR;
   }
 
-  /* If there is an error flag set */
+  /* If there is no error flag set */
   return HAL_OK;
   
 }  

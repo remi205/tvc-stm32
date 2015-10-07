@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_spi.h
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   Header file of SPI HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -399,7 +399,7 @@ typedef struct __SPI_HandleTypeDef
   __IO uint32_t tmpreg;                         \
   tmpreg = (__HANDLE__)->Instance->SR;          \
   UNUSED(tmpreg);                               \
-  }while(0)
+  }while(0) 
 
 /** @brief Enable SPI
   * @param __HANDLE__: specifies the SPI Handle.

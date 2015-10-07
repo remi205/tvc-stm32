@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_cryp_ex.h
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   Header file of CRYP HAL Extension module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -43,7 +43,7 @@
  extern "C" {
 #endif
 
-#if defined(STM32F437xx) || defined(STM32F439xx) || defined(STM32F469xx)
+#if defined(STM32F437xx) || defined(STM32F439xx) || defined(STM32F479xx)
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal_def.h"
 
@@ -98,12 +98,13 @@
 /**
   * @brief  Set the phase: Init, header, payload, final. 
   *         This is relevant only for GCM and CCM modes.
+  * @param  __HANDLE__: specifies the CRYP handle.
   * @param  __PHASE__: The phase.
   * @retval None
   */
-#define __HAL_CRYP_SET_PHASE(__PHASE__)  do{CRYP->CR &= (uint32_t)(~CRYP_CR_GCM_CCMPH);\
-                                            CRYP->CR |= (uint32_t)(__PHASE__);\
-                                           }while(0)
+#define __HAL_CRYP_SET_PHASE(__HANDLE__, __PHASE__)  do{(__HANDLE__)->Instance->CR &= (uint32_t)(~CRYP_CR_GCM_CCMPH);\
+                                                        (__HANDLE__)->Instance->CR |= (uint32_t)(__PHASE__);\
+                                                       }while(0)
 
 /**
   * @}
@@ -202,7 +203,7 @@ void HAL_CRYPEx_GCMCCM_IRQHandler(CRYP_HandleTypeDef *hcryp);
   * @}
   */
    
-#endif /* STM32F437xx || STM32F439xx || STM32F469xx */
+#endif /* STM32F437xx || STM32F439xx || STM32F479xx */
 /**
   * @}
   */ 

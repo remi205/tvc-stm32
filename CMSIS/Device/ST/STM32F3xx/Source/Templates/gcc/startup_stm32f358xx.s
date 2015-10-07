@@ -195,6 +195,10 @@ g_pfnVectors:
 	.word	USART3_IRQHandler
 	.word	EXTI15_10_IRQHandler
 	.word	RTC_Alarm_IRQHandler
+	.word	CEC_IRQHandler
+	.word	TIM12_IRQHandler
+	.word	TIM13_IRQHandler
+	.word	TIM14_IRQHandler
 	.word	0
 	.word	TIM8_BRK_IRQHandler
 	.word	TIM8_UP_IRQHandler
@@ -204,6 +208,7 @@ g_pfnVectors:
 	.word	0
 	.word	0
 	.word	0
+	.word	TIM5_IRQHandler
 	.word	SPI3_IRQHandler
 	.word	UART4_IRQHandler
 	.word	UART5_IRQHandler

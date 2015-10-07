@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_fmpi2c_ex.h
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   Header file of FMPI2C HAL Extension module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -43,10 +43,10 @@
  extern "C" {
 #endif
 
-#if defined(STM32F446xx)
+#if defined(STM32F446xx) || defined(STM32F412xG)
    
 /* Includes ------------------------------------------------------------------*/
-#include "stm32F4xx_hal_def.h"  
+#include "stm32f4xx_hal_def.h"  
 
 /** @addtogroup STM32F4xx_HAL_Driver
   * @{
@@ -58,27 +58,24 @@
 
 /* Exported types ------------------------------------------------------------*/ 
 /* Exported constants --------------------------------------------------------*/
-
-/** @defgroup FMPI2CEx_Exported_Constants FMPI2C Extended Exported Constants
+/** @defgroup FMPI2CEx_Exported_Constants FMPI2C Exported Constants
   * @{
   */
 
-/** @defgroup FMPI2CEx_Analog_Filter FMPI2C Extended Analog Filter
+/** @defgroup FMPI2CEx_Analog_Filter FMPI2C Analog Filter
   * @{
   */
 #define FMPI2C_ANALOGFILTER_ENABLE        ((uint32_t)0x00000000)
 #define FMPI2C_ANALOGFILTER_DISABLE       FMPI2C_CR1_ANFOFF
-
-#define IS_FMPI2C_ANALOG_FILTER(FILTER) (((FILTER) == FMPI2C_ANALOGFILTER_ENABLE) || \
-                                         ((FILTER) == FMPI2C_ANALOGFILTER_DISABLE))
 /**
   * @}
   */
 
-/** @defgroup FMPI2CEx_Digital_Filter FMPI2C Extended Digital_Filter
+/** @defgroup FMPI2CEx_FastModePlus FMPI2C Fast Mode Plus
   * @{
   */
-#define IS_FMPI2C_DIGITAL_FILTER(FILTER)   ((FILTER) <= 0x0000000F)
+#define FMPI2C_FASTMODEPLUS_SCL            SYSCFG_CFGR_FMPI2C1_SCL  /*!< Enable Fast Mode Plus on FMPI2C1 SCL pins       */
+#define FMPI2C_FASTMODEPLUS_SDA            SYSCFG_CFGR_FMPI2C1_SDA  /*!< Enable Fast Mode Plus on FMPI2C1 SDA pins       */
 /**
   * @}
   */
@@ -96,17 +93,42 @@
 /** @addtogroup FMPI2CEx_Exported_Functions_Group1
   * @{
   */
-
-/* Peripheral Control methods  ************************************************/
+/* Peripheral Control functions ************************************************/
 HAL_StatusTypeDef HAL_FMPI2CEx_AnalogFilter_Config(FMPI2C_HandleTypeDef *hFMPI2C, uint32_t AnalogFilter);
 HAL_StatusTypeDef HAL_FMPI2CEx_DigitalFilter_Config(FMPI2C_HandleTypeDef *hFMPI2C, uint32_t DigitalFilter);
 HAL_StatusTypeDef HAL_FMPI2CEx_EnableWakeUp (FMPI2C_HandleTypeDef *hFMPI2C);
 HAL_StatusTypeDef HAL_FMPI2CEx_DisableWakeUp (FMPI2C_HandleTypeDef *hFMPI2C);
+void HAL_FMPI2CEx_EnableFastModePlus(uint32_t ConfigFastModePlus);
+void HAL_FMPI2CEx_DisableFastModePlus(uint32_t ConfigFastModePlus);
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */ 
+/* Private types -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+/* Private constants ---------------------------------------------------------*/
+/** @defgroup I2CEx_Private_Constants I2C Private Constants
+  * @{
+  */
 
 /**
   * @}
   */
 
+/* Private macros ------------------------------------------------------------*/
+/** @defgroup I2CEx_Private_Macros I2C Private Macros
+  * @{
+  */
+#define IS_FMPI2C_ANALOG_FILTER(FILTER) (((FILTER) == FMPI2C_ANALOGFILTER_ENABLE) || \
+                                         ((FILTER) == FMPI2C_ANALOGFILTER_DISABLE))
+
+#define IS_FMPI2C_DIGITAL_FILTER(FILTER)   ((FILTER) <= 0x0000000F)
+
+#define IS_FMPI2C_FASTMODEPLUS(__CONFIG__) ((((__CONFIG__) & (FMPI2C_FASTMODEPLUS_SCL)) == FMPI2C_FASTMODEPLUS_SCL) || \
+                                          (((__CONFIG__) & (FMPI2C_FASTMODEPLUS_SDA)) == FMPI2C_FASTMODEPLUS_SDA))
 /**
   * @}
   */
@@ -118,7 +140,7 @@ HAL_StatusTypeDef HAL_FMPI2CEx_DisableWakeUp (FMPI2C_HandleTypeDef *hFMPI2C);
 /**
   * @}
   */
-#endif /* STM32F446xx */  
+#endif /* STM32F446xx || STM32F412xG */  
 #ifdef __cplusplus
 }
 #endif

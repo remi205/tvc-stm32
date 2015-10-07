@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_iwdg.h
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   Header file of IWDG HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -112,10 +112,10 @@ typedef struct
   */
 /* --- KR Register ---*/
 /* KR register bit mask */
-#define IWDG_KR_KEY_RELOAD           ((uint32_t)0xAAAA)  /*!< IWDG Reload Counter Enable   */
-#define IWDG_KR_KEY_ENABLE           ((uint32_t)0xCCCC)  /*!< IWDG Peripheral Enable       */
-#define IWDG_KR_KEY_EWA              ((uint32_t)0x5555)  /*!< IWDG KR Write Access Enable  */
-#define IWDG_KR_KEY_DWA              ((uint32_t)0x0000)  /*!< IWDG KR Write Access Disable */
+#define IWDG_KEY_RELOAD                            ((uint32_t)0xAAAA)  /*!< IWDG Reload Counter Enable   */
+#define IWDG_KEY_ENABLE                            ((uint32_t)0xCCCC)  /*!< IWDG Peripheral Enable       */
+#define IWDG_KEY_WRITE_ACCESS_ENABLE               ((uint32_t)0x5555)  /*!< IWDG KR Write Access Enable  */
+#define IWDG_KEY_WRITE_ACCESS_DISABLE              ((uint32_t)0x0000)  /*!< IWDG KR Write Access Disable */
 /**
   * @}
   */
@@ -163,7 +163,7 @@ typedef struct
   * @param  __HANDLE__: IWDG handle
   * @retval None
   */
-#define __HAL_IWDG_START(__HANDLE__) WRITE_REG((__HANDLE__)->Instance->KR, IWDG_KR_KEY_ENABLE)
+#define __HAL_IWDG_START(__HANDLE__) WRITE_REG((__HANDLE__)->Instance->KR, IWDG_KEY_ENABLE)
 
 /**
   * @brief  Reloads IWDG counter with value defined in the reload register
@@ -171,7 +171,7 @@ typedef struct
   * @param  __HANDLE__: IWDG handle
   * @retval None
   */
-#define __HAL_IWDG_RELOAD_COUNTER(__HANDLE__) WRITE_REG((__HANDLE__)->Instance->KR, IWDG_KR_KEY_RELOAD)
+#define __HAL_IWDG_RELOAD_COUNTER(__HANDLE__) WRITE_REG((__HANDLE__)->Instance->KR, IWDG_KEY_RELOAD)
 
 /**
   * @brief  Gets the selected IWDG's flag status.
@@ -237,14 +237,14 @@ HAL_IWDG_StateTypeDef HAL_IWDG_GetState(IWDG_HandleTypeDef *hiwdg);
   * @param  __HANDLE__: IWDG handle
   * @retval None
   */
-#define IWDG_ENABLE_WRITE_ACCESS(__HANDLE__) WRITE_REG((__HANDLE__)->Instance->KR, IWDG_KR_KEY_EWA)
+#define IWDG_ENABLE_WRITE_ACCESS(__HANDLE__) WRITE_REG((__HANDLE__)->Instance->KR, IWDG_KEY_WRITE_ACCESS_ENABLE)
 
 /**
   * @brief  Disables write access to IWDG_PR and IWDG_RLR registers.
   * @param  __HANDLE__: IWDG handle
   * @retval None
   */
-#define IWDG_DISABLE_WRITE_ACCESS(__HANDLE__) WRITE_REG((__HANDLE__)->Instance->KR, IWDG_KR_KEY_DWA)
+#define IWDG_DISABLE_WRITE_ACCESS(__HANDLE__) WRITE_REG((__HANDLE__)->Instance->KR, IWDG_KEY_WRITE_ACCESS_DISABLE)
 
 
 #define IS_IWDG_PRESCALER(__PRESCALER__) (((__PRESCALER__) == IWDG_PRESCALER_4)  || \

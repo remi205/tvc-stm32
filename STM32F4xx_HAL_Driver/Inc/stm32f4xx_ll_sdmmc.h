@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_ll_sdmmc.h
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   Header file of SDMMC HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -434,8 +434,11 @@ typedef struct
 #define SDIO_FLAG_CEATAEND                  SDIO_STA_CEATAEND
 /**
   * @}
-  */ 
-  
+  */
+
+/**
+  * @}
+  */
 /* Exported macro ------------------------------------------------------------*/
 /** @defgroup SDMMC_LL_Exported_macros SDMMC_LL Exported Macros
   * @{
@@ -539,28 +542,24 @@ typedef struct
 
 /**
   * @brief  Enable the SDIO device.
-  * @param  None   
   * @retval None
   */ 
 #define __SDIO_ENABLE()   (*(__IO uint32_t *)CLKCR_CLKEN_BB = ENABLE)
 
 /**
   * @brief  Disable the SDIO device.
-  * @param  None  
   * @retval None
   */
 #define __SDIO_DISABLE()   (*(__IO uint32_t *)CLKCR_CLKEN_BB = DISABLE)
 
 /**
   * @brief  Enable the SDIO DMA transfer.
-  * @param  None  
   * @retval None
   */ 
 #define __SDIO_DMA_ENABLE()   (*(__IO uint32_t *)DCTRL_DMAEN_BB = ENABLE)
 
 /**
   * @brief  Disable the SDIO DMA transfer.
-  * @param  None   
   * @retval None
   */
 #define __SDIO_DMA_DISABLE()   (*(__IO uint32_t *)DCTRL_DMAEN_BB = DISABLE)
@@ -747,102 +746,92 @@ typedef struct
 
 /**
   * @brief  Enable Start the SD I/O Read Wait operation.
-  * @param  None  
   * @retval None
   */  
 #define __SDIO_START_READWAIT_ENABLE()   (*(__IO uint32_t *) DCTRL_RWSTART_BB = ENABLE)
 
 /**
   * @brief  Disable Start the SD I/O Read Wait operations.
-  * @param  None  
   * @retval None
   */  
 #define __SDIO_START_READWAIT_DISABLE()   (*(__IO uint32_t *) DCTRL_RWSTART_BB = DISABLE)
 
 /**
   * @brief  Enable Start the SD I/O Read Wait operation.
-  * @param  None  
   * @retval None
   */  
 #define __SDIO_STOP_READWAIT_ENABLE()   (*(__IO uint32_t *) DCTRL_RWSTOP_BB = ENABLE)
 
 /**
   * @brief  Disable Stop the SD I/O Read Wait operations.
-  * @param  None  
   * @retval None
   */  
 #define __SDIO_STOP_READWAIT_DISABLE()   (*(__IO uint32_t *) DCTRL_RWSTOP_BB = DISABLE)
 
 /**
   * @brief  Enable the SD I/O Mode Operation.
-  * @param  None  
   * @retval None
   */  
 #define __SDIO_OPERATION_ENABLE()   (*(__IO uint32_t *) DCTRL_SDIOEN_BB = ENABLE)
 
 /**
   * @brief  Disable the SD I/O Mode Operation.
-  * @param  None  
   * @retval None
   */  
 #define __SDIO_OPERATION_DISABLE()   (*(__IO uint32_t *) DCTRL_SDIOEN_BB = DISABLE)
 
 /**
   * @brief  Enable the SD I/O Suspend command sending.
-  * @param  None  
   * @retval None
   */  
 #define __SDIO_SUSPEND_CMD_ENABLE()   (*(__IO uint32_t *) CMD_SDIOSUSPEND_BB = ENABLE)
 
 /**
   * @brief  Disable the SD I/O Suspend command sending.
-  * @param  None  
   * @retval None
   */  
 #define __SDIO_SUSPEND_CMD_DISABLE()   (*(__IO uint32_t *) CMD_SDIOSUSPEND_BB = DISABLE)
-    
+
+#if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) ||\
+    defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) ||\
+    defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F412xG)
 /**
   * @brief  Enable the command completion signal.
-  * @param  None  
   * @retval None
   */    
 #define __SDIO_CEATA_CMD_COMPLETION_ENABLE()   (*(__IO uint32_t *) CMD_ENCMDCOMPL_BB = ENABLE)
 
 /**
   * @brief  Disable the command completion signal.
-  * @param  None  
   * @retval None
   */  
 #define __SDIO_CEATA_CMD_COMPLETION_DISABLE()   (*(__IO uint32_t *) CMD_ENCMDCOMPL_BB = DISABLE)
 
 /**
   * @brief  Enable the CE-ATA interrupt.
-  * @param  None  
   * @retval None
   */    
 #define __SDIO_CEATA_ENABLE_IT()   (*(__IO uint32_t *) CMD_NIEN_BB = (uint32_t)0)
 
 /**
   * @brief  Disable the CE-ATA interrupt.
-  * @param  None  
   * @retval None
   */  
 #define __SDIO_CEATA_DISABLE_IT()   (*(__IO uint32_t *) CMD_NIEN_BB = (uint32_t)1)
 
 /**
   * @brief  Enable send CE-ATA command (CMD61).
-  * @param  None  
   * @retval None
   */  
 #define __SDIO_CEATA_SENDCMD_ENABLE()   (*(__IO uint32_t *) CMD_ATACMD_BB = ENABLE)
 
 /**
   * @brief  Disable send CE-ATA command (CMD61).
-  * @param  None  
   * @retval None
   */  
 #define __SDIO_CEATA_SENDCMD_DISABLE()   (*(__IO uint32_t *) CMD_ATACMD_BB = DISABLE)
-  
+#endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx || STM32F401xC || STM32F401xE || STM32F411xE ||\
+          STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F412xG */
 /**
   * @}
   */

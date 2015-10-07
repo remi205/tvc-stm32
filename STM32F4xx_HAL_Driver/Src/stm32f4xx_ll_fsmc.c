@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_ll_fsmc.c
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   FSMC Low Layer HAL module driver.
   *    
   *          This file provides firmware functions to manage the following 
@@ -44,7 +44,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -78,27 +78,24 @@
   * @{
   */
 
-/** @defgroup FSMC 
+/** @defgroup FSMC_LL  FSMC Low Layer
   * @brief FSMC driver modules
   * @{
   */
 
 #if defined (HAL_SRAM_MODULE_ENABLED) || defined(HAL_NOR_MODULE_ENABLED) || defined(HAL_NAND_MODULE_ENABLED) || defined(HAL_PCCARD_MODULE_ENABLED)
-
-#if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx)
-
+#if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F412xG)
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/    
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
-
-/** @defgroup FSMC_Private_Functions
+/** @addtogroup FSMC_LL_Private_Functions
   * @{
   */
 
-/** @defgroup FSMC_NORSRAM Controller functions
+/** @addtogroup FSMC_LL_NORSRAM
   * @brief    NORSRAM Controller functions 
   *
   @verbatim 
@@ -122,7 +119,7 @@
   * @{
   */
        
-/** @defgroup HAL_FSMC_NORSRAM_Group1 Initialization/de-initialization functions 
+/** @addtogroup FSMC_LL_NORSRAM_Private_Functions_Group1
   * @brief    Initialization and Configuration functions 
   *
   @verbatim    
@@ -199,7 +196,6 @@ HAL_StatusTypeDef  FSMC_NORSRAM_Init(FSMC_NORSRAM_TypeDef *Device, FSMC_NORSRAM_
   
   return HAL_OK;
 }
-
 
 /**
   * @brief  DeInitialize the FSMC_NORSRAM peripheral 
@@ -328,16 +324,13 @@ HAL_StatusTypeDef  FSMC_NORSRAM_Extended_Timing_Init(FSMC_NORSRAM_EXTENDED_TypeD
   
   return HAL_OK;  
 }
-
-
 /**
   * @}
   */
   
-  
-/** @defgroup HAL_FSMC_NORSRAM_Group3 Control functions 
- *  @brief   management functions 
- *
+/** @addtogroup FSMC_LL_NORSRAM_Private_Functions_Group2
+  *  @brief   management functions 
+  *
 @verbatim   
   ==============================================================================
                       ##### FSMC_NORSRAM Control functions #####
@@ -377,7 +370,6 @@ HAL_StatusTypeDef FSMC_NORSRAM_WriteOperation_Disable(FSMC_NORSRAM_TypeDef *Devi
 
   return HAL_OK;  
 }
-
 /**
   * @}
   */
@@ -385,9 +377,10 @@ HAL_StatusTypeDef FSMC_NORSRAM_WriteOperation_Disable(FSMC_NORSRAM_TypeDef *Devi
 /**
   * @}
   */
-  
-/** @defgroup FSMC_PCCARD Controller functions
-  * @brief    PCCARD Controller functions 
+
+#if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx)
+/** @addtogroup FSMC_LL_NAND
+  * @brief    NAND Controller functions 
   *
   @verbatim 
   ==============================================================================   
@@ -411,9 +404,9 @@ HAL_StatusTypeDef FSMC_NORSRAM_WriteOperation_Disable(FSMC_NORSRAM_TypeDef *Devi
   * @{
   */
     
-/** @defgroup HAL_FSMC_NAND_Group1 Initialization/de-initialization functions 
- *  @brief    Initialization and Configuration functions 
- *
+/** @addtogroup FSMC_LL_NAND_Private_Functions_Group1
+  *  @brief    Initialization and Configuration functions 
+  *
 @verbatim    
   ==============================================================================
               ##### Initialization and de_initialization functions #####
@@ -595,7 +588,6 @@ HAL_StatusTypeDef FSMC_NAND_AttributeSpace_Timing_Init(FSMC_NAND_TypeDef *Device
   return HAL_OK;
 }
 
-
 /**
   * @brief  DeInitializes the FSMC_NAND device 
   * @param  Device: Pointer to NAND device instance
@@ -628,15 +620,13 @@ HAL_StatusTypeDef FSMC_NAND_DeInit(FSMC_NAND_TypeDef *Device, uint32_t Bank)
   
   return HAL_OK;
 }
-
 /**
   * @}
   */
   
-  
-/** @defgroup HAL_FSMC_NAND_Group3 Control functions 
- *  @brief   management functions 
- *
+/** @addtogroup FSMC_LL_NAND_Private_Functions_Group2
+  *  @brief   management functions 
+  *
 @verbatim   
   ==============================================================================
                        ##### FSMC_NAND Control functions #####
@@ -648,7 +638,6 @@ HAL_StatusTypeDef FSMC_NAND_DeInit(FSMC_NAND_TypeDef *Device, uint32_t Bank)
 @endverbatim
   * @{
   */ 
-
     
 /**
   * @brief  Enables dynamically FSMC_NAND ECC feature.
@@ -670,7 +659,6 @@ HAL_StatusTypeDef  FSMC_NAND_ECC_Enable(FSMC_NAND_TypeDef *Device, uint32_t Bank
   
   return HAL_OK;  
 }
-
 
 /**
   * @brief  Disables dynamically FSMC_NAND ECC feature.
@@ -713,7 +701,7 @@ HAL_StatusTypeDef FSMC_NAND_GetECC(FSMC_NAND_TypeDef *Device, uint32_t *ECCval, 
   tickstart = HAL_GetTick();
 
   /* Wait until FIFO is empty */
-  while(__FSMC_NAND_GET_FLAG(Device, Bank, FSMC_FLAG_FEMPT))
+  while(__FSMC_NAND_GET_FLAG(Device, Bank, FSMC_FLAG_FEMPT) == RESET)
   {
     /* Check for the Timeout */
     if(Timeout != HAL_MAX_DELAY)
@@ -747,7 +735,7 @@ HAL_StatusTypeDef FSMC_NAND_GetECC(FSMC_NAND_TypeDef *Device, uint32_t *ECCval, 
   * @}
   */
     
-/** @defgroup FSMC_PCCARD Controller functions
+/** @addtogroup FSMC_LL_PCCARD
   * @brief    PCCARD Controller functions 
   *
   @verbatim 
@@ -771,9 +759,9 @@ HAL_StatusTypeDef FSMC_NAND_GetECC(FSMC_NAND_TypeDef *Device, uint32_t *ECCval, 
   * @{
   */
   
-/** @defgroup HAL_FSMC_PCCARD_Group1 Initialization/de-initialization functions 
- *  @brief    Initialization and Configuration functions 
- *
+/** @addtogroup FSMC_LL_PCCARD_Private_Functions_Group1
+  *  @brief   Initialization and Configuration functions 
+  *
 @verbatim    
   ==============================================================================
               ##### Initialization and de_initialization functions #####
@@ -820,7 +808,6 @@ HAL_StatusTypeDef FSMC_PCCARD_Init(FSMC_PCCARD_TypeDef *Device, FSMC_PCCARD_Init
   Device->PCR4 = tmpr;
   
   return HAL_OK;
-
 }
 
 /**
@@ -945,7 +932,6 @@ HAL_StatusTypeDef FSMC_PCCARD_DeInit(FSMC_PCCARD_TypeDef *Device)
   
   return HAL_OK;
 }
-
 /**
   * @}
   */
@@ -953,10 +939,13 @@ HAL_StatusTypeDef FSMC_PCCARD_DeInit(FSMC_PCCARD_TypeDef *Device)
 /**
   * @}
   */
-
 #endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx */
 
-#endif /* HAL_FSMC_MODULE_ENABLED */
+/**
+  * @}
+  */
+#endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx || STM32F412xG */
+#endif /* HAL_SRAM_MODULE_ENABLED || HAL_NOR_MODULE_ENABLED || HAL_NAND_MODULE_ENABLED || HAL_PCCARD_MODULE_ENABLED */
 
 /**
   * @}
@@ -965,5 +954,4 @@ HAL_StatusTypeDef FSMC_PCCARD_DeInit(FSMC_PCCARD_TypeDef *Device)
 /**
   * @}
   */
-
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_dcmi.h
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   Header file of DCMI HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -44,14 +44,15 @@
 #endif
 
 #if defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F427xx) || defined(STM32F437xx) ||\
-    defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F446xx) || defined(STM32F469xx)
+    defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F446xx) || defined(STM32F469xx) ||\
+    defined(STM32F479xx)
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal_def.h"
-      
+
 /* Include DCMI HAL Extended module */
 /* (include on top of file since DCMI structures are defined in extended file) */
-#include "stm32f4xx_hal_dcmi_ex.h" 
-      
+#include "stm32f4xx_hal_dcmi_ex.h"
+
 /** @addtogroup STM32F4xx_HAL_Driver
   * @{
   */
@@ -73,6 +74,7 @@ typedef enum
   DCMI_ERROR_SYNC = 1,     /*!< Synchronisation error */
   DCMI_OVERRUN   = 2,      /*!< DCMI Overrun */
 }DCMI_ErrorTypeDef;
+
 
 /** 
   * @brief  HAL DCMI State structures definition
@@ -383,7 +385,7 @@ typedef struct
 /**
   * @}
   */
-
+      
 /* Exported functions --------------------------------------------------------*/
 /** @addtogroup DCMI_Exported_Functions
   * @{
@@ -494,7 +496,9 @@ uint32_t              HAL_DCMI_GetError(DCMI_HandleTypeDef *hdcmi);
   * @}
   */
       
-#endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx || STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx  || STM32F446xx || STM32F469xx*/
+#endif /* STM32F407xx || STM32F417xx || STM32F427xx || STM32F437xx ||\
+          STM32F429xx || STM32F439xx || STM32F446xx || STM32F469xx ||\
+          STM32F479xx */
 
 /**
   * @}

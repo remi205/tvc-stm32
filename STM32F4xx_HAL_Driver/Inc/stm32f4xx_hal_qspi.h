@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_qspi.h
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   Header file of QSPI HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -43,7 +43,7 @@
  extern "C" {
 #endif
 
-#if defined(STM32F446xx)
+#if defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F412xG)
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal_def.h"
 
@@ -70,7 +70,7 @@ typedef struct
                                   This parameter can be a number between 0 and 255 */ 
                                   
   uint32_t FifoThreshold;      /* Specifies the threshold number of bytes in the FIFO (used only in indirect mode)
-                                  This parameter can be a value between 1 and 16 */
+                                  This parameter can be a value between 1 and 32 */
                                   
   uint32_t SampleShifting;     /* Specifies the Sample Shift. The data is sampled 1/2 clock cycle delay later to 
                                   take in account external signal delays. (It should be QSPI_SAMPLE_SHIFTING_NONE in DDR mode)
@@ -164,8 +164,8 @@ typedef struct
   uint32_t DdrHoldHalfCycle;   /* Specifies the DDR hold half cycle. It delays the data output by one half of 
                                   system clock in DDR mode.
                                   This parameter can be a value of @ref QSPI_DdrHoldHalfCycle */
-  uint32_t SDIOOMode;          /* Specifies the send instruction only once mode
-                                  This parameter can be a value of @ref QSPI_SDIOOMode */
+  uint32_t SIOOMode;          /* Specifies the send instruction only once mode
+                                  This parameter can be a value of @ref QSPI_SIOOMode */
 }QSPI_CommandTypeDef;
 
 /** 
@@ -351,11 +351,11 @@ typedef struct
   * @}
   */
 
-/** @defgroup QSPI_SDIOOMode QSPI SDIOO Mode
+/** @defgroup QSPI_SIOOMode QSPI SIOO Mode
   * @{
   */
-#define QSPI_SDIOO_INST_EVERY_CMD      ((uint32_t)0x00000000)       /*!<Send instruction on every transaction*/
-#define QSPI_SDIOO_INST_ONLY_FIRST_CMD ((uint32_t)QUADSPI_CCR_SIOO) /*!<Send instruction only for the first command*/
+#define QSPI_SIOO_INST_EVERY_CMD       ((uint32_t)0x00000000)       /*!<Send instruction on every transaction*/
+#define QSPI_SIOO_INST_ONLY_FIRST_CMD  ((uint32_t)QUADSPI_CCR_SIOO) /*!<Send instruction only for the first command*/
 /**
   * @}
   */
@@ -626,7 +626,7 @@ void                  HAL_QSPI_SetTimeout(QSPI_HandleTypeDef *hqspi, uint32_t Ti
 /** @defgroup QSPI_FifoThreshold  QSPI Fifo Threshold 
   * @{
   */
-#define IS_QSPI_FIFO_THRESHOLD(THR)         (((THR) > 0) && ((THR) <= 16))
+#define IS_QSPI_FIFO_THRESHOLD(THR)         (((THR) > 0) && ((THR) <= 32))
 /**
   * @}
   */
@@ -714,8 +714,8 @@ void                  HAL_QSPI_SetTimeout(QSPI_HandleTypeDef *hqspi, uint32_t Ti
 #define IS_QSPI_DDR_HHC(DDR_HHC)            (((DDR_HHC) == QSPI_DDR_HHC_ANALOG_DELAY) || \
                                              ((DDR_HHC) == QSPI_DDR_HHC_HALF_CLK_DELAY))
 
-#define IS_QSPI_SDIOO_MODE(SDIOO_MODE)      (((SDIOO_MODE) == QSPI_SDIOO_INST_EVERY_CMD) || \
-                                             ((SDIOO_MODE) == QSPI_SDIOO_INST_ONLY_FIRST_CMD))
+#define IS_QSPI_SIOO_MODE(SIOO_MODE)      (((SIOO_MODE) == QSPI_SIOO_INST_EVERY_CMD) || \
+                                             ((SIOO_MODE) == QSPI_SIOO_INST_ONLY_FIRST_CMD))
 
 /** @defgroup QSPI_Interval QSPI Interval 
   * @{
@@ -777,7 +777,7 @@ void                  HAL_QSPI_SetTimeout(QSPI_HandleTypeDef *hqspi, uint32_t Ti
 /**
   * @}
   */
-#endif /* STM32F446xx */
+#endif /* STM32F446xx || STM32F469xx || STM32F479xx || STM32F412xG */
 
 #ifdef __cplusplus
 }

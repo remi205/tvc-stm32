@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_spdifrx.h
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   Header file of SPDIFRX HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -84,19 +84,44 @@ typedef struct
   uint32_t StereoMode;               /*!< Specifies whether the peripheral is in stereo or mono mode.
                                           This parameter can be a value of @ref SPDIFRX_Stereo_Mode */
 
+    uint32_t PreambleTypeMask;          /*!< Specifies whether The preamble type bits are copied or not into the received frame.
+                                                                                   This parameter can be a value of @ref SPDIFRX_PT_Mask */
+
+    uint32_t ChannelStatusMask;        /*!< Specifies whether the channel status and user bits are copied or not into the received frame.
+                                                                                  This parameter can be a value of @ref SPDIFRX_ChannelStatus_Mask */
+    
+    uint32_t ValidityBitMask;          /*!< Specifies whether the validity bit is copied or not into the received frame.
+                                                                                  This parameter can be a value of @ref SPDIFRX_V_Mask */                                                                                
+                                                                                
+    uint32_t ParityErrorMask;          /*!< Specifies whether the parity error bit is copied or not into the received frame.
+                                                                                  This parameter can be a value of @ref SPDIFRX_PE_Mask */
+    
+}SPDIFRX_InitTypeDef;
+
+/** 
+  * @brief SPDIFRX SetDataFormat structure definition  
+  */
+typedef struct
+{
+  uint32_t DataFormat;               /*!< Specifies the Data samples format (LSB, MSB, ...).
+                                          This parameter can be a value of @ref SPDIFRX_Data_Format */
+                                               
+  uint32_t StereoMode;               /*!< Specifies whether the peripheral is in stereo or mono mode.
+                                          This parameter can be a value of @ref SPDIFRX_Stereo_Mode */
+
   uint32_t PreambleTypeMask;          /*!< Specifies whether The preamble type bits are copied or not into the received frame.
-                                           This parameter can be a value of @ref SPDIFRX_PT_Mask */
+                                                                                   This parameter can be a value of @ref SPDIFRX_PT_Mask */
 
   uint32_t ChannelStatusMask;        /*!< Specifies whether the channel status and user bits are copied or not into the received frame.
-                                          This parameter can be a value of @ref SPDIFRX_CU_Mask */
-
+                                                                                  This parameter can be a value of @ref SPDIFRX_ChannelStatus_Mask */
+    
   uint32_t ValidityBitMask;          /*!< Specifies whether the validity bit is copied or not into the received frame.
-                                           This parameter can be a value of @ref SPDIFRX_V_Mask */
-
+                                                                                  This parameter can be a value of @ref SPDIFRX_V_Mask */                                                                                
+                                                                                
   uint32_t ParityErrorMask;          /*!< Specifies whether the parity error bit is copied or not into the received frame.
-                                          This parameter can be a value of @ref SPDIFRX_PE_Mask */
-
-}SPDIFRX_InitTypeDef;
+                                                                                  This parameter can be a value of @ref SPDIFRX_PE_Mask */
+    
+}SPDIFRX_SetDataFormatTypeDef;
 
 /** 
   * @brief  HAL State structures definition  
@@ -105,24 +130,11 @@ typedef enum
 {
   HAL_SPDIFRX_STATE_RESET      = 0x00,  /*!< SPDIFRX not yet initialized or disabled                */
   HAL_SPDIFRX_STATE_READY      = 0x01,  /*!< SPDIFRX initialized and ready for use                  */
-  HAL_SPDIFRX_STATE_BUSY       = 0x02,  /*!< SPDIFRX internal process is ongoing                    */
-  HAL_SPDIFRX_STATE_BUSY_RX    = 0x03,  /*!< SPDIFRX internal Data Flow RX process is ongoing       */
-  HAL_SPDIFRX_STATE_BUSY_CX    = 0x04,  /*!< SPDIFRX internal Control Flow RX process is ongoing    */ 
-  HAL_SPDIFRX_STATE_ERROR      = 0x07   /*!< SPDIFRX error state                                    */
+  HAL_SPDIFRX_STATE_BUSY       = 0x02,  /*!< SPDIFRX internal process is ongoing                    */ 
+  HAL_SPDIFRX_STATE_BUSY_RX    = 0x03,  /*!< SPDIFRX internal Data Flow RX process is ongoing       */  
+  HAL_SPDIFRX_STATE_BUSY_CX    = 0x04,  /*!< SPDIFRX internal Control Flow RX process is ongoing    */    
+  HAL_SPDIFRX_STATE_ERROR      = 0x07   /*!< SPDIFRX error state                                    */      
 }HAL_SPDIFRX_StateTypeDef;
-
-/** 
-  * @brief  HAL SPDIFRX Error Code structure definition  
-  */ 
-typedef enum
-{
-  HAL_SPDIFRX_ERROR_NONE      = 0x00,  /*!< No error           */
-  HAL_SPDIFRX_ERROR_TIMEOUT   = 0x01,  /*!< Timeout error      */
-  HAL_SPDIFRX_ERROR_OVR       = 0x02,  /*!< OVR error          */
-  HAL_SPDIFRX_ERROR_PE        = 0x04,  /*!< Parity error       */
-  HAL_SPDIFRX_ERROR_DMA       = 0x08,  /*!< DMA transfer error */
-  HAL_SPDIFRX_ERROR_UNKNOW    = 0x10   /*!< Unknow Error error */
-}HAL_SPDIFRX_ErrorTypeDef;
 
 /** 
   * @brief SPDIFRX handle Structure definition  
@@ -134,8 +146,8 @@ typedef struct
   SPDIFRX_InitTypeDef        Init;         /* SPDIFRX communication parameters */
                             
   uint32_t                   *pRxBuffPtr;  /* Pointer to SPDIFRX Rx transfer buffer */
-
-  uint32_t                   *pCsBuffPtr;  /* Pointer to SPDIFRX Cx transfer buffer */
+    
+    uint32_t                   *pCsBuffPtr;  /* Pointer to SPDIFRX Cx transfer buffer */
   
   __IO uint16_t              RxXferSize;   /* SPDIFRX Rx transfer size */
   
@@ -145,25 +157,25 @@ typedef struct
                                                beginning of the transfer and 
                                                decremented when a sample is received. 
                                                NbSamplesReceived = RxBufferSize-RxBufferCount) */
-	
+    
   __IO uint16_t              CsXferSize;   /* SPDIFRX Rx transfer size */
   
   __IO uint16_t              CsXferCount;  /* SPDIFRX Rx transfer counter 
                                               (This field is initialized at the 
                                                same value as transfer size at the 
                                                beginning of the transfer and 
-                                               decremented when a sample is received
+                                               decremented when a sample is received. 
                                                NbSamplesReceived = RxBufferSize-RxBufferCount) */
-
+                                                                                             
   DMA_HandleTypeDef          *hdmaCsRx;    /* SPDIFRX EC60958_channel_status and user_information DMA handle parameters */
 
   DMA_HandleTypeDef          *hdmaDrRx;    /* SPDIFRX Rx DMA handle parameters */
   
   __IO HAL_LockTypeDef       Lock;         /* SPDIFRX locking object */
   
-  __IO HAL_SPDIFRX_StateTypeDef  State;        /* SPDIFRX communication state */
+  __IO HAL_SPDIFRX_StateTypeDef  State;    /* SPDIFRX communication state */
 
-  __IO HAL_SPDIFRX_ErrorTypeDef  ErrorCode;    /* SPDIFRX Error code          */
+  __IO uint32_t  ErrorCode;                /* SPDIFRX Error code                 */
 
 }SPDIFRX_HandleTypeDef;
 /**
@@ -174,113 +186,126 @@ typedef struct
 /** @defgroup SPDIFRX_Exported_Constants SPDIFRX Exported Constants
   * @{
   */
-
-/** @defgroup SPDIFRX_Input_Selection 
+/** @defgroup SPDIFRX_ErrorCode SPDIFRX Error Code
+  * @{
+  */ 
+#define HAL_SPDIFRX_ERROR_NONE      ((uint32_t)0x00000000)  /*!< No error           */
+#define HAL_SPDIFRX_ERROR_TIMEOUT   ((uint32_t)0x00000001)  /*!< Timeout error      */  
+#define HAL_SPDIFRX_ERROR_OVR       ((uint32_t)0x00000002)  /*!< OVR error          */
+#define HAL_SPDIFRX_ERROR_PE        ((uint32_t)0x00000004)  /*!< Parity error       */
+#define HAL_SPDIFRX_ERROR_DMA       ((uint32_t)0x00000008)  /*!< DMA transfer error */
+#define HAL_SPDIFRX_ERROR_UNKNOWN   ((uint32_t)0x00000010)  /*!< Unknown Error error */  
+/**
+  * @}
+  */
+  
+/** @defgroup SPDIFRX_Input_Selection SPDIFRX Input Selection
   * @{
   */
-#define SPDIFRX_Input_IN0               ((uint32_t)0x00000000)
-#define SPDIFRX_Input_IN1               ((uint32_t)0x00010000)  
-#define SPDIFRX_Input_IN2               ((uint32_t)0x00020000)
-#define SPDIFRX_Input_IN3               ((uint32_t)0x00030000)
+#define SPDIFRX_INPUT_IN0               ((uint32_t)0x00000000)
+#define SPDIFRX_INPUT_IN1               ((uint32_t)0x00010000)  
+#define SPDIFRX_INPUT_IN2               ((uint32_t)0x00020000)
+#define SPDIFRX_INPUT_IN3               ((uint32_t)0x00030000)
 /**
   * @}
   */
 
-/** @defgroup SPDIFRX_Max_Retries 
+/** @defgroup SPDIFRX_Max_Retries SPDIFRX Maximum Retries
   * @{
   */
-#define SPDIFRX_1MAX_RETRIES               ((uint32_t)0x00000000)
-#define SPDIFRX_4MAX_RETRIES               ((uint32_t)0x00001000)
-#define SPDIFRX_16MAX_RETRIES              ((uint32_t)0x00002000)
-#define SPDIFRX_64MAX_RETRIES              ((uint32_t)0x00003000)
+#define SPDIFRX_MAXRETRIES_NONE            ((uint32_t)0x00000000)
+#define SPDIFRX_MAXRETRIES_3               ((uint32_t)0x00001000)  
+#define SPDIFRX_MAXRETRIES_15              ((uint32_t)0x00002000)
+#define SPDIFRX_MAXRETRIES_63              ((uint32_t)0x00003000)
 /**
   * @}
   */
 
-/** @defgroup SPDIFRX_Wait_For_Activity 
+/** @defgroup SPDIFRX_Wait_For_Activity SPDIFRX Wait For Activity
   * @{
   */
-#define SPDIFRX_WAITFORACTIVITY_OFF                 ((uint32_t)0x00000000)
-#define SPDIFRX_WAITFORACTIVITY_ON                  ((uint32_t)SPDIFRX_CR_WFA)
+#define SPDIFRX_WAITFORACTIVITY_OFF                   ((uint32_t)0x00000000)
+#define SPDIFRX_WAITFORACTIVITY_ON                    ((uint32_t)SPDIFRX_CR_WFA)
 /**
   * @}
   */
-	
-/** @defgroup SPDIFRX_PT_Mask 
+    
+/** @defgroup SPDIFRX_PT_Mask SPDIFRX Preamble Type Mask
 * @{
 */
-#define SPDIFRX_PTMASK_OFF                   ((uint32_t)0x00000000)
-#define SPDIFRX_PTMASK_ON                    ((uint32_t)SPDIFRX_CR_PTMSK)
+#define SPDIFRX_PREAMBLETYPEMASK_OFF                   ((uint32_t)0x00000000)        
+#define SPDIFRX_PREAMBLETYPEMASK_ON                    ((uint32_t)SPDIFRX_CR_PTMSK)  
 /**
   * @}
   */
 
-/** @defgroup SPDIFRX_ChannelStatus_Mask 
+/** @defgroup SPDIFRX_ChannelStatus_Mask  SPDIFRX Channel Status Mask
 * @{
 */
-#define SPDIFRX_CHANNELSTATUS_OFF                 ((uint32_t)0x00000000)
-#define SPDIFRX_CHANNELSTATUS_ON                  ((uint32_t)SPDIFRX_CR_CUMSK)
+#define SPDIFRX_CHANNELSTATUS_OFF                 ((uint32_t)0x00000000)        /* The channel status and user bits are copied into the SPDIF_DR */
+#define SPDIFRX_CHANNELSTATUS_ON                  ((uint32_t)SPDIFRX_CR_CUMSK)  /* The channel status and user bits are not copied into the SPDIF_DR, zeros are written instead*/
 /**
   * @}
   */
 
-/** @defgroup SPDIFRX_V_Mask 
+/** @defgroup SPDIFRX_V_Mask SPDIFRX Validity Mask
 * @{
 */
-#define SPDIFRX_VMASK_OFF                 ((uint32_t)0x00000000)
-#define SPDIFRX_VMASK_ON                  ((uint32_t)SPDIFRX_CR_VMSK)
-/**
-  * @}
-  */
-	
-/** @defgroup SPDIFRX_PE_Mask  
-* @{
-*/
-#define SPDIFRX_PEMASK_OFF                ((uint32_t)0x00000000)
-#define SPDIFRX_PEMASK_ON                 ((uint32_t)SPDIFRX_CR_PMSK)
+#define SPDIFRX_VALIDITYMASK_OFF                   ((uint32_t)0x00000000)
+#define SPDIFRX_VALIDITYMASK_ON                    ((uint32_t)SPDIFRX_CR_VMSK)
 /**
   * @}
   */
 
-/** @defgroup SPDIFRX_ChannelSelection 
+/** @defgroup SPDIFRX_PE_Mask  SPDIFRX Parity Error Mask
+* @{
+*/
+#define SPDIFRX_PARITYERRORMASK_OFF                   ((uint32_t)0x00000000)
+#define SPDIFRX_PARITYERRORMASK_ON                    ((uint32_t)SPDIFRX_CR_PMSK)
+/**
+  * @}
+  */
+
+/** @defgroup SPDIFRX_Channel_Selection  SPDIFRX Channel Selection
   * @{
   */
-#define SPDIFRX_SELECT_CHANNEL_A      ((uint32_t)0x00000000)
-#define SPDIFRX_SELECT_CHANNEL_B      ((uint32_t)SPDIFRX_CR_CHSEL)
+#define SPDIFRX_CHANNEL_A      ((uint32_t)0x00000000)
+#define SPDIFRX_CHANNEL_B      ((uint32_t)SPDIFRX_CR_CHSEL)
 /**
   * @}
   */
 
-/** @defgroup SPDIFRX_Block_Synchronization 
+/** @defgroup SPDIFRX_Data_Format SPDIFRX Data Format
   * @{
   */
-#define SPDIFRX_LSB_DATAFORMAT                   ((uint32_t)0x00000000)
-#define SPDIFRX_MSB_DATAFORMAT                   ((uint32_t)0x00000010)
-#define SPDIFRX_32BITS_DATAFORMAT                ((uint32_t)0x00000020)
+#define SPDIFRX_DATAFORMAT_LSB                   ((uint32_t)0x00000000)
+#define SPDIFRX_DATAFORMAT_MSB                   ((uint32_t)0x00000010)
+#define SPDIFRX_DATAFORMAT_32BITS                ((uint32_t)0x00000020)
 /**
   * @}
   */ 
 
-/** @defgroup SPDIFRX_StereoMode 
+/** @defgroup SPDIFRX_Stereo_Mode SPDIFRX Stereo Mode
   * @{
   */
-#define SPDIFRX_STEREOMODE_DISABLED          ((uint32_t)0x00000000)
-#define SPDIFRX_STEREOMODE_ENABLED           ((uint32_t)SPDIFRX_CR_RXSTEO)                                          
+#define SPDIFRX_STEREOMODE_DISABLE           ((uint32_t)0x00000000)
+#define SPDIFRX_STEREOMODE_ENABLE           ((uint32_t)SPDIFRX_CR_RXSTEO)
 /**
   * @}
   */ 
 
-/** @defgroup SPDIFRX_State 
+/** @defgroup SPDIFRX_State SPDIFRX State
   * @{
   */
+
 #define SPDIFRX_STATE_IDLE    ((uint32_t)0xFFFFFFFC)
 #define SPDIFRX_STATE_SYNC    ((uint32_t)0x00000001)
 #define SPDIFRX_STATE_RCV     ((uint32_t)SPDIFRX_CR_SPDIFEN)
 /**
   * @}
   */
-	
-/** @defgroup SPDIFRX_Interrupts_Definition 
+    
+/** @defgroup SPDIFRX_Interrupts_Definition SPDIFRX Interrupts Definition
   * @{
   */
 #define SPDIFRX_IT_RXNE                       ((uint32_t)SPDIFRX_IMR_RXNEIE)
@@ -293,8 +318,8 @@ typedef struct
 /**
   * @}
   */
-	
-/** @defgroup SPDIFRX_Flags_Definition 
+    
+/** @defgroup SPDIFRX_Flags_Definition SPDIFRX Flags Definition
   * @{
   */
 #define SPDIFRX_FLAG_RXNE                   ((uint32_t)SPDIFRX_SR_RXNE)
@@ -352,8 +377,8 @@ typedef struct
   *            @arg SPDIFRX_IT_RXNE
   *            @arg SPDIFRX_IT_CSRNE
   *            @arg SPDIFRX_IT_PERRIE
-	*            @arg SPDIFRX_IT_OVRIE
-	*            @arg SPDIFRX_IT_SBLKIE
+  *            @arg SPDIFRX_IT_OVRIE
+  *            @arg SPDIFRX_IT_SBLKIE
   *            @arg SPDIFRX_IT_SYNCDIE
   *            @arg SPDIFRX_IT_IFEIE
   * @retval None
@@ -368,8 +393,8 @@ typedef struct
   *            @arg SPDIFRX_IT_RXNE
   *            @arg SPDIFRX_IT_CSRNE
   *            @arg SPDIFRX_IT_PERRIE
-	*            @arg SPDIFRX_IT_OVRIE
-	*            @arg SPDIFRX_IT_SBLKIE
+  *            @arg SPDIFRX_IT_OVRIE
+  *            @arg SPDIFRX_IT_SBLKIE
   *            @arg SPDIFRX_IT_SYNCDIE
   *            @arg SPDIFRX_IT_IFEIE
   * @retval The new state of __IT__ (TRUE or FALSE).
@@ -387,7 +412,7 @@ typedef struct
   *            @arg SPDIFRX_FLAG_SBD
   *            @arg SPDIFRX_FLAG_SYNCD 
   *            @arg SPDIFRX_FLAG_FERR 
-	*            @arg SPDIFRX_FLAG_SERR 
+  *            @arg SPDIFRX_FLAG_SERR 
   *            @arg SPDIFRX_FLAG_TERR 
   * @retval The new state of __FLAG__ (TRUE or FALSE).
   */
@@ -405,7 +430,11 @@ typedef struct
   * @retval None
   */
 #define __HAL_SPDIFRX_CLEAR_IT(__HANDLE__, __IT_CLEAR__) ((__HANDLE__)->Instance->IFCR = (uint32_t)(__IT_CLEAR__)) 
-                                  
+  
+/**
+  * @}
+  */
+  
 /* Exported functions --------------------------------------------------------*/
 /** @addtogroup SPDIFRX_Exported_Functions
   * @{
@@ -415,10 +444,11 @@ typedef struct
   * @{
   */
 /* Initialization/de-initialization functions  **********************************/
-HAL_StatusTypeDef HAL_SPDIFRX_Init(SPDIFRX_HandleTypeDef *hi2s);
-HAL_StatusTypeDef HAL_SPDIFRX_DeInit (SPDIFRX_HandleTypeDef *hi2s);
-void HAL_SPDIFRX_MspInit(SPDIFRX_HandleTypeDef *hi2s);
-void HAL_SPDIFRX_MspDeInit(SPDIFRX_HandleTypeDef *hi2s);
+HAL_StatusTypeDef HAL_SPDIFRX_Init(SPDIFRX_HandleTypeDef *hspdif);
+HAL_StatusTypeDef HAL_SPDIFRX_DeInit (SPDIFRX_HandleTypeDef *hspdif);
+void HAL_SPDIFRX_MspInit(SPDIFRX_HandleTypeDef *hspdif);
+void HAL_SPDIFRX_MspDeInit(SPDIFRX_HandleTypeDef *hspdif);
+HAL_StatusTypeDef HAL_SPDIFRX_SetDataFormat(SPDIFRX_HandleTypeDef *hspdif, SPDIFRX_SetDataFormatTypeDef  sDataFormat);
 /**
   * @}
   */
@@ -446,6 +476,8 @@ HAL_StatusTypeDef HAL_SPDIFRX_DMAStop(SPDIFRX_HandleTypeDef *hspdif);
 void HAL_SPDIFRX_RxHalfCpltCallback(SPDIFRX_HandleTypeDef *hspdif);
 void HAL_SPDIFRX_RxCpltCallback(SPDIFRX_HandleTypeDef *hspdif);
 void HAL_SPDIFRX_ErrorCallback(SPDIFRX_HandleTypeDef *hspdif);
+void HAL_SPDIFRX_CxHalfCpltCallback(SPDIFRX_HandleTypeDef *hspdif);
+void HAL_SPDIFRX_CxCpltCallback(SPDIFRX_HandleTypeDef *hspdif);
 /**
   * @}
   */
@@ -455,120 +487,59 @@ void HAL_SPDIFRX_ErrorCallback(SPDIFRX_HandleTypeDef *hspdif);
   */
 /* Peripheral Control and State functions  ************************************/
 HAL_SPDIFRX_StateTypeDef HAL_SPDIFRX_GetState(SPDIFRX_HandleTypeDef *hspdif);
-HAL_SPDIFRX_ErrorTypeDef HAL_SPDIFRX_GetError(SPDIFRX_HandleTypeDef *hspdif);
-
-__weak void HAL_SPDIFRX_CxHalfCpltCallback(SPDIFRX_HandleTypeDef *hspdif);
-__weak void HAL_SPDIFRX_CxCpltCallback(SPDIFRX_HandleTypeDef *hspdif);
+uint32_t HAL_SPDIFRX_GetError(SPDIFRX_HandleTypeDef *hspdif);
 /**
   * @}
   */
 
 /**
   * @}
-  */
-
+  */ 
 /* Private types -------------------------------------------------------------*/
-/** @defgroup SPDIFRX_Private_Types SPDIFRX Private Types
-  * @{
-  */
-
-/**
-  * @}
-  */ 
-
 /* Private variables ---------------------------------------------------------*/
-/** @defgroup SPDIFRX_Private_Variables SPDIFRX Private Variables
-  * @{
-  */
-
-/**
-  * @}
-  */ 
-
 /* Private constants ---------------------------------------------------------*/
-/** @defgroup SPDIFRX_Private_Constants SPDIFRX Private Constants
-  * @{
-  */
-
-/**
-  * @}
-  */ 
-
 /* Private macros ------------------------------------------------------------*/
 /** @defgroup SPDIFRX_Private_Macros SPDIFRX Private Macros
   * @{
   */
-#define IS_SPDIFRX_INPUT_SELECT(INPUT)     (((INPUT) == SPDIFRX_Input_IN1)  || \
-                                            ((INPUT) == SPDIFRX_Input_IN2)  || \
-                                            ((INPUT) == SPDIFRX_Input_IN3)  || \
-                                            ((INPUT) == SPDIFRX_Input_IN0))
-
-#define IS_SPDIFRX_MAX_RETRIES(RET)        (((RET) == SPDIFRX_1MAX_RETRIES)  || \
-                                            ((RET) == SPDIFRX_4MAX_RETRIES)  || \
-                                            ((RET) == SPDIFRX_16MAX_RETRIES) || \
-                                            ((RET) == SPDIFRX_64MAX_RETRIES))
- 
-#define IS_SPDIFRX_WAIT_FOR_ACTIVITY(VAL)   (((VAL) == SPDIFRX_WAITFORACTIVITY_ON) || \
-                                             ((VAL) == SPDIFRX_WAITFORACTIVITY_OFF))
-
-#define IS_PREAMBLE_TYPE_MASK(VAL)          (((VAL) == SPDIFRX_PTMASK_ON) || \
-                                             ((VAL) == SPDIFRX_PTMASK_OFF))
+#define IS_SPDIFRX_INPUT_SELECT(INPUT)  (((INPUT) == SPDIFRX_INPUT_IN1) || \
+                                         ((INPUT) == SPDIFRX_INPUT_IN2) || \
+                                         ((INPUT) == SPDIFRX_INPUT_IN3)  || \
+                                         ((INPUT) == SPDIFRX_INPUT_IN0))
+#define IS_SPDIFRX_MAX_RETRIES(RET)   (((RET) == SPDIFRX_MAXRETRIES_NONE) || \
+                                      ((RET) == SPDIFRX_MAXRETRIES_3)  || \
+                                      ((RET) == SPDIFRX_MAXRETRIES_15) || \
+                                      ((RET) == SPDIFRX_MAXRETRIES_63))
+#define IS_SPDIFRX_WAIT_FOR_ACTIVITY(VAL)    (((VAL) == SPDIFRX_WAITFORACTIVITY_ON) || \
+                                               ((VAL) == SPDIFRX_WAITFORACTIVITY_OFF))
+#define IS_PREAMBLE_TYPE_MASK(VAL)           (((VAL) == SPDIFRX_PREAMBLETYPEMASK_ON) || \
+                                             ((VAL) == SPDIFRX_PREAMBLETYPEMASK_OFF))
+#define IS_VALIDITY_MASK(VAL)               (((VAL) == SPDIFRX_VALIDITYMASK_OFF) || \
+                                             ((VAL) == SPDIFRX_VALIDITYMASK_ON))
+#define IS_PARITY_ERROR_MASK(VAL)            (((VAL) == SPDIFRX_PARITYERRORMASK_OFF) || \
+                                             ((VAL) == SPDIFRX_PARITYERRORMASK_ON))
+#define IS_SPDIFRX_CHANNEL(CHANNEL)   (((CHANNEL) == SPDIFRX_CHANNEL_A) || \
+                                       ((CHANNEL) == SPDIFRX_CHANNEL_B))
+#define IS_SPDIFRX_DATA_FORMAT(FORMAT)           (((FORMAT) == SPDIFRX_DATAFORMAT_LSB) || \
+                                                 ((FORMAT) == SPDIFRX_DATAFORMAT_MSB) || \
+                                                 ((FORMAT) == SPDIFRX_DATAFORMAT_32BITS))
+#define IS_STEREO_MODE(MODE)                 (((MODE) == SPDIFRX_STEREOMODE_DISABLE) || \
+                                             ((MODE) == SPDIFRX_STEREOMODE_ENABLE))
                                              
-#define IS_CHANNEL_STATUS_MASK(VAL)         (((VAL) == SPDIFRX_CHANNELSTATUS_ON) || \
-                                             ((VAL) == SPDIFRX_CHANNELSTATUS_OFF))
-                                            
-#define IS_VALIDITY_MASK(VAL)              (((VAL) == SPDIFRX_VMASK_OFF) || \
-                                            ((VAL) == SPDIFRX_VMASK_ON))
+#define IS_CHANNEL_STATUS_MASK(VAL)          (((VAL) == SPDIFRX_CHANNELSTATUS_ON) || \
+                                              ((VAL) == SPDIFRX_CHANNELSTATUS_OFF))
+/**                                                                                    
+  * @}
+  */
 
-#define IS_PARITY_ERROR_MASK(VAL)          (((VAL) == SPDIFRX_PEMASK_ON) || \
-                                            ((VAL) == SPDIFRX_PEMASK_OFF))
-
-#define IS_SPDIFRX_CHANNEL(CHANNEL)        (((CHANNEL) == SPDIFRX_SELECT_CHANNEL_A) || \
-                                            ((CHANNEL) == SPDIFRX_SELECT_CHANNEL_B))
-
-#define IS_SPDIFRX_DATA_FORMAT(FORMAT)     (((FORMAT) == SPDIFRX_LSB_DATAFORMAT) || \
-                                            ((FORMAT) == SPDIFRX_MSB_DATAFORMAT) || \
-                                            ((FORMAT) == SPDIFRX_32BITS_DATAFORMAT))
-
-#define IS_STEREO_MODE(MODE)               (((MODE) == SPDIFRX_STEREOMODE_DISABLED) || \
-                                            ((MODE) == SPDIFRX_STEREOMODE_ENABLED))
-
-#define IS_SPDIFRX_STATE(STATE)            (((STATE) == SPDIFRX_STATE_IDLE) || \
-                                            ((STATE) == SPDIFRX_STATE_SYNC) || \
-                                            ((STATE) == SPDIFRX_STATE_RCV))
-
-#define IS_SPDIFRX_CONFIG_IT(IT)           (((IT) == SPDIFRX_IT_RXNE)    || \
-                                            ((IT) == SPDIFRX_IT_CSRNE)   || \
-                                            ((IT) == SPDIFRX_IT_PERRIE)  || \
-                                            ((IT) == SPDIFRX_IT_OVRIE)   || \
-                                            ((IT) == SPDIFRX_IT_SBLKIE)  || \
-                                            ((IT) == SPDIFRX_IT_SYNCDIE) || \
-                                            ((IT) == SPDIFRX_IT_IFEIE))
-
-#define IS_SPDIFRX_FLAG(FLAG)              (((FLAG) == SPDIFRX_FLAG_RXNE)  || \
-                                            ((FLAG) == SPDIFRX_FLAG_CSRNE) || \
-                                            ((FLAG) == SPDIFRX_FLAG_PERR)  || \
-                                            ((FLAG) == SPDIFRX_FLAG_OVR)   || \
-                                            ((FLAG) == SPDIFRX_SR_SBD)     || \
-                                            ((FLAG) == SPDIFRX_SR_SYNCD)   || \
-                                            ((FLAG) == SPDIFRX_SR_FERR)    || \
-                                            ((FLAG) == SPDIFRX_SR_SERR)    || \
-                                            ((FLAG) == SPDIFRX_SR_TERR))
-
-#define IS_SPDIFRX_CLEAR_FLAG(FLAG)        (((FLAG) == SPDIFRX_FLAG_PERR)  || \
-                                            ((FLAG) == SPDIFRX_FLAG_OVR)   || \
-                                            ((FLAG) == SPDIFRX_SR_SBD)     || \
-                                            ((FLAG) == SPDIFRX_SR_SYNCD))                                                                                      
 /* Private functions ---------------------------------------------------------*/
 /** @defgroup SPDIFRX_Private_Functions SPDIFRX Private Functions
   * @{
   */
-
 /**
   * @}
-  */ 
-
-
+  */
+ 
 /**
   * @}
   */
@@ -576,9 +547,8 @@ __weak void HAL_SPDIFRX_CxCpltCallback(SPDIFRX_HandleTypeDef *hspdif);
 /**
   * @}
   */
-
 #endif /* STM32F446xx */
-	
+
 #ifdef __cplusplus
 }
 #endif
