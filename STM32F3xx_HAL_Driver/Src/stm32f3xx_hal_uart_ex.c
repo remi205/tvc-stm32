@@ -302,9 +302,6 @@ HAL_StatusTypeDef HAL_UARTEx_StopModeWakeUpSourceConfig(UART_HandleTypeDef *huar
   /* check the wake-up selection parameter */
   assert_param(IS_UART_WAKEUP_SELECTION(WakeUpSelection.WakeUpEvent));
   
-  /* Process Locked */
-  __HAL_LOCK(huart);
-  
   huart->State = HAL_UART_STATE_BUSY;
   
   /* Disable the Peripheral */
@@ -330,8 +327,6 @@ HAL_StatusTypeDef HAL_UARTEx_StopModeWakeUpSourceConfig(UART_HandleTypeDef *huar
   {
     /* Initialize the UART State */
     huart->State= HAL_UART_STATE_READY;
-    /* Process Unlocked */
-    __HAL_UNLOCK(huart);  
     return HAL_OK;
   }
 }
@@ -345,18 +340,12 @@ HAL_StatusTypeDef HAL_UARTEx_StopModeWakeUpSourceConfig(UART_HandleTypeDef *huar
   */
 HAL_StatusTypeDef HAL_UARTEx_EnableStopMode(UART_HandleTypeDef *huart)
 {
-  /* Process Locked */
-  __HAL_LOCK(huart);
-  
   huart->State = HAL_UART_STATE_BUSY;
   
   /* Set the USART UESM bit */
   huart->Instance->CR1 |= USART_CR1_UESM;
   
   huart->State = HAL_UART_STATE_READY;
-  
-  /* Process Unlocked */
-  __HAL_UNLOCK(huart);
   
   return HAL_OK; 
 }
@@ -368,9 +357,6 @@ HAL_StatusTypeDef HAL_UARTEx_EnableStopMode(UART_HandleTypeDef *huart)
   */
 HAL_StatusTypeDef HAL_UARTEx_DisableStopMode(UART_HandleTypeDef *huart)
 {  
-  /* Process Locked */
-  __HAL_LOCK(huart);
-  
   huart->State = HAL_UART_STATE_BUSY; 
 
   /* Clear USART UESM bit */
@@ -378,28 +364,9 @@ HAL_StatusTypeDef HAL_UARTEx_DisableStopMode(UART_HandleTypeDef *huart)
   
   huart->State = HAL_UART_STATE_READY;
   
-  /* Process Unlocked */
-  __HAL_UNLOCK(huart);
-  
   return HAL_OK; 
 }
 
 
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-  
 #endif /* HAL_UART_MODULE_ENABLED */
-/**
-  * @}
-  */
 
-/**
-  * @}
-  */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

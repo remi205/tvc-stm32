@@ -220,18 +220,12 @@ HAL_StatusTypeDef HAL_RS485Ex_Init(UART_HandleTypeDef *huart, uint32_t Polarity,
   */
 HAL_StatusTypeDef HAL_UARTEx_EnableStopMode(UART_HandleTypeDef *huart)
 {
-  /* Process Locked */
-  __HAL_LOCK(huart);
-  
   huart->State = HAL_UART_STATE_BUSY;
   
   /* Set the USART UESM bit */
   huart->Instance->CR1 |= USART_CR1_UESM;
   
   huart->State = HAL_UART_STATE_READY;
-  
-  /* Process Unlocked */
-  __HAL_UNLOCK(huart);
   
   return HAL_OK; 
 }
@@ -244,18 +238,12 @@ HAL_StatusTypeDef HAL_UARTEx_EnableStopMode(UART_HandleTypeDef *huart)
   */
 HAL_StatusTypeDef HAL_UARTEx_EnableClockStopMode(UART_HandleTypeDef *huart)
 {
-  /* Process Locked */
-  __HAL_LOCK(huart);
-  
   huart->State = HAL_UART_STATE_BUSY;
   
   /* Set the USART UESM bit */
   huart->Instance->CR3 |= USART_CR3_UCESM;
   
   huart->State = HAL_UART_STATE_READY;
-  
-  /* Process Unlocked */
-  __HAL_UNLOCK(huart);
   
   return HAL_OK; 
 }
@@ -267,18 +255,12 @@ HAL_StatusTypeDef HAL_UARTEx_EnableClockStopMode(UART_HandleTypeDef *huart)
   */
 HAL_StatusTypeDef HAL_UARTEx_DisableStopMode(UART_HandleTypeDef *huart)
 {
-  /* Process Locked */
-  __HAL_LOCK(huart);
-
   huart->State = HAL_UART_STATE_BUSY; 
 
   /* Clear USART UESM bit */
   huart->Instance->CR1 &= ~(USART_CR1_UESM);
   
   huart->State = HAL_UART_STATE_READY;
-
-  /* Process Unlocked */
-  __HAL_UNLOCK(huart);
 
   return HAL_OK;
 }
@@ -290,18 +272,12 @@ HAL_StatusTypeDef HAL_UARTEx_DisableStopMode(UART_HandleTypeDef *huart)
   */
 HAL_StatusTypeDef HAL_UARTEx_DisableClockStopMode(UART_HandleTypeDef *huart)
 {
-  /* Process Locked */
-  __HAL_LOCK(huart);
-
   huart->State = HAL_UART_STATE_BUSY;
 
   /* Clear USART UESM bit */
   huart->Instance->CR3 &= ~(USART_CR3_UCESM);
 
   huart->State = HAL_UART_STATE_READY;
-
-  /* Process Unlocked */
-  __HAL_UNLOCK(huart);
 
   return HAL_OK;
 }
@@ -320,9 +296,6 @@ HAL_StatusTypeDef HAL_UARTEx_StopModeWakeUpSourceConfig(UART_HandleTypeDef *huar
 {
   /* Check the wake-up selection parameter */
   assert_param(IS_UART_WAKEUP_SELECTION(WakeUpSelection.WakeUpEvent));
-
-  /* Process Locked */
-  __HAL_LOCK(huart);
 
   huart->State = HAL_UART_STATE_BUSY;
 
@@ -345,9 +318,6 @@ HAL_StatusTypeDef HAL_UARTEx_StopModeWakeUpSourceConfig(UART_HandleTypeDef *huar
   {
     return HAL_TIMEOUT;
   }
-
-  /* Process Unlocked */
-  __HAL_UNLOCK(huart);
 
   /* Initialize the UART state*/
   huart->ErrorCode = HAL_UART_ERROR_NONE;

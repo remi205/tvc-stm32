@@ -183,9 +183,6 @@ HAL_StatusTypeDef HAL_RS485Ex_Init(UART_HandleTypeDef *huart, uint32_t Polarity,
 
   if(huart->State == HAL_UART_STATE_RESET)
   {
-    /* Allocate lock resource and initialize it */
-    huart->Lock = HAL_UNLOCKED;
-
     /* Init the low level hardware : GPIO, CLOCK, CORTEX */
     HAL_UART_MspInit(huart);
   }
@@ -315,9 +312,6 @@ HAL_StatusTypeDef HAL_UARTEx_StopModeWakeUpSourceConfig(UART_HandleTypeDef *huar
   /* check the wake-up selection parameter */
   assert_param(IS_UART_WAKEUP_SELECTION(WakeUpSelection.WakeUpEvent));
 
-  /* Process Locked */
-  __HAL_LOCK(huart);
-
   huart->State = HAL_UART_STATE_BUSY;
 
   /* Disable the Peripheral */
@@ -345,9 +339,6 @@ HAL_StatusTypeDef HAL_UARTEx_StopModeWakeUpSourceConfig(UART_HandleTypeDef *huar
     huart->State = HAL_UART_STATE_READY;
   }
 
-  /* Process Unlocked */
-  __HAL_UNLOCK(huart);
-
   return status;
 }
 
@@ -360,18 +351,12 @@ HAL_StatusTypeDef HAL_UARTEx_StopModeWakeUpSourceConfig(UART_HandleTypeDef *huar
   */
 HAL_StatusTypeDef HAL_UARTEx_EnableStopMode(UART_HandleTypeDef *huart)
 {
-  /* Process Locked */
-  __HAL_LOCK(huart);
-
   huart->State = HAL_UART_STATE_BUSY;
 
   /* Set UESM bit */
   SET_BIT(huart->Instance->CR1, USART_CR1_UESM);
 
   huart->State = HAL_UART_STATE_READY;
-
-  /* Process Unlocked */
-  __HAL_UNLOCK(huart);
 
   return HAL_OK;
 }
@@ -383,18 +368,12 @@ HAL_StatusTypeDef HAL_UARTEx_EnableStopMode(UART_HandleTypeDef *huart)
   */
 HAL_StatusTypeDef HAL_UARTEx_DisableStopMode(UART_HandleTypeDef *huart)
 {
-  /* Process Locked */
-  __HAL_LOCK(huart);
-
   huart->State = HAL_UART_STATE_BUSY;
 
   /* Clear UESM bit */
   CLEAR_BIT(huart->Instance->CR1, USART_CR1_UESM);
 
   huart->State = HAL_UART_STATE_READY;
-
-  /* Process Unlocked */
-  __HAL_UNLOCK(huart);
 
   return HAL_OK;
 }
