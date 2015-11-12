@@ -1,11 +1,10 @@
 /**
   ******************************************************************************
   * @file    stm32f4xx_it.c
-  * @date    04/04/2014 09:07:20
   * @brief   Interrupt Service Routines.
   ******************************************************************************
   *
-  * COPYRIGHT(c) 2014 STMicroelectronics
+  * COPYRIGHT(c) 2015 STMicroelectronics
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -32,62 +31,59 @@
   ******************************************************************************
   */
 /* Includes ------------------------------------------------------------------*/
-#include "stm32.h"
+#include "stm32f4xx_hal.h"
+#include "stm32f4xx.h"
+#include "stm32f4xx_it.h"
+#include "cmsis_os.h"
 
-#include "../config.h"
+/* USER CODE BEGIN 0 */
 
+/* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
- 
 extern void xPortSysTickHandler(void);
-
 extern ETH_HandleTypeDef heth;
+extern PCD_HandleTypeDef hpcd_USB_OTG_FS;
 extern I2C_HandleTypeDef hi2c1;
-//extern SPI_HandleTypeDef hspi2;
-extern DMA_HandleTypeDef hdma_uart5_rx;
-extern DMA_HandleTypeDef hdma_uart5_tx;
-extern DMA_HandleTypeDef hdma_usart2_rx;
-extern DMA_HandleTypeDef hdma_usart2_tx;
-extern DMA_HandleTypeDef hdma_usart6_tx;
-extern DMA_HandleTypeDef hdma_usart6_rx;
-extern UART_HandleTypeDef huart5;
-extern UART_HandleTypeDef huart2;
-extern UART_HandleTypeDef huart6;
+extern SPI_HandleTypeDef hspi1;
 
 /******************************************************************************/
-/*            Cortex-M4 Processor Interruption and Exception Handlers         */
+/*            Cortex-M4 Processor Interruption and Exception Handlers         */ 
 /******************************************************************************/
 
-void EXTI0_IRQHandler(void)
+/**
+* @brief This function handles System tick timer.
+*/
+void SysTick_Handler(void)
 {
-  HAL_NVIC_ClearPendingIRQ(EXTI0_IRQn);
-  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
+  /* USER CODE BEGIN SysTick_IRQn 0 */
+
+  /* USER CODE END SysTick_IRQn 0 */
+  HAL_IncTick();
+  osSystickHandler();
+  /* USER CODE BEGIN SysTick_IRQn 1 */
+
+  /* USER CODE END SysTick_IRQn 1 */
 }
 
-
-#ifdef SENSORS
-void EXTI1_IRQHandler(void)
-{
-  HAL_NVIC_ClearPendingIRQ(EXTI1_IRQn);
-  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_1);
-}
+/******************************************************************************/
+/* STM32F4xx Peripheral Interrupt Handlers                                    */
+/* Add here the Interrupt Handlers for the used peripherals.                  */
+/* For the available peripheral interrupt handler names,                      */
+/* please refer to the startup file (startup_stm32f4xx.s).                    */
+/******************************************************************************/
 
 /**
-* @brief This function handles EXTI Line3 interrupt.
+* @brief This function handles RCC global interrupt.
 */
-void EXTI3_IRQHandler(void)
+void RCC_IRQHandler(void)
 {
-  HAL_NVIC_ClearPendingIRQ(EXTI3_IRQn);
-  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_3);
-}
+  /* USER CODE BEGIN RCC_IRQn 0 */
 
-/**
-* @brief This function handles I2C1 error interrupt.
-*/
-void I2C1_ER_IRQHandler(void)
-{
-  HAL_NVIC_ClearPendingIRQ(I2C1_ER_IRQn);
-  HAL_I2C_ER_IRQHandler(&hi2c1);
+  /* USER CODE END RCC_IRQn 0 */
+  /* USER CODE BEGIN RCC_IRQn 1 */
+
+  /* USER CODE END RCC_IRQn 1 */
 }
 
 /**
@@ -95,43 +91,55 @@ void I2C1_ER_IRQHandler(void)
 */
 void I2C1_EV_IRQHandler(void)
 {
-  HAL_NVIC_ClearPendingIRQ(I2C1_EV_IRQn);
+  /* USER CODE BEGIN I2C1_EV_IRQn 0 */
+
+  /* USER CODE END I2C1_EV_IRQn 0 */
   HAL_I2C_EV_IRQHandler(&hi2c1);
+  /* USER CODE BEGIN I2C1_EV_IRQn 1 */
+
+  /* USER CODE END I2C1_EV_IRQn 1 */
 }
-
-#endif
-
-
-#if 0
-/**
-* @brief This function handles SPI2 global interrupt.
-*/
-void SPI2_IRQHandler(void)
-{
-  HAL_NVIC_ClearPendingIRQ(SPI2_IRQn);
-  HAL_SPI_IRQHandler(&hspi2);
-}
-#endif
-
-// Common part
 
 /**
-* @brief This function handles System tick timer.
+* @brief This function handles I2C1 error interrupt.
 */
-void SysTick_Handler(void)
+void I2C1_ER_IRQHandler(void)
 {
-  xPortSysTickHandler();
-  HAL_IncTick();
+  /* USER CODE BEGIN I2C1_ER_IRQn 0 */
+
+  /* USER CODE END I2C1_ER_IRQn 0 */
+  HAL_I2C_ER_IRQHandler(&hi2c1);
+  /* USER CODE BEGIN I2C1_ER_IRQn 1 */
+
+  /* USER CODE END I2C1_ER_IRQn 1 */
 }
 
+/**
+* @brief This function handles SPI1 global interrupt.
+*/
+void SPI1_IRQHandler(void)
+{
+  /* USER CODE BEGIN SPI1_IRQn 0 */
+
+  /* USER CODE END SPI1_IRQn 0 */
+  HAL_SPI_IRQHandler(&hspi1);
+  /* USER CODE BEGIN SPI1_IRQn 1 */
+
+  /* USER CODE END SPI1_IRQn 1 */
+}
 
 /**
 * @brief This function handles Ethernet global interrupt.
 */
 void ETH_IRQHandler(void)
 {
-  HAL_NVIC_ClearPendingIRQ(ETH_IRQn);
+  /* USER CODE BEGIN ETH_IRQn 0 */
+
+  /* USER CODE END ETH_IRQn 0 */
   HAL_ETH_IRQHandler(&heth);
+  /* USER CODE BEGIN ETH_IRQn 1 */
+
+  /* USER CODE END ETH_IRQn 1 */
 }
 
 /**
@@ -139,91 +147,30 @@ void ETH_IRQHandler(void)
 */
 void ETH_WKUP_IRQHandler(void)
 {
-  HAL_NVIC_ClearPendingIRQ(ETH_WKUP_IRQn);
+  /* USER CODE BEGIN ETH_WKUP_IRQn 0 */
+
+  /* USER CODE END ETH_WKUP_IRQn 0 */
   HAL_ETH_IRQHandler(&heth);
-}
+  /* USER CODE BEGIN ETH_WKUP_IRQn 1 */
 
-#ifdef MOTORS
-
-/**
-* @brief This function handles DMA1 Stream0 global interrupt.
-*/
-void DMA1_Stream0_IRQHandler(void)
-{
-  HAL_NVIC_ClearPendingIRQ(DMA1_Stream0_IRQn);
-  HAL_DMA_IRQHandler(&hdma_uart5_rx);
+  /* USER CODE END ETH_WKUP_IRQn 1 */
 }
 
 /**
-* @brief This function handles DMA1 Stream6 global interrupt.
+* @brief This function handles USB On The Go FS global interrupt.
 */
-void DMA1_Stream6_IRQHandler(void)
+void OTG_FS_IRQHandler(void)
 {
-  HAL_NVIC_ClearPendingIRQ(DMA1_Stream6_IRQn);
-  HAL_DMA_IRQHandler(&hdma_usart2_tx);
+  /* USER CODE BEGIN OTG_FS_IRQn 0 */
+
+  /* USER CODE END OTG_FS_IRQn 0 */
+  HAL_PCD_IRQHandler(&hpcd_USB_OTG_FS);
+  /* USER CODE BEGIN OTG_FS_IRQn 1 */
+
+  /* USER CODE END OTG_FS_IRQn 1 */
 }
 
-/**
-* @brief This function handles UART5 global interrupt.
-*/
-void UART5_IRQHandler(void)
-{
-  HAL_NVIC_ClearPendingIRQ(UART5_IRQn);
-  HAL_UART_IRQHandler(&huart5);
-}
+/* USER CODE BEGIN 1 */
 
-/**
-* @brief This function handles DMA2 Stream6 global interrupt.
-*/
-void DMA2_Stream6_IRQHandler(void)
-{
-  HAL_NVIC_ClearPendingIRQ(DMA2_Stream6_IRQn);
-  HAL_DMA_IRQHandler(&hdma_usart6_tx);
-}
-
-/**
-* @brief This function handles DMA2 Stream1 global interrupt.
-*/
-void DMA2_Stream1_IRQHandler(void)
-{
-  HAL_NVIC_ClearPendingIRQ(DMA2_Stream1_IRQn);
-  HAL_DMA_IRQHandler(&hdma_usart6_rx);
-}
-
-/**
-* @brief This function handles DMA1 Stream5 global interrupt.
-*/
-void DMA1_Stream5_IRQHandler(void)
-{
-  HAL_NVIC_ClearPendingIRQ(DMA1_Stream5_IRQn);
-  HAL_DMA_IRQHandler(&hdma_usart2_rx);
-}
-
-/**
-* @brief This function handles USART2 global interrupt.
-*/
-void USART2_IRQHandler(void)
-{
-  HAL_NVIC_ClearPendingIRQ(USART2_IRQn);
-  HAL_UART_IRQHandler(&huart2);
-}
-
-/**
-* @brief This function handles DMA1 Stream7 global interrupt.
-*/
-void DMA1_Stream7_IRQHandler(void)
-{
-  HAL_NVIC_ClearPendingIRQ(DMA1_Stream7_IRQn);
-  HAL_DMA_IRQHandler(&hdma_uart5_tx);
-}
-
-/**
-* @brief This function handles USART6 global interrupt.
-*/
-void USART6_IRQHandler(void)
-{
-  HAL_NVIC_ClearPendingIRQ(USART6_IRQn);
-  HAL_UART_IRQHandler(&huart6);
-}
-
-#endif
+/* USER CODE END 1 */
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

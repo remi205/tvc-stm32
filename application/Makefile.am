@@ -2,7 +2,7 @@
 lib_LIBRARIES = libapplication.a
 
 ## LIB_USB plus tard on le fera mieux 
-libapplication_a_SOURCES = usb_device.c usbd_cdc_if.c usbd_conf.c usbd_desc.c
+libapplication_a_SOURCES = StartThread.cpp udp_layer.cpp MotorThread.cpp LowPower.c FifoBuffer.cpp
 
 if IPV4
 libapplication_a_SOURCES  += StartThread.c FifoBuffer.cpp Lowpower.c MotorThread.cpp udp_layer.cpp

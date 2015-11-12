@@ -73,12 +73,16 @@ LIB_FREERTOS = FreeRTOS/Source/libfreertos.a FreeRTOS/Source/portable/MemMang/li
 INC_FREERTOS = -I$(top_srcdir)/CMSIS/Include -I$(top_srcdir)/FreeRTOS/Source/CMSIS_RTOS -I$(top_srcdir)/FreeRTOS/Source/include
 endif
 
+if USB_DEV_CDC
+SUBDIRS += UsbDevice
+INC_USB = UsbDevice
+LIB_USB = libusbdevice.a
+endif
+
 
 ### TOTO : STM32F4xx_HAL_Driver une macro pour cela
 ### TOTO = $(HAL_PATH) = STM32$(FAMILLY)xx_HAL_Driver
 SUBDIRS += application bsp over-hal 
-
-
 
 AM_CFLAGS +=-O3 -Wall -Wpointer-arith -Wstrict-prototypes -Winline -Wundef -g -I$(top_srcdir)/Inc -I../Inc -I$(top_srcdir)/$(PORT_INC) -I$(top_srcdir)/tvc-macros $(INC_IP) $(INC_FREERTOS) -DSTM32$(PRODUCT)xx
 AM_CPPFLAGS += -ffunction-sections -fdata-sections -fno-exceptions  -I$(top_srcdir)/Inc -I../Inc  -I$(top_srcdir)/$(PORT_INC) -I$(top_srcdir)/tvc-macros $(INC_IP) $(INC_FREERTOS) -DSTM32$(PRODUCT)xx
@@ -92,4 +96,4 @@ essai_stm32_SOURCES =
 ##  -DSTM32$(STM32)xx donne STM32F407xx pour la HAL
 essai_stm32_LDFLAGS =-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Wl,-Map,essai_stm32.map -T$(top_srcdir)/target/stm32-mem/$(WANT_STM32) -T$(LD_SCRIPT) -DSTM32$(PRODUCT)xx $(LIB_FREERTOS) 
 
-essai_stm32_LDADD = bsp/libbsp.a application/libapplication.a over-hal/libover_hal.a  $(LIB_HAL) $(LIBPORT) $(LIB_FREERTOS) $(LIB_IP) FreeRTOS/Source/libfreertos.a FreeRTOS/Source/portable/MemMang/libmem.a FreeRTOS/Source/CMSIS_RTOS/libcmsis_os.a 
+essai_stm32_LDADD = bsp/libbsp.a application/libapplication.a over-hal/libover_hal.a  $(LIB_HAL) $(LIBPORT) $(LIB_FREERTOS) $(LIB_IP) FreeRTOS/Source/libfreertos.a FreeRTOS/Source/portable/MemMang/libmem.a FreeRTOS/Source/CMSIS_RTOS/libcmsis_os.a $(LIB_USB)

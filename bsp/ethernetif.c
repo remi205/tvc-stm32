@@ -55,10 +55,6 @@
 #define IFNAME0 's'
 #define IFNAME1 't'
 
-/* USER CODE BEGIN 1 */
-
-/* USER CODE END 1 */
-
 /* Private variables ---------------------------------------------------------*/
 /* Ethernet Rx MA Descriptor */
 ETH_DMADescTypeDef  DMARxDscrTab[ETH_RXBUFNB] __attribute__ ((aligned (4)));
@@ -71,9 +67,6 @@ uint8_t Rx_Buff[ETH_RXBUFNB][ETH_RX_BUF_SIZE] __attribute__ ((aligned (4)));
 
 /* Ethernet Transmit Buffer */
 uint8_t Tx_Buff[ETH_TXBUFNB][ETH_TX_BUF_SIZE] __attribute__ ((aligned (4))); 
-/* USER CODE BEGIN 2 */
-
-/* USER CODE END 2 */
 
 /* Semaphore to signal incoming packets */
 osSemaphoreId s_xSemaphore = NULL;
@@ -120,15 +113,17 @@ static void low_level_init(struct netif *netif)
    uint8_t MACAddr[6] ;
   heth.Instance = ETH;
   heth.Init.AutoNegotiation = ETH_AUTONEGOTIATION_ENABLE;
-  heth.Init.Speed = ETH_SPEED_10M;
+  heth.Init.Speed = ETH_SPEED_100M;
   heth.Init.DuplexMode = ETH_MODE_FULLDUPLEX;
   heth.Init.PhyAddress = 1;
+
   MACAddr[0] = 0x00;
   MACAddr[1] = 0x80;
   MACAddr[2] = 0xE1;
   MACAddr[3] = 0x00;
   MACAddr[4] = 0x00;
   MACAddr[5] = 0x00;
+
   heth.Init.MACAddr = &MACAddr[0];
   heth.Init.RxMode = ETH_RXINTERRUPT_MODE;
   heth.Init.ChecksumMode = ETH_CHECKSUM_BY_HARDWARE;

@@ -68,13 +68,11 @@ void MX_GPIO_Init(void)
   __GPIOB_CLK_ENABLE();
   __GPIOD_CLK_ENABLE();
 
-  /*Configure GPIO pin : PE2 */
+  /*Configure GPIO pin : PE2 Reset Phy */
   GPIO_InitStruct.Pin = GPIO_PIN_2;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
-
-
 
   /*Configure GPIO pins : PE3 PE4 PE5 PE6 
                            PE7 PE8 PE9 PE10 
