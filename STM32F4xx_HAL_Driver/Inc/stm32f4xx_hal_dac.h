@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_dac.h
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   Header file of DAC HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -45,7 +45,7 @@
 
 #if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) ||\
     defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) ||\
-	defined(STM32F446xx) || defined(STM32F469xx)
+	defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx)
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal_def.h"
@@ -210,16 +210,14 @@ typedef struct
   * @param  __DAC_Channel__: specifies the DAC channel
   * @retval None
   */
-#define __HAL_DAC_ENABLE(__HANDLE__, __DAC_Channel__) \
-((__HANDLE__)->Instance->CR |=  (DAC_CR_EN1 << (__DAC_Channel__)))
+#define __HAL_DAC_ENABLE(__HANDLE__, __DAC_Channel__) ((__HANDLE__)->Instance->CR |=  (DAC_CR_EN1 << (__DAC_Channel__)))
 
 /** @brief Disable the DAC channel
   * @param  __HANDLE__: specifies the DAC handle
   * @param  __DAC_Channel__: specifies the DAC channel.
   * @retval None
   */
-#define __HAL_DAC_DISABLE(__HANDLE__, __DAC_Channel__) \
-((__HANDLE__)->Instance->CR &=  ~(DAC_CR_EN1 << (__DAC_Channel__)))
+#define __HAL_DAC_DISABLE(__HANDLE__, __DAC_Channel__) ((__HANDLE__)->Instance->CR &=  ~(DAC_CR_EN1 << (__DAC_Channel__)))
 
 /** @brief Enable the DAC interrupt
   * @param  __HANDLE__: specifies the DAC handle
@@ -234,6 +232,16 @@ typedef struct
   * @retval None
   */
 #define __HAL_DAC_DISABLE_IT(__HANDLE__, __INTERRUPT__) (((__HANDLE__)->Instance->CR) &= ~(__INTERRUPT__))
+
+/** @brief  Checks if the specified DAC interrupt source is enabled or disabled.
+  * @param __HANDLE__: DAC handle
+  * @param __INTERRUPT__: DAC interrupt source to check
+  *          This parameter can be any combination of the following values:
+  *            @arg DAC_IT_DMAUDR1: DAC channel 1 DMA underrun interrupt
+  *            @arg DAC_IT_DMAUDR2: DAC channel 2 DMA underrun interrupt
+  * @retval State of interruption (SET or RESET)
+  */
+#define __HAL_DAC_GET_IT_SOURCE(__HANDLE__, __INTERRUPT__) (((__HANDLE__)->Instance->CR & (__INTERRUPT__)) == (__INTERRUPT__))
 
 /** @brief  Get the selected DAC's flag status.
   * @param  __HANDLE__: specifies the DAC handle.
@@ -383,7 +391,9 @@ void HAL_DAC_DMAUnderrunCallbackCh1(DAC_HandleTypeDef *hdac);
 /**
   * @}
   */
-#endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx || STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F446xx | STM32F469xx */
+#endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx ||\
+          STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx ||\
+          STM32F446xx || STM32F469xx || STM32F479xx */
 
 /**
   * @}

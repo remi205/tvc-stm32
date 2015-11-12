@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_fmpi2c.c
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   FMPI2C HAL module driver.
   *    
   *          This file provides firmware functions to manage the following 
@@ -152,7 +152,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -193,7 +193,7 @@
 
 #ifdef HAL_FMPI2C_MODULE_ENABLED
 
-#if defined(STM32F446xx)
+#if defined(STM32F446xx) || defined(STM32F412xG)
     
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -253,12 +253,12 @@ static void FMPI2C_TransferConfig(FMPI2C_HandleTypeDef *hfmpi2c,  uint16_t DevAd
   * @{
   */
 
-/** @defgroup FMPI2C_Exported_Functions_Group1 Initialization/de-initialization functions 
+/** @defgroup FMPI2C_Exported_Functions_Group1 Initialization and de-initialization functions 
  *  @brief    Initialization and Configuration functions 
  *
 @verbatim    
  ===============================================================================
-              ##### Initialization/de-initialization functions #####
+              ##### Initialization and de-initialization functions #####
  ===============================================================================
     [..]  This subsection provides a set of functions allowing to initialize and 
           de-initialiaze the FMPI2Cx peripheral:
@@ -311,6 +311,8 @@ HAL_StatusTypeDef HAL_FMPI2C_Init(FMPI2C_HandleTypeDef *hfmpi2c)
 
   if(hfmpi2c->State == HAL_FMPI2C_STATE_RESET)
   {
+    /* Allocate lock resource and initialize it */
+    hfmpi2c->Lock = HAL_UNLOCKED;
     /* Init the low level hardware : GPIO, CLOCK, CORTEX...etc */
     HAL_FMPI2C_MspInit(hfmpi2c);
   }
@@ -4083,7 +4085,7 @@ static void FMPI2C_TransferConfig(FMPI2C_HandleTypeDef *hfmpi2c,  uint16_t DevAd
 /**
   * @}
   */
-#endif /* STM32F446xx */
+#endif /* STM32F446xx || STM32F412xG */
 #endif /* HAL_FMPI2C_MODULE_ENABLED */
 /**
   * @}

@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_dcmi_ex.h
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   Header file of DCMI Extension HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -43,6 +43,9 @@
  extern "C" {
 #endif
 
+#if defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F427xx) || defined(STM32F437xx) ||\
+    defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F446xx) || defined(STM32F469xx) ||\
+    defined(STM32F479xx)
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal_def.h"
@@ -99,7 +102,7 @@ typedef struct
 
   uint32_t JPEGMode;                    /*!< Enable or Disable the JPEG mode.                                
                                              This parameter can be a value of @ref DCMI_MODE_JPEG            */
-#if defined(STM32F446xx) 
+#if defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx)
   uint32_t ByteSelectMode;              /*!< Specifies the data to be captured by the interface 
                                             This parameter can be a value of @ref DCMIEx_Byte_Select_Mode      */
                                             
@@ -112,15 +115,15 @@ typedef struct
   uint32_t LineSelectStart;             /*!< Specifies if the line of data to be captured by the interface is even or odd
                                             This parameter can be a value of @ref DCMIEx_Line_Select_Start     */
                                                                                         
-#endif /* STM32F446xx */
+#endif /* STM32F446xx || STM32F469xx || STM32F479xx */
 }DCMI_InitTypeDef;
 
 /**
   * @}
   */
 
-#if defined(STM32F446xx)
 /* Exported constants --------------------------------------------------------*/
+#if defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx)
 /** @defgroup DCMIEx_Exported_Constants DCMI Exported Constants
   * @{
   */
@@ -128,39 +131,41 @@ typedef struct
 /** @defgroup DCMIEx_Byte_Select_Mode DCMI Byte Select Mode
   * @{
   */
-#define HAL_DCMI_BSM_ALL         ((uint32_t)0x00000000)    /*!< Interface captures all received data  */
-#define HAL_DCMI_BSM_3_4         ((uint32_t)DCMI_CR_BSM_0)    /*!< Interface captures every other byte from the received data */
-#define HAL_DCMI_BSM_1_4         ((uint32_t)DCMI_CR_BSM_1)    /*!< Interface captures one byte out of four */
-#define HAL_DCMI_BSM_2_4         ((uint32_t)(DCMI_CR_BSM_0 | DCMI_CR_BSM_1))    /*!< Interface captures two bytes out of four */
+#define DCMI_BSM_ALL                 ((uint32_t)0x00000000) /*!< Interface captures all received data */
+#define DCMI_BSM_OTHER               ((uint32_t)DCMI_CR_BSM_0) /*!< Interface captures every other byte from the received data */
+#define DCMI_BSM_ALTERNATE_4         ((uint32_t)DCMI_CR_BSM_1) /*!< Interface captures one byte out of four */
+#define DCMI_BSM_ALTERNATE_2         ((uint32_t)(DCMI_CR_BSM_0 | DCMI_CR_BSM_1)) /*!< Interface captures two bytes out of four */
+
 /**
   * @}
   */
 
-/** @defgroup DCMIEx_Byte_Select_Start DCMI Byte Select Mode
+/** @defgroup DCMIEx_Byte_Select_Start DCMI Byte Select Start
   * @{
   */ 
-#define HAL_DCMI_OEBS_EVEN          ((uint32_t)0x00000000)  /*!< Interface captures first data (byte or double byte) from the frame/line start,
-                                                                 second one being dropped  */
-#define HAL_DCMI_OEBS_ODD           ((uint32_t)DCMI_CR_OEBS)  /*!< Interface captures second data (byte or double byte) from the frame/line start,
-                                                                 first one being dropped */
+#define DCMI_OEBS_ODD               ((uint32_t)0x00000000) /*!< Interface captures first data from the frame/line start, second one being dropped */
+#define DCMI_OEBS_EVEN              ((uint32_t)DCMI_CR_OEBS) /*!< Interface captures second data from the frame/line start, first one being dropped */
+
 /**
   * @}
   */
 
-/** @defgroup DCMIEx_Line_Select_Mode DCMI Byte Select Mode
+/** @defgroup DCMIEx_Line_Select_Mode DCMI Line Select Mode
   * @{
   */
-#define HAL_DCMI_LSM_ALL         ((uint32_t)0x00000000)     /*!< Interface captures all received lines  */
-#define HAL_DCMI_LSM_1_2         ((uint32_t)DCMI_CR_LSM)    /*!< Interface captures one line out of two */
+#define DCMI_LSM_ALL                 ((uint32_t)0x00000000) /*!< Interface captures all received lines */
+#define DCMI_LSM_ALTERNATE_2         ((uint32_t)DCMI_CR_LSM) /*!< Interface captures one line out of two */
+
 /**
   * @}
   */
 
-/** @defgroup DCMIEx_Line_Select_Start DCMI Byte Select Mode
+/** @defgroup DCMIEx_Line_Select_Start DCMI Line Select Start
   * @{
   */ 
-#define HAL_DCMI_OELS_EVEN          ((uint32_t)0x00000000)  /*!< Interface captures first line after the frame start, second one being dropped */
-#define HAL_DCMI_OELS_ODD           ((uint32_t)DCMI_CR_OELS)  /*!< Interface captures second line from the frame start, first one being dropped */
+#define DCMI_OELS_ODD               ((uint32_t)0x00000000) /*!< Interface captures first line from the frame start, second one being dropped */
+#define DCMI_OELS_EVEN              ((uint32_t)DCMI_CR_OELS) /*!< Interface captures second line from the frame start, first one being dropped */
+
 /**
   * @}
   */
@@ -175,28 +180,32 @@ typedef struct
 /* Private variables ---------------------------------------------------------*/
 /* Private constants ---------------------------------------------------------*/   
 /* Private macro -------------------------------------------------------------*/
-/** @deftogroup DCMIEx_Private_Macros DCMI Extended Private Macros
+
+/** @defgroup DCMIEx_Private_Macros DCMI Extended Private Macros
   * @{
   */
-#define IS_DCMI_BYTE_SELECT_MODE(MODE)(((MODE) == HAL_DCMI_BSM_ALL) || \
-                                       ((MODE) == HAL_DCMI_BSM_3_4) || \
-                                       ((MODE) == HAL_DCMI_BSM_1_4) || \
-                                       ((MODE) == HAL_DCMI_BSM_2_4))
+#define IS_DCMI_BYTE_SELECT_MODE(MODE)(((MODE) == DCMI_BSM_ALL) || \
+                                       ((MODE) == DCMI_BSM_OTHER) || \
+                                       ((MODE) == DCMI_BSM_ALTERNATE_4) || \
+                                       ((MODE) == DCMI_BSM_ALTERNATE_2))
                                                                                                 
-#define IS_DCMI_BYTE_SELECT_START(POLARITY)(((POLARITY) == HAL_DCMI_OEBS_EVEN) || \
-                                            ((POLARITY) == HAL_DCMI_OEBS_ODD))
+#define IS_DCMI_BYTE_SELECT_START(POLARITY)(((POLARITY) == DCMI_OEBS_ODD) || \
+                                            ((POLARITY) == DCMI_OEBS_EVEN))
                               
-#define IS_DCMI_LINE_SELECT_MODE(MODE)(((MODE) == HAL_DCMI_LSM_ALL) || \
-                                       ((MODE) == HAL_DCMI_LSM_1_2))
+#define IS_DCMI_LINE_SELECT_MODE(MODE)(((MODE) == DCMI_LSM_ALL) || \
+                                       ((MODE) == DCMI_LSM_ALTERNATE_2))
                                       
-#define IS_DCMI_LINE_SELECT_START(POLARITY)(((POLARITY) == HAL_DCMI_OELS_EVEN) || \
-                                            ((POLARITY) == HAL_DCMI_OELS_ODD))
+#define IS_DCMI_LINE_SELECT_START(POLARITY)(((POLARITY) == DCMI_OELS_ODD) || \
+                                            ((POLARITY) == DCMI_OELS_EVEN))
+#endif /* STM32F446xx || STM32F469xx || STM32F479xx */
 /**
   * @}
   */
-#endif /* STM32F446xx */
-/* Private functions ---------------------------------------------------------*/
 
+/* Private functions ---------------------------------------------------------*/
+#endif /* STM32F407xx || STM32F417xx || STM32F427xx || STM32F437xx ||\
+          STM32F429xx || STM32F439xx || STM32F446xx || STM32F469xx ||\
+          STM32F479xx */
 /**
   * @}
   */

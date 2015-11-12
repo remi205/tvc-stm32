@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_cec.h
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   Header file of CEC HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -367,7 +367,7 @@ typedef struct
 
 /** @brief  Checks whether or not the specified CEC interrupt flag is set.
   * @param  __HANDLE__: specifies the CEC Handle.
-  * @param  __INTERRUPT__: specifies the interrupt to check.
+  * @param  __FLAG__: specifies the interrupt to check.
   *            @arg CEC_FLAG_TXACKE: Tx Missing acknowledge Error
   *            @arg CEC_FLAG_TXERR: Tx Error.
   *            @arg CEC_FLAG_TXUDR: Tx-Buffer Underrun.

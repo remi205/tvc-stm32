@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_i2s_ex.c
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   I2S HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of I2S extension peripheral:
@@ -74,7 +74,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -113,11 +113,12 @@
   * @{
   */
 
-#ifdef HAL_I2S_MODULE_ENABLED    
+#ifdef HAL_I2S_MODULE_ENABLED
 
 #if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) ||\
     defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) ||\
-    defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F469xx)
+    defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F469xx) ||\
+    defined(STM32F479xx) || defined(STM32F412xG)
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -127,8 +128,7 @@
 /* Private functions ---------------------------------------------------------*/
 /** @addtogroup I2SEx_Private_Functions
   * @{
-  */ 
-    
+  */
 /**
   * @}
   */
@@ -205,6 +205,8 @@ HAL_StatusTypeDef HAL_I2S_Init(I2S_HandleTypeDef *hi2s)
   
   if(hi2s->State == HAL_I2S_STATE_RESET)
   {
+    /* Allocate lock resource and initialize it */
+    hi2s->Lock = HAL_UNLOCKED;
     /* Init the low level hardware : GPIO, CLOCK, CORTEX */
     HAL_I2S_MspInit(hi2s);
   }
@@ -274,8 +276,21 @@ HAL_StatusTypeDef HAL_I2S_Init(I2S_HandleTypeDef *hi2s)
   /* Configure the I2S with the I2S_InitStruct values */
   tmpreg |= (uint32_t)(SPI_I2SCFGR_I2SMOD | hi2s->Init.Mode | hi2s->Init.Standard | hi2s->Init.DataFormat | hi2s->Init.CPOL);
   
+#if defined(SPI_I2SCFGR_ASTRTEN)
+  if (hi2s->Init.Standard == I2S_STANDARD_PCM_SHORT) 
+  {
+  /* Write to SPIx I2SCFGR */  
+  hi2s->Instance->I2SCFGR = tmpreg | SPI_I2SCFGR_ASTRTEN;
+  }
+  else
+  {
+  /* Write to SPIx I2SCFGR */  
+  hi2s->Instance->I2SCFGR = tmpreg;    
+  }
+#else
   /* Write to SPIx I2SCFGR */  
   hi2s->Instance->I2SCFGR = tmpreg;
+#endif
       
   /* Configure the I2S extended if the full duplex mode is enabled */
   assert_param(IS_I2S_FULLDUPLEX_MODE(hi2s->Init.FullDuplexMode));
@@ -767,6 +782,7 @@ HAL_StatusTypeDef HAL_I2SEx_TransmitReceive_DMA(I2S_HandleTypeDef *hi2s, uint16_
     return HAL_BUSY;
   }
 }
+
 /**
   * @brief Pauses the audio stream playing from the Media.
   * @param  hi2s: pointer to a I2S_HandleTypeDef structure that contains
@@ -921,7 +937,8 @@ HAL_StatusTypeDef HAL_I2S_DMAStop(I2S_HandleTypeDef *hi2s)
   */
 void HAL_I2S_IRQHandler(I2S_HandleTypeDef *hi2s)
 {  
-  uint32_t tmp1 = 0, tmp2 = 0;    
+  uint32_t tmp1 = 0, tmp2 = 0;
+  __IO uint32_t tmpreg1 = 0;    
   if(hi2s->Init.FullDuplexMode != I2S_FULLDUPLEXMODE_ENABLE)
   {
     if(hi2s->State == HAL_I2S_STATE_BUSY_RX)
@@ -988,13 +1005,14 @@ void HAL_I2S_IRQHandler(I2S_HandleTypeDef *hi2s)
 
       tmp1 = I2SxEXT(hi2s->Instance)->SR & SPI_SR_OVR;
       tmp2 = I2SxEXT(hi2s->Instance)->CR2 & I2S_IT_ERR;
-      /* I2Sext Overrun error interrupt occurred ------------------------------*/
+      /* I2Sext Overrun error interrupt occurred -----------------------------*/
       if((tmp1 == SPI_SR_OVR) && (tmp2 == I2S_IT_ERR))
       {
         /* Clear I2Sext OVR Flag */ 
-        I2SxEXT(hi2s->Instance)->DR;
-        I2SxEXT(hi2s->Instance)->SR;
+        tmpreg1 = I2SxEXT(hi2s->Instance)->DR;
+        tmpreg1 = I2SxEXT(hi2s->Instance)->SR;
         hi2s->ErrorCode |= HAL_I2SEX_ERROR_OVR;
+        UNUSED(tmpreg1);
       }
 
       tmp1 = __HAL_I2S_GET_FLAG(hi2s, I2S_FLAG_TXE);
@@ -1014,7 +1032,7 @@ void HAL_I2S_IRQHandler(I2S_HandleTypeDef *hi2s)
 
       tmp1 = __HAL_I2S_GET_FLAG(hi2s, I2S_FLAG_UDR);
       tmp2 = __HAL_I2S_GET_IT_SOURCE(hi2s, I2S_IT_ERR);
-      /* I2S Underrun error interrupt occurred --------------------------------*/
+      /* I2S Underrun error interrupt occurred -------------------------------*/
       if((tmp1 != RESET) && (tmp2 != RESET))
       {
         __HAL_I2S_CLEAR_UDRFLAG(hi2s);
@@ -1041,7 +1059,7 @@ void HAL_I2S_IRQHandler(I2S_HandleTypeDef *hi2s)
 
       tmp1 = __HAL_I2S_GET_FLAG(hi2s, I2S_FLAG_OVR);
       tmp2 = __HAL_I2S_GET_IT_SOURCE(hi2s, I2S_IT_ERR);
-      /* I2S Overrun error interrupt occurred ---------------------------------*/
+      /* I2S Overrun error interrupt occurred --------------------------------*/
       if((tmp1 != RESET) && (tmp2 != RESET))
       {
         __HAL_I2S_CLEAR_OVRFLAG(hi2s);
@@ -1065,12 +1083,13 @@ void HAL_I2S_IRQHandler(I2S_HandleTypeDef *hi2s)
 
       tmp1 = I2SxEXT(hi2s->Instance)->SR & SPI_SR_UDR;
       tmp2 = I2SxEXT(hi2s->Instance)->CR2 & I2S_IT_ERR;
-      /* I2Sext Underrun error interrupt occurred -----------------------------*/
+      /* I2Sext Underrun error interrupt occurred ----------------------------*/
       if((tmp1 == SPI_SR_UDR) && (tmp2 == I2S_IT_ERR))
       {
         /* Clear I2Sext UDR Flag */ 
-        I2SxEXT(hi2s->Instance)->SR;
+        tmpreg1 = I2SxEXT(hi2s->Instance)->SR;
         hi2s->ErrorCode |= HAL_I2SEX_ERROR_UDR;
+        UNUSED(tmpreg1);
       }
     }
   }
@@ -1083,6 +1102,7 @@ void HAL_I2S_IRQHandler(I2S_HandleTypeDef *hi2s)
     HAL_I2S_ErrorCallback(hi2s);
   }
 }
+
 /**
   * @}
   */
@@ -1201,7 +1221,8 @@ HAL_StatusTypeDef I2SEx_TransmitReceive_IT(I2S_HandleTypeDef *hi2s)
     return HAL_BUSY; 
   }
 }
-#endif /* STM32F40xxx/ STM32F41xxx/ STM32F42xxx/ STM32F43xxx/ STM32F401xx/ STM32F411xx /STM32F469xx */
+#endif /* STM32F40xxx || STM32F41xxx || STM32F42xxx || STM32F43xxx || STM32F401xx ||\
+          STM32F411xx || STM32F469xx || STM32F479xx || STM32F412xG */
 /**
   * @brief DMA I2S transmit process complete callback 
   * @param  hdma: pointer to a DMA_HandleTypeDef structure that contains
@@ -1220,13 +1241,15 @@ void I2S_DMATxCplt(DMA_HandleTypeDef *hdma)
     hi2s->Instance->CR2 &= (uint32_t)(~SPI_CR2_TXDMAEN);
 #if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) ||\
     defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) ||\
-    defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F469xx)
+    defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F469xx) ||\
+    defined(STM32F479xx) || defined(STM32F412xG)
     if(hi2s->Init.FullDuplexMode == I2S_FULLDUPLEXMODE_ENABLE)
     {
       /* Disable Rx DMA Request for the slave*/  
       I2SxEXT(hi2s->Instance)->CR2 &= (uint32_t)(~SPI_CR2_RXDMAEN);
     }
-#endif /* STM32F40xxx/ STM32F41xxx/ STM32F42xxx/ STM32F43xxx/ STM32F401xx/ STM32F411xx /STM32F469xx */
+#endif /* STM32F40xxx || STM32F41xxx || STM32F42xxx || STM32F43xxx || STM32F401xx || STM32F411xx ||\
+          STM32F469xx || STM32F479xx || STM32F412xG */
     if(hi2s->State == HAL_I2S_STATE_BUSY_TX_RX)
     {
       if(hi2s->RxXferCount == 0)
@@ -1258,13 +1281,15 @@ void I2S_DMARxCplt(DMA_HandleTypeDef *hdma)
     hi2s->Instance->CR2 &= (uint32_t)(~SPI_CR2_RXDMAEN);
 #if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) ||\
     defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) ||\
-    defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F469xx)
+    defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F469xx) ||\
+    defined(STM32F479xx) || defined(STM32F412xG)
     if(hi2s->Init.FullDuplexMode == I2S_FULLDUPLEXMODE_ENABLE)
     {
       /* Disable Tx DMA Request for the slave*/  
       I2SxEXT(hi2s->Instance)->CR2 &= (uint32_t)(~SPI_CR2_TXDMAEN);
     }
-#endif /* STM32F40xxx/ STM32F41xxx/ STM32F42xxx/ STM32F43xxx/ STM32F401xx/ STM32F411xx /STM32F469xx */
+#endif /* STM32F40xxx || STM32F41xxx || STM32F42xxx || STM32F43xxx || STM32F401xx || STM32F411xx ||\
+          STM32F469xx || STM32F479xx || STM32F412xG */
     hi2s->RxXferCount = 0;
     if(hi2s->State == HAL_I2S_STATE_BUSY_TX_RX)
     {
@@ -1296,8 +1321,8 @@ uint32_t I2S_GetInputClock(I2S_HandleTypeDef *hi2s)
   /* This variable used to store the I2S_CK_x (value in Hz) */
   uint32_t i2ssourceclock = 0;
 
-  /* Configure SAI Clock based on SAI source clock selection */ 
-#if defined(STM32F446xx)
+  /* Configure 12S Clock based on I2S source clock selection */ 
+#if defined(STM32F446xx) || defined(STM32F412xG)
   switch(hi2s->Init.ClockSource)
   {
     case I2S_CLOCK_EXTERNAL :
@@ -1369,11 +1394,11 @@ uint32_t I2S_GetInputClock(I2S_HandleTypeDef *hi2s)
       break;
     }
   }
-#endif /* STM32F446xx */
+#endif /* STM32F446xx || STM32F412xG */
 
 #if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) ||\
     defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) ||\
-    defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F469xx)
+    defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F469xx) || defined(STM32F479xx)
       
   /* If an external I2S clock has to be used, the specific define should be set  
   in the project configuration or in the stm32f4xx_conf.h file */
@@ -1405,7 +1430,7 @@ uint32_t I2S_GetInputClock(I2S_HandleTypeDef *hi2s)
     /* I2S_CLK = PLLI2S_VCO Output/PLLI2SR */
     i2ssourceclock = (uint32_t)(vcooutput /(((RCC->PLLI2SCFGR & RCC_PLLI2SCFGR_PLLI2SR) >> 28) & (RCC_PLLI2SCFGR_PLLI2SR >> 28)));
   }
-#endif /* STM32F40xxx || STM32F41xxx || STM32F42xxx || STM32F43xxx || STM32F469xx */
+#endif /* STM32F40xxx || STM32F41xxx || STM32F42xxx || STM32F43xxx || STM32F469xx || STM32F479xx */
 
 #if defined(STM32F411xE)
       

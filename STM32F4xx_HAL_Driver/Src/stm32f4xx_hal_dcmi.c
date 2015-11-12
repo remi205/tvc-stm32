@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_dcmi.c
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   DCMI HAL module driver
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Digital Camera Interface (DCMI) peripheral:
@@ -63,7 +63,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -104,8 +104,8 @@
 #ifdef HAL_DCMI_MODULE_ENABLED
 
 #if defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F427xx) || defined(STM32F437xx) ||\
-    defined(STM32F429xx) || defined(STM32F439xx)  || defined(STM32F446xx) || defined(STM32F469xx)
-
+    defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F446xx) || defined(STM32F469xx) ||\
+    defined(STM32F479xx)
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 #define HAL_TIMEOUT_DCMI_STOP    ((uint32_t)1000)  /* 1s  */
@@ -160,25 +160,26 @@ __weak HAL_StatusTypeDef HAL_DCMI_Init(DCMI_HandleTypeDef *hdcmi)
   assert_param(IS_DCMI_CAPTURE_RATE(hdcmi->Init.CaptureRate));
   assert_param(IS_DCMI_EXTENDED_DATA(hdcmi->Init.ExtendedDataMode));
   assert_param(IS_DCMI_MODE_JPEG(hdcmi->Init.JPEGMode));
-               
+
   if(hdcmi->State == HAL_DCMI_STATE_RESET)
   {
+    /* Allocate lock resource and initialize it */
+    hdcmi->Lock = HAL_UNLOCKED;
     /* Init the low level hardware */
     HAL_DCMI_MspInit(hdcmi);
   } 
   
   /* Change the DCMI state */
   hdcmi->State = HAL_DCMI_STATE_BUSY; 
-                          /* Configures the HS, VS, DE and PC polarity */
-  hdcmi->Instance->CR &= ~(DCMI_CR_PCKPOL | DCMI_CR_HSPOL  | DCMI_CR_VSPOL  | DCMI_CR_EDM_0 |\
-                           DCMI_CR_EDM_1  | DCMI_CR_FCRC_0 | DCMI_CR_FCRC_1 | DCMI_CR_JPEG  |\
+  /* Configures the HS, VS, DE and PC polarity */
+  hdcmi->Instance->CR &= ~(DCMI_CR_PCKPOL | DCMI_CR_HSPOL  | DCMI_CR_VSPOL  | DCMI_CR_EDM_0 |
+                           DCMI_CR_EDM_1  | DCMI_CR_FCRC_0 | DCMI_CR_FCRC_1 | DCMI_CR_JPEG  |
                            DCMI_CR_ESS);
-                           
-  hdcmi->Instance->CR |=  (uint32_t)(hdcmi->Init.SynchroMode | hdcmi->Init.CaptureRate |\
-                                     hdcmi->Init.VSPolarity  | hdcmi->Init.HSPolarity  |\
-                                     hdcmi->Init.PCKPolarity | hdcmi->Init.ExtendedDataMode |\
+  hdcmi->Instance->CR |=  (uint32_t)(hdcmi->Init.SynchroMode | hdcmi->Init.CaptureRate | \
+                                     hdcmi->Init.VSPolarity  | hdcmi->Init.HSPolarity  | \
+                                     hdcmi->Init.PCKPolarity | hdcmi->Init.ExtendedDataMode | \
                                      hdcmi->Init.JPEGMode);
-                                     
+
   if(hdcmi->Init.SynchroMode == DCMI_SYNCHRO_EMBEDDED)
   {
     DCMI->ESCR = (((uint32_t)hdcmi->Init.SyncroCode.FrameStartCode)    |
@@ -607,10 +608,10 @@ __weak void HAL_DCMI_FrameEventCallback(DCMI_HandleTypeDef *hdcmi)
   * @brief  Configure the DCMI CROP coordinate.
   * @param  hdcmi: pointer to a DCMI_HandleTypeDef structure that contains
   *                the configuration information for DCMI.
-  * @param  YSize: DCMI Line number
-  * @param  XSize: DCMI Pixel per line
   * @param  X0:    DCMI window X offset
   * @param  Y0:    DCMI window Y offset
+  * @param  XSize: DCMI Pixel per line
+  * @param  YSize: DCMI Line number
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_DCMI_ConfigCROP(DCMI_HandleTypeDef *hdcmi, uint32_t X0, uint32_t Y0, uint32_t XSize, uint32_t YSize)
@@ -816,7 +817,9 @@ static void DCMI_DMAError(DMA_HandleTypeDef *hdma)
 /**
   * @}
   */
-#endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx || STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx  || STM32F446xx || STM32F469xx */
+#endif /* STM32F407xx || STM32F417xx || STM32F427xx || STM32F437xx ||\
+          STM32F429xx || STM32F439xx || STM32F446xx || STM32F469xx ||\
+          STM32F479xx */
 #endif /* HAL_DCMI_MODULE_ENABLED */
 /**
   * @}

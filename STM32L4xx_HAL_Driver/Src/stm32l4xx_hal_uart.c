@@ -230,9 +230,6 @@ HAL_StatusTypeDef HAL_UART_Init(UART_HandleTypeDef *huart)
 
   if(huart->State == HAL_UART_STATE_RESET)
   {
-    /* Allocate lock resource and initialize it */
-    huart->Lock = HAL_UNLOCKED;
-
     /* Init the low level hardware : GPIO, CLOCK */
     HAL_UART_MspInit(huart);
   }
@@ -285,9 +282,6 @@ HAL_StatusTypeDef HAL_HalfDuplex_Init(UART_HandleTypeDef *huart)
 
   if(huart->State == HAL_UART_STATE_RESET)
   {
-    /* Allocate lock resource and initialize it */
-    huart->Lock = HAL_UNLOCKED;
-  
     /* Init the low level hardware : GPIO, CLOCK */
     HAL_UART_MspInit(huart);
   }
@@ -361,9 +355,6 @@ HAL_StatusTypeDef HAL_LIN_Init(UART_HandleTypeDef *huart, uint32_t BreakDetectLe
 
   if(huart->State == HAL_UART_STATE_RESET)
   {
-    /* Allocate lock resource and initialize it */
-    huart->Lock = HAL_UNLOCKED;
-  
     /* Init the low level hardware : GPIO, CLOCK */
     HAL_UART_MspInit(huart);
   }
@@ -436,9 +427,6 @@ HAL_StatusTypeDef HAL_MultiProcessor_Init(UART_HandleTypeDef *huart, uint8_t Add
 
   if(huart->State == HAL_UART_STATE_RESET)
   {
-    /* Allocate lock resource and initialize it */
-    huart->Lock = HAL_UNLOCKED;
-  
     /* Init the low level hardware : GPIO, CLOCK */
     HAL_UART_MspInit(huart);
   }
@@ -514,9 +502,6 @@ HAL_StatusTypeDef HAL_UART_DeInit(UART_HandleTypeDef *huart)
 
   huart->ErrorCode = HAL_UART_ERROR_NONE;
   huart->State = HAL_UART_STATE_RESET;
-
-  /* Process Unlock */
-  __HAL_UNLOCK(huart);
 
   return HAL_OK;
 }
@@ -670,9 +655,6 @@ HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, uint8_t *pData, u
       huart->State = HAL_UART_STATE_READY;
     }
 
-    /* Process Unlocked */
-    __HAL_UNLOCK(huart);
-
     return HAL_OK;
   }
   else
@@ -751,9 +733,6 @@ HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, ui
     {
       huart->State = HAL_UART_STATE_READY;
     }
-    /* Process Unlocked */
-    __HAL_UNLOCK(huart);
-
     return HAL_OK;
   }
   else
@@ -798,9 +777,6 @@ HAL_StatusTypeDef HAL_UART_Transmit_IT(UART_HandleTypeDef *huart, uint8_t *pData
 
     /* Enable the UART Error Interrupt: (Frame error, noise error, overrun error) */
     __HAL_UART_ENABLE_IT(huart, UART_IT_ERR);
-
-    /* Process Unlocked */
-    __HAL_UNLOCK(huart);
 
     /* Enable the UART Transmit Data Register Empty Interrupt */
     __HAL_UART_ENABLE_IT(huart, UART_IT_TXE);
@@ -855,9 +831,6 @@ HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData,
 
     /* Enable the UART Error Interrupt: (Frame error, noise error, overrun error) */
     __HAL_UART_ENABLE_IT(huart, UART_IT_ERR);
-
-    /* Process Unlocked */
-    __HAL_UNLOCK(huart);
 
     /* Enable the UART Data Register not empty Interrupt */
     __HAL_UART_ENABLE_IT(huart, UART_IT_RXNE);
@@ -923,9 +896,6 @@ HAL_StatusTypeDef HAL_UART_Transmit_DMA(UART_HandleTypeDef *huart, uint8_t *pDat
        in the UART CR3 register */
     huart->Instance->CR3 |= USART_CR3_DMAT;
 
-    /* Process Unlocked */
-    __HAL_UNLOCK(huart);
-
     return HAL_OK;
   }
   else
@@ -988,9 +958,6 @@ HAL_StatusTypeDef HAL_UART_Receive_DMA(UART_HandleTypeDef *huart, uint8_t *pData
        in the UART CR3 register */
      huart->Instance->CR3 |= USART_CR3_DMAR;
 
-     /* Process Unlocked */
-     __HAL_UNLOCK(huart);
-
     return HAL_OK;
   }
   else
@@ -1026,9 +993,6 @@ HAL_StatusTypeDef HAL_UART_DMAPause(UART_HandleTypeDef *huart)
     /* Disable the UART DMA Rx request */
     huart->Instance->CR3 &= (uint32_t)(~USART_CR3_DMAR);
   }
-
-  /* Process Unlocked */
-  __HAL_UNLOCK(huart);
 
   return HAL_OK;
 }
@@ -1101,9 +1065,6 @@ HAL_StatusTypeDef HAL_UART_DMAStop(UART_HandleTypeDef *huart)
   __HAL_UART_DISABLE(huart);
 
   huart->State = HAL_UART_STATE_READY;
-
-  /* Process Unlocked */
-  __HAL_UNLOCK(huart);
 
   return HAL_OK;
 }
@@ -1353,9 +1314,6 @@ HAL_StatusTypeDef HAL_HalfDuplex_EnableTransmitter(UART_HandleTypeDef *huart)
 
   huart->State= HAL_UART_STATE_READY;
 
-  /* Process Unlocked */
-  __HAL_UNLOCK(huart);
-
   return HAL_OK;
 }
 
@@ -1376,8 +1334,6 @@ HAL_StatusTypeDef HAL_HalfDuplex_EnableReceiver(UART_HandleTypeDef *huart)
   SET_BIT(huart->Instance->CR1, USART_CR1_RE);
 
   huart->State = HAL_UART_STATE_READY;
-  /* Process Unlocked */
-  __HAL_UNLOCK(huart);
 
   return HAL_OK;
 }
@@ -1402,9 +1358,6 @@ HAL_StatusTypeDef HAL_LIN_SendBreak(UART_HandleTypeDef *huart)
   huart->Instance->RQR |= UART_SENDBREAK_REQUEST;
 
   huart->State = HAL_UART_STATE_READY;
-
-  /* Process Unlocked */
-  __HAL_UNLOCK(huart);
 
   return HAL_OK;
 }
@@ -1729,9 +1682,6 @@ HAL_StatusTypeDef UART_CheckIdleState(UART_HandleTypeDef *huart)
   /* Initialize the UART State */
   huart->State= HAL_UART_STATE_READY;
 
-  /* Process Unlocked */
-  __HAL_UNLOCK(huart);
-
   return HAL_OK;
 }
 
@@ -1822,9 +1772,6 @@ HAL_StatusTypeDef UART_WaitOnFlagUntilTimeout(UART_HandleTypeDef *huart, uint32_
 
           huart->State= HAL_UART_STATE_READY;
 
-          /* Process Unlocked */
-          __HAL_UNLOCK(huart);
-
           return HAL_TIMEOUT;
         }
       }
@@ -1846,9 +1793,6 @@ HAL_StatusTypeDef UART_WaitOnFlagUntilTimeout(UART_HandleTypeDef *huart, uint32_
           __HAL_UART_DISABLE_IT(huart, UART_IT_ERR);
 
           huart->State= HAL_UART_STATE_READY;
-
-          /* Process Unlocked */
-          __HAL_UNLOCK(huart);
 
           return HAL_TIMEOUT;
         }

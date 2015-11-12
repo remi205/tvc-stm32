@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_flash_ex.c
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   Extended FLASH HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the FLASH extension peripheral:
@@ -25,7 +25,8 @@
                       ##### How to use this driver #####
   ==============================================================================
   [..] This driver provides functions to configure and program the FLASH memory 
-       of all STM32F427xx/437xx andSTM32F429xx/439xx devices. It includes
+       of all STM32F427xx/437xx, STM32F429xx/439xx, STM32F469xx/479xx and STM32F446xx 
+       devices. It includes
       (#) FLASH Memory Erase functions: 
            (++) Lock and Unlock the FLASH interface using HAL_FLASH_Unlock() and 
                 HAL_FLASH_Lock() functions
@@ -50,7 +51,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -128,16 +129,16 @@ static uint16_t           FLASH_OB_GetWRP(void);
 static FlagStatus         FLASH_OB_GetRDP(void);
 static uint8_t            FLASH_OB_GetBOR(void);
 
-#if defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F446xx)
+#if defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F446xx) || defined(STM32F412xG)
 static HAL_StatusTypeDef  FLASH_OB_EnablePCROP(uint32_t Sector);
 static HAL_StatusTypeDef  FLASH_OB_DisablePCROP(uint32_t Sector);
-#endif /* STM32F401xC || STM32F401xE || STM32F411xE || STM32F446xx */
+#endif /* STM32F401xC || STM32F401xE || STM32F411xE || STM32F446xx || STM32F412xG */
 
-#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx)|| defined(STM32F439xx) || defined(STM32F469xx) 
+#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx)|| defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F479xx) 
 static HAL_StatusTypeDef FLASH_OB_EnablePCROP(uint32_t SectorBank1, uint32_t SectorBank2, uint32_t Banks);
 static HAL_StatusTypeDef FLASH_OB_DisablePCROP(uint32_t SectorBank1, uint32_t SectorBank2, uint32_t Banks);
-static HAL_StatusTypeDef  FLASH_OB_BootConfig(uint8_t BootConfig);
-#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F469xx */
+static HAL_StatusTypeDef FLASH_OB_BootConfig(uint8_t BootConfig);
+#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F469xx || STM32F479xx */
 
 extern HAL_StatusTypeDef         FLASH_WaitForLastOperation(uint32_t Timeout);
 /**
@@ -158,7 +159,7 @@ extern HAL_StatusTypeDef         FLASH_WaitForLastOperation(uint32_t Timeout);
  ===============================================================================  
     [..]
     This subsection provides a set of functions allowing to manage the Extension FLASH 
-    programming operations Operations.
+    programming operations.
 
 @endverbatim
   * @{
@@ -373,8 +374,9 @@ void HAL_FLASHEx_OBGetConfig(FLASH_OBProgramInitTypeDef *pOBInit)
   pOBInit->BORLevel = FLASH_OB_GetBOR();
 }
 
-#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx)|| defined(STM32F439xx) ||\
-    defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F446xx) || defined(STM32F469xx)
+#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) ||\
+    defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F446xx) ||\
+    defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F412xG)
 /**
   * @brief   Program option bytes
   * @param  pAdvOBInit: pointer to an FLASH_AdvOBProgramInitTypeDef structure that
@@ -394,33 +396,33 @@ HAL_StatusTypeDef HAL_FLASHEx_AdvOBProgram (FLASH_AdvOBProgramInitTypeDef *pAdvO
   {
     /* Check the parameters */
     assert_param(IS_PCROPSTATE(pAdvOBInit->PCROPState));
-    if((pAdvOBInit->PCROPState) == FLASH_PCROPSTATE_ENABLE)
+    if((pAdvOBInit->PCROPState) == OB_PCROP_STATE_ENABLE)
     {
       /*Enable of Write protection on the selected Sector*/
-#if defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F446xx) 
+#if defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F446xx) || defined(STM32F412xG)
       status = FLASH_OB_EnablePCROP(pAdvOBInit->Sectors);
-#else  /* STM32F427xx || STM32F437xx || STM32F429xx|| STM32F439xx || STM32F469xx */
+#else  /* STM32F427xx || STM32F437xx || STM32F429xx|| STM32F439xx || STM32F469xx || STM32F479xx */
       status = FLASH_OB_EnablePCROP(pAdvOBInit->SectorsBank1, pAdvOBInit->SectorsBank2, pAdvOBInit->Banks);
-#endif /* STM32F401xC || STM32F401xE || STM32F411xE || STM32F446xx */
+#endif /* STM32F401xC || STM32F401xE || STM32F411xE || STM32F446xx || STM32F412xG */
     }
     else
     {
       /*Disable of Write protection on the selected Sector*/
-#if defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F446xx) 
+#if defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F446xx) || defined(STM32F412xG) 
       status = FLASH_OB_DisablePCROP(pAdvOBInit->Sectors);
-#else /* STM32F427xx || STM32F437xx || STM32F429xx|| STM32F439xx || STM32F469xx */
+#else /* STM32F427xx || STM32F437xx || STM32F429xx|| STM32F439xx || STM32F469xx || STM32F479xx */
       status = FLASH_OB_DisablePCROP(pAdvOBInit->SectorsBank1, pAdvOBInit->SectorsBank2, pAdvOBInit->Banks);
-#endif /* STM32F401xC || STM32F401xE || STM32F411xE || STM32F446xx */
+#endif /* STM32F401xC || STM32F401xE || STM32F411xE || STM32F446xx || STM32F412xG */
     }
   }
    
-#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx)
+#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F479xx)
   /*Program BOOT config option byte*/
   if(((pAdvOBInit->OptionType) & OPTIONBYTE_BOOTCONFIG) == OPTIONBYTE_BOOTCONFIG)
   {
     status = FLASH_OB_BootConfig(pAdvOBInit->BootConfig);
   }
-#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F469xx */
+#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F469xx || STM32F479xx */
 
   return status;
 }
@@ -434,10 +436,10 @@ HAL_StatusTypeDef HAL_FLASHEx_AdvOBProgram (FLASH_AdvOBProgramInitTypeDef *pAdvO
   */
 void HAL_FLASHEx_AdvOBGetConfig(FLASH_AdvOBProgramInitTypeDef *pAdvOBInit)
 {
-#if defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F446xx)
+#if defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F446xx) || defined(STM32F412xG)
   /*Get Sector*/
   pAdvOBInit->Sectors = (*(__IO uint16_t *)(OPTCR_BYTE2_ADDRESS));
-#else  /* STM32F427xx || STM32F437xx || STM32F429xx|| STM32F439xx || STM32F469xx */
+#else  /* STM32F427xx || STM32F437xx || STM32F429xx|| STM32F439xx || STM32F469xx || STM32F479xx */
   /*Get Sector for Bank1*/
   pAdvOBInit->SectorsBank1 = (*(__IO uint16_t *)(OPTCR_BYTE2_ADDRESS));
 
@@ -446,7 +448,7 @@ void HAL_FLASHEx_AdvOBGetConfig(FLASH_AdvOBProgramInitTypeDef *pAdvOBInit)
 
   /*Get Boot config OB*/
   pAdvOBInit->BootConfig = *(__IO uint8_t *)OPTCR_BYTE0_ADDRESS;
-#endif /* STM32F401xC || STM32F401xE || STM32F411xE || STM32F446xx */
+#endif /* STM32F401xC || STM32F401xE || STM32F411xE || STM32F446xx || STM32F412xG */
 }
 
 /**
@@ -456,7 +458,8 @@ void HAL_FLASHEx_AdvOBGetConfig(FLASH_AdvOBProgramInitTypeDef *pAdvOBInit)
   *         Global Read Out Protection modification (from level1 to level0) 
   * @note   Once SPRMOD bit is active unprotection of a protected sector is not possible 
   * @note   Read a protected sector will set RDERR Flag and write a protected sector will set WRPERR Flag
-  * @note   This function can be used only for STM32F42xxx/STM32F43xxx/STM32F401xx/STM32F411xx/STM32F446xx/STM32F469xx devices.     
+  * @note   This function can be used only for STM32F42xxx/STM32F43xxx/STM32F401xx/STM32F411xx/STM32F446xx/
+  *         STM32F469xx/STM32F479xx/STM32F412xG devices.
   * 
   * @retval HAL Status
   */
@@ -480,7 +483,8 @@ HAL_StatusTypeDef HAL_FLASHEx_OB_SelectPCROP(void)
   *         Global Read Out Protection modification (from level1 to level0) 
   * @note   Once SPRMOD bit is active unprotection of a protected sector is not possible 
   * @note   Read a protected sector will set RDERR Flag and write a protected sector will set WRPERR Flag
-  * @note   This function can be used only for STM32F42xxx/STM32F43xxx/STM32F401xx/STM32F411xx/STM32F446xx/STM32F469xx devices.      
+  * @note   This function can be used only for STM32F42xxx/STM32F43xxx/STM32F401xx/STM32F411xx/STM32F446xx/
+  *         STM32F469xx/STM32F479xx/STM32F412xG devices.
   * 
   * @retval HAL Status
   */
@@ -496,13 +500,13 @@ HAL_StatusTypeDef HAL_FLASHEx_OB_DeSelectPCROP(void)
   
   return HAL_OK;
 }
-#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F401xC || STM32F401xE || STM32F411xE */
+#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F401xC || STM32F401xE || STM32F411xE ||\
+          STM32F469xx || STM32F479xx || STM32F412xG */
 
-#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx)|| defined(STM32F439xx) || defined(STM32F469xx)
-
+#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx)|| defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F479xx)
 /**
   * @brief  Returns the FLASH Write Protection Option Bytes value for Bank 2
-  * @note   This function can be used only for STM32F42xxx/STM32F43xxx/STM32F469xx devices.  
+  * @note   This function can be used only for STM32F42xxx/STM32F43xxx/STM32F469xx/STM32F479xx devices.  
   * @retval The FLASH Write Protection  Option Bytes value
   */
 uint16_t HAL_FLASHEx_OB_GetBank2WRP(void)
@@ -510,24 +514,24 @@ uint16_t HAL_FLASHEx_OB_GetBank2WRP(void)
   /* Return the FLASH write protection Register value */
   return (*(__IO uint16_t *)(OPTCR1_BYTE2_ADDRESS));
 }
-#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F469xx */
+#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F469xx || STM32F479xx */
 
 /**
   * @}
   */
   
-#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx)
+#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F479xx)
 /**
   * @brief  Full erase of FLASH memory sectors 
   * @param  VoltageRange: The device voltage range which defines the erase parallelism.  
   *          This parameter can be one of the following values:
-  *            @arg VOLTAGE_RANGE_1: when the device voltage range is 1.8V to 2.1V, 
+  *            @arg FLASH_VOLTAGE_RANGE_1: when the device voltage range is 1.8V to 2.1V, 
   *                                  the operation will be done by byte (8-bit) 
-  *            @arg VOLTAGE_RANGE_2: when the device voltage range is 2.1V to 2.7V,
+  *            @arg FLASH_VOLTAGE_RANGE_2: when the device voltage range is 2.1V to 2.7V,
   *                                  the operation will be done by half word (16-bit)
-  *            @arg VOLTAGE_RANGE_3: when the device voltage range is 2.7V to 3.6V,
+  *            @arg FLASH_VOLTAGE_RANGE_3: when the device voltage range is 2.7V to 3.6V,
   *                                  the operation will be done by word (32-bit)
-  *            @arg VOLTAGE_RANGE_4: when the device voltage range is 2.7V to 3.6V + External Vpp, 
+  *            @arg FLASH_VOLTAGE_RANGE_4: when the device voltage range is 2.7V to 3.6V + External Vpp, 
   *                                  the operation will be done by double word (64-bit)
   * 
   * @param  Banks: Banks to be erased
@@ -573,13 +577,13 @@ static void FLASH_MassErase(uint8_t VoltageRange, uint32_t Banks)
   *         The value of this parameter depend on device used within the same series      
   * @param  VoltageRange: The device voltage range which defines the erase parallelism.  
   *          This parameter can be one of the following values:
-  *            @arg VOLTAGE_RANGE_1: when the device voltage range is 1.8V to 2.1V, 
+  *            @arg FLASH_VOLTAGE_RANGE_1: when the device voltage range is 1.8V to 2.1V, 
   *                                  the operation will be done by byte (8-bit) 
-  *            @arg VOLTAGE_RANGE_2: when the device voltage range is 2.1V to 2.7V,
+  *            @arg FLASH_VOLTAGE_RANGE_2: when the device voltage range is 2.1V to 2.7V,
   *                                  the operation will be done by half word (16-bit)
-  *            @arg VOLTAGE_RANGE_3: when the device voltage range is 2.7V to 3.6V,
+  *            @arg FLASH_VOLTAGE_RANGE_3: when the device voltage range is 2.7V to 3.6V,
   *                                  the operation will be done by word (32-bit)
-  *            @arg VOLTAGE_RANGE_4: when the device voltage range is 2.7V to 3.6V + External Vpp, 
+  *            @arg FLASH_VOLTAGE_RANGE_4: when the device voltage range is 2.7V to 3.6V + External Vpp, 
   *                                  the operation will be done by double word (64-bit)
   * 
   * @retval None
@@ -925,21 +929,22 @@ static HAL_StatusTypeDef FLASH_OB_DisablePCROP(uint32_t SectorBank1, uint32_t Se
 
 }
 
-#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F469xx */
+#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F469xx || STM32F479xx */
 
-#if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx)|| defined(STM32F417xx) ||\
-    defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F446xx)
+#if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) ||\
+    defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F446xx) ||\
+    defined(STM32F412xG)
 /**
   * @brief  Mass erase of FLASH memory
   * @param  VoltageRange: The device voltage range which defines the erase parallelism.  
   *          This parameter can be one of the following values:
-  *            @arg VOLTAGE_RANGE_1: when the device voltage range is 1.8V to 2.1V, 
+  *            @arg FLASH_VOLTAGE_RANGE_1: when the device voltage range is 1.8V to 2.1V, 
   *                                  the operation will be done by byte (8-bit) 
-  *            @arg VOLTAGE_RANGE_2: when the device voltage range is 2.1V to 2.7V,
+  *            @arg FLASH_VOLTAGE_RANGE_2: when the device voltage range is 2.1V to 2.7V,
   *                                  the operation will be done by half word (16-bit)
-  *            @arg VOLTAGE_RANGE_3: when the device voltage range is 2.7V to 3.6V,
+  *            @arg FLASH_VOLTAGE_RANGE_3: when the device voltage range is 2.7V to 3.6V,
   *                                  the operation will be done by word (32-bit)
-  *            @arg VOLTAGE_RANGE_4: when the device voltage range is 2.7V to 3.6V + External Vpp, 
+  *            @arg FLASH_VOLTAGE_RANGE_4: when the device voltage range is 2.7V to 3.6V + External Vpp, 
   *                                  the operation will be done by double word (64-bit)
   * 
   * @param  Banks: Banks to be erased
@@ -969,13 +974,13 @@ static void FLASH_MassErase(uint8_t VoltageRange, uint32_t Banks)
   *         The value of this parameter depend on device used within the same series      
   * @param  VoltageRange: The device voltage range which defines the erase parallelism.  
   *          This parameter can be one of the following values:
-  *            @arg VOLTAGE_RANGE_1: when the device voltage range is 1.8V to 2.1V, 
+  *            @arg FLASH_VOLTAGE_RANGE_1: when the device voltage range is 1.8V to 2.1V, 
   *                                  the operation will be done by byte (8-bit) 
-  *            @arg VOLTAGE_RANGE_2: when the device voltage range is 2.1V to 2.7V,
+  *            @arg FLASH_VOLTAGE_RANGE_2: when the device voltage range is 2.1V to 2.7V,
   *                                  the operation will be done by half word (16-bit)
-  *            @arg VOLTAGE_RANGE_3: when the device voltage range is 2.7V to 3.6V,
+  *            @arg FLASH_VOLTAGE_RANGE_3: when the device voltage range is 2.7V to 3.6V,
   *                                  the operation will be done by word (32-bit)
-  *            @arg VOLTAGE_RANGE_4: when the device voltage range is 2.7V to 3.6V + External Vpp, 
+  *            @arg FLASH_VOLTAGE_RANGE_4: when the device voltage range is 2.7V to 3.6V + External Vpp, 
   *                                  the operation will be done by double word (64-bit)
   * 
   * @retval None
@@ -1084,9 +1089,9 @@ static HAL_StatusTypeDef FLASH_OB_DisableWRP(uint32_t WRPSector, uint32_t Banks)
   
   return status;
 }
-#endif /* STM32F40xxx || STM32F41xxx || STM32F401xx || STM32F411xE || STM32F446xx */
+#endif /* STM32F40xxx || STM32F41xxx || STM32F401xx || STM32F411xE || STM32F446xx || STM32F412xG */
 
-#if defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F446xx)
+#if defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F446xx) || defined(STM32F412xG)
 /**
   * @brief  Enable the read/write protection (PCROP) of the desired sectors.
   * @note   This function can be used only for STM32F401xx devices.
@@ -1142,7 +1147,7 @@ static HAL_StatusTypeDef FLASH_OB_DisablePCROP(uint32_t Sector)
   return status;
 
 }
-#endif /* STM32F401xC || STM32F401xE || STM32F411xE || STM32F446xx */
+#endif /* STM32F401xC || STM32F401xE || STM32F411xE || STM32F446xx || STM32F412xG */
 
 /**
   * @brief  Set the read protection level.

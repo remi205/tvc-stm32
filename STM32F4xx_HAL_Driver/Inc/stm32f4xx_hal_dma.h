@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_dma.h
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   Header file of DMA HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -102,7 +102,7 @@ typedef struct
                                       This parameter can be a value of @ref DMA_FIFO_threshold_level                  */
 
   uint32_t MemBurst;             /*!< Specifies the Burst transfer configuration for the memory transfers. 
-                                      It specifies the amount of data to be transferred in a single non interruptable 
+                                      It specifies the amount of data to be transferred in a single non interruptible
                                       transaction.
                                       This parameter can be a value of @ref DMA_Memory_burst 
                                       @note The burst mode is possible only if the address Increment mode is enabled. */
@@ -142,7 +142,6 @@ typedef enum
   HAL_DMA_HALF_TRANSFER      = 0x01,    /*!< Half Transfer     */
 }HAL_DMA_LevelCompleteTypeDef;
 
-
 /** 
   * @brief  DMA handle Structure definition
   */
@@ -172,7 +171,6 @@ typedef struct __DMA_HandleTypeDef
 /**
   * @}
   */
-
 
 /* Exported constants --------------------------------------------------------*/
 
@@ -219,8 +217,7 @@ typedef struct __DMA_HandleTypeDef
 #define DMA_MEMORY_TO_MEMORY         ((uint32_t)DMA_SxCR_DIR_1)  /*!< Memory to memory direction     */
 /**
   * @}
-  */
-     
+  */  
         
 /** @defgroup DMA_Peripheral_incremented_mode DMA Peripheral incremented mode
   * @brief    DMA peripheral incremented mode 
@@ -242,7 +239,6 @@ typedef struct __DMA_HandleTypeDef
   * @}
   */
 
-
 /** @defgroup DMA_Peripheral_data_size DMA Peripheral data size
   * @brief    DMA peripheral data size 
   * @{
@@ -253,7 +249,6 @@ typedef struct __DMA_HandleTypeDef
 /**
   * @}
   */ 
-
 
 /** @defgroup DMA_Memory_data_size DMA Memory data size
   * @brief    DMA memory data size 
@@ -277,7 +272,6 @@ typedef struct __DMA_HandleTypeDef
   * @}
   */
 
-
 /** @defgroup DMA_Priority_level DMA Priority level
   * @brief    DMA priority levels 
   * @{
@@ -289,7 +283,6 @@ typedef struct __DMA_HandleTypeDef
 /**
   * @}
   */ 
-
 
 /** @defgroup DMA_FIFO_direct_mode DMA FIFO direct mode
   * @brief    DMA FIFO direct mode
@@ -324,7 +317,6 @@ typedef struct __DMA_HandleTypeDef
 /**
   * @}
   */ 
-
 
 /** @defgroup DMA_Peripheral_burst DMA Peripheral burst
   * @brief    DMA peripheral burst 
@@ -641,7 +633,7 @@ typedef struct __DMA_HandleTypeDef
   * @{
   */
 
-/** @defgroup DMA_Group1 Initialization and de-initialization functions
+/** @defgroup DMA_Exported_Functions_Group1 Initialization and de-initialization functions
   * @brief   Initialization and de-initialization functions 
   * @{
   */
@@ -649,8 +641,9 @@ HAL_StatusTypeDef HAL_DMA_Init(DMA_HandleTypeDef *hdma);
 HAL_StatusTypeDef HAL_DMA_DeInit(DMA_HandleTypeDef *hdma);
 /**
   * @}
-  */ 
-/** @defgroup DMA_Group2 I/O operation functions
+  */
+
+/** @defgroup DMA_Exported_Functions_Group2 I/O operation functions
   * @brief   I/O operation functions  
   * @{
   */
@@ -663,7 +656,7 @@ void              HAL_DMA_IRQHandler(DMA_HandleTypeDef *hdma);
   * @}
   */ 
 
-/** @defgroup DMA_Group3 Peripheral State functions
+/** @defgroup DMA_Exported_Functions_Group3 Peripheral State functions
   * @brief    Peripheral State functions 
   * @{
   */

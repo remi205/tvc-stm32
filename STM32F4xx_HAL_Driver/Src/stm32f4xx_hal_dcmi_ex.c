@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_dcmi_ex.c
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   DCMI Extension HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of DCMI extension peripheral:
@@ -27,7 +27,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -61,12 +61,14 @@
   * @{
   */
 /** @defgroup DCMIEx DCMIEx
-  * @brief DCMI HAL module driver
+  * @brief DCMI Extended HAL module driver
   * @{
   */
 
 #ifdef HAL_DCMI_MODULE_ENABLED
 
+#if defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) ||\
+    defined(STM32F439xx) || defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx)
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -87,18 +89,17 @@
  ===============================================================================  
     [..]  This section provides functions allowing to:
       (+) Initialize and configure the DCMI
+      (+) De-initialize the DCMI 
 
 @endverbatim
   * @{
   */
-#if defined(STM32F446xx)  
+  
 /**
   * @brief  Initializes the DCMI according to the specified
   *         parameters in the DCMI_InitTypeDef and create the associated handle.
   * @param  hdcmi: pointer to a DCMI_HandleTypeDef structure that contains
   *                the configuration information for DCMI.
-  * @note   This function is only available in case of STM32F446xx device and 
-  *         add the Black and White feature
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_DCMI_Init(DCMI_HandleTypeDef *hdcmi)
@@ -118,12 +119,12 @@ HAL_StatusTypeDef HAL_DCMI_Init(DCMI_HandleTypeDef *hdcmi)
   assert_param(IS_DCMI_CAPTURE_RATE(hdcmi->Init.CaptureRate));
   assert_param(IS_DCMI_EXTENDED_DATA(hdcmi->Init.ExtendedDataMode));
   assert_param(IS_DCMI_MODE_JPEG(hdcmi->Init.JPEGMode));
-
+#if defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx)
   assert_param(IS_DCMI_BYTE_SELECT_MODE(hdcmi->Init.ByteSelectMode));
   assert_param(IS_DCMI_BYTE_SELECT_START(hdcmi->Init.ByteSelectStart));
   assert_param(IS_DCMI_LINE_SELECT_MODE(hdcmi->Init.LineSelectMode));
   assert_param(IS_DCMI_LINE_SELECT_START(hdcmi->Init.LineSelectStart));
-                 
+#endif /* STM32F446xx || STM32F469xx || STM32F479xx */
   if(hdcmi->State == HAL_DCMI_STATE_RESET)
   {
     /* Init the low level hardware */
@@ -135,14 +136,22 @@ HAL_StatusTypeDef HAL_DCMI_Init(DCMI_HandleTypeDef *hdcmi)
                           /* Configures the HS, VS, DE and PC polarity */
   hdcmi->Instance->CR &= ~(DCMI_CR_PCKPOL | DCMI_CR_HSPOL  | DCMI_CR_VSPOL  | DCMI_CR_EDM_0 |\
                            DCMI_CR_EDM_1  | DCMI_CR_FCRC_0 | DCMI_CR_FCRC_1 | DCMI_CR_JPEG  |\
-                           DCMI_CR_ESS    | DCMI_CR_BSM_0  | DCMI_CR_BSM_1  | DCMI_CR_OEBS  |\
-                           DCMI_CR_LSM | DCMI_CR_OELS);
+                           DCMI_CR_ESS
+#if defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx)
+                           | DCMI_CR_BSM_0 | DCMI_CR_BSM_1 | DCMI_CR_OEBS |\
+                           DCMI_CR_LSM | DCMI_CR_OELS
+#endif /* STM32F446xx || STM32F469xx || STM32F479xx */
+                           );
   hdcmi->Instance->CR |=  (uint32_t)(hdcmi->Init.SynchroMode | hdcmi->Init.CaptureRate |\
                                      hdcmi->Init.VSPolarity  | hdcmi->Init.HSPolarity  |\
                                      hdcmi->Init.PCKPolarity | hdcmi->Init.ExtendedDataMode |\
-                                     hdcmi->Init.JPEGMode    | hdcmi->Init.ByteSelectMode |\
+                                     hdcmi->Init.JPEGMode 
+#if defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx)
+                                     | hdcmi->Init.ByteSelectMode |\
                                      hdcmi->Init.ByteSelectStart | hdcmi->Init.LineSelectMode |\
-                                     hdcmi->Init.LineSelectStart);
+                                     hdcmi->Init.LineSelectStart
+#endif /* STM32F446xx || STM32F469xx || STM32F479xx */
+                                     );
   if(hdcmi->Init.SynchroMode == DCMI_SYNCHRO_EMBEDDED)
   {
     DCMI->ESCR = (((uint32_t)hdcmi->Init.SyncroCode.FrameStartCode)    |
@@ -178,7 +187,7 @@ HAL_StatusTypeDef HAL_DCMI_Init(DCMI_HandleTypeDef *hdcmi)
 
   return HAL_OK;
 }
-#endif /* STM32F446xx */
+
 
 /**
   * @}
@@ -191,7 +200,8 @@ HAL_StatusTypeDef HAL_DCMI_Init(DCMI_HandleTypeDef *hdcmi)
 /**
   * @}
   */
-
+#endif /* STM32F407xx || STM32F417xx || STM32F427xx || STM32F437xx || STM32F429xx ||\
+          STM32F439xx || STM32F446xx || STM32F469xx || STM32F479xx */
 #endif /* HAL_DCMI_MODULE_ENABLED */
 /**
   * @}

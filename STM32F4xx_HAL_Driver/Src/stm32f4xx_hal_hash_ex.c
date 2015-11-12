@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_hash_ex.c
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   HASH HAL Extension module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of HASH peripheral:
@@ -17,7 +17,7 @@
     [..]
     The HASH HAL driver can be used as follows:
     (#)Initialize the HASH low level resources by implementing the HAL_HASH_MspInit():
-        (##) Enable the HASH interface clock using __HASH_CLK_ENABLE()
+        (##) Enable the HASH interface clock using __HAL_RCC_HASH_CLK_ENABLE()
         (##) In case of using processing APIs based on interrupts (e.g. HAL_HMACEx_SHA224_Start())
             (+++) Configure the HASH interrupt priority using HAL_NVIC_SetPriority()
             (+++) Enable the HASH IRQ handler using HAL_NVIC_EnableIRQ()
@@ -65,7 +65,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -106,7 +106,7 @@
 
 #ifdef HAL_HASH_MODULE_ENABLED
 
-#if defined(STM32F437xx) || defined(STM32F439xx) || defined(STM32F469xx)
+#if defined(STM32F437xx) || defined(STM32F439xx) || defined(STM32F479xx)
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -1611,7 +1611,7 @@ HAL_StatusTypeDef HAL_HMACEx_SHA256_Start_DMA(HASH_HandleTypeDef *hhash, uint8_t
 /**
   * @}
   */
-#endif /* STM32F437xx || STM32F439xx || STM32F469xx */
+#endif /* STM32F437xx || STM32F439xx || STM32F479xx */
 
 #endif /* HAL_HASH_MODULE_ENABLED */
 /**

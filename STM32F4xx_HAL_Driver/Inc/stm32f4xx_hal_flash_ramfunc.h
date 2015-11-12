@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_flash_ramfunc.h
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   Header file of FLASH RAMFUNC driver.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -43,8 +43,6 @@
  extern "C" {
 #endif
 
-#if defined(STM32F411xE) || defined(STM32F446xx)
-
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal_def.h"
 
@@ -54,7 +52,9 @@
 
 /** @addtogroup FLASH_RAMFUNC
   * @{
-  */ 
+  */
+
+#if defined(STM32F411xE) || defined(STM32F446xx) 
 
 /* Exported types ------------------------------------------------------------*/   
 /* Exported macro ------------------------------------------------------------*/
@@ -63,7 +63,7 @@
   * @{
   */
 
-/** @addtogroup FLASH_RAMFUNC_Exported_Functions_Group1 Peripheral 
+/** @addtogroup FLASH_RAMFUNC_Exported_Functions_Group1
   * @{
   */   
 __RAM_FUNC HAL_FLASHEx_StopFlashInterfaceClk(void);

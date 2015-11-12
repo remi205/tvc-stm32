@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_flash_ramfunc.c
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   FLASH RAMFUNC module driver.
   *          This file provides a FLASH firmware functions which should be 
   *          executed from internal SRAM
@@ -36,7 +36,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -110,7 +110,6 @@
   * @note  This mode is only available for STM32F411xx devices. 
   * @note  This mode couldn't be set while executing with the flash itself. 
   *        It should be done with specific routine executed from RAM.     
-  * @param None
   * @retval None
   */
 __RAM_FUNC HAL_FLASHEx_StopFlashInterfaceClk(void)
@@ -126,9 +125,8 @@ __RAM_FUNC HAL_FLASHEx_StopFlashInterfaceClk(void)
 /**
   * @brief Start the flash interface while System Run
   * @note  This mode is only available for STM32F411xx devices. 
-  * @note  This mode could n't be set while executing with the flash itself. 
+  * @note  This mode couldn't be set while executing with the flash itself. 
   *        It should be done with specific routine executed from RAM.     
-  * @param None
   * @retval None
   */
 __RAM_FUNC HAL_FLASHEx_StartFlashInterfaceClk(void)
@@ -146,7 +144,6 @@ __RAM_FUNC HAL_FLASHEx_StartFlashInterfaceClk(void)
   * @note  This mode is only available for STM32F411xx devices. 
   * @note  This mode could n't be set while executing with the flash itself. 
   *        It should be done with specific routine executed from RAM.     
-  * @param None
   * @retval None
   */
 __RAM_FUNC HAL_FLASHEx_EnableFlashSleepMode(void)
@@ -162,9 +159,8 @@ __RAM_FUNC HAL_FLASHEx_EnableFlashSleepMode(void)
 /**
   * @brief Disable the flash sleep while System Run
   * @note  This mode is only available for STM32F411xx devices. 
-  * @note  This mode could n't be set while executing with the flash itself. 
+  * @note  This mode couldn't be set while executing with the flash itself. 
   *        It should be done with specific routine executed from RAM.     
-  * @param None
   * @retval None
   */
 __RAM_FUNC HAL_FLASHEx_DisableFlashSleepMode(void)

@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_irda.c
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   IRDA HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the IrDA SIR ENDEC block (IrDA):
@@ -97,7 +97,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -225,6 +225,8 @@ HAL_StatusTypeDef HAL_IRDA_Init(IRDA_HandleTypeDef *hirda)
   
   if(hirda->State == HAL_IRDA_STATE_RESET)
   {
+    /* Allocate lock resource and initialize it */
+    hirda->Lock = HAL_UNLOCKED;
     /* Init the low level hardware : GPIO, CLOCK, CORTEX...etc */
     HAL_IRDA_MspInit(hirda);
   }
@@ -283,7 +285,7 @@ HAL_StatusTypeDef HAL_IRDA_DeInit(IRDA_HandleTypeDef *hirda)
   
   /* Disable the Peripheral */
   __HAL_IRDA_DISABLE(hirda);
-
+  
   /* DeInit the low level hardware */
   HAL_IRDA_MspDeInit(hirda);
   
@@ -1001,7 +1003,7 @@ void HAL_IRDA_IRQHandler(IRDA_HandleTypeDef *hirda)
   if((tmp1 != RESET) && (tmp2 != RESET))
   {
     IRDA_EndTransmit_IT(hirda);
-  } 
+  }   
 }
 
 /**
@@ -1325,7 +1327,6 @@ static HAL_StatusTypeDef IRDA_Transmit_IT(IRDA_HandleTypeDef *hirda)
       
       /* Enable the IRDA Transmit Complete Interrupt */    
       __HAL_IRDA_ENABLE_IT(hirda, IRDA_IT_TC);
-
     }
 
     return HAL_OK;
@@ -1491,11 +1492,10 @@ static void IRDA_SetConfig(IRDA_HandleTypeDef *hirda)
   * @}
   */
 
+#endif /* HAL_IRDA_MODULE_ENABLED */
 /**
   * @}
   */
-
-#endif /* HAL_IRDA_MODULE_ENABLED */
 
 /**
   * @}

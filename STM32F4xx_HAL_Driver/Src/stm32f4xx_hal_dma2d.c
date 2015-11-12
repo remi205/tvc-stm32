@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_dma2d.c
   * @author  MCD Application Team
-  * @version V1.2.0RC3
-  * @date    16-December-2014
+  * @version V1.4.0RC3
+  * @date    08-May-2015
   * @brief   DMA2D HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the DMA2D peripheral:
@@ -12,7 +12,7 @@
   *           + Peripheral Control functions 
   *           + Peripheral State and Errors functions
   *
-  @verbatim
+  @verbatim 
   ==============================================================================
                         ##### How to use this driver #####
   ==============================================================================
@@ -87,7 +87,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -127,7 +127,7 @@
 
 #ifdef HAL_DMA2D_MODULE_ENABLED
 
-#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx)
+#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F479xx)
 
 /* Private types -------------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -198,6 +198,8 @@ HAL_StatusTypeDef HAL_DMA2D_Init(DMA2D_HandleTypeDef *hdma2d)
 
   if(hdma2d->State == HAL_DMA2D_STATE_RESET)
   {
+    /* Allocate lock resource and initialize it */
+    hdma2d->Lock = HAL_UNLOCKED;
     /* Init the low level hardware */
     HAL_DMA2D_MspInit(hdma2d);
   }
@@ -1251,7 +1253,7 @@ static void DMA2D_SetConfig(DMA2D_HandleTypeDef *hdma2d, uint32_t pdata, uint32_
 /**
   * @}
   */
-#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx  || STM32F469xx*/
+#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F469xx || STM32F479xx */
 #endif /* HAL_DMA2D_MODULE_ENABLED */
 /**
   * @}
