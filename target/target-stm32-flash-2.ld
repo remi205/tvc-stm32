@@ -137,13 +137,13 @@ SECTIONS
   /* User_heap_stack section, used to check that there is enough RAM left */
   ._user_heap_stack :
   {
-    . = ALIGN(2);
+    . = ALIGN(8);
     PROVIDE ( end = . );
     PROVIDE ( _end = . );
 		*(.heap*)    
     . = . + _Min_Heap_Size;
     . = . + _Min_Stack_Size;
-    . = ALIGN(2);
+    . = ALIGN(8);
   } >SRAM
 
 

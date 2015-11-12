@@ -1,10 +1,11 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 lib_LIBRARIES = libapplication.a
 
-libapplication_a_SOURCES = es.c
+## LIB_USB plus tard on le fera mieux 
+libapplication_a_SOURCES = usb_device.c usbd_cdc_if.c usbd_conf.c usbd_desc.c
 
 if IPV4
-libapplication_a_SOURCES  += StartThread.c
+libapplication_a_SOURCES  += StartThread.c FifoBuffer.cpp Lowpower.c MotorThread.cpp udp_layer.cpp
 INC_IPV = -I$(top_srcdir)/LwIP/src/include/ipv4 -I$(top_srcdir)/LwIP/src/include/lwip -I$(top_srcdir)/LwIP/src/include/netif -I$(top_srcdir)/LwIP/src/include -I$(top_srcdir)/LwIP/system
 endif
 if IPV6
