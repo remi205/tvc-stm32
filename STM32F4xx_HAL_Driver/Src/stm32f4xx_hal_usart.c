@@ -226,8 +226,6 @@ HAL_StatusTypeDef HAL_USART_Init(USART_HandleTypeDef *husart)
 
   if(husart->State == HAL_USART_STATE_RESET)
   {
-    /* Allocate lock resource and initialize it */
-    husart->Lock = HAL_UNLOCKED;
     /* Init the low level hardware */
     HAL_USART_MspInit(husart);
   }
@@ -249,37 +247,6 @@ HAL_StatusTypeDef HAL_USART_Init(USART_HandleTypeDef *husart)
   /* Initialize the USART state */
   husart->ErrorCode = HAL_USART_ERROR_NONE;
   husart->State= HAL_USART_STATE_READY;
-
-  return HAL_OK;
-}
-
-/**
-  * @brief  DeInitializes the USART peripheral.
-  * @param  husart: pointer to a USART_HandleTypeDef structure that contains
-  *                the configuration information for the specified USART module.
-  * @retval HAL status
-  */
-HAL_StatusTypeDef HAL_USART_DeInit(USART_HandleTypeDef *husart)
-{
-   /* Check the USART handle allocation */
-  if(husart == NULL)
-  {
-    return HAL_ERROR;
-  }
-
-  /* Check the parameters */
-  assert_param(IS_USART_INSTANCE(husart->Instance));
-
-  husart->State = HAL_USART_STATE_BUSY;
-
-  /* Disable the Peripheral */
-  __HAL_USART_DISABLE(husart);
-
-  /* DeInit the low level hardware */
-  HAL_USART_MspDeInit(husart);
-
-  husart->ErrorCode = HAL_USART_ERROR_NONE;
-  husart->State = HAL_USART_STATE_RESET;
 
   return HAL_OK;
 }
@@ -673,9 +640,6 @@ HAL_StatusTypeDef HAL_USART_Receive_IT(USART_HandleTypeDef *husart, uint8_t *pRx
     husart->ErrorCode = HAL_USART_ERROR_NONE;
     husart->State = HAL_USART_STATE_BUSY_RX;
 
-    /* Process Unlocked */
-    __HAL_UNLOCK(husart);
-
     /* Enable the USART Data Register not empty Interrupt */
     __HAL_USART_ENABLE_IT(husart, USART_IT_RXNE); 
 
@@ -964,15 +928,11 @@ HAL_StatusTypeDef HAL_USART_DMAStop(USART_HandleTypeDef *husart)
 
   /* Abort the USART DMA Tx Stream */
   if(husart->hdmatx != NULL)
-  {
     HAL_DMA_Abort(husart->hdmatx);
 
-  }
   /* Abort the USART DMA Rx Stream */
   if(husart->hdmarx != NULL)
-  {  
     HAL_DMA_Abort(husart->hdmarx);
-  }
   
   /* Disable the USART Tx/Rx DMA requests */
   husart->Instance->CR3 &= ~USART_CR3_DMAT;
@@ -1360,10 +1320,6 @@ static HAL_StatusTypeDef USART_WaitOnFlagUntilTimeout(USART_HandleTypeDef *husar
           __HAL_USART_DISABLE_IT(husart, USART_IT_ERR);
 
           husart->State= HAL_USART_STATE_READY;
-
-          /* Process Unlocked */
-          __HAL_UNLOCK(husart);
-
           return HAL_TIMEOUT;
         }
       }
@@ -1385,10 +1341,6 @@ static HAL_StatusTypeDef USART_WaitOnFlagUntilTimeout(USART_HandleTypeDef *husar
           __HAL_USART_DISABLE_IT(husart, USART_IT_ERR);
 
           husart->State= HAL_USART_STATE_READY;
-
-          /* Process Unlocked */
-          __HAL_UNLOCK(husart);
-
           return HAL_TIMEOUT;
         }
       }
