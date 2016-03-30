@@ -108,20 +108,3 @@ de démarrage, evoluant avec soin seront disponibles a l'ensemble des stm32 du p
 
 ** Code de démarrage
 Il peut être écrit en C,
-
-
-
-Arroseur arrosé
-Concernant le paiment des indemnités, Maman avec arrangé son départ sans un licencimemnt, et l'intervention de
-Laurence en février
-
-
-
-
-Laurence
-Concernant la fosse, il y a 2 aspects.
-En premier il faut tout d'abord trouver le probleme de remplissage excessif.
-Mettre une cuve 2 fois plus grosse, ne reglera pas le problème.
-Aussi comment se fait il que l'on a ce problème de remplissage mainttenant ?
-Le système biologique fonctionne t-il ? Ou alors l'écoulement en sortie de la cuve
-est bouché ?
