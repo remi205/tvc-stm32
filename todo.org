@@ -1,23 +1,23 @@
 
 * Les stm32 sans souci
-Si les stm32 sont proposés avec des logiciels free, ils ne conviennent pas pour des projets de grande ampleur.
-MicroExplorer fait quelque chose de correct pour la configuration des pin, et on reprend le code genere. 
-Pour le niveau middle ware, c'est variable. L'idée est faire un tri pour en tirer le meilleur parti.
+Si les stm32 sont proposÃ©s avec des logiciels free, ils ne conviennent pas pour des projets de grande ampleur.
+MicroExplorer fait quelque chose de correct pour la configuration des pin, et on reprend le code genere.
+Pour le niveau middle ware, c'est variable. L'idÃ©e est faire un tri pour en tirer le meilleur parti.
 
-Même en 2015, j'ai toujours du mal avec Eclipse, la facon de travailler est trop éloigné de l'efficacité, tous les trucs 
-automatiques sont pertubant, mal commonde pour examiner la trace. 
+MÃªme en 2015, j'ai toujours du mal avec Eclipse, la facon de travailler est trop Ã©loignÃ© de l'efficacitÃ©, tous les trucs
+automatiques sont pertubant, mal commonde pour examiner la trace.
 
 * Le tri des STM32
-Permet de construire des projets logiciel pour stm32 dont les series les plus interressantes sont Cortex M4, M7 et M0+. 
-Exit les M3 et M0, ils sont dépassés en termes de consomation ou de vitesses.
-Donc les séries F0, F1, F2 sont délaissés. Il est absude de faire un nouveau projet avec ces series.
-Tout est vieux, les fonctionnalités, les ip, les performances, faire de l'I2C avec un F100, c'est très merdique.
+Permet de construire des projets logiciel pour stm32 dont les series les plus interressantes sont Cortex M4, M7 et M0+.
+Exit les M3 et M0, ils sont dÃ©passÃ©s en termes de consomation ou de vitesses.
+Donc les sÃ©ries F0, F1, F2 sont dÃ©laissÃ©s. Il est absude de faire un nouveau projet avec ces series.
+Tout est vieux, les fonctionnalitÃ©s, les ip, les performances, faire de l'I2C avec un F100, c'est trÃ¨s merdique.
 
-Une fois la série choisie, il faut choisir le modele pour connaitre les capacités memoires (ram et flash). 
+Une fois la sÃ©rie choisie, il faut choisir le modele pour connaitre les capacitÃ©s memoires (ram et flash).
 On l'a rentre une fois et hop
 
 * Projet en RAM et FLASH
-Les grosse platforme ont souvent de la mémoire aditionnelle et dans ce cas. 
+Les grosse platforme ont souvent de la mÃ©moire aditionnelle et dans ce cas.
 
 * Tools
 Linaro toolchain, GDB , OpenOcd et emacs 24-64 bit
@@ -25,30 +25,30 @@ Linaro toolchain, GDB , OpenOcd et emacs 24-64 bit
 * Middle ware
 Pour les Middle Ware, cmsis-ois, FreeRtos 8.12 et Lwip, FAT, stack BLE.
 
-Aussi il est facile d'ajouter des options au fur et mesure pour ajouter un composant avec son interface 
-par dessus de la HAL. Automake et autoconf sont la pour servir. 
+Aussi il est facile d'ajouter des options au fur et mesure pour ajouter un composant avec son interface
+par dessus de la HAL. Automake et autoconf sont la pour servir.
 
-* Tous composants programmable ( I2C ou SPI) doit être concus en deux couches. 
-La couche protocole, au dessus de la HAL, permet dialoguer avec le dispositif de facon fiable. Elle efface les 
-truc bizzare très courant dans les petits cicuits. Le non dit avec les stm32, est que le seul mode utilisable 
-sont les E/S en DMA. 
+* Tous composants programmable ( I2C ou SPI) doit Ãªtre concus en deux couches.
+La couche protocole, au dessus de la HAL, permet dialoguer avec le dispositif de facon fiable. Elle efface les
+truc bizzare trÃ¨s courant dans les petits cicuits. Le non dit avec les stm32, est que le seul mode utilisable
+sont les E/S en DMA.
 
 La couche de plus niveau permetant une utilisation sans la data sheet du composant. Par exemple,
  un capteur de temperature expose get-temperature, sans que l'on ai besoin de savoir de quel registre il s'agit
  si le composant est sur un bus I2C ou SPI.
 
-ASD111x, potar numérique, BLE, spirit, dac, capteur de temperature, ADC Linear tehc
+ASD111x, potar numÃ©rique, BLE, spirit, dac, capteur de temperature, ADC Linear tehc
 
 * Le debugger
-Si STM32Workench propose une encaspulation de arm-none-eabi-gdb, une solution plus légere peut très bien faire le boulot
-Il s'agit du mode "GDB" de emacs. Avec emacs24 on a le droit a un mode de qualité, qui finalement est suffisant.
-En embarque les logiciels sont temps réel, et leur actions s'observe a l'aide d'un osciloscope. C'est seule 
-facon de qualifier une couche de com 
+Si STM32Workench propose une encaspulation de arm-none-eabi-gdb, une solution plus lÃ©gere peut trÃ¨s bien faire le boulot
+Il s'agit du mode "GDB" de emacs. Avec emacs24 on a le droit a un mode de qualitÃ©, qui finalement est suffisant.
+En embarque les logiciels sont temps rÃ©el, et leur actions s'observe a l'aide d'un osciloscope. C'est seule
+facon de qualifier une couche de com
 
-GDB est automatisable, emacs est programmable, openocd tout autant. L'idée est de faire des choix , à chaque niveau,
-pour être dans le confort. Et si on utilise gdb en mode TUI ( Terminal User Interface), 
+GDB est automatisable, emacs est programmable, openocd tout autant. L'idÃ©e est de faire des choix , Ã  chaque niveau,
+pour Ãªtre dans le confort. Et si on utilise gdb en mode TUI ( Terminal User Interface),
 
-Actuellement une sessoin gdb est une suite d'ordre donnés à gdb:
+Actuellement une sessoin gdb est une suite d'ordre donnÃ©s Ã  gdb:
 
 activation du mode
 arm-none-eabi-gdb -i=mi2 --exec target remote :3333
@@ -57,11 +57,11 @@ load d:/stm32f4xx/build-sensor/sensor.elf
 breakpoint main
 contiune
 
-Les 5 commandes ci-dessus sont assez facile avec emacs, car on peut facilement les rappeller (Ctrl-p et Ctrl-n) 
-bien connues des lispers, mais ce n'est pas assez. Quite a écruire du code, que se soit du lisp!
-et la on a deux choix : eLisp d'emacs, et Guile de gdb. 
+Les 5 commandes ci-dessus sont assez facile avec emacs, car on peut facilement les rappeller (Ctrl-p et Ctrl-n)
+bien connues des lispers, mais ce n'est pas assez. Quite a Ã©cruire du code, que se soit du lisp!
+et la on a deux choix : eLisp d'emacs, et Guile de gdb.
 
-L'avantage de Guile, est que les actions gdb sont en direct. Pas de protocol mi, juste les tous 
+L'avantage de Guile, est que les actions gdb sont en direct. Pas de protocol mi, juste les tous
 ordres directement dans le process.
 
 gdb ! g (load-scrit "load-tvc-config" "sensor")
@@ -75,54 +75,36 @@ cqa c'est du common lisp, faut le traduire en guile.
    (continue))
 
 
-* les activités 
+* les activitÃ©s
 ** Flashage
-Classiquement dans le monde des microcontroleur, on utilise des sondes jtag qui permettent le developpement des premières 
-applications. Mais si pour les petits pregramme s'est siffusant, faire des developpements plus ambitieux, la vitesse 
-de falshage est le frein. La seule facon de la contorné est de develloper en ram, la vitesse est nettement plus élevée
-Et c'est a ce moment qu'il faut envisager a changer de matériel. La vitesse de chargement en flash est 
-entre 50 Ko/s a 100 Ko/s. 
+Classiquement dans le monde des microcontroleur, on utilise des sondes jtag qui permettent le developpement des premiÃ¨res
+applications. Mais si pour les petits pregramme s'est siffusant, faire des developpements plus ambitieux, la vitesse
+de falshage est le frein. La seule facon de la contornÃ© est de develloper en ram, la vitesse est nettement plus Ã©levÃ©e
+Et c'est a ce moment qu'il faut envisager a changer de matÃ©riel. La vitesse de chargement en flash est
+entre 50 Ko/s a 100 Ko/s.
 
-** Téléchargement en ram
-En ram, la limite, c'est vitesse du jtag meme si les cortex m sont de plus souvent conneteé en SWD, avec les sondes économomiques sont limités a quelques Mhz.
-mais avec des sondes haut de gamme,  la fréquence peut monter à 30 Mhz, cela permet des téléchargements jusqu'à 1500 Ko/s
+** TÃ©lÃ©chargement en ram
+En ram, la limite, c'est vitesse du jtag meme si les cortex m sont de plus souvent conneteÃ© en SWD, avec les sondes Ã©conomomiques sont limitÃ©s a quelques Mhz.
+mais avec des sondes haut de gamme,  la frÃ©quence peut monter Ã  30 Mhz, cela permet des tÃ©lÃ©chargements jusqu'Ã  1500 Ko/s
 
 Aujourd'hui, les gros stm32 ont un controleur de SDRAM qui permet pour quelque 2 a 3 euros, d'avoir 8 Mo. Dans ce context la,
-les sondes haut de gamme sont toutes indiquées. 
+les sondes haut de gamme sont toutes indiquÃ©es.
 
 chargmement en flash
-c'est opérationnel
+c'est opÃ©rationnel
 
 chargement en ram
-en développement
+en dÃ©veloppement
 
 * Les startup
-si les startup diffisés par la HAL, il aiment bien le code recopier. Mais c'est plus facile 
-de faire la table d'interruption qui est commune a tous les stm32, et les tables qui dans le serie F3, il y en a pas loin 
+si les startup diffisÃ©s par la HAL, il aiment bien le code recopier. Mais c'est plus facile
+de faire la table d'interruption qui est commune a tous les stm32, et les tables qui dans le serie F3, il y en a pas loin
 de 5 : 301 , 302, 3O3, 334, ( 373 378) et 398.
-Les autres series considéres du projet, sont les F4, L0, F7 ou une seul table suffit
+Les autres series considÃ©res du projet, sont les F4, L0, F7 ou une seul table suffit
 
-** Sépération des tables d'interruption et du startup.
-Cela permetra a terme, de pour voir écrire les tables en langage C, plutot qu'en assembleur. De meme, les codes 
-de démarrage, evoluant avec soin seront disponibles a l'ensemble des stm32 du projet.
+** SÃ©pÃ©ration des tables d'interruption et du startup.
+Cela permetra a terme, de pour voir Ã©crire les tables en langage C, plutot qu'en assembleur. De meme, les codes
+de dÃ©marrage, evoluant avec soin seront disponibles a l'ensemble des stm32 du projet.
 
-** Code de démarrage
-Il peut être écrit en C, 
-
-
-
-Arroseur arrosé
-Concernant le paiment des indemnités, Maman avec arrangé son départ sans un licencimemnt, et l'intervention de 
-Laurence en février 
-
-
-
-
-Laurence
-Concernant la fosse, il y a 2 aspects. 
-En premier il faut tout d'abord trouver le probleme de remplissage excessif. 
-Mettre une cuve 2 fois plus grosse, ne reglera pas le problème.
-Aussi comment se fait il que l'on a ce problème de remplissage mainttenant ?
-Le système biologique fonctionne t-il ? Ou alors l'écoulement en sortie de la cuve
-est bouché ?
-
+** Code de dÃ©marrage
+Il peut Ãªtre Ã©crit en C,
