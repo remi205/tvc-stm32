@@ -10,7 +10,7 @@
   *          The communication is done with a web browser of a remote PC.
  */
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f4xx_hal.h"
+#include "stm32f7xx_hal.h"
 #include "lwipopts.h"
 #include "cmsis_os.h"
 #include "ethernetif.h"
@@ -28,17 +28,15 @@
    
 #include "udp_layer.h"
 #include "usart.h"
-#include "../bsp/i2c.h"
-#include "../bsp/spi.h"
+#include "i2c.h"
+#include "spi.h"
 #include "../Common/Utils/ParameterParser.h"
-#include "ServiceStm32.h"
 #include "../over-hal/motor_sud.h"
 
 #include "MotorThread.h"
 
 extern void FormatResponse( char * Cmd, char * p1, char * p2,  char *  p3);
    
-
 // network interface structure
 struct netif gnetif;
 
@@ -56,11 +54,11 @@ extern err_t ethernetif_init(struct netif *);
 extern void MX_GPIO_Init(void);
 extern void MX_DMA_Init();
 
-#include "../bsp/usart.h"
+#include "usart.h"
 #include "../over-hal/platform-parameters.h"
 #include "../over-hal/gpio_access.h"
 #include "../config.h"
-#include "EndOfCourseThread.h"
+  //#include "EndOfCourseThread.h"
 
 extern int ConfigureForBattery ();
 };
@@ -263,7 +261,6 @@ void StartThread(void const * argument)
        
            // disconnect client for another service
            udp_disconnect(Service.m_upcb);
-         //  Service.close();
          }
      }
 }
