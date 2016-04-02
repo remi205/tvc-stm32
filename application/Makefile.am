@@ -5,11 +5,11 @@ lib_LIBRARIES = libapplication.a
 libapplication_a_SOURCES = StartThread.cpp udp_layer.cpp MotorThread.cpp LowPower.c FifoBuffer.cpp
 
 if IPV4
-libapplication_a_SOURCES  += StartThread.c FifoBuffer.cpp Lowpower.c MotorThread.cpp udp_layer.cpp
+libapplication_a_SOURCES  += FifoBuffer.cpp Lowpower.c MotorThread.cpp udp_layer.cpp
 INC_IPV = -I$(top_srcdir)/LwIP/src/include/ipv4 -I$(top_srcdir)/LwIP/src/include/lwip -I$(top_srcdir)/LwIP/src/include/netif -I$(top_srcdir)/LwIP/src/include -I$(top_srcdir)/LwIP/system
 endif
 if IPV6
-libapplication_a_SOURCES  += StartThread.c
+libapplication_a_SOURCES  += StartThread.cpp
 INC_IPV = -I$(top_srcdir)/LwIP/src/include/ipv6 -I$(top_srcdir)/LwIP/src/include/lwip -I$(top_srcdir)/LwIP/src/include/netif -I$(top_srcdir)/LwIP/src/include -I$(top_srcdir)/LwIP/system
 endif
 
