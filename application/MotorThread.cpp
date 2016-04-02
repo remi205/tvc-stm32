@@ -1,4 +1,4 @@
-#include "stm32f4xx_hal.h"
+#include "stm32f7xx_hal.h"
 #include "lwipopts.h"
 #include "cmsis_os.h"
 #include "ethernetif.h"
@@ -17,7 +17,7 @@
 #include "../bsp/i2c.h"
 #include "../bsp/spi.h"
 #include "../Common/Utils/ParameterParser.h"
-#include "ServiceStm32.h"
+//#include "ServiceStm32.h"
 
 #include "MotorThread.h"
 
@@ -25,7 +25,7 @@ extern "C" {
 #include "../over-hal/motor_sud.h"
 #include "../over-hal/gpio_access.h"
 #include "../config.h"  
- 
+
 };
 
  

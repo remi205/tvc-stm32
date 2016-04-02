@@ -54,14 +54,14 @@ endif
 endif
 
 if IPV4
-SUBDIRS += LwIP Common
+SUBDIRS += LwIP 
 AM_CFLAGS += -I$(top_srcdir)/LwIP/src/include/ipv4 -DIPV4
 INC_IP = -I$(top_srcdir)/LwIP/src/include
 LIB_IP =  LwIP/src/core/ipv4/libipv4.a LwIP/src/api/libapi.a LwIP/src/core/libcore.a LwIP/src/netif/libnetif.a LwIP/system/OS/libsysarch.a LwIP/src/core/ipv4/libipv4.a LwIP/src/core/raw.o $(HAL_PATH)/Src/stm32$(FAMILLY)xx_hal_eth.o bsp/dhcp_config.o
 endif
 
 if IPV6
-SUBDIRS += LwIP Common
+SUBDIRS += LwIP 
 AM_CFLAGS += -I$(top_srcdir)/LwIP/src/include/ipv6 -DIPV6
 INC_IP = -I$(top_srcdir)/LwIP/src/include
 LIB_IP =  LwIP/src/core/ipv6/libipv6.a LwIP/src/api/libapi.a LwIP/src/core/libcore.a LwIP/src/netif/libnetif.a LwIP/system/OS/libsysarch.a LwIP/src/core/ipv6/libipv6.a LwIP/src/core/raw.o $(HAL_PATH)/Src/stm32$(FAMILLY)xx_hal_eth.o bsp/dhcp_config.o
