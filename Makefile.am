@@ -74,9 +74,6 @@ INC_FREERTOS = -I$(top_srcdir)/CMSIS/Include -I$(top_srcdir)/FreeRTOS/Source/CMS
 endif
 
 if USB_DEV_CDC
-SUBDIRS += UsbDevice
-INC_USB = UsbDevice
-LIB_USB = libusbdevice.a
 endif
 
 
