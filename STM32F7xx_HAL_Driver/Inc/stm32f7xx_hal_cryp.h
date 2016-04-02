@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f7xx_hal_cryp.h
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    12-May-2015
+  * @version V1.0.4
+  * @date    09-December-2015
   * @brief   Header file of CRYP HAL module.
   ******************************************************************************
   * @attention
@@ -43,7 +43,7 @@
  extern "C" {
 #endif
 
-#if defined(STM32F756xx)
+#if defined (STM32F756xx)
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f7xx_hal_def.h"
 
@@ -68,10 +68,10 @@
 typedef struct
 {
   uint32_t DataType;    /*!< 32-bit data, 16-bit data, 8-bit data or 1-bit string.
-                             This parameter can be a value of @ref CRYP CRYP_Data_Type */
+                             This parameter can be a value of @ref CRYP_Data_Type */
 
   uint32_t KeySize;     /*!< Used only in AES mode only : 128, 192 or 256 bit key length. 
-                             This parameter can be a value of @ref CRYP CRYP_Key_Size */
+                             This parameter can be a value of @ref CRYP_Key_Size */
 
   uint8_t* pKey;        /*!< The key used for encryption/decryption */
 
@@ -177,7 +177,7 @@ typedef struct
   * @{
   */
 
-/** @defgroup CRYP_Exported_Constants_Group1 CRYP CRYP_Key_Size
+/** @defgroup CRYP_Key_Size CRYP Key Size
   * @{
   */
 #define CRYP_KEYSIZE_128B         ((uint32_t)0x00000000)
@@ -187,7 +187,7 @@ typedef struct
   * @}
   */
 
-/** @defgroup CRYP_Exported_Constants_Group2 CRYP CRYP_Data_Type
+/** @defgroup CRYP_Data_Type CRYP Data Type
   * @{
   */
 #define CRYP_DATATYPE_32B         ((uint32_t)0x00000000)
@@ -388,9 +388,9 @@ HAL_StatusTypeDef HAL_CRYP_AESCTR_Decrypt_DMA(CRYP_HandleTypeDef *hcryp, uint8_t
   */  
 /* DES encryption/decryption using polling  ***********************************/
 HAL_StatusTypeDef HAL_CRYP_DESECB_Encrypt(CRYP_HandleTypeDef *hcryp, uint8_t *pPlainData, uint16_t Size, uint8_t *pCypherData, uint32_t Timeout);
+HAL_StatusTypeDef HAL_CRYP_DESECB_Decrypt(CRYP_HandleTypeDef *hcryp, uint8_t *pCypherData, uint16_t Size, uint8_t *pPlainData, uint32_t Timeout);
 HAL_StatusTypeDef HAL_CRYP_DESCBC_Encrypt(CRYP_HandleTypeDef *hcryp, uint8_t *pPlainData, uint16_t Size, uint8_t *pCypherData, uint32_t Timeout);
-HAL_StatusTypeDef HAL_CRYP_DESECB_Decrypt(CRYP_HandleTypeDef *hcryp, uint8_t *pPlainData, uint16_t Size, uint8_t *pCypherData, uint32_t Timeout);
-HAL_StatusTypeDef HAL_CRYP_DESCBC_Decrypt(CRYP_HandleTypeDef *hcryp, uint8_t *pPlainData, uint16_t Size, uint8_t *pCypherData, uint32_t Timeout);
+HAL_StatusTypeDef HAL_CRYP_DESCBC_Decrypt(CRYP_HandleTypeDef *hcryp, uint8_t *pCypherData, uint16_t Size, uint8_t *pPlainData, uint32_t Timeout);
 
 /* DES encryption/decryption using interrupt  *********************************/
 HAL_StatusTypeDef HAL_CRYP_DESECB_Encrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t *pPlainData, uint16_t Size, uint8_t *pCypherData);

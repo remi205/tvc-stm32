@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f7xx_hal_smartcard.c
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    12-May-2015
+  * @version V1.0.4
+  * @date    09-December-2015
   * @brief   SMARTCARD HAL module driver.
   *          This file provides firmware functions to manage the following
   *          functionalities of the SMARTCARD peripheral:
@@ -29,9 +29,9 @@
              and HAL_SMARTCARD_Receive_IT() APIs):
             (+++) Configure the USARTx interrupt priority.
             (+++) Enable the NVIC USART IRQ handle.
-            (@) The specific USART interrupts (Transmission complete interrupt, 
-                RXNE interrupt and Error Interrupts) will be managed using the macros
-                __HAL_SMARTCARD_ENABLE_IT() and __HAL_SMARTCARD_DISABLE_IT() inside the transmit and receive process.
+            (+++) The specific USART interrupts (Transmission complete interrupt, 
+                  RXNE interrupt and Error Interrupts) will be managed using the macros
+                  __HAL_SMARTCARD_ENABLE_IT() and __HAL_SMARTCARD_DISABLE_IT() inside the transmit and receive process.
         (##) DMA Configuration if you need to use DMA process (HAL_SMARTCARD_Transmit_DMA()
              and HAL_SMARTCARD_Receive_DMA() APIs):
             (+++) Declare a DMA handle structure for the Tx/Rx stream.
@@ -49,8 +49,9 @@
         in the hsc AdvancedInit structure.
 
     (#) Initialize the SMARTCARD associated USART registers by calling
-        the HAL_SMARTCARD_Init() API.                                 
-        
+        the HAL_SMARTCARD_Init() API. 
+    
+  [..]
     (@) HAL_SMARTCARD_Init() API also configure also the low level Hardware GPIO, CLOCK, CORTEX...etc) by 
         calling the customized HAL_SMARTCARD_MspInit() API.
           
@@ -150,11 +151,13 @@ static void SMARTCARD_AdvFeatureConfig(SMARTCARD_HandleTypeDef *hsc);
         (++) Parity: parity should be enabled,
              Frame Length is fixed to 8 bits plus parity:
              the USART frame format is given in the following table:
-   +---------------------------------------------------------------+
-   | M1M0 bits |  PCE bit  |            USART frame                |
-   |-----------------------|---------------------------------------|
-   |     01    |    1      |    | SB | 8 bit data | PB | STB |     |
-   +---------------------------------------------------------------+
+
+        (+++) +---------------------------------------------------------------+
+        (+++) | M1M0 bits |  PCE bit  |            USART frame                |
+        (+++) |-----------------------|---------------------------------------|
+        (+++) |     01    |    1      |    | SB | 8 bit data | PB | STB |     |
+        (+++) +---------------------------------------------------------------+
+
         (++) Receiver/transmitter modes
         (++) Synchronous mode (and if enabled, phase, polarity and last bit parameters)
         (++) Prescaler value
@@ -271,6 +274,9 @@ HAL_StatusTypeDef HAL_SMARTCARD_DeInit(SMARTCARD_HandleTypeDef *hsc)
   */
  __weak void HAL_SMARTCARD_MspInit(SMARTCARD_HandleTypeDef *hsc)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hsc);
+ 
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_SMARTCARD_MspInit could be implemented in the user file
    */
@@ -283,6 +289,9 @@ HAL_StatusTypeDef HAL_SMARTCARD_DeInit(SMARTCARD_HandleTypeDef *hsc)
   */
  __weak void HAL_SMARTCARD_MspDeInit(SMARTCARD_HandleTypeDef *hsc)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hsc);
+ 
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_SMARTCARD_MspDeInit could be implemented in the user file
    */
@@ -789,6 +798,9 @@ void HAL_SMARTCARD_IRQHandler(SMARTCARD_HandleTypeDef *hsc)
   */
  __weak void HAL_SMARTCARD_TxCpltCallback(SMARTCARD_HandleTypeDef *hsc)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hsc);
+ 
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_SMARTCARD_TxCpltCallback could be implemented in the user file
    */ 
@@ -801,6 +813,9 @@ void HAL_SMARTCARD_IRQHandler(SMARTCARD_HandleTypeDef *hsc)
   */
 __weak void HAL_SMARTCARD_RxCpltCallback(SMARTCARD_HandleTypeDef *hsc)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hsc);
+ 
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_SMARTCARD_TxCpltCallback could be implemented in the user file
    */
@@ -813,6 +828,9 @@ __weak void HAL_SMARTCARD_RxCpltCallback(SMARTCARD_HandleTypeDef *hsc)
   */
  __weak void HAL_SMARTCARD_ErrorCallback(SMARTCARD_HandleTypeDef *hsc)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hsc);
+ 
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_SMARTCARD_ErrorCallback could be implemented in the user file
    */

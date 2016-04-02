@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f7xx_ll_fmc.h
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    12-May-2015
+  * @version V1.0.4
+  * @date    09-December-2015
   * @brief   Header file of FMC HAL module.
   ******************************************************************************
   * @attention
@@ -145,7 +145,7 @@
 /** @defgroup FMC_Setup_Time FMC Setup Time 
   * @{
   */
-#define IS_FMC_SETUP_TIME(TIME) ((TIME) <= 255)
+#define IS_FMC_SETUP_TIME(TIME) ((TIME) <= 254)
 /**
   * @}
   */
@@ -153,7 +153,7 @@
 /** @defgroup FMC_Wait_Setup_Time FMC Wait Setup Time 
   * @{
   */
-#define IS_FMC_WAIT_TIME(TIME) ((TIME) <= 255)
+#define IS_FMC_WAIT_TIME(TIME) ((TIME) <= 254)
 /**
   * @}
   */
@@ -161,7 +161,7 @@
 /** @defgroup FMC_Hold_Setup_Time FMC Hold Setup Time 
   * @{
   */
-#define IS_FMC_HOLD_TIME(TIME) ((TIME) <= 255)
+#define IS_FMC_HOLD_TIME(TIME) ((TIME) <= 254)
 /**
   * @}
   */
@@ -169,7 +169,7 @@
 /** @defgroup FMC_HiZ_Setup_Time FMC HiZ Setup Time 
   * @{
   */
-#define IS_FMC_HIZ_TIME(TIME) ((TIME) <= 255)
+#define IS_FMC_HIZ_TIME(TIME) ((TIME) <= 254)
 /**
   * @}
   */
@@ -385,6 +385,7 @@
 #define IS_FMC_PAGESIZE(__SIZE__) (((__SIZE__) == FMC_PAGE_SIZE_NONE) || \
                                    ((__SIZE__) == FMC_PAGE_SIZE_128) || \
                                    ((__SIZE__) == FMC_PAGE_SIZE_256) || \
+                                   ((__SIZE__) == FMC_PAGE_SIZE_512) || \
                                    ((__SIZE__) == FMC_PAGE_SIZE_1024))
 
 #define IS_FMC_WRITE_FIFO(__FIFO__) (((__FIFO__) == FMC_WRITE_FIFO_DISABLE) || \
@@ -552,26 +553,26 @@ typedef struct
                                       the command assertion for NAND-Flash read or write access
                                       to common/Attribute or I/O memory space (depending on
                                       the memory space timing to be configured).
-                                      This parameter can be a value between Min_Data = 0 and Max_Data = 255    */
+                                      This parameter can be a value between Min_Data = 0 and Max_Data = 254    */
 
   uint32_t WaitSetupTime;        /*!< Defines the minimum number of HCLK cycles to assert the
                                       command for NAND-Flash read or write access to
                                       common/Attribute or I/O memory space (depending on the
                                       memory space timing to be configured). 
-                                      This parameter can be a number between Min_Data = 0 and Max_Data = 255   */
+                                      This parameter can be a number between Min_Data = 0 and Max_Data = 254   */
 
   uint32_t HoldSetupTime;        /*!< Defines the number of HCLK clock cycles to hold address
                                       (and data for write access) after the command de-assertion
                                       for NAND-Flash read or write access to common/Attribute
                                       or I/O memory space (depending on the memory space timing
                                       to be configured).
-                                      This parameter can be a number between Min_Data = 0 and Max_Data = 255   */
+                                      This parameter can be a number between Min_Data = 0 and Max_Data = 254   */
 
   uint32_t HiZSetupTime;         /*!< Defines the number of HCLK clock cycles during which the
                                       data bus is kept in HiZ after the start of a NAND-Flash
                                       write access to common/Attribute or I/O memory space (depending
                                       on the memory space timing to be configured).
-                                      This parameter can be a number between Min_Data = 0 and Max_Data = 255   */
+                                      This parameter can be a number between Min_Data = 0 and Max_Data = 254   */
 }FMC_NAND_PCC_TimingTypeDef;
 
 /** 
@@ -793,6 +794,7 @@ typedef struct
 #define FMC_PAGE_SIZE_NONE           ((uint32_t)0x00000000)
 #define FMC_PAGE_SIZE_128            ((uint32_t)FMC_BCR1_CPSIZE_0)
 #define FMC_PAGE_SIZE_256            ((uint32_t)FMC_BCR1_CPSIZE_1)
+#define FMC_PAGE_SIZE_512            ((uint32_t)(FMC_BCR1_CPSIZE_0 | FMC_BCR1_CPSIZE_1))
 #define FMC_PAGE_SIZE_1024           ((uint32_t)FMC_BCR1_CPSIZE_2)
 /**
   * @}
@@ -819,8 +821,8 @@ typedef struct
 /** @defgroup FMC_Write_FIFO FMC Write FIFO 
   * @{
   */
-#define FMC_WRITE_FIFO_DISABLE           ((uint32_t)0x00000000)
-#define FMC_WRITE_FIFO_ENABLE            ((uint32_t)FMC_BCR1_WFDIS)
+#define FMC_WRITE_FIFO_DISABLE           ((uint32_t)FMC_BCR1_WFDIS)
+#define FMC_WRITE_FIFO_ENABLE            ((uint32_t)0x00000000)
 /**
   * @}
   */

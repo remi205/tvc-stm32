@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f7xx_hal_i2s.c
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    12-May-2015
+  * @version V1.0.4
+  * @date    09-December-2015
   * @brief   I2S HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Integrated Interchip Sound (I2S) peripheral:
@@ -379,6 +379,9 @@ HAL_StatusTypeDef HAL_I2S_DeInit(I2S_HandleTypeDef *hi2s)
   */
  __weak void HAL_I2S_MspInit(I2S_HandleTypeDef *hi2s)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hi2s);
+  
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_I2S_MspInit could be implemented in the user file
    */ 
@@ -392,6 +395,9 @@ HAL_StatusTypeDef HAL_I2S_DeInit(I2S_HandleTypeDef *hi2s)
   */
  __weak void HAL_I2S_MspDeInit(I2S_HandleTypeDef *hi2s)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hi2s);
+  
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_I2S_MspDeInit could be implemented in the user file
    */ 
@@ -522,13 +528,17 @@ HAL_StatusTypeDef HAL_I2S_Transmit(I2S_HandleTypeDef *hi2s, uint16_t *pData, uin
       }
     }      
     
-    /* Wait until Busy flag is reset */
-    if (I2S_WaitFlagStateUntilTimeout(hi2s, I2S_FLAG_BSY, RESET, Timeout) != HAL_OK) 
+    /* Check if Slave mode is selected */
+    if(((hi2s->Instance->I2SCFGR & SPI_I2SCFGR_I2SCFG) == I2S_MODE_SLAVE_TX) || ((hi2s->Instance->I2SCFGR & SPI_I2SCFGR_I2SCFG) == I2S_MODE_SLAVE_RX))
     {
-      /* Set the error code and execute error callback*/
-      hi2s->ErrorCode |= HAL_I2S_ERROR_TIMEOUT;
-      HAL_I2S_ErrorCallback(hi2s);
-      return HAL_TIMEOUT;
+      /* Wait until Busy flag is reset */
+      if (I2S_WaitFlagStateUntilTimeout(hi2s, I2S_FLAG_BSY, SET, Timeout) != HAL_OK) 
+      {
+        /* Set the error code and execute error callback*/
+        hi2s->ErrorCode |= HAL_I2S_ERROR_TIMEOUT;
+        HAL_I2S_ErrorCallback(hi2s);
+        return HAL_TIMEOUT;
+      }
     }
     
     hi2s->State = HAL_I2S_STATE_READY; 
@@ -1198,6 +1208,9 @@ static HAL_StatusTypeDef I2S_WaitFlagStateUntilTimeout(I2S_HandleTypeDef *hi2s, 
   */
  __weak void HAL_I2S_TxHalfCpltCallback(I2S_HandleTypeDef *hi2s)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hi2s);
+  
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_I2S_TxHalfCpltCallback could be implemented in the user file
    */ 
@@ -1211,6 +1224,9 @@ static HAL_StatusTypeDef I2S_WaitFlagStateUntilTimeout(I2S_HandleTypeDef *hi2s, 
   */
  __weak void HAL_I2S_TxCpltCallback(I2S_HandleTypeDef *hi2s)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hi2s);
+  
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_I2S_TxCpltCallback could be implemented in the user file
    */ 
@@ -1224,6 +1240,9 @@ static HAL_StatusTypeDef I2S_WaitFlagStateUntilTimeout(I2S_HandleTypeDef *hi2s, 
   */
 __weak void HAL_I2S_RxHalfCpltCallback(I2S_HandleTypeDef *hi2s)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hi2s);
+  
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_I2S_RxCpltCallback could be implemented in the user file
    */
@@ -1237,6 +1256,9 @@ __weak void HAL_I2S_RxHalfCpltCallback(I2S_HandleTypeDef *hi2s)
   */
 __weak void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hi2s);
+  
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_I2S_RxCpltCallback could be implemented in the user file
    */
@@ -1250,6 +1272,9 @@ __weak void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s)
   */
  __weak void HAL_I2S_ErrorCallback(I2S_HandleTypeDef *hi2s)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hi2s);
+  
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_I2S_ErrorCallback could be implemented in the user file
    */ 

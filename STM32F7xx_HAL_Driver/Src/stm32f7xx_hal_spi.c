@@ -2,10 +2,9 @@
   ******************************************************************************
   * @file    stm32f7xx_hal_spi.c
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    12-May-2015
+  * @version V1.0.4
+  * @date    09-December-2015
   * @brief   SPI HAL module driver.
-  *    
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Serial Peripheral Interface (SPI) peripheral:
   *           + Initialization and de-initialization functions
@@ -335,6 +334,9 @@ HAL_StatusTypeDef HAL_SPI_DeInit(SPI_HandleTypeDef *hspi)
   */
  __weak void HAL_SPI_MspInit(SPI_HandleTypeDef *hspi)
  {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hspi);
+ 
    /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_SPI_MspInit should be implemented in the user file
    */
@@ -348,6 +350,9 @@ HAL_StatusTypeDef HAL_SPI_DeInit(SPI_HandleTypeDef *hspi)
   */
  __weak void HAL_SPI_MspDeInit(SPI_HandleTypeDef *hspi)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hspi);
+ 
   /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_SPI_MspDeInit should be implemented in the user file
    */
@@ -1724,6 +1729,9 @@ void HAL_SPI_IRQHandler(SPI_HandleTypeDef *hspi)
   */
 __weak void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hspi);
+ 
   /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_SPI_TxCpltCallback should be implemented in the user file
    */
@@ -1737,6 +1745,9 @@ __weak void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
   */
 __weak void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hspi);
+   
   /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_SPI_RxCpltCallback should be implemented in the user file
    */
@@ -1750,6 +1761,9 @@ __weak void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi)
   */
 __weak void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hspi);
+ 
   /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_SPI_TxRxCpltCallback should be implemented in the user file
    */
@@ -1763,6 +1777,9 @@ __weak void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi)
   */
 __weak void HAL_SPI_TxHalfCpltCallback(SPI_HandleTypeDef *hspi)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hspi);
+ 
   /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_SPI_TxHalfCpltCallback should be implemented in the user file
    */
@@ -1776,6 +1793,9 @@ __weak void HAL_SPI_TxHalfCpltCallback(SPI_HandleTypeDef *hspi)
   */
 __weak void HAL_SPI_RxHalfCpltCallback(SPI_HandleTypeDef *hspi)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hspi);
+ 
   /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_SPI_RxHalfCpltCallback() should be implemented in the user file
    */
@@ -1789,6 +1809,9 @@ __weak void HAL_SPI_RxHalfCpltCallback(SPI_HandleTypeDef *hspi)
   */
 __weak void HAL_SPI_TxRxHalfCpltCallback(SPI_HandleTypeDef *hspi)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hspi);
+ 
   /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_SPI_TxRxHalfCpltCallback() should be implemented in the user file
    */
@@ -1802,6 +1825,9 @@ __weak void HAL_SPI_TxRxHalfCpltCallback(SPI_HandleTypeDef *hspi)
   */
  __weak void HAL_SPI_ErrorCallback(SPI_HandleTypeDef *hspi)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hspi);
+ 
   /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_SPI_ErrorCallback should be implemented in the user file
    */
@@ -2141,6 +2167,7 @@ static void SPI_2linesRxISR_8BIT(struct __SPI_HandleTypeDef *hspi)
   {
     if(hspi->Init.CRCCalculation == SPI_CRCCALCULATION_ENABLE)
     {
+      SET_BIT(hspi->Instance->CR2, SPI_RXFIFO_THRESHOLD);
       hspi->RxISR =  SPI_2linesRxISR_8BITCRC;
       return;
     }
