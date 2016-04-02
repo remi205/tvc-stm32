@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f7xx_hal_rtc_ex.c
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    12-May-2015
+  * @version V1.0.4
+  * @date    09-December-2015
   * @brief   RTC HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Real Time Clock (RTC) Extension peripheral:
@@ -728,6 +728,9 @@ void HAL_RTCEx_TamperTimeStampIRQHandler(RTC_HandleTypeDef *hrtc)
   */
 __weak void HAL_RTCEx_TimeStampEventCallback(RTC_HandleTypeDef *hrtc)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hrtc);
+  
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_RTC_TimeStampEventCallback could be implemented in the user file
   */
@@ -741,6 +744,9 @@ __weak void HAL_RTCEx_TimeStampEventCallback(RTC_HandleTypeDef *hrtc)
   */
 __weak void HAL_RTCEx_Tamper1EventCallback(RTC_HandleTypeDef *hrtc)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hrtc);
+  
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_RTC_Tamper1EventCallback could be implemented in the user file
    */
@@ -754,6 +760,9 @@ __weak void HAL_RTCEx_Tamper1EventCallback(RTC_HandleTypeDef *hrtc)
   */
 __weak void HAL_RTCEx_Tamper2EventCallback(RTC_HandleTypeDef *hrtc)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hrtc);
+  
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_RTC_Tamper2EventCallback could be implemented in the user file
    */
@@ -766,6 +775,9 @@ __weak void HAL_RTCEx_Tamper2EventCallback(RTC_HandleTypeDef *hrtc)
   */
 __weak void HAL_RTCEx_Tamper3EventCallback(RTC_HandleTypeDef *hrtc)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hrtc);
+  
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_RTCEx_Tamper3EventCallback could be implemented in the user file
    */
@@ -965,21 +977,25 @@ HAL_StatusTypeDef HAL_RTCEx_SetWakeUpTimer(RTC_HandleTypeDef *hrtc, uint32_t Wak
   /* Get tick */
   tickstart = HAL_GetTick();
 
-  /* Wait till RTC WUTWF flag is set and if Time out is reached exit */
-  while(__HAL_RTC_WAKEUPTIMER_GET_FLAG(hrtc, RTC_FLAG_WUTWF) == RESET)
+  /*Check RTC WUTWF flag is reset only when wake up timer enabled*/
+  if((hrtc->Instance->CR & RTC_CR_WUTE) != RESET)
   {
-    if((HAL_GetTick() - tickstart ) > RTC_TIMEOUT_VALUE)
+    /* Wait till RTC WUTWF flag is set and if Time out is reached exit */
+    while(__HAL_RTC_WAKEUPTIMER_GET_FLAG(hrtc, RTC_FLAG_WUTWF) == RESET)
     {
-      /* Enable the write protection for RTC registers */
-      __HAL_RTC_WRITEPROTECTION_ENABLE(hrtc);
+      if((HAL_GetTick() - tickstart ) > RTC_TIMEOUT_VALUE)
+      {
+        /* Enable the write protection for RTC registers */
+        __HAL_RTC_WRITEPROTECTION_ENABLE(hrtc);
       
-      hrtc->State = HAL_RTC_STATE_TIMEOUT; 
+        hrtc->State = HAL_RTC_STATE_TIMEOUT; 
       
-      /* Process Unlocked */ 
-      __HAL_UNLOCK(hrtc);
+        /* Process Unlocked */ 
+        __HAL_UNLOCK(hrtc);
       
-      return HAL_TIMEOUT;
-    }  
+        return HAL_TIMEOUT;
+      }  
+    }
   }
   
   /* Clear the Wakeup Timer clock source bits in CR register */
@@ -1034,25 +1050,26 @@ HAL_StatusTypeDef HAL_RTCEx_SetWakeUpTimer_IT(RTC_HandleTypeDef *hrtc, uint32_t 
   /* Get tick */
   tickstart = HAL_GetTick();
 
-  /* Wait till RTC WUTWF flag is set and if Time out is reached exit */
-  while(__HAL_RTC_WAKEUPTIMER_GET_FLAG(hrtc, RTC_FLAG_WUTWF) == RESET)
+    /*Check RTC WUTWF flag is reset only when wake up timer enabled*/
+  if((hrtc->Instance->CR & RTC_CR_WUTE) != RESET)
   {
-    if((HAL_GetTick() - tickstart ) > RTC_TIMEOUT_VALUE)
+    /* Wait till RTC WUTWF flag is set and if Time out is reached exit */
+    while(__HAL_RTC_WAKEUPTIMER_GET_FLAG(hrtc, RTC_FLAG_WUTWF) == RESET)
     {
-      /* Enable the write protection for RTC registers */
-      __HAL_RTC_WRITEPROTECTION_ENABLE(hrtc);
+      if((HAL_GetTick() - tickstart ) > RTC_TIMEOUT_VALUE)
+      {
+        /* Enable the write protection for RTC registers */
+        __HAL_RTC_WRITEPROTECTION_ENABLE(hrtc);
+       
+        hrtc->State = HAL_RTC_STATE_TIMEOUT; 
       
-      hrtc->State = HAL_RTC_STATE_TIMEOUT; 
+        /* Process Unlocked */ 
+        __HAL_UNLOCK(hrtc);
       
-      /* Process Unlocked */ 
-      __HAL_UNLOCK(hrtc);
-      
-      return HAL_TIMEOUT;
-    }  
+        return HAL_TIMEOUT;
+      }  
+    }
   }
-
-  /* Bug fix. Tvc-stm32 */  
-   __HAL_RTC_WAKEUPTIMER_CLEAR_FLAG(hrtc,RTC_FLAG_WUTF);
   
   /* Configure the Wakeup Timer counter */
   hrtc->Instance->WUTR = (uint32_t)WakeUpCounter;
@@ -1188,6 +1205,9 @@ void HAL_RTCEx_WakeUpTimerIRQHandler(RTC_HandleTypeDef *hrtc)
   */
 __weak void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hrtc);
+  
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_RTC_WakeUpTimerEventCallback could be implemented in the user file
    */
@@ -1748,6 +1768,9 @@ HAL_StatusTypeDef HAL_RTCEx_DisableBypassShadow(RTC_HandleTypeDef* hrtc)
   */
 __weak void HAL_RTCEx_AlarmBEventCallback(RTC_HandleTypeDef *hrtc)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hrtc);
+  
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_RTC_AlarmBEventCallback could be implemented in the user file
    */

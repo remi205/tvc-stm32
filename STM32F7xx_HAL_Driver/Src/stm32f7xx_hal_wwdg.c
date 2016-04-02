@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f7xx_hal_wwdg.c
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    12-May-2015
+  * @version V1.0.4
+  * @date    09-December-2015
   * @brief   WWDG HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Window Watchdog (WWDG) peripheral:
@@ -16,7 +16,7 @@
   ==============================================================================
   [..] 
     Once enabled the WWDG generates a system reset on expiry of a programmed
-    time period, unless the program refreshes the counter (downcounter) 
+    time period, unless the program refreshes the counter (down-counter) 
     before reaching 0x3F value (i.e. a reset is generated when the counter
     value rolls over from 0x40 to 0x3F). 
        
@@ -31,8 +31,8 @@
     (+) WWDG clock (Hz) = PCLK1 / (4096 * Prescaler)
     (+) WWDG timeout (mS) = 1000 * Counter / WWDG clock
     (+) WWDG Counter refresh is allowed between the following limits :
-        (++) min time (mS) = 1000 * (Counter – Window) / WWDG clock
-        (++) max time (mS) = 1000 * (Counter – 0x40) / WWDG clock
+        (++) min time (mS) = 1000 * (Counter - Window) / WWDG clock
+        (++) max time (mS) = 1000 * (Counter - 0x40) / WWDG clock
     
     (+) Min-max timeout value at 50 MHz(PCLK1): 81.9 us / 41.9 ms 
 
@@ -234,6 +234,9 @@ HAL_StatusTypeDef HAL_WWDG_DeInit(WWDG_HandleTypeDef *hwwdg)
   */
 __weak void HAL_WWDG_MspInit(WWDG_HandleTypeDef *hwwdg)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hwwdg);
+ 
   /* NOTE: This function Should not be modified, when the callback is needed,
            the HAL_WWDG_MspInit could be implemented in the user file
    */
@@ -247,6 +250,9 @@ __weak void HAL_WWDG_MspInit(WWDG_HandleTypeDef *hwwdg)
   */
 __weak void HAL_WWDG_MspDeInit(WWDG_HandleTypeDef *hwwdg)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hwwdg);
+ 
   /* NOTE: This function Should not be modified, when the callback is needed,
            the HAL_WWDG_MspDeInit could be implemented in the user file
    */
@@ -399,6 +405,9 @@ void HAL_WWDG_IRQHandler(WWDG_HandleTypeDef *hwwdg)
   */
 __weak void HAL_WWDG_WakeupCallback(WWDG_HandleTypeDef* hwwdg)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hwwdg);
+ 
   /* NOTE: This function Should not be modified, when the callback is needed,
            the HAL_WWDG_WakeupCallback could be implemented in the user file
    */
