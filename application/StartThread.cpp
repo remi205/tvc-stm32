@@ -25,15 +25,12 @@
 #include "net_config.h"
 #include <string.h>
    
-   
 #include "udp_layer.h"
 #include "usart.h"
 #include "i2c.h"
 #include "spi.h"
 #include "../Common/Utils/ParameterParser.h"
 #include "../over-hal/motor_sud.h"
-
-#include "MotorThread.h"
 
 extern void FormatResponse( char * Cmd, char * p1, char * p2,  char *  p3);
    
@@ -58,26 +55,14 @@ extern void MX_DMA_Init();
 #include "../over-hal/platform-parameters.h"
 #include "../over-hal/gpio_access.h"
 #include "../config.h"
-  //#include "EndOfCourseThread.h"
-
-extern int ConfigureForBattery ();
 };
 
 #define LEN 80
-#define NS_PORT 3435
-
-#define CONSOLE_UDP
 
 extern void MotorThread( void const * argument);
 extern void EndOfCourseThread( void const * argument);
     
 osSemaphoreDef(sem_cmd);
-
-extern DescritionMotor ConfMotor[3];
-extern char MotorName[3][8];
-extern UART_HandleTypeDef *dev[3];
-
-extern DescriptionService EndOfCourse;
 
 /**
   * @brief  Main task
@@ -92,27 +77,19 @@ void StartThread(void const * argument)
    MX_USART2_UART_Init();
    MX_USART6_UART_Init();
 #else
-  MX_I2C1_Init();  
+   MX_I2C1_Init();  
 #endif
-  
+
+
+   // pour exemple d'utilisation 
+#if 0  
    gpio_direction(LED_GREEN,OUTPUT);
    gpio_direction(LED_RED,OUTPUT);
    gpio_direction(LED_BLUE,OUTPUT);
    gpio_direction(LED_ORANGE,OUTPUT);
    
    gpio_set(LED_RED);  
-   
-  gpio_direction(ENABLE_I2C_5V,OUTPUT);
-  gpio_set(ENABLE_I2C_5V);  
-
-  gpio_direction(ENALBLE_GPIO_5V,OUTPUT);
-  gpio_set(ENALBLE_GPIO_5V);  
-
-  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_2, GPIO_PIN_RESET);
-  osDelay(50);
-  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_2, GPIO_PIN_SET);
-  osDelay(50);  
-
+#endif   
   // Initilaize the LwIP stack
   netif_config();
     
@@ -125,33 +102,17 @@ void StartThread(void const * argument)
 #ifdef USE_DHCP
   /* Start DHCPClient */
    dhcp_start(&gnetif);
-#endif
-   char hostmane_name_server[LEN];
-   char *hostmane;
-   
+#endif  
    char Response[LEN];
    char Cmd[LEN];
-      
-   udp Console;
-   udp Service;    
-   udp ns;   
-   
-#ifdef TEMPO
-  for ( int i = 0; i < 60; i++)
-    {
-      osDelay(500);
-      gpio_reset(LED_RED);  
-      osDelay(500);
-      gpio_set(LED_RED);       
-    }
-#endif
     
    ParameterParser pp;
   
    // c'est la LED qui indique le debut
    gpio_reset(LED_RED);  
-   
-   ns.open_server(NS_PORT);
+    
+   // exemple de broadcast udp
+#if 0
     // envoie de la trame en broadcast et en déconnecté
    ip_set_option(ns.m_upcb, SOF_BROADCAST);
    int Len = 13; //strlen("name-server?");
@@ -160,10 +121,8 @@ void StartThread(void const * argument)
 
    // fin du broad cast 
    ip_reset_option(ns.m_upcb, SOF_BROADCAST);
-   
-   ns.ReadString(Response , LEN);
-   if ( Response[0] == '1')
-     strcpy(hostmane_name_server,  &Response[2]);
+#endif
+
 
    //
    // A ce niveau on connait le name server
@@ -172,63 +131,21 @@ void StartThread(void const * argument)
    // avec le port et l'adresse
    ns.open_client(hostmane_name_server,  NS_PORT);
 
-#ifdef CONSOLE_UDP
-   strcpy(Cmd, "get-host|ConsoleService");
-   ns.WriteString(Cmd);
-   ns.ReadString(Response, LEN);
-  
-   pp.ParseString(Response);
-   Console.open_client( pp.GetString(1),  pp.GetInteger(2));   
-    
+#if 0
    // récuperation du nom de platform ( OPT EPROM)
    hostmane = platform_get_hostname();
 #endif
   
+#if 0
    strcpy(Cmd, "get-host|MonitorService");
    ns.WriteString(Cmd);
    ns.ReadString(Response, LEN); 
    pp.ParseString(Response);
    
    int Port = pp.GetInteger(2);
- 
+#endif  
+   int Port = 2255;
   
-#ifdef MOTORS
-   // init 
-   for ( int i = 0; i < 3; i++)
-     {
-       ConfMotor[i].SemaphoreCommand = osSemaphoreCreate(osSemaphore(sem_cmd), 1);
-
-       //on prend un ticket comme cela, le prochain wait sera bloquant
-       osSemaphoreWait(ConfMotor[i].SemaphoreCommand , 0);
-
-       ConfMotor[i].port= pp.GetInteger(2);
-       ConfMotor[i].add = pp.GetString(1);
-       //ConfMotor[i].name  = &MotorName[i][0];
-       ConfMotor[i].dev = dev[i];
-       
-       osThreadDef(Motor_Thread, MotorThread, osPriorityNormal, 0, 1024);     
-       osThreadCreate(osThread(Motor_Thread), &ConfMotor[i]);
-     }
-   
-   strcpy(Cmd, "get-host|MotorSouthService");
-   ns.WriteString(Cmd);
-   ns.ReadString(Response, LEN); 
-   pp.ParseString(Response);
-   
-   Port = pp.GetInteger(2);
-   
-#else
-   EndOfCourse.port= pp.GetInteger(2);
-   EndOfCourse.add = pp.GetString(1);
-   EndOfCourse.name = hostmane;
-
-   osThreadDef(EndOfCourse_Thread, EndOfCourseThread, osPriorityNormal, 0, 768);     
-   osThreadCreate(osThread(EndOfCourse_Thread), (void*)&EndOfCourse);
-#endif
-   
-   // maintenant on ouvre le service. donc on demande 
-   // son port
-
    gpio_set(LED_GREEN);
    
    // et voila le boulot l'init est faite ,  
@@ -236,21 +153,10 @@ void StartThread(void const * argument)
      {
        while ( true ) 
         {
-#ifdef CONSOLE_UDP
-           strcpy(Response, hostmane);
-           strcat(Response,": waiting for a command !");         
-           Console.WriteString(Response);  
-#endif  
            gpio_set(LED_GREEN);  
            Service.ReadString( Cmd, LEN);      
            gpio_reset(LED_GREEN);
 
-#ifdef CONSOLE_UDP
-           strcpy(Response, hostmane);
-           strcat(Response,": ");
-           strcat(Response, Cmd);
-           Console.WriteString(Response);   
-#endif           
            //
            // Analyse du service demandé.
            //
