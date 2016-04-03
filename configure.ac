@@ -40,6 +40,7 @@ AC_DEFINE([romram],["$want_string"],[Specify the target type])
 AC_DEFINE([freertos],["$want_string"],[Specify the target type])
 AC_DEFINE([stm32_serie],["$want_string"],[Specify the serie of stm32])
 AC_DEFINE([stm32_product],["$want_string"],[Specify the product of stm32])
+AC_DEFINE([core_arch],["$want_string"],[Specify the arch used])
 
 AM_CONDITIONAL([FREERTOS], [test "$WANT_FREERTOS" = "yes"])
 

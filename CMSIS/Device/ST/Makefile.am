@@ -19,5 +19,5 @@ endif
 endif
 endif
 
-AM_CFLAGS=-O3 -mcpu=cortex-m4 -mthumb -Wall -Wpointer-arith -Wstrict-prototypes -Winline -Wundef -g -I$(top_srcdir)/STM32($(PRODUCT)xx_HAL_Driver/inc -I$(top_srcdir)/inc -DSTM32$(STM32)xx
+AM_CFLAGS=-O3 $(CORE_ARCH) -Wall -Wpointer-arith -Wstrict-prototypes -Winline -Wundef -g -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/inc -I$(top_srcdir)/inc -DSTM32$(STM32)xx
  

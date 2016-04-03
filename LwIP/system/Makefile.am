@@ -2,6 +2,6 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 SUBDIRS = OS
 
-AM_CFLAGS=-O3 -mcpu=cortex-m4 -mthumb -Wall -Wpointer-arith -Wstrict-prototypes -Winline -Wundef -g -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/inc -I$(top_srcdir)/inc -DSTM32$(PRODUCT)xx -DFAMILLY$(FAMILLY)
+AM_CFLAGS=-O3 $(ARCH_CORE) -mthumb -Wall -Wpointer-arith -Wstrict-prototypes -Winline -Wundef -g -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/inc -I$(top_srcdir)/inc -DSTM32$(PRODUCT)xx -DFAMILLY$(FAMILLY)
 
-AM_CPPFLAGS =-O3 -mcpu=cortex-m4 -mthumb -ffunction-sections -fdata-sections  -fno-exceptions -I$(top_srcdir)/tvc-macros -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/inc -DSTM32$(PRODUCT)xx -DFAMILLY$(FAMILLY)
+AM_CPPFLAGS =-O3 $(ARCH_CORE) -ffunction-sections -fdata-sections  -fno-exceptions -I$(top_srcdir)/tvc-macros -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/inc -DSTM32$(PRODUCT)xx -DFAMILLY$(FAMILLY)
