@@ -10,6 +10,7 @@
   *          The communication is done with a web browser of a remote PC.
  */
 /* Includes ------------------------------------------------------------------*/
+
 #include "stm32f7xx_hal.h"
 #include "lwipopts.h"
 #include "cmsis_os.h"
@@ -17,7 +18,6 @@
 #include "lwip/netif.h"
 #include "lwip/tcpip.h"
 #include "app_ethernet.h"
-#include "dns.h"
 #include "udp.h"
 #include "netif/etharp.h"
 #include "FreeRTOS.h"
@@ -30,11 +30,10 @@
 #include "i2c.h"
 #include "spi.h"
 #include "../Common/Utils/ParameterParser.h"
-#include "../over-hal/motor_sud.h"
 
 #include "ServiceStm32.h"
 
-extern void FormatResponse( char * Cmd, char * p1, char * p2,  char *  p3);
+extern void FormatResponse(char *Cmd, char *p1, char *p2,  char *p3);
    
 // network interface structure
 struct netif gnetif;
@@ -52,9 +51,9 @@ extern void lwip_init(void);
 extern err_t ethernetif_init(struct netif *);
 extern void MX_GPIO_Init(void);
 extern void MX_DMA_Init();
+extern void MX_I2C1_Init(void);
 
 #include "usart.h"
-#include "../over-hal/platform-parameters.h"
 #include "../over-hal/gpio_access.h"
 #include "../config.h"
 };
@@ -70,14 +69,7 @@ osSemaphoreDef(sem_cmd);
   */
 void StartThread(void const * argument)
 { 
-#ifdef MOTORS  
-   MX_DMA_Init();  
-   MX_UART5_Init();
-   MX_USART2_UART_Init();
-   MX_USART6_UART_Init();
-#else
-   MX_I2C1_Init();  
-#endif
+  //   MX_I2C1_Init();  
 
 
    // pour exemple d'utilisation 
@@ -110,7 +102,7 @@ void StartThread(void const * argument)
    // c'est la LED qui indique le debut
    gpio_reset(LED_RED);  
 
-  udp Service;    
+  udp Service;   
     
    // exemple de broadcast udp
 #if 0

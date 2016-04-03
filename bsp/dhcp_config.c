@@ -8,7 +8,7 @@
 #include "net_config.h"
 
 //#include "Serial.h"
-#include "Console.h"
+//#include "Console.h"
 
 #define CONSOLE 0
 
@@ -36,7 +36,7 @@ void user_notification(struct netif *netif)
 #else
       uint8_t iptxt[80];
       sprintf((char*)iptxt, "Static IP address: %d.%d.%d.%d", IP_ADDR0, IP_ADDR1, IP_ADDR2, IP_ADDR3);
-      WriteConsole( iptxt);
+      //      WriteConsole( iptxt);
 #endif /* USE_DHCP */
     }
   else
@@ -45,7 +45,7 @@ void user_notification(struct netif *netif)
       /* Update DHCP state machine */
       DHCP_state = DHCP_LINK_DOWN;
 #endif  /* USE_DHCP */
-      WriteConsole("The network cable is not connected \n");
+      //      WriteConsole("The network cable is not connected \n");
     } 
 }
 #endif
@@ -75,10 +75,10 @@ void ethernetif_notify_conn_changed(struct netif *netif)
 
     uint8_t iptxt[80];
     sprintf((char*)iptxt, "%d.%d.%d.%d", IP_ADDR0, IP_ADDR1, IP_ADDR2, IP_ADDR3);
-    WriteConsole ("The network cable is now connected \n");
+    //    WriteConsole ("The network cable is now connected \n");
 
     sprintf((char*)iptxt, "Static IP address: %d.%d.%d.%d", IP_ADDR0, IP_ADDR1, IP_ADDR2, IP_ADDR3);
-    WriteConsole (iptxt);
+    //    WriteConsole (iptxt);
 #endif /* USE_DHCP */   
     
     netif_set_addr(netif, &ipaddr , &netmask, &gw);
@@ -94,7 +94,7 @@ void ethernetif_notify_conn_changed(struct netif *netif)
 #endif /* USE_DHCP */
     /*  When the netif link is down this function must be called.*/
     netif_set_down(netif);
-    WriteConsole ("The network cable is not connected \n");
+    //    WriteConsole ("The network cable is not connected \n");
   }
 }
 #endif
@@ -156,7 +156,7 @@ void dhcp_process(void const * argument)
                 
                 
                 sprintf(iptxt, "IP address assigned by a DHCP server: %d.%d.%d.%d", iptab[3], iptab[2], iptab[1], iptab[0]);       
-                WriteConsole ("address IP affecté\n");
+                //                WriteConsole ("address IP affecté\n");
 #endif        
                 return;
               }
@@ -181,8 +181,8 @@ void dhcp_process(void const * argument)
 #if CONSOLE          
                     char iptxt[80];
                     sprintf((char*)iptxt, "%Static IP address  : d.%d.%d.%d", IP_ADDR0, IP_ADDR1, IP_ADDR2, IP_ADDR3);
-                    WriteConsole("DHCP timeout !!\n");
-                    WriteConsole(iptxt);      
+                    //                    WriteConsole("DHCP timeout !!\n");
+                    //                    WriteConsole(iptxt);      
 #endif            
                   }
                 else

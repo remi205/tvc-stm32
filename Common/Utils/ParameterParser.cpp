@@ -5,7 +5,6 @@
 
 #include "stdafx.h"
 #include "ParameterParser.h"
-#include "TCPServer.h"
 
 //#include "TraceFunction.h"
 

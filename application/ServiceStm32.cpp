@@ -41,7 +41,7 @@ bool ServiceStm32_Analyse( udp * Service, char* Input)
 
   if( ! strcmp(Command,"get-hostname"))
     {
-     char * hostname  = platform_get_hostname();
+     char * hostname  = "stm32f7xx : udp server";
 
      strcpy(Response,"1|");
      strcat(Response, hostname);

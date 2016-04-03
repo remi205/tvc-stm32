@@ -54,10 +54,10 @@ endif
 endif
 
 if IPV4
-SUBDIRS += LwIP 
+SUBDIRS += LwIP Common
 AM_CFLAGS += -I$(top_srcdir)/LwIP/src/include/ipv4 -DIPV4
 INC_IP = -I$(top_srcdir)/LwIP/src/include
-LIB_IP =  LwIP/src/core/ipv4/libipv4.a LwIP/src/api/libapi.a LwIP/src/core/libcore.a LwIP/src/netif/libnetif.a LwIP/system/OS/libsysarch.a LwIP/src/core/ipv4/libipv4.a LwIP/src/core/raw.o bsp/dhcp_config.o
+LIB_IP =  LwIP/src/core/ipv4/libipv4.a LwIP/src/api/libapi.a LwIP/src/core/libcore.a LwIP/src/netif/libnetif.a LwIP/system/OS/libsysarch.a LwIP/src/core/ipv4/libipv4.a LwIP/src/core/raw.o bsp/dhcp_config.o 
 endif
 
 if IPV6
@@ -84,6 +84,9 @@ SUBDIRS += application bsp over-hal
 AM_CFLAGS +=-O3 -Wall -Wpointer-arith -Wstrict-prototypes -Winline -Wundef -g -I$(top_srcdir)/Inc -I../Inc -I$(top_srcdir)/$(PORT_INC) -I$(top_srcdir)/tvc-macros $(INC_IP) $(INC_FREERTOS) -DSTM32$(PRODUCT)
 AM_CPPFLAGS += -ffunction-sections -fdata-sections -fno-exceptions  -I$(top_srcdir)/Inc -I../Inc  -I$(top_srcdir)/$(PORT_INC) -I$(top_srcdir)/tvc-macros $(INC_IP) $(INC_FREERTOS) -DSTM32$(PRODUCT)
 
+CPPFLAGS +=  -DSTM32$(PRODUCT) -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-sp-d16 
+CFLAGS +=   -DSTM32$(PRODUCT) -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-sp-d16 
+
 ## -fno-rtti
 bin_PROGRAMS = essai_stm32
 
@@ -94,4 +97,4 @@ essai_stm32_SOURCES =
 essai_stm32_LDFLAGS =-mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-sp-d16 -Wl,-Map,essai_stm32.map -T$(top_srcdir)/target/stm32-mem/$(WANT_STM32) -T$(LD_SCRIPT) -DSTM32$(PRODUCT)
 
 ## essai_stm32_LDADD = bsp/libbsp.a application/libapplication.a over-hal/libover_hal.a $(LIB_HAL) $(LIB_FREERTOS) $(LIB_IP)
-essai_stm32_LDADD = bsp/libbsp.a application/libapplication.a over-hal/libover_hal.a  $(LIB_HAL) $(LIBPORT) $(LIB_FREERTOS) $(LIB_IP) FreeRTOS/Source/libfreertos.a FreeRTOS/Source/portable/MemMang/libmem.a FreeRTOS/Source/CMSIS_RTOS/libcmsis_os.a $(LIB_USB)
+essai_stm32_LDADD = bsp/libbsp.a application/libapplication.a over-hal/libover_hal.a  $(LIB_HAL) $(LIBPORT) $(LIB_FREERTOS) $(LIB_IP) FreeRTOS/Source/libfreertos.a FreeRTOS/Source/portable/MemMang/libmem.a FreeRTOS/Source/CMSIS_RTOS/libcmsis_os.a $(LIB_USB) Common/Utils/libutils.a STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_eth.o over-hal/libover_hal.a
