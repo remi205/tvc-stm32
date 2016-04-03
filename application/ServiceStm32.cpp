@@ -4,15 +4,7 @@
 #include "ServiceStm32.h" 
 
 extern "C" {
-
-#include "../tvc-macros/BasicTypes.h"
-#include "../over-hal/battery-measure.h"
 #include "../over-hal/gpio_access.h"
-#include "../over-hal/platform-parameters.h"
-#include "../over-hal/motor_sud.h"
-#include "../over-hal/ads1115.h"
-#include "../over-hal/ads111x_access.h"  
-#include "../over-hal/battery-measure.h"
 
 void format_integer( char *StringDigit , unsigned int Number);
 };
@@ -21,13 +13,6 @@ void format_integer( char *StringDigit , unsigned int Number);
 #include "udp_layer.h"
 #include "../Common/Utils/ParameterParser.h"
 #include <string.h>
-#include "MotorThread.h"
-#include "../over-hal/motor_sud.h"
-
-extern I2C_HandleTypeDef hi2c1;
-extern DescritionMotor ConfMotor[3];
-extern char MotorName[3][8];
-extern UART_HandleTypeDef *dev[3];
 
 ////////////////////////////////////////////////////////////////////////
 //  Function : Analyse
@@ -128,73 +113,6 @@ bool ServiceStm32_Analyse( udp * Service, char* Input)
       strcat(Response, Num);
       Service->WriteString(Response); 
       SendResponse = false;     
-    }
-  else if ( ! strcmp(Command, "config-ads-channel"))
-    {
-      ConfigureAdsChannel((InputMultiplexer)m_Parser.GetInteger(1),
-                          (ProgrammableGain)m_Parser.GetInteger(2),
-                          (DataRate)m_Parser.GetInteger(3),
-                          (Mode)m_Parser.GetInteger(4));
-      Ack = true;
-    }
-  else if ( ! strcmp(Command, "ads-select"))
-    {
-      // permet de choisier l'adresse i2c du convertisseur.
-      ads111x_select(m_Parser.GetInteger(1));
-      Ack = true;
-    }
-   else if ( ! strcmp(Command, "get-measure"))    
-     {
-      char Num[8];
-      
-      unsigned long x;
-      strcpy(Response,"1|");
-      x = GetMeasure();
-      format_integer (Num, x);
-      strcat(Response, Num);
-      Service->WriteString(Response);
-      SendResponse = false;
-    }
-#else  
-#if 0  
-   else if (!strcmp(Command, "cmd-moteur-123"))
-    {
-      char * CmdMoteur = m_Parser.GetString(1);
-      MotorsSendCommand((unsigned char *)CmdMoteur, strlen(CmdMoteur));
-
-      // en modifiant la hal, on lancer les 3 dma 
-      // avec le minimun de déphasage
-      huart2.Instance->CR3 |= USART_CR3_DMAT;
-      huart6.Instance->CR3 |= USART_CR3_DMAT;
-      huart5.Instance->CR3 |= USART_CR3_DMAT;
-
-      osSemaphoreRelease(ConfMotor[0].SemaphoreCommand);
-      osSemaphoreRelease(ConfMotor[1].SemaphoreCommand);
-      osSemaphoreRelease(ConfMotor[2].SemaphoreCommand);
-      Ack = true;
-    }
-#endif  
-   else if ( ! strcmp(Command, "cmd-moteur-1"))
-    {
-      char * CmdMoteur = m_Parser.GetString(1);
-      MotorSendCommand((unsigned char *)CmdMoteur, strlen(CmdMoteur), &huart6);
-      osSemaphoreRelease(ConfMotor[0].SemaphoreCommand);
-      Ack = true;
-    }
-   else if ( ! strcmp(Command, "cmd-moteur-2"))
-    {
-      char * CmdMoteur = m_Parser.GetString(1);
-      MotorSendCommand((unsigned char *)CmdMoteur, strlen(CmdMoteur), &huart2);
-      osSemaphoreRelease(ConfMotor[1].SemaphoreCommand);
-      Ack = true;
-    }
-   else if ( ! strcmp(Command, "cmd-moteur-3"))
-    {
-      char * CmdMoteur = m_Parser.GetString(1);
-      
-      MotorSendCommand((unsigned char *)CmdMoteur, strlen(CmdMoteur), &huart5);
-      osSemaphoreRelease(ConfMotor[2].SemaphoreCommand);
-      Ack = true;
     }
 #endif
   if ( SendResponse && !Ack)

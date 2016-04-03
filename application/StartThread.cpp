@@ -32,6 +32,8 @@
 #include "../Common/Utils/ParameterParser.h"
 #include "../over-hal/motor_sud.h"
 
+#include "ServiceStm32.h"
+
 extern void FormatResponse( char * Cmd, char * p1, char * p2,  char *  p3);
    
 // network interface structure
@@ -59,9 +61,6 @@ extern void MX_DMA_Init();
 
 #define LEN 80
 
-extern void MotorThread( void const * argument);
-extern void EndOfCourseThread( void const * argument);
-    
 osSemaphoreDef(sem_cmd);
 
 /**
@@ -110,6 +109,8 @@ void StartThread(void const * argument)
   
    // c'est la LED qui indique le debut
    gpio_reset(LED_RED);  
+
+  udp Service;    
     
    // exemple de broadcast udp
 #if 0
@@ -121,15 +122,13 @@ void StartThread(void const * argument)
 
    // fin du broad cast 
    ip_reset_option(ns.m_upcb, SOF_BROADCAST);
-#endif
-
-
    //
    // A ce niveau on connait le name server
    //
    // on reouvre la connection avec le nameserver
    // avec le port et l'adresse
    ns.open_client(hostmane_name_server,  NS_PORT);
+#endif
 
 #if 0
    // récuperation du nom de platform ( OPT EPROM)

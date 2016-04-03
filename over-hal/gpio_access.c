@@ -46,7 +46,7 @@ void gpio_direction( unsigned int gpio_number, enum io_direction dir)
     {
       GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
       GPIO_InitStruct.Pull = GPIO_NOPULL;
-      GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
+      GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     }
   else
     {

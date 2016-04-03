@@ -172,7 +172,7 @@ HAL_StatusTypeDef HAL_I2CEx_ConfigDigitalFilter(I2C_HandleTypeDef *hi2c, uint32_
   tmpreg = hi2c->Instance->CR1;
   
   /* Reset I2Cx DNF bits [11:8] */
-  tmpreg &= ~(I2C_CR1_DNF);
+  tmpreg &= ~(0x0700);
   
   /* Set I2Cx DNF coefficient */
   tmpreg |= DigitalFilter << 8;

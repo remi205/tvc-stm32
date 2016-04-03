@@ -3,29 +3,30 @@
 
 #include "stm32.h"
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern USART_HandleTypeDef husart8;
-extern USART_HandleTypeDef husart7;
-extern USART_HandleTypeDef husart6;
-extern USART_HandleTypeDef husart5;
-extern USART_HandleTypeDef husart4;
-extern USART_HandleTypeDef husart3;
-extern USART_HandleTypeDef husart2;
-extern USART_HandleTypeDef husart1;
 
+/* USER CODE BEGIN Private defines */
 
-void MX_USART8_Init(void);
-void MX_USART7_Init(void);
-void MX_USART6_Init(void);
-void MX_USART5_Init(void);
-void MX_USART4_Init(void);
-void MX_USART3_Init(void);
-void MX_USART2_Init(void);
-void MX_USART1_Init(void);
+/* USER CODE END Private defines */
+extern UART_HandleTypeDef huart8;
+extern UART_HandleTypeDef huart7;
+extern UART_HandleTypeDef huart6;
+extern UART_HandleTypeDef huart5;
+extern UART_HandleTypeDef huart4;
+extern UART_HandleTypeDef huart3;
+extern UART_HandleTypeDef huart2;
+extern UART_HandleTypeDef huart1;
 
+void MX_USART8_UART_Init(void);
+void MX_USART7_UART_Init(void);
+void MX_USART6_UART_Init(void);
+void MX_USART5_UART_Init(void);
+void MX_USART4_UART_Init(void);
+void MX_USART3_UART_Init(void);
+void MX_USART2_UART_Init(void);
+void MX_USART1_UART_Init(void);
 
 #ifdef __cplusplus
 }
