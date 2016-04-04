@@ -24,7 +24,7 @@ void format_integer( char *StringDigit , unsigned int Number);
 //  Notes : analyse des commandes et traitement
 //
 /////////////////////////////////////////////////////////////////////////
-bool ServiceStm32_Analyse( udp * Service, char* Input)
+bool ServiceStm32_Analyse(udp *Service, char* Input)
 {
 
   ParameterParser m_Parser;
@@ -41,7 +41,7 @@ bool ServiceStm32_Analyse( udp * Service, char* Input)
 
   if( ! strcmp(Command,"get-hostname"))
     {
-     char * hostname  = "stm32f7xx : udp server";
+      char * hostname  = (char *)"stm32f7xx : udp server";
 
      strcpy(Response,"1|");
      strcat(Response, hostname);
@@ -116,10 +116,10 @@ bool ServiceStm32_Analyse( udp * Service, char* Input)
     }
 #endif
   if ( SendResponse && !Ack)
-    Service->WriteString ("0");
+    Service->WriteString ((char *)"0");
 
   if ( SendResponse && Ack)
-   Service->WriteString("1");
+    Service->WriteString((char *)"1");
 
   return true;
 }

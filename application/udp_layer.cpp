@@ -4,10 +4,8 @@
 #include <string.h>
 #include "lwip/ip_addr.h"
 
-
-extern "C" {
 #include "../over-hal/scan_address.h"
-}
+
 
 void recv_callback(void *arg, struct udp_pcb *upcb, struct pbuf *p, struct ip_addr *addr, u16_t port);
 

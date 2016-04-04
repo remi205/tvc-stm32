@@ -16,7 +16,7 @@ PORT_INC = FreeRTOS/Source/portable/GCC/ARM_CM4F
 LIBPORT  = FreeRTOS/Source/portable/GCC/ARM_CM4F/libport.a
 LD_SCRIPT = $(top_srcdir)/target/target-stm32-$(ROMRAM)-8.ld 
 SUBDIRS = STM32L4xx_HAL_Driver
-CORE_ARCH= 
+CORE_ARCH= -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 else
 if F3XX
 AM_CFLAGS += -D__CORTEX_M=4 -D__FPU_PRESENT -D__FPU_USED=1 -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 
@@ -99,7 +99,7 @@ bin_PROGRAMS = essai_stm32
 essai_stm32_SOURCES = 
 
 ##  -DSTM32$(STM32)xx donne STM32F407xx pour la HAL
-essai_stm32_LDFLAGS = $(CORE_ARCH) -Wl,-Map,essai_stm32.map -T$(top_srcdir)/target/stm32-mem/$(WANT_STM32) -T$(LD_SCRIPT) -DSTM32$(PRODUCT)
+essai_stm32_LDFLAGS = -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-sp-d16 -mthumb -Wl,-Map,essai_stm32.map -T$(top_srcdir)/target/stm32-mem/$(WANT_STM32) -T$(LD_SCRIPT) -DSTM32$(PRODUCT)
 
 ## essai_stm32_LDADD = bsp/libbsp.a application/libapplication.a over-hal/libover_hal.a $(LIB_HAL) $(LIB_FREERTOS) $(LIB_IP)
 essai_stm32_LDADD = bsp/libbsp.a application/libapplication.a over-hal/libover_hal.a  $(LIB_HAL) $(LIBPORT) $(LIB_FREERTOS) $(LIB_IP) FreeRTOS/Source/libfreertos.a FreeRTOS/Source/portable/MemMang/libmem.a FreeRTOS/Source/CMSIS_RTOS/libcmsis_os.a $(LIB_USB) Common/Utils/libutils.a STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_eth.o over-hal/libover_hal.a
