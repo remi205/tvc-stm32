@@ -1,4 +1,3 @@
-WANT_STM32## @start 1
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 ACLOCAL_AMFLAGS = -I macro_m4
 
