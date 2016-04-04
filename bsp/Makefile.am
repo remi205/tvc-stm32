@@ -31,12 +31,12 @@ INC_IPV = -I$(top_srcdir)/LwIP/src/include/ipv6
 endif
 
 ##
-AM_CFLAGS = -mfloat-abi=hard -mfpu=fpv5-sp-d16 -mcpu=cortex-m7  -Wall -Wpointer-arith -Winline -Wundef -g -ffunction-sections -fdata-sections -I$(top_srcdir)/Inc -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/Inc -I$(top_srcdir)/CMSIS/Device/ST/STM32$(FAMILLY)xx/Include -DFAMILLY$(FAMILLY) -DSTM32$(PRODUCT)xx -I$(top_srcdir)
+AM_CFLAGS = $(WANT_ARCH) -Wall -Wpointer-arith -Winline -Wundef -g -ffunction-sections -fdata-sections -I$(top_srcdir)/Inc -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/Inc -I$(top_srcdir)/CMSIS/Device/ST/STM32$(FAMILLY)xx/Include -DFAMILLY$(FAMILLY) -DSTM32$(PRODUCT)xx -I$(top_srcdir)
 
-CFLAGS +=-I$(top_srcdir)/CMSIS/Include -I$(top_srcdir)/LwIP/src/include/lwip -I$(top_srcdir)/LwIP/system -I$(top_srcdir)/FreeRTOS/Source/CMSIS_RTOS -I$(top_srcdir)/FreeRTOS/Source/include -I$(top_srcdir)/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1 $(INC_IPV) -I$(top_srcdir)/LwIP/system/OS -I$(top_srcdir)/LwIP/src/include/netif -I$(top_srcdir)/over-hal -I$(top_srcdir)/LwIP/src/include-DFAMILLY$(FAMILLY) -DSTM32$(PRODUCT) -I$(top_srcdir) -mfloat-abi=hard -mfpu=fpv5-sp-d16 -mcpu=cortex-m7 -mthumb
+CFLAGS +=-I$(top_srcdir)/CMSIS/Include -I$(top_srcdir)/LwIP/src/include/lwip -I$(top_srcdir)/LwIP/system -I$(top_srcdir)/FreeRTOS/Source/CMSIS_RTOS -I$(top_srcdir)/FreeRTOS/Source/include -I$(top_srcdir)/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1 $(INC_IPV) -I$(top_srcdir)/LwIP/system/OS -I$(top_srcdir)/LwIP/src/include/netif -I$(top_srcdir)/over-hal -I$(top_srcdir)/LwIP/src/include-DFAMILLY$(FAMILLY) -DSTM32$(PRODUCT) -I$(top_srcdir)
 
-CPPFLAGS +=-I$(top_srcdir)/Inc -I$(top_srcdir)/CMSIS/Include -I$(top_srcdir)/LwIP/src/include/lwip -I$(top_srcdir)/LwIP/system -I$(top_srcdir)/FreeRTOS/Source/CMSIS_RTOS -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/Inc -I$(top_srcdir)/FreeRTOS/Source/include -I$(top_srcdir)/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1 $(INC_IPV) -I$(top_srcdir)/LwIP/system/OS -I$(top_srcdir)/LwIP/src/include/netif -I$(top_srcdir)/over-hal -I$(top_srcdir)/LwIP/src/include  -DFAMILLY$(FAMILLY) -DSTM32$(PRODUCT) -I$(top_srcdir) -I$(top_srcdir)/CMSIS/Device/ST/STM32$(FAMILLY)xx/Include/ -mthumb -mfloat-abi=hard -mfpu=fpv5-sp-d16 -mcpu=cortex-m7 
+CPPFLAGS +=$(WANT_ARCH) -I$(top_srcdir)/Inc -I$(top_srcdir)/CMSIS/Include -I$(top_srcdir)/LwIP/src/include/lwip -I$(top_srcdir)/LwIP/system -I$(top_srcdir)/FreeRTOS/Source/CMSIS_RTOS -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/Inc -I$(top_srcdir)/FreeRTOS/Source/include -I$(top_srcdir)/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1 $(INC_IPV) -I$(top_srcdir)/LwIP/system/OS -I$(top_srcdir)/LwIP/src/include/netif -I$(top_srcdir)/over-hal -I$(top_srcdir)/LwIP/src/include  -DFAMILLY$(FAMILLY) -DSTM32$(PRODUCT) -I$(top_srcdir) -I$(top_srcdir)/CMSIS/Device/ST/STM32$(FAMILLY)xx/Include 
 
-libbsp_a_SOURCES +=  newlib_stub.c
+libbsp_a_SOURCES += newlib_stub.c
 
 
