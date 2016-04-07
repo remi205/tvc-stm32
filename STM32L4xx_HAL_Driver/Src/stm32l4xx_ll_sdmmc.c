@@ -2,10 +2,9 @@
   ******************************************************************************
   * @file    stm32l4xx_ll_sdmmc.c
   * @author  MCD Application Team
-  * @version V0.5.0
-  * @date    10-February-2015
-  * @brief   SDMMC Low Layer HAL module driver.
-  *    
+  * @version V1.4.0
+  * @date    26-February-2016
+  * @brief   SDMMC Low Layer HAL module driver.  
   *          This file provides firmware functions to manage the following 
   *          functionalities of the SDMMC peripheral:
   *           + Initialization/de-initialization functions
@@ -23,7 +22,7 @@
     
     [..] The SDMMC features include the following:
          (+) Full compliance with MultiMedia Card System Specification Version 4.2. Card support
-             for three different databus modes: 1-bit (default), 4-bit and 8-bit
+             for three different data bus modes: 1-bit (default), 4-bit and 8-bit
          (+) Full compatibility with previous versions of MultiMedia Cards (forward compatibility)
          (+) Full compliance with SD Memory Card Specifications Version 2.0
          (+) Full compliance with SD I/O Card Specification Version 2.0: card support for two
@@ -92,7 +91,7 @@
   
       (+) To control the DPSM (Data Path State Machine) and send/receive 
            data to/from the card use the SDMMC_DataConfig(), SDMMC_GetDataCounter(), 
-          SDMMC_ReadFIFO(), DIO_WriteFIFO() and SDMMC_GetFIFOCount() functions.
+          SDMMC_ReadFIFO(), SDMMC_WriteFIFO() and SDMMC_GetFIFOCount() functions.
   
     *** Read Operations ***
     =======================
@@ -138,7 +137,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -167,6 +166,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32l4xx_hal.h"
+
+#if defined(SDMMC1)
 
 /** @addtogroup STM32L4xx_HAL_Driver
   * @{
@@ -205,7 +206,7 @@
 
 /**
   * @brief  Initializes the SDMMC according to the specified
-  *         parameters in the SDMMC_InitTypeDef and create the associated handle.
+  *         parameters in the SDMMC_InitTypeDef and initialize the associated handle.
   * @param  SDMMCx: Pointer to SDMMC register base
   * @param  Init: SDMMC initialization structure   
   * @retval HAL status
@@ -493,5 +494,7 @@ HAL_StatusTypeDef SDMMC_SetSDMMCReadWaitMode(SDMMC_TypeDef *SDMMCx, uint32_t SDM
 /**
   * @}
   */
+
+#endif /* SDMMC1 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

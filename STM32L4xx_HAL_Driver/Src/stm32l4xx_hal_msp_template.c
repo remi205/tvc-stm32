@@ -2,25 +2,15 @@
   ******************************************************************************
   * @file    stm32l4xx_hal_msp_template.c
   * @author  MCD Application Team
-  * @version V0.5.0
-  * @date    10-February-2015
+  * @version V1.4.0
+  * @date    26-February-2016
   * @brief   HAL MSP module.
   *          This file template is located in the HAL folder and should be copied 
   *          to the user folder.
-  *         
-  @verbatim
- ===============================================================================
-                     ##### How to use this driver #####
- ===============================================================================
-    [..]
-    This file is generated automatically by MicroXplorer and eventually modified 
-    by the user
-
-  @endverbatim
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -71,7 +61,7 @@
   */
 
 /**
-  * @brief  Initializes the Global MSP.
+  * @brief  Initialize the Global MSP.
   * @param  None
   * @retval None
   */
@@ -83,7 +73,7 @@ void HAL_MspInit(void)
 }
 
 /**
-  * @brief  DeInitializes the Global MSP.
+  * @brief  DeInitialize the Global MSP.
   * @param  None  
   * @retval None
   */
@@ -95,7 +85,7 @@ void HAL_MspDeInit(void)
 }
 
 /**
-  * @brief  Initializes the PPP MSP.
+  * @brief  Initialize the PPP MSP.
   * @param  None
   * @retval None
   */
@@ -107,7 +97,7 @@ void HAL_PPP_MspInit(void)
 }
 
 /**
-  * @brief  DeInitializes the PPP MSP.
+  * @brief  DeInitialize the PPP MSP.
   * @param  None  
   * @retval None
   */

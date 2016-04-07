@@ -2,18 +2,17 @@
   ******************************************************************************
   * @file    stm32l4xx_hal_spi_ex.c
   * @author  MCD Application Team
-  * @version V0.5.0
-  * @date    10-February-2015
+  * @version V1.4.0
+  * @date    26-February-2016
   * @brief   Extended SPI HAL module driver.
-  *
   *          This file provides firmware functions to manage the following
-  *          SPI peripheral extension functionalities :
+  *          SPI peripheral extended functionalities :
   *           + IO operation functions
   *
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -79,7 +78,8 @@
   ==============================================================================
                       ##### IO operation functions #####
  ===============================================================================
-    This subsection provides a set of extension functions to manage the SPI
+ [..]
+    This subsection provides a set of extended functions to manage the SPI
     data transfers.
 
     (#) Rx data flush function:

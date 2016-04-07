@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32l4xx_hal_nor.c
   * @author  MCD Application Team
-  * @version V0.5.0
-  * @date    10-February-2015
+  * @version V1.4.0
+  * @date    26-February-2016
   * @brief   NOR HAL module driver.
   *          This file provides a generic firmware to drive NOR memories mounted 
   *          as external device.
@@ -55,7 +55,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -84,6 +84,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32l4xx_hal.h"
+
+#if defined(STM32L471xx) || defined(STM32L475xx) || defined(STM32L476xx) || defined(STM32L485xx) || defined(STM32L486xx)
 
 /** @addtogroup STM32L4xx_HAL_Driver
   * @{
@@ -155,8 +157,7 @@ static uint32_t uwNORMemoryDataWidth  = NOR_MEMORY_8B;
   * @}
   */
 
-/* Private function prototypes -----------------------------------------------*/
-/* Private functions ---------------------------------------------------------*/
+/* Exported functions ---------------------------------------------------------*/
 
 /** @defgroup NOR_Exported_Functions NOR Exported Functions
   * @{
@@ -167,7 +168,7 @@ static uint32_t uwNORMemoryDataWidth  = NOR_MEMORY_8B;
   *
   @verbatim    
   ==============================================================================
-           ##### NOR Initialization and de_initialization functions #####
+           ##### NOR Initialization and de-initialization functions #####
   ==============================================================================
   [..]  
     This section provides functions allowing to initialize/de-initialize
@@ -178,7 +179,7 @@ static uint32_t uwNORMemoryDataWidth  = NOR_MEMORY_8B;
   */
     
 /**
-  * @brief  Perform the NOR memory Initialization sequence
+  * @brief  Perform the NOR memory Initialization sequence.
   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
   *                the configuration information for NOR module.
   * @param  Timing: pointer to NOR control timing structure 
@@ -231,7 +232,7 @@ HAL_StatusTypeDef HAL_NOR_Init(NOR_HandleTypeDef *hnor, FMC_NORSRAM_TimingTypeDe
 }
 
 /**
-  * @brief  Perform NOR memory De-Initialization sequence
+  * @brief  Perform NOR memory De-Initialization sequence.
   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
   *                the configuration information for NOR module.
   * @retval HAL status
@@ -254,33 +255,39 @@ HAL_StatusTypeDef HAL_NOR_DeInit(NOR_HandleTypeDef *hnor)
 }
 
 /**
-  * @brief  NOR MSP Init
+  * @brief  Initialize the NOR MSP.
   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
   *                the configuration information for NOR module.
   * @retval None
   */
 __weak void HAL_NOR_MspInit(NOR_HandleTypeDef *hnor)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hnor);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_NOR_MspInit could be implemented in the user file
    */ 
 }
 
 /**
-  * @brief  NOR MSP DeInit
+  * @brief  DeInitialize the NOR MSP.
   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
   *                the configuration information for NOR module.
   * @retval None
   */
 __weak void HAL_NOR_MspDeInit(NOR_HandleTypeDef *hnor)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hnor);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_NOR_MspDeInit could be implemented in the user file
    */ 
 }
 
 /**
-  * @brief  NOR MSP Wait fro Ready/Busy signal
+  * @brief  NOR MSP Wait for Ready/Busy signal.
   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
   *                the configuration information for NOR module.
   * @param  Timeout: Maximum timeout value
@@ -288,7 +295,11 @@ __weak void HAL_NOR_MspDeInit(NOR_HandleTypeDef *hnor)
   */
 __weak void HAL_NOR_MspWait(NOR_HandleTypeDef *hnor, uint32_t Timeout)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hnor);
+  UNUSED(Timeout);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_NOR_MspWait could be implemented in the user file
    */ 
 }
@@ -312,7 +323,7 @@ __weak void HAL_NOR_MspWait(NOR_HandleTypeDef *hnor, uint32_t Timeout)
   */
   
 /**
-  * @brief  Read NOR flash IDs
+  * @brief  Read NOR flash IDs.
   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
   *                the configuration information for NOR module.
   * @param  pNOR_ID : pointer to NOR ID structure
@@ -373,7 +384,7 @@ HAL_StatusTypeDef HAL_NOR_Read_ID(NOR_HandleTypeDef *hnor, NOR_IDTypeDef *pNOR_I
 }
 
 /**
-  * @brief  Returns the NOR memory to Read mode.
+  * @brief  Return the NOR memory to Read mode.
   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
   *                the configuration information for NOR module.
   * @retval HAL status
@@ -421,7 +432,7 @@ HAL_StatusTypeDef HAL_NOR_ReturnToReadMode(NOR_HandleTypeDef *hnor)
 }
 
 /**
-  * @brief  Read data from NOR memory 
+  * @brief  Read data from NOR memory.
   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
   *                the configuration information for NOR module.
   * @param  pAddress: pointer to Device address
@@ -480,7 +491,7 @@ HAL_StatusTypeDef HAL_NOR_Read(NOR_HandleTypeDef *hnor, uint32_t *pAddress, uint
 }
 
 /**
-  * @brief  Program data to NOR memory 
+  * @brief  Program data to NOR memory.
   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
   *                the configuration information for NOR module.
   * @param  pAddress: Device address
@@ -539,7 +550,7 @@ HAL_StatusTypeDef HAL_NOR_Program(NOR_HandleTypeDef *hnor, uint32_t *pAddress, u
 }
 
 /**
-  * @brief  Reads a block of data from the FMC NOR memory.
+  * @brief  Read a block of data from the FMC NOR memory.
   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
   *                the configuration information for NOR module.
   * @param  uwAddress: NOR memory internal address to read from.
@@ -605,7 +616,7 @@ HAL_StatusTypeDef HAL_NOR_ReadBuffer(NOR_HandleTypeDef *hnor, uint32_t uwAddress
 }
 
 /**
-  * @brief  Writes a half-word buffer to the FMC NOR memory. This function 
+  * @brief  Write a half-word buffer to the FMC NOR memory. This function 
   *         must be used only with S29GL128P NOR memory. 
   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
   *                the configuration information for NOR module.
@@ -691,7 +702,7 @@ HAL_StatusTypeDef HAL_NOR_ProgramBuffer(NOR_HandleTypeDef *hnor, uint32_t uwAddr
 }
 
 /**
-  * @brief  Erase the specified block of the NOR memory 
+  * @brief  Erase the specified block of the NOR memory.
   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
   *                the configuration information for NOR module.
   * @param  BlockAddress : Block to erase address 
@@ -761,6 +772,9 @@ HAL_StatusTypeDef HAL_NOR_Erase_Chip(NOR_HandleTypeDef *hnor, uint32_t Address)
 {
   uint32_t deviceaddress = 0;
   
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(Address);
+
   /* Process Locked */
   __HAL_LOCK(hnor);
   
@@ -809,7 +823,7 @@ HAL_StatusTypeDef HAL_NOR_Erase_Chip(NOR_HandleTypeDef *hnor, uint32_t Address)
 }
 
 /**
-  * @brief  Read NOR flash CFI IDs
+  * @brief  Read NOR flash CFI IDs.
   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
   *                the configuration information for NOR module.
   * @param  pNOR_CFI : pointer to NOR CFI IDs structure  
@@ -887,7 +901,7 @@ HAL_StatusTypeDef HAL_NOR_Read_CFI(NOR_HandleTypeDef *hnor, NOR_CFITypeDef *pNOR
   */
     
 /**
-  * @brief  Enables dynamically NOR write operation.
+  * @brief  Enable dynamically NOR write operation.
   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
   *                the configuration information for NOR module.
   * @retval HAL status
@@ -910,7 +924,7 @@ HAL_StatusTypeDef HAL_NOR_WriteOperation_Enable(NOR_HandleTypeDef *hnor)
 }
 
 /**
-  * @brief  Disables dynamically NOR write operation.
+  * @brief  Disable dynamically NOR write operation.
   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
   *                the configuration information for NOR module.
   * @retval HAL status
@@ -955,22 +969,23 @@ HAL_StatusTypeDef HAL_NOR_WriteOperation_Disable(NOR_HandleTypeDef *hnor)
   */
   
 /**
-  * @brief  return the NOR controller state
+  * @brief  Return the NOR controller handle state.
   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
   *                the configuration information for NOR module.
   * @retval NOR controller state
   */
 HAL_NOR_StateTypeDef HAL_NOR_GetState(NOR_HandleTypeDef *hnor)
 {
+  /* Return NOR handle state */
   return hnor->State;
 }
 
 /**
-  * @brief  Returns the NOR operation status.
+  * @brief  Return the NOR operation status.
   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
   *                the configuration information for NOR module.   
   * @param  Address: Device address
-  * @param  Timeout: NOR progamming Timeout
+  * @param  Timeout: NOR programming Timeout
   * @retval NOR_Status: The returned value can be: HAL_NOR_STATUS_SUCCESS, HAL_NOR_STATUS_ERROR
   *         or HAL_NOR_STATUS_TIMEOUT
   */
@@ -1044,5 +1059,7 @@ HAL_NOR_StatusTypeDef HAL_NOR_GetStatus(NOR_HandleTypeDef *hnor, uint32_t Addres
 /**
   * @}
   */
+
+#endif /* STM32L471xx || STM32L475xx || STM32L476xx || STM32L485xx || STM32L486xx */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

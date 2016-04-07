@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32l4xx_hal_sram.c
   * @author  MCD Application Team
-  * @version V0.5.0
-  * @date    10-February-2015
+  * @version V1.4.0
+  * @date    26-February-2016
   * @brief   SRAM HAL module driver.
   *          This file provides a generic firmware to drive SRAM memories  
   *          mounted as external device.
@@ -64,7 +64,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -94,6 +94,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32l4xx_hal.h"
 
+#if defined(STM32L471xx) || defined(STM32L475xx) || defined(STM32L476xx) || defined(STM32L485xx) || defined(STM32L486xx)
+
 /** @addtogroup STM32L4xx_HAL_Driver
   * @{
   */
@@ -120,17 +122,17 @@
   *
   @verbatim    
   ==============================================================================
-           ##### SRAM Initialization and de_initialization functions #####
+           ##### SRAM Initialization and de-initialization functions #####
   ==============================================================================
     [..]  This section provides functions allowing to initialize/de-initialize
-          the SRAM memory
+          the SRAM memory.
   
 @endverbatim
   * @{
   */
 
 /**
-  * @brief  Performs the SRAM device initialization sequence
+  * @brief  Perform the SRAM device initialization sequence.
   * @param  hsram: pointer to a SRAM_HandleTypeDef structure that contains
   *                the configuration information for SRAM module.
   * @param  Timing: Pointer to SRAM control timing structure 
@@ -170,7 +172,7 @@ HAL_StatusTypeDef HAL_SRAM_Init(SRAM_HandleTypeDef *hsram, FMC_NORSRAM_TimingTyp
 }
 
 /**
-  * @brief  Performs the SRAM device De-initialization sequence.
+  * @brief  Perform the SRAM device de-initialization sequence.
   * @param  hsram: pointer to a SRAM_HandleTypeDef structure that contains
   *                the configuration information for SRAM module.
   * @retval HAL status
@@ -192,27 +194,33 @@ HAL_StatusTypeDef  HAL_SRAM_DeInit(SRAM_HandleTypeDef *hsram)
 }
 
 /**
-  * @brief  SRAM MSP Init.
+  * @brief  Initialize the SRAM MSP.
   * @param  hsram: pointer to a SRAM_HandleTypeDef structure that contains
   *                the configuration information for SRAM module.
   * @retval None
   */
 __weak void HAL_SRAM_MspInit(SRAM_HandleTypeDef *hsram)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hsram);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_SRAM_MspInit could be implemented in the user file
    */ 
 }
 
 /**
-  * @brief  SRAM MSP DeInit.
+  * @brief  DeInitialize the SRAM MSP.
   * @param  hsram: pointer to a SRAM_HandleTypeDef structure that contains
   *                the configuration information for SRAM module.
   * @retval None
   */
 __weak void HAL_SRAM_MspDeInit(SRAM_HandleTypeDef *hsram)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hsram);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_SRAM_MspDeInit could be implemented in the user file
    */ 
 }
@@ -225,7 +233,10 @@ __weak void HAL_SRAM_MspDeInit(SRAM_HandleTypeDef *hsram)
   */
 __weak void HAL_SRAM_DMA_XferCpltCallback(DMA_HandleTypeDef *hdma)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hdma);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_SRAM_DMA_XferCpltCallback could be implemented in the user file
    */ 
 }
@@ -238,7 +249,10 @@ __weak void HAL_SRAM_DMA_XferCpltCallback(DMA_HandleTypeDef *hdma)
   */
 __weak void HAL_SRAM_DMA_XferErrorCallback(DMA_HandleTypeDef *hdma)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hdma);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_SRAM_DMA_XferErrorCallback could be implemented in the user file
    */ 
 }
@@ -262,7 +276,7 @@ __weak void HAL_SRAM_DMA_XferErrorCallback(DMA_HandleTypeDef *hdma)
   */
 
 /**
-  * @brief  Reads 8-bit buffer from SRAM memory. 
+  * @brief  Read 8-bit buffer from SRAM memory. 
   * @param  hsram: pointer to a SRAM_HandleTypeDef structure that contains
   *                the configuration information for SRAM module.
   * @param  pAddress: Pointer to read start address
@@ -298,7 +312,7 @@ HAL_StatusTypeDef HAL_SRAM_Read_8b(SRAM_HandleTypeDef *hsram, uint32_t *pAddress
 }
 
 /**
-  * @brief  Writes 8-bit buffer to SRAM memory. 
+  * @brief  Write 8-bit buffer to SRAM memory. 
   * @param  hsram: pointer to a SRAM_HandleTypeDef structure that contains
   *                the configuration information for SRAM module.
   * @param  pAddress: Pointer to write start address
@@ -340,7 +354,7 @@ HAL_StatusTypeDef HAL_SRAM_Write_8b(SRAM_HandleTypeDef *hsram, uint32_t *pAddres
 }
 
 /**
-  * @brief  Reads 16-bit buffer from SRAM memory. 
+  * @brief  Read 16-bit buffer from SRAM memory. 
   * @param  hsram: pointer to a SRAM_HandleTypeDef structure that contains
   *                the configuration information for SRAM module.
   * @param  pAddress: Pointer to read start address
@@ -376,7 +390,7 @@ HAL_StatusTypeDef HAL_SRAM_Read_16b(SRAM_HandleTypeDef *hsram, uint32_t *pAddres
 }
 
 /**
-  * @brief  Writes 16-bit buffer to SRAM memory. 
+  * @brief  Write 16-bit buffer to SRAM memory. 
   * @param  hsram: pointer to a SRAM_HandleTypeDef structure that contains
   *                the configuration information for SRAM module.
   * @param  pAddress: Pointer to write start address
@@ -418,7 +432,7 @@ HAL_StatusTypeDef HAL_SRAM_Write_16b(SRAM_HandleTypeDef *hsram, uint32_t *pAddre
 }
 
 /**
-  * @brief  Reads 32-bit buffer from SRAM memory. 
+  * @brief  Read 32-bit buffer from SRAM memory. 
   * @param  hsram: pointer to a SRAM_HandleTypeDef structure that contains
   *                the configuration information for SRAM module.
   * @param  pAddress: Pointer to read start address
@@ -452,7 +466,7 @@ HAL_StatusTypeDef HAL_SRAM_Read_32b(SRAM_HandleTypeDef *hsram, uint32_t *pAddres
 }
 
 /**
-  * @brief  Writes 32-bit buffer to SRAM memory. 
+  * @brief  Write 32-bit buffer to SRAM memory. 
   * @param  hsram: pointer to a SRAM_HandleTypeDef structure that contains
   *                the configuration information for SRAM module.
   * @param  pAddress: Pointer to write start address
@@ -492,7 +506,7 @@ HAL_StatusTypeDef HAL_SRAM_Write_32b(SRAM_HandleTypeDef *hsram, uint32_t *pAddre
 }
 
 /**
-  * @brief  Reads a Words data from the SRAM memory using DMA transfer.
+  * @brief  Read a Word data buffer from the SRAM memory using DMA transfer.
   * @param  hsram: pointer to a SRAM_HandleTypeDef structure that contains
   *                the configuration information for SRAM module.
   * @param  pAddress: Pointer to read start address
@@ -525,7 +539,7 @@ HAL_StatusTypeDef HAL_SRAM_Read_DMA(SRAM_HandleTypeDef *hsram, uint32_t *pAddres
 }
 
 /**
-  * @brief  Writes a Words data buffer to SRAM memory using DMA transfer.
+  * @brief  Write a Word data buffer to SRAM memory using DMA transfer.
   * @param  hsram: pointer to a SRAM_HandleTypeDef structure that contains
   *                the configuration information for SRAM module.
   * @param  pAddress: Pointer to write start address
@@ -583,7 +597,7 @@ HAL_StatusTypeDef HAL_SRAM_Write_DMA(SRAM_HandleTypeDef *hsram, uint32_t *pAddre
   */
     
 /**
-  * @brief  Enables dynamically SRAM write operation.
+  * @brief  Enable dynamically SRAM write operation.
   * @param  hsram: pointer to a SRAM_HandleTypeDef structure that contains
   *                the configuration information for SRAM module.
   * @retval HAL status
@@ -606,7 +620,7 @@ HAL_StatusTypeDef HAL_SRAM_WriteOperation_Enable(SRAM_HandleTypeDef *hsram)
 }
 
 /**
-  * @brief  Disables dynamically SRAM write operation.
+  * @brief  Disable dynamically SRAM write operation.
   * @param  hsram: pointer to a SRAM_HandleTypeDef structure that contains
   *                the configuration information for SRAM module.
   * @retval HAL status
@@ -651,13 +665,14 @@ HAL_StatusTypeDef HAL_SRAM_WriteOperation_Disable(SRAM_HandleTypeDef *hsram)
   */
   
 /**
-  * @brief  Returns the SRAM controller state
+  * @brief  Return the SRAM controller handle state.
   * @param  hsram: pointer to a SRAM_HandleTypeDef structure that contains
   *                the configuration information for SRAM module.
   * @retval HAL state
   */
 HAL_SRAM_StateTypeDef HAL_SRAM_GetState(SRAM_HandleTypeDef *hsram)
 {
+  /* Return SRAM handle state */
   return hsram->State;
 }
 
@@ -668,7 +683,6 @@ HAL_SRAM_StateTypeDef HAL_SRAM_GetState(SRAM_HandleTypeDef *hsram)
 /**
   * @}
   */
-
 /**
   * @}
   */
@@ -677,5 +691,7 @@ HAL_SRAM_StateTypeDef HAL_SRAM_GetState(SRAM_HandleTypeDef *hsram)
 /**
   * @}
   */
+
+#endif /* STM32L471xx || STM32L475xx || STM32L476xx || STM32L485xx || STM32L486xx */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

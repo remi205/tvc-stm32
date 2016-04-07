@@ -2,10 +2,9 @@
   ******************************************************************************
   * @file    stm32l4xx_hal_iwdg.c
   * @author  MCD Application Team
-  * @version V0.5.0
-  * @date    10-February-2015
-  * @brief   IWDG HAL module driver.
-  *    
+  * @version V1.4.0
+  * @date    26-February-2016
+  * @brief   IWDG HAL module driver.   
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Independent Watchdog (IWDG) peripheral:
   *           + Initialization and de-initialization functions
@@ -78,14 +77,12 @@
       (+) __HAL_IWDG_START: Enable the IWDG peripheral
       (+) __HAL_IWDG_RELOAD_COUNTER: Reloads IWDG counter with value defined in the reload register    
       (+) __HAL_IWDG_GET_FLAG: Get the selected IWDG's flag status
-      (+) IWDG_ENABLE_WRITE_ACCESS : Enable write access to IWDG_PR and IWDG_RLR registers
-      (+) IWDG_DISABLE_WRITE_ACCESS : Disable write access to IWDG_PR and IWDG_RLR registers
             
   @endverbatim
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -133,6 +130,8 @@
   */
 
 #define HAL_IWDG_DEFAULT_TIMEOUT (uint32_t)1000
+/* Local define used to check the SR status register */
+#define IWDG_SR_FLAGS  (IWDG_FLAG_PVU | IWDG_FLAG_RVU | IWDG_FLAG_WVU)
 
 /**
   * @}
@@ -158,15 +157,15 @@
           in the IWDG_InitTypeDef and create the associated handle
       (+) Manage Window option
       (+) Initialize the IWDG MSP
-      (+) DeInitialize IWDG MSP 
+      (+) DeInitialize the IWDG MSP 
 
 @endverbatim
   * @{
   */
 
 /**
-  * @brief  Initializes the IWDG according to the specified
-  *         parameters in the IWDG_InitTypeDef and creates the associated handle.
+  * @brief  Initialize the IWDG according to the specified
+  *         parameters in the IWDG_InitTypeDef and initialize the associated handle.
   * @param  hiwdg: pointer to a IWDG_HandleTypeDef structure that contains
   *                the configuration information for the specified IWDG module.
   * @retval HAL status
@@ -187,9 +186,7 @@ HAL_StatusTypeDef HAL_IWDG_Init(IWDG_HandleTypeDef *hiwdg)
   assert_param(IS_IWDG_WINDOW(hiwdg->Init.Window));
 
   /* Check pending flag, if previous update not done, return error */
-  if((__HAL_IWDG_GET_FLAG(hiwdg, IWDG_FLAG_PVU) != RESET)
-     &&(__HAL_IWDG_GET_FLAG(hiwdg, IWDG_FLAG_RVU) != RESET)
-     &&(__HAL_IWDG_GET_FLAG(hiwdg, IWDG_FLAG_WVU) != RESET))
+  if(((hiwdg->Instance->SR) & IWDG_SR_FLAGS) != 0)
   {
     return HAL_ERROR;
   }
@@ -220,7 +217,7 @@ HAL_StatusTypeDef HAL_IWDG_Init(IWDG_HandleTypeDef *hiwdg)
     tickstart = HAL_GetTick();
 
      /* Wait for register to be updated */
-    while((uint32_t)(hiwdg->Instance->SR) != RESET)
+    while(((hiwdg->Instance->SR) & IWDG_SR_FLAGS) != 0)
     {
       if((HAL_GetTick() - tickstart ) > HAL_IWDG_DEFAULT_TIMEOUT)
       {
@@ -242,13 +239,16 @@ HAL_StatusTypeDef HAL_IWDG_Init(IWDG_HandleTypeDef *hiwdg)
 }
 
 /**
-  * @brief  Initializes the IWDG MSP.
+  * @brief  Initialize the IWDG MSP.
   * @param  hiwdg: pointer to a IWDG_HandleTypeDef structure that contains
   *                the configuration information for the specified IWDG module.
   * @retval None
   */
 __weak void HAL_IWDG_MspInit(IWDG_HandleTypeDef *hiwdg)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hiwdg);
+
   /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_IWDG_MspInit could be implemented in the user file
    */
@@ -274,7 +274,7 @@ __weak void HAL_IWDG_MspInit(IWDG_HandleTypeDef *hiwdg)
   */
 
 /**
-  * @brief  Starts the IWDG.
+  * @brief  Start the IWDG.
   * @param  hiwdg: pointer to a IWDG_HandleTypeDef structure that contains
   *                the configuration information for the specified IWDG module.
   * @retval HAL status
@@ -301,9 +301,7 @@ HAL_StatusTypeDef HAL_IWDG_Start(IWDG_HandleTypeDef *hiwdg)
   tickstart = HAL_GetTick();
 
   /* Wait until PVU, RVU, WVU flag are RESET */
-  while( (__HAL_IWDG_GET_FLAG(hiwdg, IWDG_FLAG_PVU) != RESET)
-         &&(__HAL_IWDG_GET_FLAG(hiwdg, IWDG_FLAG_RVU) != RESET)
-         &&(__HAL_IWDG_GET_FLAG(hiwdg, IWDG_FLAG_WVU) != RESET) )
+  while(((hiwdg->Instance->SR) & IWDG_SR_FLAGS) != 0)
   {
     
     if((HAL_GetTick() - tickstart ) > HAL_IWDG_DEFAULT_TIMEOUT)
@@ -329,7 +327,7 @@ HAL_StatusTypeDef HAL_IWDG_Start(IWDG_HandleTypeDef *hiwdg)
 }
 
 /**
-  * @brief  Refreshes the IWDG.
+  * @brief  Refresh the IWDG.
   * @param  hiwdg: pointer to a IWDG_HandleTypeDef structure that contains
   *                the configuration information for the specified IWDG module.
   * @retval HAL status
@@ -386,20 +384,21 @@ HAL_StatusTypeDef HAL_IWDG_Refresh(IWDG_HandleTypeDef *hiwdg)
                       ##### Peripheral State functions #####
  ===============================================================================
     [..]
-    This subsection permits to get in run-time the status of the peripheral..
+    This subsection permits to get in run-time the status of the peripheral.
 
 @endverbatim
   * @{
   */
 
 /**
-  * @brief  Returns the IWDG state.
+  * @brief  Return the IWDG handle state.
   * @param  hiwdg: pointer to a IWDG_HandleTypeDef structure that contains
   *                the configuration information for the specified IWDG module.
   * @retval HAL state
   */
 HAL_IWDG_StateTypeDef HAL_IWDG_GetState(IWDG_HandleTypeDef *hiwdg)
 {
+  /* Return IWDG handle state */
   return hiwdg->State;
 }
 

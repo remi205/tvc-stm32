@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32l4xx_hal_sd.c
   * @author  MCD Application Team
-  * @version V0.5.0
-  * @date    10-February-2015
+  * @version V1.4.0
+  * @date    26-February-2016
   * @brief   SD card HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Secure Digital (SD) peripheral:
@@ -18,7 +18,7 @@
   ==============================================================================
   [..]
     This driver implements a high level communication layer for read and write from/to 
-    this memory. The needed STM32 hardware resources (SDMMC and GPIO) are performed by 
+    this memory. The needed STM32 hardware resources (SDMMC1 and GPIO) are performed by 
     the user in HAL_SD_MspInit() function (MSP layer).                             
     Basically, the MSP layer configuration should be the same as we provide in the 
     examples.
@@ -29,8 +29,10 @@
     SDMMC driver functions to interface with SD and uSD cards devices. 
     It is used as follows:
  
-    (#)Initialize the SDMMC low level resources by implement the HAL_SD_MspInit() API:
-        (##) Enable the SDMMC interface clock using __HAL_RCC_SDMMC_CLK_ENABLE(); 
+    (#)Initialize the SDMMC1 low level resources by implementing the HAL_SD_MspInit() API:
+        (##) Call the function HAL_RCCEx_PeriphCLKConfig with RCC_PERIPHCLK_SDMMC1 for
+        PeriphClockSelection and select SDMMC1 clock source (MSI, main PLL or PLLSAI1)
+        (##) Enable the SDMMC1 interface clock using __HAL_RCC_SDMMC1_CLK_ENABLE(); 
         (##) SDMMC pins configuration for SD card
             (+++) Enable the clock for the SDMMC GPIOs using the functions __HAL_RCC_GPIOx_CLK_ENABLE();   
             (+++) Configure these SDMMC pins as alternate function pull-up using HAL_GPIO_Init()
@@ -61,11 +63,12 @@
         type (Standard Capacity or High Capacity). You can change or adapt this 
         frequency by adjusting the "ClockDiv" field. 
         The SD Card frequency (SDMMC_CK) is computed as follows:
-  
+     (++)
+
            SDMMC_CK = SDMMCCLK / (ClockDiv + 2)
-  
-        In initialization mode and according to the SD Card standard, 
-        make sure that the SDMMC_CK frequency doesn't exceed 400KHz.
+
+     -@@-  In initialization mode and according to the SD Card standard, 
+          make sure that the SDMMC_CK frequency doesn't exceed 400KHz.
   
     (#) Get the SD CID and CSD data. All these information are managed by the SDCardInfo 
         structure. This structure provide also ready computed SD Card capacity 
@@ -142,14 +145,14 @@
     (+) __HAL_SD_SDMMC_DISABLE_IT: Disable the SD device interrupt
     (+) __HAL_SD_SDMMC_GET_FLAG:Check whether the specified SD flag is set or not
     (+) __HAL_SD_SDMMC_CLEAR_FLAG: Clear the SD's pending flags
-      
+    [..]  
     (@) You can refer to the SD HAL driver header file for more useful macros 
       
   @endverbatim
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -178,6 +181,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32l4xx_hal.h"
+
+#if defined(SDMMC1)
 
 /** @addtogroup STM32L4xx_HAL_Driver
   * @{
@@ -329,7 +334,7 @@ static void SD_DMA_TxError(DMA_HandleTypeDef *hdma);
 
 /**
   * @brief  Initializes the SD card according to the specified parameters in the 
-            SD_HandleTypeDef and create the associated handle.
+            SD_HandleTypeDef and initialize the associated handle.
   * @param  hsd: SD handle
   * @param  SDCardInfo: HAL_SD_CardInfoTypedef structure for SD card information   
   * @retval HAL SD error state
@@ -409,7 +414,10 @@ HAL_StatusTypeDef HAL_SD_DeInit(SD_HandleTypeDef *hsd)
   */
 __weak void HAL_SD_MspInit(SD_HandleTypeDef *hsd)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hsd);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_SD_MspInit could be implemented in the user file
    */
 }
@@ -421,7 +429,10 @@ __weak void HAL_SD_MspInit(SD_HandleTypeDef *hsd)
   */
 __weak void HAL_SD_MspDeInit(SD_HandleTypeDef *hsd)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hsd);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_SD_MspDeInit could be implemented in the user file
    */
 }
@@ -1375,7 +1386,10 @@ void HAL_SD_IRQHandler(SD_HandleTypeDef *hsd)
   */
 __weak void HAL_SD_XferCpltCallback(SD_HandleTypeDef *hsd)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hsd);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_SD_XferCpltCallback could be implemented in the user file
    */ 
 }
@@ -1387,20 +1401,26 @@ __weak void HAL_SD_XferCpltCallback(SD_HandleTypeDef *hsd)
   */
 __weak void HAL_SD_XferErrorCallback(SD_HandleTypeDef *hsd)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hsd);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_SD_XferErrorCallback could be implemented in the user file
    */ 
 }
 
 /**
-  * @brief  SD Transfer complete Rx callback in non blocking mode.
+  * @brief  SD Transfer complete Rx callback in non-blocking mode.
   * @param  hdma: pointer to a DMA_HandleTypeDef structure that contains
   *                the configuration information for the specified DMA module.
   * @retval None
   */
 __weak void HAL_SD_DMA_RxCpltCallback(DMA_HandleTypeDef *hdma)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hdma);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_SD_DMA_RxCpltCallback could be implemented in the user file
    */ 
 }  
@@ -1413,20 +1433,26 @@ __weak void HAL_SD_DMA_RxCpltCallback(DMA_HandleTypeDef *hdma)
   */
 __weak void HAL_SD_DMA_RxErrorCallback(DMA_HandleTypeDef *hdma)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hdma);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_SD_DMA_RxErrorCallback could be implemented in the user file
    */ 
 }
 
 /**
-  * @brief  SD Transfer complete Tx callback in non blocking mode.
+  * @brief  SD Transfer complete Tx callback in non-blocking mode.
   * @param  hdma: pointer to a DMA_HandleTypeDef structure that contains
   *                the configuration information for the specified DMA module.
   * @retval None
   */
 __weak void HAL_SD_DMA_TxCpltCallback(DMA_HandleTypeDef *hdma)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hdma);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_SD_DMA_TxCpltCallback could be implemented in the user file
    */ 
 }  
@@ -1439,7 +1465,10 @@ __weak void HAL_SD_DMA_TxCpltCallback(DMA_HandleTypeDef *hdma)
   */
 __weak void HAL_SD_DMA_TxErrorCallback(DMA_HandleTypeDef *hdma)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hdma);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_SD_DMA_TxErrorCallback could be implemented in the user file
    */ 
 }
@@ -1561,7 +1590,7 @@ HAL_SD_ErrorTypedef HAL_SD_Get_CardInfo(SD_HandleTypeDef *hsd, HAL_SD_CardInfoTy
     /* Byte 10 */
     tmp = (uint8_t)((hsd->CSD[2] & 0x0000FF00) >> 8);
     
-    pCardInfo->CardCapacity  = ((pCardInfo->SD_csd.DeviceSize + 1)) * 512 * 1024;
+    pCardInfo->CardCapacity = (uint64_t)(((uint64_t)pCardInfo->SD_csd.DeviceSize + 1) * 512 * 1024);
     pCardInfo->CardBlockSize = 512;    
   }
   else
@@ -2358,7 +2387,7 @@ static HAL_SD_ErrorTypedef SD_Initialize_Cards(SD_HandleTypeDef *hsd)
 }
 
 /**
-  * @brief  Selects od Deselects the corresponding card.
+  * @brief  Selects or Deselects the corresponding card.
   * @param  hsd: SD handle
   * @param  addr: Address of the card to be selected  
   * @retval SD Card error state
@@ -3381,5 +3410,7 @@ static HAL_SD_ErrorTypedef SD_IsCardProgramming(SD_HandleTypeDef *hsd, uint8_t *
 /**
   * @}
   */
+
+#endif /* SDMMC1 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

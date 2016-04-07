@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32l4xx_hal_flash_ramfunc.c
   * @author  MCD Application Team
-  * @version V0.5.0
-  * @date    10-February-2015
+  * @version V1.4.0
+  * @date    26-February-2016
   * @brief   FLASH RAMFUNC driver.
   *          This file provides a Flash firmware functions which should be 
   *          executed from internal SRAM
@@ -11,11 +11,14 @@
   *            + FLASH Power Down in Run mode
   *
   *  @verbatim
+  ==============================================================================
+                   ##### Flash RAM functions #####
+  ==============================================================================    
 
     *** ARM Compiler ***
     --------------------
     [..] RAM functions are defined using the toolchain options. 
-         Functions that are be executed in RAM should reside in a separate
+         Functions that are executed in RAM should reside in a separate
          source module. Using the 'Options for File' dialog you can simply change
          the 'Code / Const' area of a module to a memory space in physical RAM.
          Available memory areas are declared in the 'Target' tab of the 
@@ -34,7 +37,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:

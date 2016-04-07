@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32l4xx_hal_tim.c
   * @author  MCD Application Team
-  * @version V0.5.0
-  * @date    10-February-2015
+  * @version V1.4.0
+  * @date    26-February-2016
   * @brief   TIM HAL module driver.
   *          This file provides firmware functions to manage the following
   *          functionalities of the Timer (TIM) peripheral:
@@ -49,7 +49,7 @@
   ==============================================================================
     [..]
      (#) Initialize the TIM low level resources by implementing the following functions
-         depending from feature used :
+         depending on the selected feature:
            (++) Time Base : HAL_TIM_Base_MspInit()
            (++) Input Capture : HAL_TIM_IC_MspInit()
            (++) Output Compare : HAL_TIM_OC_MspInit()
@@ -98,7 +98,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -144,6 +144,11 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
+static void TIM_OC1_SetConfig(TIM_TypeDef *TIMx, TIM_OC_InitTypeDef *OC_Config);
+static void TIM_OC3_SetConfig(TIM_TypeDef *TIMx, TIM_OC_InitTypeDef *OC_Config);
+static void TIM_OC4_SetConfig(TIM_TypeDef *TIMx, TIM_OC_InitTypeDef *OC_Config);
+static void TIM_OC5_SetConfig(TIM_TypeDef *TIMx, TIM_OC_InitTypeDef *OC_Config);
+static void TIM_OC6_SetConfig(TIM_TypeDef *TIMx, TIM_OC_InitTypeDef *OC_Config);
 static void TIM_TI1_ConfigInputStage(TIM_TypeDef *TIMx, uint32_t TIM_ICPolarity, uint32_t TIM_ICFilter);
 static void TIM_TI2_SetConfig(TIM_TypeDef *TIMx, uint32_t TIM_ICPolarity, uint32_t TIM_ICSelection,
                        uint32_t TIM_ICFilter);
@@ -186,7 +191,7 @@ static void TIM_SlaveTimer_SetConfig(TIM_HandleTypeDef *htim,
   */
 /**
   * @brief  Initializes the TIM Time base Unit according to the specified
-  *         parameters in the TIM_HandleTypeDef and create the associated handle.
+  *         parameters in the TIM_HandleTypeDef and initialize the associated handle.
   * @param  htim: TIM Base handle
   * @retval HAL status
   */
@@ -225,7 +230,7 @@ HAL_StatusTypeDef HAL_TIM_Base_Init(TIM_HandleTypeDef *htim)
 }
 
 /**
-  * @brief  DeInitializes the TIM Base peripheral
+  * @brief  DeInitialize the TIM Base peripheral
   * @param  htim: TIM Base handle
   * @retval HAL status
   */
@@ -258,19 +263,25 @@ HAL_StatusTypeDef HAL_TIM_Base_DeInit(TIM_HandleTypeDef *htim)
   */
 __weak void HAL_TIM_Base_MspInit(TIM_HandleTypeDef *htim)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_TIM_Base_MspInit could be implemented in the user file
    */
 }
 
 /**
-  * @brief  DeInitializes TIM Base MSP.
+  * @brief  DeInitialize TIM Base MSP.
   * @param  htim: TIM handle
   * @retval None
   */
 __weak void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef *htim)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_TIM_Base_MspDeInit could be implemented in the user file
    */
 }
@@ -457,7 +468,7 @@ HAL_StatusTypeDef HAL_TIM_Base_Stop_DMA(TIM_HandleTypeDef *htim)
   */
 /**
   * @brief  Initializes the TIM Output Compare according to the specified
-  *         parameters in the TIM_HandleTypeDef and create the associated handle.
+  *         parameters in the TIM_HandleTypeDef and initialize the associated handle.
   * @param  htim: TIM Output Compare handle
   * @retval HAL status
   */
@@ -496,7 +507,7 @@ HAL_StatusTypeDef HAL_TIM_OC_Init(TIM_HandleTypeDef* htim)
 }
 
 /**
-  * @brief  DeInitializes the TIM peripheral
+  * @brief  DeInitialize the TIM peripheral
   * @param  htim: TIM Output Compare handle
   * @retval HAL status
   */
@@ -529,19 +540,25 @@ HAL_StatusTypeDef HAL_TIM_OC_DeInit(TIM_HandleTypeDef *htim)
   */
 __weak void HAL_TIM_OC_MspInit(TIM_HandleTypeDef *htim)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_TIM_OC_MspInit could be implemented in the user file
    */
 }
 
 /**
-  * @brief  DeInitializes TIM Output Compare MSP.
+  * @brief  DeInitialize TIM Output Compare MSP.
   * @param  htim: TIM handle
   * @retval None
   */
 __weak void HAL_TIM_OC_MspDeInit(TIM_HandleTypeDef *htim)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_TIM_OC_MspDeInit could be implemented in the user file
    */
 }
@@ -969,7 +986,7 @@ HAL_StatusTypeDef HAL_TIM_OC_Stop_DMA(TIM_HandleTypeDef *htim, uint32_t Channel)
   */
 /**
   * @brief  Initializes the TIM PWM Time Base according to the specified
-  *         parameters in the TIM_HandleTypeDef and create the associated handle.
+  *         parameters in the TIM_HandleTypeDef and initialize the associated handle.
   * @param  htim: TIM handle
   * @retval HAL status
   */
@@ -1008,7 +1025,7 @@ HAL_StatusTypeDef HAL_TIM_PWM_Init(TIM_HandleTypeDef *htim)
 }
 
 /**
-  * @brief  DeInitializes the TIM peripheral
+  * @brief  DeInitialize the TIM peripheral
   * @param  htim: TIM handle
   * @retval HAL status
   */
@@ -1041,19 +1058,25 @@ HAL_StatusTypeDef HAL_TIM_PWM_DeInit(TIM_HandleTypeDef *htim)
   */
 __weak void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *htim)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_TIM_PWM_MspInit could be implemented in the user file
    */
 }
 
 /**
-  * @brief  DeInitializes TIM PWM MSP.
+  * @brief  DeInitialize TIM PWM MSP.
   * @param  htim: TIM handle
   * @retval None
   */
 __weak void HAL_TIM_PWM_MspDeInit(TIM_HandleTypeDef *htim)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_TIM_PWM_MspDeInit could be implemented in the user file
    */
 }
@@ -1476,7 +1499,7 @@ HAL_StatusTypeDef HAL_TIM_PWM_Stop_DMA(TIM_HandleTypeDef *htim, uint32_t Channel
   */
 /**
   * @brief  Initializes the TIM Input Capture Time base according to the specified
-  *         parameters in the TIM_HandleTypeDef and create the associated handle.
+  *         parameters in the TIM_HandleTypeDef and initialize the associated handle.
   * @param  htim: TIM Input Capture handle
   * @retval HAL status
   */
@@ -1515,7 +1538,7 @@ HAL_StatusTypeDef HAL_TIM_IC_Init(TIM_HandleTypeDef *htim)
 }
 
 /**
-  * @brief  DeInitializes the TIM peripheral
+  * @brief  DeInitialize the TIM peripheral
   * @param  htim: TIM Input Capture handle
   * @retval HAL status
   */
@@ -1548,19 +1571,25 @@ HAL_StatusTypeDef HAL_TIM_IC_DeInit(TIM_HandleTypeDef *htim)
   */
 __weak void HAL_TIM_IC_MspInit(TIM_HandleTypeDef *htim)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_TIM_IC_MspInit could be implemented in the user file
    */
 }
 
 /**
-  * @brief  DeInitializes TIM Input Capture MSP.
+  * @brief  DeInitialize TIM Input Capture MSP.
   * @param  htim: TIM handle
   * @retval None
   */
 __weak void HAL_TIM_IC_MspDeInit(TIM_HandleTypeDef *htim)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_TIM_IC_MspDeInit could be implemented in the user file
    */
 }
@@ -1941,12 +1970,12 @@ HAL_StatusTypeDef HAL_TIM_IC_Stop_DMA(TIM_HandleTypeDef *htim, uint32_t Channel)
   */
 /**
   * @brief  Initializes the TIM One Pulse Time Base according to the specified
-  *         parameters in the TIM_HandleTypeDef and create the associated handle.
+  *         parameters in the TIM_HandleTypeDef and initialize the associated handle.
   * @param  htim: TIM OnePulse handle
   * @param  OnePulseMode: Select the One pulse mode.
   *         This parameter can be one of the following values:
   *            @arg TIM_OPMODE_SINGLE: Only one pulse will be generated.
-  *            @arg TIM_OPMODE_REPETITIVE: Repetitive pulses wil be generated.
+  *            @arg TIM_OPMODE_REPETITIVE: Repetitive pulses will be generated.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_TIM_OnePulse_Init(TIM_HandleTypeDef *htim, uint32_t OnePulseMode)
@@ -1991,7 +2020,7 @@ HAL_StatusTypeDef HAL_TIM_OnePulse_Init(TIM_HandleTypeDef *htim, uint32_t OnePul
 }
 
 /**
-  * @brief  DeInitializes the TIM One Pulse
+  * @brief  DeInitialize the TIM One Pulse
   * @param  htim: TIM One Pulse handle
   * @retval HAL status
   */
@@ -2024,19 +2053,25 @@ HAL_StatusTypeDef HAL_TIM_OnePulse_DeInit(TIM_HandleTypeDef *htim)
   */
 __weak void HAL_TIM_OnePulse_MspInit(TIM_HandleTypeDef *htim)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_TIM_OnePulse_MspInit could be implemented in the user file
    */
 }
 
 /**
-  * @brief  DeInitializes TIM One Pulse MSP.
+  * @brief  DeInitialize TIM One Pulse MSP.
   * @param  htim: TIM handle
   * @retval None
   */
 __weak void HAL_TIM_OnePulse_MspDeInit(TIM_HandleTypeDef *htim)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_TIM_OnePulse_MspDeInit could be implemented in the user file
    */
 }
@@ -2052,6 +2087,9 @@ __weak void HAL_TIM_OnePulse_MspDeInit(TIM_HandleTypeDef *htim)
 */
 HAL_StatusTypeDef HAL_TIM_OnePulse_Start(TIM_HandleTypeDef *htim, uint32_t OutputChannel)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(OutputChannel);
+
   /* Enable the Capture compare and the Input Capture channels
     (in the OPM Mode the two possible channels that can be used are TIM_CHANNEL_1 and TIM_CHANNEL_2)
     if TIM_CHANNEL_1 is used as output, the TIM_CHANNEL_2 will be used as input and
@@ -2085,6 +2123,9 @@ HAL_StatusTypeDef HAL_TIM_OnePulse_Start(TIM_HandleTypeDef *htim, uint32_t Outpu
 */
 HAL_StatusTypeDef HAL_TIM_OnePulse_Stop(TIM_HandleTypeDef *htim, uint32_t OutputChannel)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(OutputChannel);
+
   /* Disable the Capture compare and the Input Capture channels
   (in the OPM Mode the two possible channels that can be used are TIM_CHANNEL_1 and TIM_CHANNEL_2)
   if TIM_CHANNEL_1 is used as output, the TIM_CHANNEL_2 will be used as input and
@@ -2118,6 +2159,9 @@ HAL_StatusTypeDef HAL_TIM_OnePulse_Stop(TIM_HandleTypeDef *htim, uint32_t Output
 */
 HAL_StatusTypeDef HAL_TIM_OnePulse_Start_IT(TIM_HandleTypeDef *htim, uint32_t OutputChannel)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(OutputChannel);
+
   /* Enable the Capture compare and the Input Capture channels
     (in the OPM Mode the two possible channels that can be used are TIM_CHANNEL_1 and TIM_CHANNEL_2)
     if TIM_CHANNEL_1 is used as output, the TIM_CHANNEL_2 will be used as input and
@@ -2157,6 +2201,9 @@ HAL_StatusTypeDef HAL_TIM_OnePulse_Start_IT(TIM_HandleTypeDef *htim, uint32_t Ou
 */
 HAL_StatusTypeDef HAL_TIM_OnePulse_Stop_IT(TIM_HandleTypeDef *htim, uint32_t OutputChannel)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(OutputChannel);
+
   /* Disable the TIM Capture/Compare 1 interrupt */
   __HAL_TIM_DISABLE_IT(htim, TIM_IT_CC1);
 
@@ -2210,7 +2257,7 @@ HAL_StatusTypeDef HAL_TIM_OnePulse_Stop_IT(TIM_HandleTypeDef *htim, uint32_t Out
   * @{
   */
 /**
-  * @brief  Initializes the TIM Encoder Interface and create the associated handle.
+  * @brief  Initializes the TIM Encoder Interface and initialize the associated handle.
   * @param  htim: TIM Encoder Interface handle
   * @param  sConfig: TIM Encoder Interface configuration structure
   * @retval HAL status
@@ -2273,7 +2320,7 @@ HAL_StatusTypeDef HAL_TIM_Encoder_Init(TIM_HandleTypeDef *htim,  TIM_Encoder_Ini
   tmpccmr1 &= ~(TIM_CCMR1_CC1S | TIM_CCMR1_CC2S);
   tmpccmr1 |= (sConfig->IC1Selection | (sConfig->IC2Selection << 8));
 
-  /* Set the the Capture Compare 1 and the Capture Compare 2 prescalers and filters */
+  /* Set the Capture Compare 1 and the Capture Compare 2 prescalers and filters */
   tmpccmr1 &= ~(TIM_CCMR1_IC1PSC | TIM_CCMR1_IC2PSC);
   tmpccmr1 &= ~(TIM_CCMR1_IC1F | TIM_CCMR1_IC2F);
   tmpccmr1 |= sConfig->IC1Prescaler | (sConfig->IC2Prescaler << 8);
@@ -2301,7 +2348,7 @@ HAL_StatusTypeDef HAL_TIM_Encoder_Init(TIM_HandleTypeDef *htim,  TIM_Encoder_Ini
 
 
 /**
-  * @brief  DeInitializes the TIM Encoder interface
+  * @brief  DeInitialize the TIM Encoder interface
   * @param  htim: TIM Encoder handle
   * @retval HAL status
   */
@@ -2334,19 +2381,25 @@ HAL_StatusTypeDef HAL_TIM_Encoder_DeInit(TIM_HandleTypeDef *htim)
   */
 __weak void HAL_TIM_Encoder_MspInit(TIM_HandleTypeDef *htim)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_TIM_Encoder_MspInit could be implemented in the user file
    */
 }
 
 /**
-  * @brief  DeInitializes TIM Encoder Interface MSP.
+  * @brief  DeInitialize TIM Encoder Interface MSP.
   * @param  htim: TIM handle
   * @retval None
   */
 __weak void HAL_TIM_Encoder_MspDeInit(TIM_HandleTypeDef *htim)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_TIM_Encoder_MspDeInit could be implemented in the user file
    */
 }
@@ -2370,21 +2423,23 @@ HAL_StatusTypeDef HAL_TIM_Encoder_Start(TIM_HandleTypeDef *htim, uint32_t Channe
   switch (Channel)
   {
     case TIM_CHANNEL_1:
-  {
-    TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_1, TIM_CCx_ENABLE);
-      break;
-  }
-    case TIM_CHANNEL_2:
-  {
-    TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_2, TIM_CCx_ENABLE);
-      break;
-  }
-    default :
-  {
-     TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_1, TIM_CCx_ENABLE);
-     TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_2, TIM_CCx_ENABLE);
-     break;
+    {
+      TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_1, TIM_CCx_ENABLE);
     }
+    break;
+
+    case TIM_CHANNEL_2:
+    {
+      TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_2, TIM_CCx_ENABLE);
+    }
+    break;
+    
+    default :
+    {
+      TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_1, TIM_CCx_ENABLE);
+      TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_2, TIM_CCx_ENABLE);
+    }
+    break;
   }
   /* Enable the Peripheral */
   __HAL_TIM_ENABLE(htim);
@@ -2413,21 +2468,23 @@ HAL_StatusTypeDef HAL_TIM_Encoder_Stop(TIM_HandleTypeDef *htim, uint32_t Channel
   switch (Channel)
   {
     case TIM_CHANNEL_1:
-  {
-     TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_1, TIM_CCx_DISABLE);
-      break;
-  }
-    case TIM_CHANNEL_2:
-  {
-    TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_2, TIM_CCx_DISABLE);
-      break;
-  }
-    default :
-  {
-    TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_1, TIM_CCx_DISABLE);
-    TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_2, TIM_CCx_DISABLE);
-     break;
+    {
+      TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_1, TIM_CCx_DISABLE);
     }
+    break;
+    
+    case TIM_CHANNEL_2:
+    {
+      TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_2, TIM_CCx_DISABLE);
+    }
+    break;
+    
+    default :
+    {
+      TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_1, TIM_CCx_DISABLE);
+      TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_2, TIM_CCx_DISABLE);
+    }
+    break;
   }
 
   /* Disable the Peripheral */
@@ -2457,25 +2514,27 @@ HAL_StatusTypeDef HAL_TIM_Encoder_Start_IT(TIM_HandleTypeDef *htim, uint32_t Cha
   switch (Channel)
   {
     case TIM_CHANNEL_1:
-  {
-    TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_1, TIM_CCx_ENABLE);
-    __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC1);
-      break;
-  }
-    case TIM_CHANNEL_2:
-  {
-    TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_2, TIM_CCx_ENABLE);
-    __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC2);
-      break;
-  }
-    default :
-  {
-     TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_1, TIM_CCx_ENABLE);
-     TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_2, TIM_CCx_ENABLE);
-     __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC1);
-     __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC2);
-     break;
+    {
+      TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_1, TIM_CCx_ENABLE);
+      __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC1);
     }
+    break;
+    
+    case TIM_CHANNEL_2:
+    {
+      TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_2, TIM_CCx_ENABLE);
+      __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC2);
+    }
+    break;
+    
+    default :
+    {
+      TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_1, TIM_CCx_ENABLE);
+      TIM_CCxChannelCmd(htim->Instance, TIM_CHANNEL_2, TIM_CCx_ENABLE);
+      __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC1);
+      __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC2);
+    }
+    break;
   }
 
   /* Enable the Peripheral */
@@ -2883,7 +2942,7 @@ void HAL_TIM_IRQHandler(TIM_HandleTypeDef *htim)
   *         parameters in the TIM_OC_InitTypeDef.
   * @param  htim: TIM Output Compare handle
   * @param  sConfig: TIM Output Compare configuration structure
-  * @param  Channel : TIM Channels to be enabled
+  * @param  Channel : TIM Channels to configure
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -2893,17 +2952,16 @@ void HAL_TIM_IRQHandler(TIM_HandleTypeDef *htim)
   *            @arg TIM_CHANNEL_6: TIM Channel 6 selected
   * @retval HAL status
   */
-__weak HAL_StatusTypeDef HAL_TIM_OC_ConfigChannel(TIM_HandleTypeDef *htim, TIM_OC_InitTypeDef* sConfig, uint32_t Channel)
+HAL_StatusTypeDef HAL_TIM_OC_ConfigChannel(TIM_HandleTypeDef *htim,
+                                           TIM_OC_InitTypeDef* sConfig,
+                                           uint32_t Channel)
 {
   /* Check the parameters */
   assert_param(IS_TIM_CHANNELS(Channel));
   assert_param(IS_TIM_OC_MODE(sConfig->OCMode));
   assert_param(IS_TIM_OC_POLARITY(sConfig->OCPolarity));
-  assert_param(IS_TIM_OCN_POLARITY(sConfig->OCNPolarity));
-  assert_param(IS_TIM_OCNIDLE_STATE(sConfig->OCNIdleState));
-  assert_param(IS_TIM_OCIDLE_STATE(sConfig->OCIdleState));
 
-  /* Check input state */
+  /* Process Locked */
   __HAL_LOCK(htim);
 
   htim->State = HAL_TIM_STATE_BUSY;
@@ -2912,15 +2970,19 @@ __weak HAL_StatusTypeDef HAL_TIM_OC_ConfigChannel(TIM_HandleTypeDef *htim, TIM_O
   {
     case TIM_CHANNEL_1:
     {
+      /* Check the parameters */
       assert_param(IS_TIM_CC1_INSTANCE(htim->Instance));
-      /* Configure the TIM Channel 1 in Output Compare */
+
+     /* Configure the TIM Channel 1 in Output Compare */
       TIM_OC1_SetConfig(htim->Instance, sConfig);
     }
     break;
 
     case TIM_CHANNEL_2:
     {
+      /* Check the parameters */
       assert_param(IS_TIM_CC2_INSTANCE(htim->Instance));
+
       /* Configure the TIM Channel 2 in Output Compare */
       TIM_OC2_SetConfig(htim->Instance, sConfig);
     }
@@ -2928,7 +2990,9 @@ __weak HAL_StatusTypeDef HAL_TIM_OC_ConfigChannel(TIM_HandleTypeDef *htim, TIM_O
 
     case TIM_CHANNEL_3:
     {
-       assert_param(IS_TIM_CC3_INSTANCE(htim->Instance));
+      /* Check the parameters */
+      assert_param(IS_TIM_CC3_INSTANCE(htim->Instance));
+
       /* Configure the TIM Channel 3 in Output Compare */
       TIM_OC3_SetConfig(htim->Instance, sConfig);
     }
@@ -2936,15 +3000,38 @@ __weak HAL_StatusTypeDef HAL_TIM_OC_ConfigChannel(TIM_HandleTypeDef *htim, TIM_O
 
     case TIM_CHANNEL_4:
     {
+      /* Check the parameters */
       assert_param(IS_TIM_CC4_INSTANCE(htim->Instance));
+
        /* Configure the TIM Channel 4 in Output Compare */
        TIM_OC4_SetConfig(htim->Instance, sConfig);
+    }
+    break;
+
+    case TIM_CHANNEL_5:
+    {
+      /* Check the parameters */
+      assert_param(IS_TIM_CC5_INSTANCE(htim->Instance));
+
+       /* Configure the TIM Channel 5 in Output Compare */
+       TIM_OC5_SetConfig(htim->Instance, sConfig);
+    }
+    break;
+
+    case TIM_CHANNEL_6:
+    {
+      /* Check the parameters */
+      assert_param(IS_TIM_CC6_INSTANCE(htim->Instance));
+
+       /* Configure the TIM Channel 6 in Output Compare */
+       TIM_OC6_SetConfig(htim->Instance, sConfig);
     }
     break;
 
     default:
     break;
   }
+
   htim->State = HAL_TIM_STATE_READY;
 
   __HAL_UNLOCK(htim);
@@ -2974,6 +3061,7 @@ HAL_StatusTypeDef HAL_TIM_IC_ConfigChannel(TIM_HandleTypeDef *htim, TIM_IC_InitT
   assert_param(IS_TIM_IC_PRESCALER(sConfig->ICPrescaler));
   assert_param(IS_TIM_IC_FILTER(sConfig->ICFilter));
 
+  /* Process Locked */
   __HAL_LOCK(htim);
 
   htim->State = HAL_TIM_STATE_BUSY;
@@ -3051,28 +3139,30 @@ HAL_StatusTypeDef HAL_TIM_IC_ConfigChannel(TIM_HandleTypeDef *htim, TIM_IC_InitT
 /**
   * @brief  Initializes the TIM PWM  channels according to the specified
   *         parameters in the TIM_OC_InitTypeDef.
-  * @param  htim: TIM handle
+  * @param  htim: TIM PWM handle
   * @param  sConfig: TIM PWM configuration structure
-  * @param  Channel : TIM Channels to be enabled
+  * @param  Channel : TIM Channels to be configured
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
   *            @arg TIM_CHANNEL_3: TIM Channel 3 selected
   *            @arg TIM_CHANNEL_4: TIM Channel 4 selected
+  *            @arg TIM_CHANNEL_5: TIM Channel 5 selected
+  *            @arg TIM_CHANNEL_6: TIM Channel 6 selected
   * @retval HAL status
   */
-__weak HAL_StatusTypeDef HAL_TIM_PWM_ConfigChannel(TIM_HandleTypeDef *htim, TIM_OC_InitTypeDef* sConfig, uint32_t Channel)
+HAL_StatusTypeDef HAL_TIM_PWM_ConfigChannel(TIM_HandleTypeDef *htim,
+                                            TIM_OC_InitTypeDef* sConfig,
+                                            uint32_t Channel)
 {
-  __HAL_LOCK(htim);
-
   /* Check the parameters */
   assert_param(IS_TIM_CHANNELS(Channel));
   assert_param(IS_TIM_PWM_MODE(sConfig->OCMode));
   assert_param(IS_TIM_OC_POLARITY(sConfig->OCPolarity));
-  assert_param(IS_TIM_OCN_POLARITY(sConfig->OCNPolarity));
   assert_param(IS_TIM_FAST_STATE(sConfig->OCFastMode));
-  assert_param(IS_TIM_OCNIDLE_STATE(sConfig->OCNIdleState));
-  assert_param(IS_TIM_OCIDLE_STATE(sConfig->OCIdleState));
+
+  /* Process Locked */
+  __HAL_LOCK(htim);
 
   htim->State = HAL_TIM_STATE_BUSY;
 
@@ -3080,7 +3170,9 @@ __weak HAL_StatusTypeDef HAL_TIM_PWM_ConfigChannel(TIM_HandleTypeDef *htim, TIM_
   {
     case TIM_CHANNEL_1:
     {
+      /* Check the parameters */
       assert_param(IS_TIM_CC1_INSTANCE(htim->Instance));
+
       /* Configure the Channel 1 in PWM mode */
       TIM_OC1_SetConfig(htim->Instance, sConfig);
 
@@ -3095,7 +3187,9 @@ __weak HAL_StatusTypeDef HAL_TIM_PWM_ConfigChannel(TIM_HandleTypeDef *htim, TIM_
 
     case TIM_CHANNEL_2:
     {
+      /* Check the parameters */
       assert_param(IS_TIM_CC2_INSTANCE(htim->Instance));
+
       /* Configure the Channel 2 in PWM mode */
       TIM_OC2_SetConfig(htim->Instance, sConfig);
 
@@ -3110,7 +3204,9 @@ __weak HAL_StatusTypeDef HAL_TIM_PWM_ConfigChannel(TIM_HandleTypeDef *htim, TIM_
 
     case TIM_CHANNEL_3:
     {
+      /* Check the parameters */
       assert_param(IS_TIM_CC3_INSTANCE(htim->Instance));
+
       /* Configure the Channel 3 in PWM mode */
       TIM_OC3_SetConfig(htim->Instance, sConfig);
 
@@ -3125,7 +3221,9 @@ __weak HAL_StatusTypeDef HAL_TIM_PWM_ConfigChannel(TIM_HandleTypeDef *htim, TIM_
 
     case TIM_CHANNEL_4:
     {
+      /* Check the parameters */
       assert_param(IS_TIM_CC4_INSTANCE(htim->Instance));
+
       /* Configure the Channel 4 in PWM mode */
       TIM_OC4_SetConfig(htim->Instance, sConfig);
 
@@ -3135,6 +3233,40 @@ __weak HAL_StatusTypeDef HAL_TIM_PWM_ConfigChannel(TIM_HandleTypeDef *htim, TIM_
      /* Configure the Output Fast mode */
       htim->Instance->CCMR2 &= ~TIM_CCMR2_OC4FE;
       htim->Instance->CCMR2 |= sConfig->OCFastMode << 8;
+    }
+    break;
+
+    case TIM_CHANNEL_5:
+    {
+       /* Check the parameters */
+      assert_param(IS_TIM_CC5_INSTANCE(htim->Instance));
+
+     /* Configure the Channel 5 in PWM mode */
+      TIM_OC5_SetConfig(htim->Instance, sConfig);
+
+      /* Set the Preload enable bit for channel5*/
+      htim->Instance->CCMR3 |= TIM_CCMR3_OC5PE;
+
+     /* Configure the Output Fast mode */
+      htim->Instance->CCMR3 &= ~TIM_CCMR3_OC5FE;
+      htim->Instance->CCMR3 |= sConfig->OCFastMode;
+    }
+    break;
+
+    case TIM_CHANNEL_6:
+    {
+       /* Check the parameters */
+      assert_param(IS_TIM_CC6_INSTANCE(htim->Instance));
+
+     /* Configure the Channel 5 in PWM mode */
+      TIM_OC6_SetConfig(htim->Instance, sConfig);
+
+      /* Set the Preload enable bit for channel6 */
+      htim->Instance->CCMR3 |= TIM_CCMR3_OC6PE;
+
+     /* Configure the Output Fast mode */
+      htim->Instance->CCMR3 &= ~TIM_CCMR3_OC6FE;
+      htim->Instance->CCMR3 |= sConfig->OCFastMode << 8;
     }
     break;
 
@@ -3174,6 +3306,7 @@ HAL_StatusTypeDef HAL_TIM_OnePulse_ConfigChannel(TIM_HandleTypeDef *htim,  TIM_O
 
   if(OutputChannel != InputChannel)
   {
+  /* Process Locked */
   __HAL_LOCK(htim);
 
   htim->State = HAL_TIM_STATE_BUSY;
@@ -3267,25 +3400,25 @@ HAL_StatusTypeDef HAL_TIM_OnePulse_ConfigChannel(TIM_HandleTypeDef *htim,  TIM_O
   * @param  htim: TIM handle
   * @param  BurstBaseAddress: TIM Base address from when the DMA will starts the Data write
   *         This parameters can be on of the following values:
-  *            @arg TIM_DMABase_CR1
-  *            @arg TIM_DMABase_CR2
-  *            @arg TIM_DMABase_SMCR
-  *            @arg TIM_DMABase_DIER
-  *            @arg TIM_DMABase_SR
-  *            @arg TIM_DMABase_EGR
-  *            @arg TIM_DMABase_CCMR1
-  *            @arg TIM_DMABase_CCMR2
-  *            @arg TIM_DMABase_CCER
-  *            @arg TIM_DMABase_CNT
-  *            @arg TIM_DMABase_PSC
-  *            @arg TIM_DMABase_ARR
-  *            @arg TIM_DMABase_RCR
-  *            @arg TIM_DMABase_CCR1
-  *            @arg TIM_DMABase_CCR2
-  *            @arg TIM_DMABase_CCR3
-  *            @arg TIM_DMABase_CCR4
-  *            @arg TIM_DMABase_BDTR
-  *            @arg TIM_DMABase_DCR
+  *            @arg TIM_DMABASE_CR1
+  *            @arg TIM_DMABASE_CR2
+  *            @arg TIM_DMABASE_SMCR
+  *            @arg TIM_DMABASE_DIER
+  *            @arg TIM_DMABASE_SR
+  *            @arg TIM_DMABASE_EGR
+  *            @arg TIM_DMABASE_CCMR1
+  *            @arg TIM_DMABASE_CCMR2
+  *            @arg TIM_DMABASE_CCER
+  *            @arg TIM_DMABASE_CNT
+  *            @arg TIM_DMABASE_PSC
+  *            @arg TIM_DMABASE_ARR
+  *            @arg TIM_DMABASE_RCR
+  *            @arg TIM_DMABASE_CCR1
+  *            @arg TIM_DMABASE_CCR2
+  *            @arg TIM_DMABASE_CCR3
+  *            @arg TIM_DMABASE_CCR4
+  *            @arg TIM_DMABASE_BDTR
+  *            @arg TIM_DMABASE_DCR
   * @param  BurstRequestSrc: TIM DMA Request sources
   *         This parameters can be on of the following values:
   *            @arg TIM_DMA_UPDATE: TIM update Interrupt source
@@ -3490,25 +3623,25 @@ HAL_StatusTypeDef HAL_TIM_DMABurst_WriteStop(TIM_HandleTypeDef *htim, uint32_t B
   * @param  htim: TIM handle
   * @param  BurstBaseAddress: TIM Base address from when the DMA will starts the Data read
   *         This parameters can be on of the following values:
-  *            @arg TIM_DMABase_CR1
-  *            @arg TIM_DMABase_CR2
-  *            @arg TIM_DMABase_SMCR
-  *            @arg TIM_DMABase_DIER
-  *            @arg TIM_DMABase_SR
-  *            @arg TIM_DMABase_EGR
-  *            @arg TIM_DMABase_CCMR1
-  *            @arg TIM_DMABase_CCMR2
-  *            @arg TIM_DMABase_CCER
-  *            @arg TIM_DMABase_CNT
-  *            @arg TIM_DMABase_PSC
-  *            @arg TIM_DMABase_ARR
-  *            @arg TIM_DMABase_RCR
-  *            @arg TIM_DMABase_CCR1
-  *            @arg TIM_DMABase_CCR2
-  *            @arg TIM_DMABase_CCR3
-  *            @arg TIM_DMABase_CCR4
-  *            @arg TIM_DMABase_BDTR
-  *            @arg TIM_DMABase_DCR
+  *            @arg TIM_DMABASE_CR1
+  *            @arg TIM_DMABASE_CR2
+  *            @arg TIM_DMABASE_SMCR
+  *            @arg TIM_DMABASE_DIER
+  *            @arg TIM_DMABASE_SR
+  *            @arg TIM_DMABASE_EGR
+  *            @arg TIM_DMABASE_CCMR1
+  *            @arg TIM_DMABASE_CCMR2
+  *            @arg TIM_DMABASE_CCER
+  *            @arg TIM_DMABASE_CNT
+  *            @arg TIM_DMABASE_PSC
+  *            @arg TIM_DMABASE_ARR
+  *            @arg TIM_DMABASE_RCR
+  *            @arg TIM_DMABASE_CCR1
+  *            @arg TIM_DMABASE_CCR2
+  *            @arg TIM_DMABASE_CCR3
+  *            @arg TIM_DMABASE_CCR4
+  *            @arg TIM_DMABASE_BDTR
+  *            @arg TIM_DMABASE_DCR
   * @param  BurstRequestSrc: TIM DMA Request sources
   *         This parameters can be on of the following values:
   *            @arg TIM_DMA_UPDATE: TIM update Interrupt source
@@ -3714,18 +3847,16 @@ HAL_StatusTypeDef HAL_TIM_DMABurst_ReadStop(TIM_HandleTypeDef *htim, uint32_t Bu
   * @param  htim: TIM handle
   * @param  EventSource: specifies the event source.
   *          This parameter can be one of the following values:
-  *            @arg TIM_EventSource_Update: Timer update Event source
-  *            @arg TIM_EventSource_CC1: Timer Capture Compare 1 Event source
-  *            @arg TIM_EventSource_CC2: Timer Capture Compare 2 Event source
-  *            @arg TIM_EventSource_CC3: Timer Capture Compare 3 Event source
-  *            @arg TIM_EventSource_CC4: Timer Capture Compare 4 Event source
-  *            @arg TIM_EventSource_COM: Timer COM event source
-  *            @arg TIM_EventSource_Trigger: Timer Trigger Event source
-  *            @arg TIM_EventSource_Break: Timer Break event source
-  *            @arg TIM_EventSource_Break2: Timer Break2 event source
+  *            @arg TIM_EVENTSOURCE_UPDATE: Timer update Event source
+  *            @arg TIM_EVENTSOURCE_CC1: Timer Capture Compare 1 Event source
+  *            @arg TIM_EVENTSOURCE_CC2: Timer Capture Compare 2 Event source
+  *            @arg TIM_EVENTSOURCE_CC3: Timer Capture Compare 3 Event source
+  *            @arg TIM_EVENTSOURCE_CC4: Timer Capture Compare 4 Event source
+  *            @arg TIM_EVENTSOURCE_COM: Timer COM event source
+  *            @arg TIM_EVENTSOURCE_TRIGGER: Timer Trigger Event source
+  *            @arg TIM_EVENTSOURCE_BREAK: Timer Break event source
+  *            @arg TIM_EVENTSOURCE_BREAK2: Timer Break2 event source
   * @retval None
-  * @note TIM_EventSource_Break2 isn't relevant for STM32F37xx and STM32F38xx
-  *       devices
   */
 
 HAL_StatusTypeDef HAL_TIM_GenerateEvent(TIM_HandleTypeDef *htim, uint32_t EventSource)
@@ -3763,99 +3894,158 @@ HAL_StatusTypeDef HAL_TIM_GenerateEvent(TIM_HandleTypeDef *htim, uint32_t EventS
   *            @arg TIM_Channel_2: TIM Channel 2
   *            @arg TIM_Channel_3: TIM Channel 3
   *            @arg TIM_Channel_4: TIM Channel 4
-  * @retval HAL status
+  *            @arg TIM_Channel_5: TIM Channel 5
+  *            @arg TIM_Channel_6: TIM Channel 6
+  * @retval None
   */
-__weak HAL_StatusTypeDef HAL_TIM_ConfigOCrefClear(TIM_HandleTypeDef *htim, TIM_ClearInputConfigTypeDef * sClearInputConfig, uint32_t Channel)
+HAL_StatusTypeDef HAL_TIM_ConfigOCrefClear(TIM_HandleTypeDef *htim,
+                                           TIM_ClearInputConfigTypeDef *sClearInputConfig,
+                                           uint32_t Channel)
 {
+  uint32_t tmpsmcr = 0;
+
   /* Check the parameters */
-  assert_param(IS_TIM_CC1_INSTANCE(htim->Instance));
-  assert_param(IS_TIM_CHANNELS(Channel));
+  assert_param(IS_TIM_OCXREF_CLEAR_INSTANCE(htim->Instance));
   assert_param(IS_TIM_CLEARINPUT_SOURCE(sClearInputConfig->ClearInputSource));
 
   /* Process Locked */
   __HAL_LOCK(htim);
 
-  htim->State = HAL_TIM_STATE_BUSY;
-
-  if(sClearInputConfig->ClearInputSource == TIM_CLEARINPUTSOURCE_ETR)
+  switch (sClearInputConfig->ClearInputSource)
   {
-    /* Check the parameters */
-    assert_param(IS_TIM_CLEARINPUT_POLARITY(sClearInputConfig->ClearInputPolarity));
-    assert_param(IS_TIM_CLEARINPUT_PRESCALER(sClearInputConfig->ClearInputPrescaler));
-    assert_param(IS_TIM_CLEARINPUT_FILTER(sClearInputConfig->ClearInputFilter));
+    case TIM_CLEARINPUTSOURCE_NONE:
+    {
+      /* Get the TIMx SMCR register value */
+      tmpsmcr = htim->Instance->SMCR;
+      
+      /* Clear the OCREF clear selection bit */
+      tmpsmcr &= ~TIM_SMCR_OCCS;
 
-    TIM_ETR_SetConfig(htim->Instance,
-                      sClearInputConfig->ClearInputPrescaler,
-                      sClearInputConfig->ClearInputPolarity,
-                      sClearInputConfig->ClearInputFilter);
+      /* Clear the ETR Bits */
+      tmpsmcr &= ~(TIM_SMCR_ETF | TIM_SMCR_ETPS | TIM_SMCR_ECE | TIM_SMCR_ETP);
+
+      /* Set TIMx_SMCR */
+      htim->Instance->SMCR = tmpsmcr;
+   }
+    break;
+
+    case TIM_CLEARINPUTSOURCE_OCREFCLR:
+    {
+      /* Clear the OCREF clear selection bit */
+      htim->Instance->SMCR &= ~TIM_SMCR_OCCS;
+    }
+    break;
+
+    case TIM_CLEARINPUTSOURCE_ETR:
+    {
+      /* Check the parameters */
+      assert_param(IS_TIM_CLEARINPUT_POLARITY(sClearInputConfig->ClearInputPolarity));
+      assert_param(IS_TIM_CLEARINPUT_PRESCALER(sClearInputConfig->ClearInputPrescaler));
+      assert_param(IS_TIM_CLEARINPUT_FILTER(sClearInputConfig->ClearInputFilter));
+
+      TIM_ETR_SetConfig(htim->Instance,
+                        sClearInputConfig->ClearInputPrescaler,
+                        sClearInputConfig->ClearInputPolarity,
+                        sClearInputConfig->ClearInputFilter);
+
+      /* Set the OCREF clear selection bit */
+      htim->Instance->SMCR |= TIM_SMCR_OCCS;
+    }
+    break;
+    
+  default:
+    break;
   }
 
   switch (Channel)
   {
     case TIM_CHANNEL_1:
-    {
-      if(sClearInputConfig->ClearInputState != RESET)
       {
-      /* Enable the Ocref clear feature for Channel 1 */
-      htim->Instance->CCMR1 |= TIM_CCMR1_OC1CE;
+        if(sClearInputConfig->ClearInputState != RESET)
+        {
+          /* Enable the OCREF clear feature for Channel 1 */
+          htim->Instance->CCMR1 |= TIM_CCMR1_OC1CE;
+        }
+        else
+        {
+          /* Disable the OCREF clear feature for Channel 1 */
+          htim->Instance->CCMR1 &= ~TIM_CCMR1_OC1CE;
+        }
       }
-      else
-      {
-        /* Disable the Ocref clear feature for Channel 1 */
-        htim->Instance->CCMR1 &= ~TIM_CCMR1_OC1CE;
-      }
-    }
-    break;
+      break;
     case TIM_CHANNEL_2:
-    {
-      assert_param(IS_TIM_CC2_INSTANCE(htim->Instance));
-      if(sClearInputConfig->ClearInputState != RESET)
       {
-      /* Enable the Ocref clear feature for Channel 2 */
-      htim->Instance->CCMR1 |= TIM_CCMR1_OC2CE;
+        if(sClearInputConfig->ClearInputState != RESET)
+        {
+          /* Enable the OCREF clear feature for Channel 2 */
+          htim->Instance->CCMR1 |= TIM_CCMR1_OC2CE;
+        }
+        else
+        {
+          /* Disable the OCREF clear feature for Channel 2 */
+          htim->Instance->CCMR1 &= ~TIM_CCMR1_OC2CE;
+        }
       }
-      else
-      {
-        /* Disable the Ocref clear feature for Channel 2 */
-        htim->Instance->CCMR1 &= ~TIM_CCMR1_OC2CE;
-      }
-    }
     break;
     case TIM_CHANNEL_3:
-    {
-      assert_param(IS_TIM_CC3_INSTANCE(htim->Instance));
-      if(sClearInputConfig->ClearInputState != RESET)
       {
-      /* Enable the Ocref clear feature for Channel 3 */
-      htim->Instance->CCMR2 |= TIM_CCMR2_OC3CE;
+        if(sClearInputConfig->ClearInputState != RESET)
+        {
+          /* Enable the OCREF clear feature for Channel 3 */
+          htim->Instance->CCMR2 |= TIM_CCMR2_OC3CE;
+        }
+        else
+        {
+          /* Disable the OCREF clear feature for Channel 3 */
+          htim->Instance->CCMR2 &= ~TIM_CCMR2_OC3CE;
+        }
       }
-      else
-      {
-        /* Disable the Ocref clear feature for Channel 3 */
-        htim->Instance->CCMR2 &= ~TIM_CCMR2_OC3CE;
-      }
-    }
     break;
     case TIM_CHANNEL_4:
-    {
-      assert_param(IS_TIM_CC4_INSTANCE(htim->Instance));
-      if(sClearInputConfig->ClearInputState != RESET)
       {
-      /* Enable the Ocref clear feature for Channel 4 */
-      htim->Instance->CCMR2 |= TIM_CCMR2_OC4CE;
+        if(sClearInputConfig->ClearInputState != RESET)
+        {
+          /* Enable the OCREF clear feature for Channel 4 */
+          htim->Instance->CCMR2 |= TIM_CCMR2_OC4CE;
+        }
+        else
+        {
+          /* Disable the OCREF clear feature for Channel 4 */
+          htim->Instance->CCMR2 &= ~TIM_CCMR2_OC4CE;
+        }
       }
-      else
+    break;
+    case TIM_CHANNEL_5:
       {
-        /* Disable the Ocref clear feature for Channel 4 */
-        htim->Instance->CCMR2 &= ~TIM_CCMR2_OC4CE;
+        if(sClearInputConfig->ClearInputState != RESET)
+        {
+          /* Enable the OCREF clear feature for Channel 1 */
+          htim->Instance->CCMR3 |= TIM_CCMR3_OC5CE;
+        }
+        else
+        {
+          /* Disable the OCREF clear feature for Channel 1 */
+          htim->Instance->CCMR3 &= ~TIM_CCMR3_OC5CE;
+        }
       }
-    }
+    break;
+    case TIM_CHANNEL_6:
+      {
+        if(sClearInputConfig->ClearInputState != RESET)
+        {
+          /* Enable the OCREF clear feature for Channel 1 */
+          htim->Instance->CCMR3 |= TIM_CCMR3_OC6CE;
+        }
+        else
+        {
+          /* Disable the OCREF clear feature for Channel 1 */
+          htim->Instance->CCMR3 &= ~TIM_CCMR3_OC6CE;
+        }
+      }
     break;
     default:
     break;
   }
-
-  htim->State = HAL_TIM_STATE_READY;
 
   __HAL_UNLOCK(htim);
 
@@ -3880,9 +4070,6 @@ HAL_StatusTypeDef HAL_TIM_ConfigClockSource(TIM_HandleTypeDef *htim, TIM_ClockCo
 
   /* Check the parameters */
   assert_param(IS_TIM_CLOCKSOURCE(sClockSourceConfig->ClockSource));
-  assert_param(IS_TIM_CLOCKPOLARITY(sClockSourceConfig->ClockPolarity));
-  assert_param(IS_TIM_CLOCKPRESCALER(sClockSourceConfig->ClockPrescaler));
-  assert_param(IS_TIM_CLOCKFILTER(sClockSourceConfig->ClockFilter));
 
   /* Reset the SMS, TS, ECE, ETPS and ETRF bits */
   tmpsmcr = htim->Instance->SMCR;
@@ -3905,6 +4092,11 @@ HAL_StatusTypeDef HAL_TIM_ConfigClockSource(TIM_HandleTypeDef *htim, TIM_ClockCo
       /* Check whether or not the timer instance supports external trigger input mode 1 (ETRF)*/
       assert_param(IS_TIM_CLOCKSOURCE_ETRMODE1_INSTANCE(htim->Instance));
 
+      /* Check ETR input conditioning related parameters */
+      assert_param(IS_TIM_CLOCKPRESCALER(sClockSourceConfig->ClockPrescaler));
+      assert_param(IS_TIM_CLOCKPOLARITY(sClockSourceConfig->ClockPolarity));
+      assert_param(IS_TIM_CLOCKFILTER(sClockSourceConfig->ClockFilter));
+      
       /* Configure the ETR Clock source */
       TIM_ETR_SetConfig(htim->Instance,
                         sClockSourceConfig->ClockPrescaler,
@@ -3926,6 +4118,11 @@ HAL_StatusTypeDef HAL_TIM_ConfigClockSource(TIM_HandleTypeDef *htim, TIM_ClockCo
       /* Check whether or not the timer instance supports external trigger input mode 2 (ETRF)*/
       assert_param(IS_TIM_CLOCKSOURCE_ETRMODE2_INSTANCE(htim->Instance));
 
+      /* Check ETR input conditioning related parameters */
+      assert_param(IS_TIM_CLOCKPRESCALER(sClockSourceConfig->ClockPrescaler));
+      assert_param(IS_TIM_CLOCKPOLARITY(sClockSourceConfig->ClockPolarity));
+      assert_param(IS_TIM_CLOCKFILTER(sClockSourceConfig->ClockFilter));
+      
       /* Configure the ETR Clock source */
       TIM_ETR_SetConfig(htim->Instance,
                         sClockSourceConfig->ClockPrescaler,
@@ -3941,17 +4138,25 @@ HAL_StatusTypeDef HAL_TIM_ConfigClockSource(TIM_HandleTypeDef *htim, TIM_ClockCo
       /* Check whether or not the timer instance supports external clock mode 1 */
       assert_param(IS_TIM_CLOCKSOURCE_TIX_INSTANCE(htim->Instance));
 
+      /* Check TI1 input conditioning related parameters */
+      assert_param(IS_TIM_CLOCKPOLARITY(sClockSourceConfig->ClockPolarity));
+      assert_param(IS_TIM_CLOCKFILTER(sClockSourceConfig->ClockFilter));
+      
       TIM_TI1_ConfigInputStage(htim->Instance,
                                sClockSourceConfig->ClockPolarity,
                                sClockSourceConfig->ClockFilter);
       TIM_ITRx_SetConfig(htim->Instance, TIM_CLOCKSOURCE_TI1);
     }
     break;
-
+    
   case TIM_CLOCKSOURCE_TI2:
     {
       /* Check whether or not the timer instance supports external clock mode 1 (ETRF)*/
       assert_param(IS_TIM_CLOCKSOURCE_TIX_INSTANCE(htim->Instance));
+
+       /* Check TI2 input conditioning related parameters */
+      assert_param(IS_TIM_CLOCKPOLARITY(sClockSourceConfig->ClockPolarity));
+      assert_param(IS_TIM_CLOCKFILTER(sClockSourceConfig->ClockFilter));
 
       TIM_TI2_ConfigInputStage(htim->Instance,
                                sClockSourceConfig->ClockPolarity,
@@ -3965,13 +4170,17 @@ HAL_StatusTypeDef HAL_TIM_ConfigClockSource(TIM_HandleTypeDef *htim, TIM_ClockCo
       /* Check whether or not the timer instance supports external clock mode 1 */
       assert_param(IS_TIM_CLOCKSOURCE_TIX_INSTANCE(htim->Instance));
 
+      /* Check TI1 input conditioning related parameters */
+      assert_param(IS_TIM_CLOCKPOLARITY(sClockSourceConfig->ClockPolarity));
+      assert_param(IS_TIM_CLOCKFILTER(sClockSourceConfig->ClockFilter));
+
       TIM_TI1_ConfigInputStage(htim->Instance,
                                sClockSourceConfig->ClockPolarity,
                                sClockSourceConfig->ClockFilter);
       TIM_ITRx_SetConfig(htim->Instance, TIM_CLOCKSOURCE_TI1ED);
     }
     break;
-
+    
   case TIM_CLOCKSOURCE_ITR0:
     {
       /* Check whether or not the timer instance supports internal trigger input */
@@ -3980,7 +4189,7 @@ HAL_StatusTypeDef HAL_TIM_ConfigClockSource(TIM_HandleTypeDef *htim, TIM_ClockCo
       TIM_ITRx_SetConfig(htim->Instance, TIM_CLOCKSOURCE_ITR0);
     }
     break;
-
+    
   case TIM_CLOCKSOURCE_ITR1:
     {
       /* Check whether or not the timer instance supports internal trigger input */
@@ -3989,7 +4198,7 @@ HAL_StatusTypeDef HAL_TIM_ConfigClockSource(TIM_HandleTypeDef *htim, TIM_ClockCo
       TIM_ITRx_SetConfig(htim->Instance, TIM_CLOCKSOURCE_ITR1);
     }
     break;
-
+    
   case TIM_CLOCKSOURCE_ITR2:
     {
       /* Check whether or not the timer instance supports internal trigger input */
@@ -3998,7 +4207,7 @@ HAL_StatusTypeDef HAL_TIM_ConfigClockSource(TIM_HandleTypeDef *htim, TIM_ClockCo
       TIM_ITRx_SetConfig(htim->Instance, TIM_CLOCKSOURCE_ITR2);
     }
     break;
-
+    
   case TIM_CLOCKSOURCE_ITR3:
     {
       /* Check whether or not the timer instance supports internal trigger input */
@@ -4044,7 +4253,7 @@ HAL_StatusTypeDef HAL_TIM_ConfigTI1Input(TIM_HandleTypeDef *htim, uint32_t TI1_S
   /* Reset the TI1 selection */
   tmpcr2 &= ~TIM_CR2_TI1S;
 
-  /* Set the the TI1 selection */
+  /* Set the TI1 selection */
   tmpcr2 |= TI1_Selection;
 
   /* Write to TIMxCR2 */
@@ -4218,72 +4427,90 @@ uint32_t HAL_TIM_ReadCapturedValue(TIM_HandleTypeDef *htim, uint32_t Channel)
   */
 
 /**
-  * @brief  Period elapsed callback in non blocking mode
+  * @brief  Period elapsed callback in non-blocking mode
   * @param  htim : TIM handle
   * @retval None
   */
 __weak void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the __HAL_TIM_PeriodElapsedCallback could be implemented in the user file
    */
 
 }
 /**
-  * @brief  Output Compare callback in non blocking mode
+  * @brief  Output Compare callback in non-blocking mode
   * @param  htim : TIM OC handle
   * @retval None
   */
 __weak void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef *htim)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the __HAL_TIM_OC_DelayElapsedCallback could be implemented in the user file
    */
 }
 /**
-  * @brief  Input Capture callback in non blocking mode
+  * @brief  Input Capture callback in non-blocking mode
   * @param  htim : TIM IC handle
   * @retval None
   */
 __weak void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the __HAL_TIM_IC_CaptureCallback could be implemented in the user file
    */
 }
 
 /**
-  * @brief  PWM Pulse finished callback in non blocking mode
+  * @brief  PWM Pulse finished callback in non-blocking mode
   * @param  htim : TIM handle
   * @retval None
   */
 __weak void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the __HAL_TIM_PWM_PulseFinishedCallback could be implemented in the user file
    */
 }
 
 /**
-  * @brief  Hall Trigger detection callback in non blocking mode
+  * @brief  Hall Trigger detection callback in non-blocking mode
   * @param  htim : TIM handle
   * @retval None
   */
 __weak void HAL_TIM_TriggerCallback(TIM_HandleTypeDef *htim)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_TIM_TriggerCallback could be implemented in the user file
    */
 }
 
 /**
-  * @brief  Timer error callback in non blocking mode
+  * @brief  Timer error callback in non-blocking mode
   * @param  htim : TIM handle
   * @retval None
   */
 __weak void HAL_TIM_ErrorCallback(TIM_HandleTypeDef *htim)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_TIM_ErrorCallback could be implemented in the user file
    */
 }
@@ -4300,7 +4527,7 @@ __weak void HAL_TIM_ErrorCallback(TIM_HandleTypeDef *htim)
                         ##### Peripheral State functions #####
   ==============================================================================
     [..]
-    This subsection permit to get in run-time the status of the peripheral
+    This subsection permits to get in run-time the status of the peripheral
     and the data flow.
 
 @endverbatim
@@ -4308,7 +4535,7 @@ __weak void HAL_TIM_ErrorCallback(TIM_HandleTypeDef *htim)
   */
 
 /**
-  * @brief  Return the TIM Base state
+  * @brief  Return the TIM Base handle state.
   * @param  htim: TIM Base handle
   * @retval HAL state
   */
@@ -4318,7 +4545,7 @@ HAL_TIM_StateTypeDef HAL_TIM_Base_GetState(TIM_HandleTypeDef *htim)
 }
 
 /**
-  * @brief  Return the TIM OC state
+  * @brief  Return the TIM OC handle state.
   * @param  htim: TIM Ouput Compare handle
   * @retval HAL state
   */
@@ -4328,7 +4555,7 @@ HAL_TIM_StateTypeDef HAL_TIM_OC_GetState(TIM_HandleTypeDef *htim)
 }
 
 /**
-  * @brief  Return the TIM PWM state
+  * @brief  Return the TIM PWM handle state.
   * @param  htim: TIM handle
   * @retval HAL state
   */
@@ -4338,7 +4565,7 @@ HAL_TIM_StateTypeDef HAL_TIM_PWM_GetState(TIM_HandleTypeDef *htim)
 }
 
 /**
-  * @brief  Return the TIM Input Capture state
+  * @brief  Return the TIM Input Capture handle state.
   * @param  htim: TIM IC handle
   * @retval HAL state
   */
@@ -4348,7 +4575,7 @@ HAL_TIM_StateTypeDef HAL_TIM_IC_GetState(TIM_HandleTypeDef *htim)
 }
 
 /**
-  * @brief  Return the TIM One Pulse Mode state
+  * @brief  Return the TIM One Pulse Mode handle state.
   * @param  htim: TIM OPM handle
   * @retval HAL state
   */
@@ -4358,7 +4585,7 @@ HAL_TIM_StateTypeDef HAL_TIM_OnePulse_GetState(TIM_HandleTypeDef *htim)
 }
 
 /**
-  * @brief  Return the TIM Encoder Mode state
+  * @brief  Return the TIM Encoder Mode handle state.
   * @param  htim: TIM Encoder handle
   * @retval HAL state
   */
@@ -4480,7 +4707,7 @@ static void TIM_DMATriggerCplt(DMA_HandleTypeDef *hdma)
 
 /**
   * @brief  Time Base configuration
-  * @param  TIMx: TIM periheral
+  * @param  TIMx: TIM peripheral
   * @param  Structure: TIM Base configuration structure
   * @retval None
   */
@@ -4519,7 +4746,7 @@ void TIM_Base_SetConfig(TIM_TypeDef *TIMx, TIM_Base_InitTypeDef *Structure)
   }
 
   /* Generate an update event to reload the Prescaler
-     and the repetition counter(only for TIM1 and TIM8) value immediatly */
+     and the repetition counter(only for TIM1 and TIM8) value immediately */
   TIMx->EGR = TIM_EGR_UG;
 }
 
@@ -4529,7 +4756,7 @@ void TIM_Base_SetConfig(TIM_TypeDef *TIMx, TIM_Base_InitTypeDef *Structure)
   * @param  OC_Config: The ouput configuration structure
   * @retval None
   */
-void TIM_OC1_SetConfig(TIM_TypeDef *TIMx, TIM_OC_InitTypeDef *OC_Config)
+static void TIM_OC1_SetConfig(TIM_TypeDef *TIMx, TIM_OC_InitTypeDef *OC_Config)
 {
   uint32_t tmpccmrx = 0;
   uint32_t tmpccer = 0;
@@ -4635,8 +4862,6 @@ void TIM_OC2_SetConfig(TIM_TypeDef *TIMx, TIM_OC_InitTypeDef *OC_Config)
   if(IS_TIM_CCXN_INSTANCE(TIMx, TIM_CHANNEL_2))
   {
     assert_param(IS_TIM_OCN_POLARITY(OC_Config->OCNPolarity));
-    assert_param(IS_TIM_OCNIDLE_STATE(OC_Config->OCNIdleState));
-    assert_param(IS_TIM_OCIDLE_STATE(OC_Config->OCIdleState));
 
     /* Reset the Output N Polarity level */
     tmpccer &= ~TIM_CCER_CC2NP;
@@ -4681,7 +4906,7 @@ void TIM_OC2_SetConfig(TIM_TypeDef *TIMx, TIM_OC_InitTypeDef *OC_Config)
   * @param  OC_Config: The ouput configuration structure
   * @retval None
   */
-void TIM_OC3_SetConfig(TIM_TypeDef *TIMx, TIM_OC_InitTypeDef *OC_Config)
+static void TIM_OC3_SetConfig(TIM_TypeDef *TIMx, TIM_OC_InitTypeDef *OC_Config)
 {
   uint32_t tmpccmrx = 0;
   uint32_t tmpccer = 0;
@@ -4712,8 +4937,6 @@ void TIM_OC3_SetConfig(TIM_TypeDef *TIMx, TIM_OC_InitTypeDef *OC_Config)
   if(IS_TIM_CCXN_INSTANCE(TIMx, TIM_CHANNEL_3))
   {
     assert_param(IS_TIM_OCN_POLARITY(OC_Config->OCNPolarity));
-    assert_param(IS_TIM_OCNIDLE_STATE(OC_Config->OCNIdleState));
-    assert_param(IS_TIM_OCIDLE_STATE(OC_Config->OCIdleState));
 
     /* Reset the Output N Polarity level */
     tmpccer &= ~TIM_CCER_CC3NP;
@@ -4757,7 +4980,7 @@ void TIM_OC3_SetConfig(TIM_TypeDef *TIMx, TIM_OC_InitTypeDef *OC_Config)
   * @param  OC_Config: The ouput configuration structure
   * @retval None
   */
-void TIM_OC4_SetConfig(TIM_TypeDef *TIMx, TIM_OC_InitTypeDef *OC_Config)
+static void TIM_OC4_SetConfig(TIM_TypeDef *TIMx, TIM_OC_InitTypeDef *OC_Config)
 {
   uint32_t tmpccmrx = 0;
   uint32_t tmpccer = 0;
@@ -4809,6 +5032,113 @@ void TIM_OC4_SetConfig(TIM_TypeDef *TIMx, TIM_OC_InitTypeDef *OC_Config)
   TIMx->CCER = tmpccer;
 }
 
+/**
+  * @brief  Timer Ouput Compare 5 configuration
+  * @param  TIMx to select the TIM peripheral
+  * @param  OC_Config: The ouput configuration structure
+  * @retval None
+  */
+static void TIM_OC5_SetConfig(TIM_TypeDef *TIMx,
+                              TIM_OC_InitTypeDef *OC_Config)
+{
+  uint32_t tmpccmrx = 0;
+  uint32_t tmpccer = 0;
+  uint32_t tmpcr2 = 0;
+
+  /* Disable the output: Reset the CCxE Bit */
+  TIMx->CCER &= ~TIM_CCER_CC5E;
+
+  /* Get the TIMx CCER register value */
+  tmpccer = TIMx->CCER;
+  /* Get the TIMx CR2 register value */
+  tmpcr2 =  TIMx->CR2;
+  /* Get the TIMx CCMR1 register value */
+  tmpccmrx = TIMx->CCMR3;
+
+  /* Reset the Output Compare Mode Bits */
+  tmpccmrx &= ~(TIM_CCMR3_OC5M);
+  /* Select the Output Compare Mode */
+  tmpccmrx |= OC_Config->OCMode;
+
+  /* Reset the Output Polarity level */
+  tmpccer &= ~TIM_CCER_CC5P;
+  /* Set the Output Compare Polarity */
+  tmpccer |= (OC_Config->OCPolarity << 16);
+
+  if(IS_TIM_BREAK_INSTANCE(TIMx))
+  {
+    /* Reset the Output Compare IDLE State */
+    tmpcr2 &= ~TIM_CR2_OIS5;
+    /* Set the Output Idle state */
+    tmpcr2 |= (OC_Config->OCIdleState << 8);
+  }
+  /* Write to TIMx CR2 */
+  TIMx->CR2 = tmpcr2;
+
+  /* Write to TIMx CCMR3 */
+  TIMx->CCMR3 = tmpccmrx;
+
+  /* Set the Capture Compare Register value */
+  TIMx->CCR5 = OC_Config->Pulse;
+
+  /* Write to TIMx CCER */
+  TIMx->CCER = tmpccer;
+}
+
+/**
+  * @brief  Timer Ouput Compare 6 configuration
+  * @param  TIMx to select the TIM peripheral
+  * @param  OC_Config: The ouput configuration structure
+  * @retval None
+  */
+static void TIM_OC6_SetConfig(TIM_TypeDef *TIMx,
+                              TIM_OC_InitTypeDef *OC_Config)
+{
+  uint32_t tmpccmrx = 0;
+  uint32_t tmpccer = 0;
+  uint32_t tmpcr2 = 0;
+
+  /* Disable the output: Reset the CCxE Bit */
+  TIMx->CCER &= ~TIM_CCER_CC6E;
+
+  /* Get the TIMx CCER register value */
+  tmpccer = TIMx->CCER;
+  /* Get the TIMx CR2 register value */
+  tmpcr2 =  TIMx->CR2;
+  /* Get the TIMx CCMR1 register value */
+  tmpccmrx = TIMx->CCMR3;
+
+  /* Reset the Output Compare Mode Bits */
+  tmpccmrx &= ~(TIM_CCMR3_OC6M);
+  /* Select the Output Compare Mode */
+  tmpccmrx |= (OC_Config->OCMode << 8);
+
+  /* Reset the Output Polarity level */
+  tmpccer &= (uint32_t)~TIM_CCER_CC6P;
+  /* Set the Output Compare Polarity */
+  tmpccer |= (OC_Config->OCPolarity << 20);
+
+  if(IS_TIM_BREAK_INSTANCE(TIMx))
+  {
+    /* Reset the Output Compare IDLE State */
+    tmpcr2 &= ~TIM_CR2_OIS6;
+    /* Set the Output Idle state */
+    tmpcr2 |= (OC_Config->OCIdleState << 10);
+  }
+
+  /* Write to TIMx CR2 */
+  TIMx->CR2 = tmpcr2;
+
+  /* Write to TIMx CCMR3 */
+  TIMx->CCMR3 = tmpccmrx;
+
+  /* Set the Capture Compare Register value */
+  TIMx->CCR6 = OC_Config->Pulse;
+
+  /* Write to TIMx CCER */
+  TIMx->CCER = tmpccer;
+}
+
 static void TIM_SlaveTimer_SetConfig(TIM_HandleTypeDef *htim,
                                      TIM_SlaveConfigTypeDef * sSlaveConfig)
 {
@@ -4854,7 +5184,6 @@ static void TIM_SlaveTimer_SetConfig(TIM_HandleTypeDef *htim,
     {
       /* Check the parameters */
       assert_param(IS_TIM_CC1_INSTANCE(htim->Instance));
-      assert_param(IS_TIM_TRIGGERPOLARITY(sSlaveConfig->TriggerPolarity));
       assert_param(IS_TIM_TRIGGERFILTER(sSlaveConfig->TriggerFilter));
   
       /* Disable the Channel 1: Reset the CC1E Bit */
@@ -5236,14 +5565,14 @@ static void TIM_ITRx_SetConfig(TIM_TypeDef *TIMx, uint16_t InputTriggerSource)
   * @param  TIMx to select the TIM peripheral
   * @param  TIM_ExtTRGPrescaler: The external Trigger Prescaler.
   *          This parameter can be one of the following values:
-  *            @arg TIM_ExtTRGPSC_DIV1: ETRP Prescaler OFF.
-  *            @arg TIM_ExtTRGPSC_DIV2: ETRP frequency divided by 2.
-  *            @arg TIM_ExtTRGPSC_DIV4: ETRP frequency divided by 4.
-  *            @arg TIM_ExtTRGPSC_DIV8: ETRP frequency divided by 8.
+  *            @arg TIM_ETRPRESCALER_DIV1 : ETRP Prescaler OFF.
+  *            @arg TIM_ETRPRESCALER_DIV2 : ETRP frequency divided by 2.
+  *            @arg TIM_ETRPRESCALER_DIV4 : ETRP frequency divided by 4.
+  *            @arg TIM_ETRPRESCALER_DIV8 : ETRP frequency divided by 8.
   * @param  TIM_ExtTRGPolarity: The external Trigger Polarity.
   *          This parameter can be one of the following values:
-  *            @arg TIM_ExtTRGPolarity_Inverted: active low or falling edge active.
-  *            @arg TIM_ExtTRGPolarity_NonInverted: active high or rising edge active.
+  *            @arg TIM_ETRPOLARITY_INVERTED : active low or falling edge active.
+  *            @arg TIM_ETRPOLARITY_NONINVERTED : active high or rising edge active.
   * @param  ExtTRGFilter: External Trigger Filter.
   *          This parameter must be a value between 0x00 and 0x0F
   * @retval None
@@ -5270,10 +5599,10 @@ void TIM_ETR_SetConfig(TIM_TypeDef* TIMx, uint32_t TIM_ExtTRGPrescaler,
   * @param  TIMx to select the TIM peripheral
   * @param  Channel: specifies the TIM Channel
   *          This parameter can be one of the following values:
-  *            @arg TIM_Channel_1: TIM Channel 1
-  *            @arg TIM_Channel_2: TIM Channel 2
-  *            @arg TIM_Channel_3: TIM Channel 3
-  *            @arg TIM_Channel_4: TIM Channel 4
+  *            @arg TIM_CHANNEL_1: TIM Channel 1
+  *            @arg TIM_CHANNEL_2: TIM Channel 2
+  *            @arg TIM_CHANNEL_3: TIM Channel 3
+  *            @arg TIM_CHANNEL_4: TIM Channel 4
   * @param  ChannelState: specifies the TIM Channel CCxE bit new state.
   *          This parameter can be: TIM_CCx_ENABLE or TIM_CCx_Disable.
   * @retval None

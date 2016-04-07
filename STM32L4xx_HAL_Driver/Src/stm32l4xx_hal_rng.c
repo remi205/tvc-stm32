@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32l4xx_hal_rng.c
   * @author  MCD Application Team
-  * @version V0.5.0
-  * @date    10-February-2015
+  * @version V1.4.0
+  * @date    26-February-2016
   * @brief   RNG HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Random Number Generator (RNG) peripheral:
@@ -21,7 +21,7 @@
       (#) Enable the RNG controller clock using __HAL_RCC_RNG_CLK_ENABLE() macro 
           in HAL_RNG_MspInit().
       (#) Activate the RNG peripheral using HAL_RNG_Init() function.
-      (#) Wait until the 32 bit Random Number Generator contains a valid 
+      (#) Wait until the 32-bit Random Number Generator contains a valid 
           random data using (polling/interrupt) mode.   
       (#) Get the 32 bit random number using HAL_RNG_GenerateRandomNumber() function.
   
@@ -29,7 +29,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -103,15 +103,15 @@
       (+) Initialize the RNG according to the specified parameters 
           in the RNG_InitTypeDef and create the associated handle
       (+) DeInitialize the RNG peripheral
-      (+) Initialize the RNG MSP
-      (+) DeInitialize RNG MSP 
+      (+) Initialize the RNG MSP (MCU Specific Package)
+      (+) DeInitialize the RNG MSP 
  
 @endverbatim
   * @{
   */
 
 /**
-  * @brief  Initializes the RNG peripheral and creates the associated handle.
+  * @brief  Initialize the RNG peripheral and initialize the associated handle.
   * @param  hrng: pointer to a RNG_HandleTypeDef structure.
   * @retval HAL status
   */
@@ -152,7 +152,7 @@ HAL_StatusTypeDef HAL_RNG_Init(RNG_HandleTypeDef *hrng)
 }
 
 /**
-  * @brief  DeInitializes the RNG peripheral. 
+  * @brief  DeInitialize the RNG peripheral. 
   * @param  hrng: pointer to a RNG_HandleTypeDef structure.
   * @retval HAL status
   */
@@ -183,24 +183,30 @@ HAL_StatusTypeDef HAL_RNG_DeInit(RNG_HandleTypeDef *hrng)
 }
 
 /**
-  * @brief  Initializes the RNG MSP.
+  * @brief  Initialize the RNG MSP.
   * @param  hrng: pointer to a RNG_HandleTypeDef structure.
   * @retval None
   */
 __weak void HAL_RNG_MspInit(RNG_HandleTypeDef *hrng)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hrng);
+
   /* NOTE : This function should not be modified. When the callback is needed,
             function HAL_RNG_MspInit must be implemented in the user file.
    */
 }
 
 /**
-  * @brief  DeInitializes the RNG MSP.
+  * @brief  DeInitialize the RNG MSP.
   * @param  hrng: pointer to a RNG_HandleTypeDef structure.
   * @retval None
   */
 __weak void HAL_RNG_MspDeInit(RNG_HandleTypeDef *hrng)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hrng);
+
   /* NOTE : This function should not be modified. When the callback is needed,
             function HAL_RNG_MspDeInit must be implemented in the user file.
    */
@@ -284,7 +290,7 @@ HAL_StatusTypeDef HAL_RNG_GenerateRandomNumber(RNG_HandleTypeDef *hrng, uint32_t
 }
 
 /**
-  * @brief  Returns a 32-bit random number in interrupt mode.
+  * @brief  Generate a 32-bit random number in interrupt mode.
   * @param  hrng: pointer to a RNG_HandleTypeDef structure.
   * @retval HAL status
   */
@@ -319,7 +325,7 @@ HAL_StatusTypeDef HAL_RNG_GenerateRandomNumber_IT(RNG_HandleTypeDef *hrng)
 }
 
 /**
-  * @brief  Handles RNG interrupt request.
+  * @brief  Handle RNG interrupt request.
   * @note   In the case of a clock error, the RNG is no more able to generate 
   *         random numbers because the PLL48CLK clock is not correct. User has 
   *         to check that the clock controller is correctly configured to provide
@@ -374,8 +380,8 @@ void HAL_RNG_IRQHandler(RNG_HandleTypeDef *hrng)
 } 
 
 /**
-  * @brief  return generated random number in polling mode (Obsolete).
-  *         Use HAL_RNG_GenerateRandomNumber() API instead.
+  * @brief  Return generated random number in polling mode (Obsolete).
+  * @note   Use HAL_RNG_GenerateRandomNumber() API instead.
   * @param  hrng: pointer to a RNG_HandleTypeDef structure that contains
   *                the configuration information for RNG.
   * @retval random value
@@ -394,8 +400,8 @@ uint32_t HAL_RNG_GetRandomNumber(RNG_HandleTypeDef *hrng)
 
 
 /**
-  * @brief  Returns a 32-bit random number with interrupt enabled (Obsolete),
-  *         Use HAL_RNG_GenerateRandomNumber_IT() API instead.
+  * @brief  Return a 32-bit random number with interrupt enabled (Obsolete).
+  * @note   Use HAL_RNG_GenerateRandomNumber_IT() API instead.
   * @param  hrng: RNG handle
   * @retval 32-bit random number
   */
@@ -433,24 +439,31 @@ uint32_t HAL_RNG_ReadLastRandomNumber(RNG_HandleTypeDef *hrng)
 
 /**
   * @brief  Data Ready callback in non-blocking mode. 
-  * @param  hrng: pointer to a RNG_HandleTypeDef structure..
+  * @param  hrng: pointer to a RNG_HandleTypeDef structure.
   * @param  random32bit: generated random value
   * @retval None
   */
 __weak void HAL_RNG_ReadyDataCallback(RNG_HandleTypeDef *hrng, uint32_t random32bit)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hrng);
+  UNUSED(random32bit);
+
   /* NOTE : This function should not be modified. When the callback is needed,
             function HAL_RNG_ReadyDataCallback must be implemented in the user file.
    */
 }
 
 /**
-  * @brief  RNG error callbacks.
+  * @brief  RNG error callback.
   * @param  hrng: pointer to a RNG_HandleTypeDef structure.
   * @retval None
   */
 __weak void HAL_RNG_ErrorCallback(RNG_HandleTypeDef *hrng)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hrng);
+
   /* NOTE : This function should not be modified. When the callback is needed,
             function HAL_RNG_ErrorCallback must be implemented in the user file.
    */
@@ -475,12 +488,13 @@ __weak void HAL_RNG_ErrorCallback(RNG_HandleTypeDef *hrng)
   */
 
 /**
-  * @brief  Returns the RNG state.
+  * @brief  Return the RNG handle state.
   * @param  hrng: pointer to a RNG_HandleTypeDef structure.
   * @retval HAL state
   */
 HAL_RNG_StateTypeDef HAL_RNG_GetState(RNG_HandleTypeDef *hrng)
 {
+  /* Return RNG handle state */
   return hrng->State;
 }
 

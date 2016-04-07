@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32l4xx_hal_wwdg.c
   * @author  MCD Application Team
-  * @version V0.5.0
-  * @date    10-February-2015
+  * @version V1.4.0
+  * @date    26-February-2016
   * @brief   WWDG HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Window Watchdog (WWDG) peripheral:
@@ -24,8 +24,8 @@
         before the counter has reached the refresh window value. This
         implies that the counter must be refreshed in a limited window.
     (+) Once enabled the WWDG cannot be disabled except by a system reset.
-    (+) WWDGRST flag in RCC_CSR register can be used to inform when a WWDG
-        reset occurs.               
+    (+) WWDGRST flag in RCC_CSR register informs when a WWDG reset has 
+        occurred (check available with __HAL_RCC_GET_FLAG(RCC_FLAG_WWDGRST)).               
     (+) The WWDG counter input clock is derived from the APB clock divided
         by a programmable prescaler.
     (+) WWDG clock (Hz) = PCLK1 / (4096 * Prescaler)
@@ -48,11 +48,11 @@
         a value greater than 0x40 to prevent generating an immediate reset.
     (+) Optionally you can enable the Early Wakeup Interrupt (EWI) which is
         generated when the counter reaches 0x40, and then start the WWDG using
-        HAL_WWDG_Start_IT(). At EWI HAL_WWDG_WakeupCallback is executed and user can 
-        add his own code by customization of function pointer HAL_WWDG_WakeupCallback
+        HAL_WWDG_Start_IT(). At EWI HAL_WWDG_WakeupCallback() is executed and user can 
+        add his own code by customization of function pointer HAL_WWDG_WakeupCallback().
         Once enabled, EWI interrupt cannot be disabled except by a system reset.
-    (+) Then the application program must refresh the WWDG counter at regular
-        intervals during normal operation to prevent an MCU reset, using
+    (+) The application program must refresh the WWDG counter at regular
+        intervals during normal operation to prevent an MCU reset using
         HAL_WWDG_Refresh() function. This operation must occur only when
         the counter is lower than the refresh window value already programmed.
 
@@ -62,15 +62,16 @@
        Below the list of most used macros in WWDG HAL driver.
        
       (+) __HAL_WWDG_ENABLE: Enable the WWDG peripheral 
+      (+) __HAL_WWDG_ENABLE_IT: Enable the WWDG early wakeup interrupt
+      (+) __HAL_WWDG_GET_IT_SOURCE: Check the selected WWDG's interrupt source 
       (+) __HAL_WWDG_GET_FLAG: Get the selected WWDG's flag status
       (+) __HAL_WWDG_CLEAR_FLAG: Clear the WWDG's pending flags 
-      (+) __HAL_WWDG_ENABLE_IT: Enable the WWDG early wakeup interrupt
 
   @endverbatim
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -132,18 +133,18 @@
   [..]  
     This section provides functions allowing to:
       (+) Initialize the WWDG according to the specified parameters
-          in the WWDG_InitTypeDef and create the associated handle
-      (+) DeInitialize the WWDG peripheral
-      (+) Initialize the WWDG MSP
-      (+) DeInitialize the WWDG MSP
+          in the WWDG_InitTypeDef and initialize the associated handle.
+      (+) DeInitialize the WWDG peripheral.
+      (+) Initialize the WWDG MSP.
+      (+) DeInitialize the WWDG MSP.
 
 @endverbatim
   * @{
   */
 
 /**
-  * @brief  Initializes the WWDG according to the specified
-  *         parameters in the WWDG_InitTypeDef and creates the associated handle.
+  * @brief  Initialize the WWDG according to the specified
+  *         parameters in the WWDG_InitTypeDef and initialize the associated handle.
   * @param  hwwdg: pointer to a WWDG_HandleTypeDef structure that contains
   *              the configuration information for the specified WWDG module.
   * @retval HAL status
@@ -188,7 +189,7 @@ HAL_StatusTypeDef HAL_WWDG_Init(WWDG_HandleTypeDef *hwwdg)
 }
 
 /**
-  * @brief  DeInitializes the WWDG peripheral.
+  * @brief  DeInitialize the WWDG peripheral.
   * @param  hwwdg: pointer to a WWDG_HandleTypeDef structure that contains
   *              the configuration information for the specified WWDG module.
   * @retval HAL status
@@ -230,26 +231,32 @@ HAL_StatusTypeDef HAL_WWDG_DeInit(WWDG_HandleTypeDef *hwwdg)
 }
 
 /**
-  * @brief  Initializes the WWDG MSP.
+  * @brief  Initialize the WWDG MSP.
   * @param  hwwdg: pointer to a WWDG_HandleTypeDef structure that contains
   *              the configuration information for the specified WWDG module.
   * @retval None
   */
 __weak void HAL_WWDG_MspInit(WWDG_HandleTypeDef *hwwdg)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hwwdg);
+
   /* NOTE: This function should not be modified, when the callback is needed,
            the HAL_WWDG_MspInit could be implemented in the user file
    */
 }
 
 /**
-  * @brief  DeInitializes the WWDG MSP.
+  * @brief  DeInitialize the WWDG MSP.
   * @param  hwwdg: pointer to a WWDG_HandleTypeDef structure that contains
   *              the configuration information for the specified WWDG module.
   * @retval None
   */
 __weak void HAL_WWDG_MspDeInit(WWDG_HandleTypeDef *hwwdg)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hwwdg);
+
   /* NOTE: This function should not be modified, when the callback is needed,
            the HAL_WWDG_MspDeInit could be implemented in the user file
    */
@@ -270,14 +277,14 @@ __weak void HAL_WWDG_MspDeInit(WWDG_HandleTypeDef *hwwdg)
     This section provides functions allowing to:
     (+) Start the WWDG.
     (+) Refresh the WWDG.
-    (+) Handle WWDG interrupt request.
+    (+) Handle WWDG interrupt request and associated function callback.
 
-@endverbatim
+@endverbatim  
   * @{
   */
 
 /**
-  * @brief  Starts the WWDG.
+  * @brief  Start the WWDG.
   * @param  hwwdg: pointer to a WWDG_HandleTypeDef structure that contains
   *              the configuration information for the specified WWDG module.
   * @retval HAL status
@@ -304,7 +311,7 @@ HAL_StatusTypeDef HAL_WWDG_Start(WWDG_HandleTypeDef *hwwdg)
 }
 
 /**
-  * @brief  Starts the WWDG with interrupt enabled.
+  * @brief  Start the WWDG with interrupt enabled.
   * @param  hwwdg: pointer to a WWDG_HandleTypeDef structure that contains
   *              the configuration information for the specified WWDG module.
   * @retval HAL status
@@ -328,7 +335,7 @@ HAL_StatusTypeDef HAL_WWDG_Start_IT(WWDG_HandleTypeDef *hwwdg)
 }
 
 /**
-  * @brief  Refreshes the WWDG.
+  * @brief  Refresh the WWDG.
   * @param  hwwdg: pointer to a WWDG_HandleTypeDef structure that contains
   *              the configuration information for the specified WWDG module.
   * @param  Counter: value of counter to put in WWDG counter
@@ -359,7 +366,7 @@ HAL_StatusTypeDef HAL_WWDG_Refresh(WWDG_HandleTypeDef *hwwdg, uint32_t Counter)
 }
 
 /**
-  * @brief  Handles WWDG interrupt request.
+  * @brief  Handle WWDG interrupt request.
   * @note   The Early Wakeup Interrupt (EWI) can be used if specific safety operations
   *         or data logging must be performed before the actual reset is generated.
   *         The EWI interrupt is enabled when calling HAL_WWDG_Start_IT function.
@@ -402,6 +409,9 @@ void HAL_WWDG_IRQHandler(WWDG_HandleTypeDef *hwwdg)
   */
 __weak void HAL_WWDG_WakeupCallback(WWDG_HandleTypeDef* hwwdg)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hwwdg);
+
   /* NOTE: This function should not be modified, when the callback is needed,
            the HAL_WWDG_WakeupCallback could be implemented in the user file
    */
@@ -427,7 +437,7 @@ __weak void HAL_WWDG_WakeupCallback(WWDG_HandleTypeDef* hwwdg)
   */
 
 /**
-  * @brief  Returns the WWDG state.
+  * @brief  Return the WWDG handle state.
   * @param  hwwdg: pointer to a WWDG_HandleTypeDef structure that contains
   *              the configuration information for the specified WWDG module.
   * @retval HAL state

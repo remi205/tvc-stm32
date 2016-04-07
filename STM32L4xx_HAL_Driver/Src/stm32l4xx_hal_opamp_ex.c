@@ -2,10 +2,9 @@
   ******************************************************************************
   * @file    stm32l4xx_hal_opamp_ex.c
   * @author  MCD Application Team
-  * @version V0.5.0
-  * @date    10-February-2015
+  * @version V1.4.0
+  * @date    26-February-2016
   * @brief   Extended OPAMP HAL module driver.
-  *
   *          This file provides firmware functions to manage the following
   *          functionalities of the operational amplifier(s)(OPAMP1, OPAMP2 etc)
   *          peripheral:
@@ -16,7 +15,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -68,6 +67,8 @@
   * @{
   */
 
+#if defined (STM32L471xx) || defined (STM32L475xx) || defined (STM32L476xx) || defined (STM32L485xx) || defined (STM32L486xx)
+
 /** @addtogroup OPAMPEx_Exported_Functions_Group1
   * @brief    Extended operation functions
   *
@@ -84,16 +85,17 @@
 
 /*  2 OPAMPS available */
 /*  2 OPAMPS can be calibrated in parallel */
+/*  Not available on STM32L43x/STM32L44x where only one OPAMP available */
 
 /**
   * @brief  Run the self calibration of the 2 OPAMPs in parallel.
   * @note   Trimming values (PMOS & NMOS) are updated and user trimming is 
-  *         enabled is calibration is succesful.
+  *         enabled is calibration is successful.
   * @note   Calibration is performed in the mode specified in OPAMP init
   *         structure (mode normal or low-power). To perform calibration for
   *         both modes, repeat this function twice after OPAMP init structure
   *         accordingly updated.
-  * @note   Calibration runs about 10 ms (5 dichotmy steps, repeated for P  
+  * @note   Calibration runs about 10 ms (5 dichotomy steps, repeated for P  
   *         and N transistors: 10 steps with 1 ms for each step).
   * @param  hopamp1 handle
   * @param  hopamp2 handle
@@ -114,6 +116,8 @@ HAL_StatusTypeDef HAL_OPAMPEx_SelfCalibrateAll(OPAMP_HandleTypeDef *hopamp1, OPA
   __IO uint32_t* tmp_opamp2_reg_trimming;
 
   uint32_t delta;
+  uint32_t opampmode1;
+  uint32_t opampmode2;
   
   if((hopamp1 == NULL) || (hopamp1->State == HAL_OPAMP_STATE_BUSYLOCKED) || \
      (hopamp2 == NULL) || (hopamp2->State == HAL_OPAMP_STATE_BUSYLOCKED)) 
@@ -132,6 +136,16 @@ HAL_StatusTypeDef HAL_OPAMPEx_SelfCalibrateAll(OPAMP_HandleTypeDef *hopamp1, OPA
       assert_param(IS_OPAMP_POWERMODE(hopamp1->Init.PowerMode));
       assert_param(IS_OPAMP_POWERMODE(hopamp2->Init.PowerMode));
 
+      /* Save OPAMP mode as in                                       */
+      /* STM32L471xx STM32L475xx STM32L476xx STM32L485xx STM32L486xx */
+      /* the calibration is not working in PGA mode                  */
+      opampmode1 = READ_BIT(hopamp1->Instance->CSR,OPAMP_CSR_OPAMODE);
+      opampmode2 = READ_BIT(hopamp2->Instance->CSR,OPAMP_CSR_OPAMODE);
+
+      /* Use of standalone mode */ 
+      MODIFY_REG(hopamp1->Instance->CSR, OPAMP_CSR_OPAMODE, OPAMP_STANDALONE_MODE); 
+      MODIFY_REG(hopamp2->Instance->CSR, OPAMP_CSR_OPAMODE, OPAMP_STANDALONE_MODE); 
+      
       /*  user trimming values are used for offset calibration */
       SET_BIT(hopamp1->Instance->CSR, OPAMP_CSR_USERTRIM);
       SET_BIT(hopamp2->Instance->CSR, OPAMP_CSR_USERTRIM);
@@ -185,7 +199,7 @@ HAL_StatusTypeDef HAL_OPAMPEx_SelfCalibrateAll(OPAMP_HandleTypeDef *hopamp1, OPA
         /* two steps to have 1 mV accuracy */
         HAL_Delay(OPAMP_TRIMMING_DELAY);
 
-        if (READ_BIT(hopamp1->Instance->CSR, OPAMP_CSR_CALOUT)) 
+        if (READ_BIT(hopamp1->Instance->CSR, OPAMP_CSR_CALOUT) != RESET)
         { 
           /* OPAMP_CSR_CALOUT is HIGH try lower trimming */
           trimmingvaluen1 -= delta;
@@ -196,7 +210,7 @@ HAL_StatusTypeDef HAL_OPAMPEx_SelfCalibrateAll(OPAMP_HandleTypeDef *hopamp1, OPA
           trimmingvaluen1 += delta;
         }
 
-        if (READ_BIT(hopamp2->Instance->CSR, OPAMP_CSR_CALOUT)) 
+        if (READ_BIT(hopamp2->Instance->CSR, OPAMP_CSR_CALOUT) != RESET) 
         { 
           /* OPAMP_CSR_CALOUT is HIGH try lower trimming */
           trimmingvaluen2 -= delta;
@@ -257,7 +271,7 @@ HAL_StatusTypeDef HAL_OPAMPEx_SelfCalibrateAll(OPAMP_HandleTypeDef *hopamp1, OPA
         /* two steps to have 1 mV accuracy */
         HAL_Delay(OPAMP_TRIMMING_DELAY);
 
-        if (READ_BIT(hopamp1->Instance->CSR, OPAMP_CSR_CALOUT)) 
+        if (READ_BIT(hopamp1->Instance->CSR, OPAMP_CSR_CALOUT) != RESET) 
         { 
           /* OPAMP_CSR_CALOUT is HIGH try higher trimming */
           trimmingvaluep1 += delta;
@@ -268,7 +282,7 @@ HAL_StatusTypeDef HAL_OPAMPEx_SelfCalibrateAll(OPAMP_HandleTypeDef *hopamp1, OPA
           trimmingvaluep1 -= delta;
         }
 
-        if (READ_BIT(hopamp2->Instance->CSR, OPAMP_CSR_CALOUT)) 
+        if (READ_BIT(hopamp2->Instance->CSR, OPAMP_CSR_CALOUT) != RESET) 
         { 
           /* OPAMP_CSR_CALOUT is HIGH try higher trimming */
           trimmingvaluep2 += delta;
@@ -293,14 +307,14 @@ HAL_StatusTypeDef HAL_OPAMPEx_SelfCalibrateAll(OPAMP_HandleTypeDef *hopamp1, OPA
       /* two steps to have 1 mV accuracy */
       HAL_Delay(OPAMP_TRIMMING_DELAY);
       
-      if (READ_BIT(hopamp1->Instance->CSR, OPAMP_CSR_CALOUT))
+      if (READ_BIT(hopamp1->Instance->CSR, OPAMP_CSR_CALOUT) != RESET)
       {
         /* Trimming value is actually one value more */
         trimmingvaluep1++;
         MODIFY_REG(*tmp_opamp1_reg_trimming, OPAMP_OTR_TRIMOFFSETP, (trimmingvaluep1<<OPAMP_INPUT_NONINVERTING));
       }
       
-      if (READ_BIT(hopamp2->Instance->CSR, OPAMP_CSR_CALOUT))
+      if (READ_BIT(hopamp2->Instance->CSR, OPAMP_CSR_CALOUT) != RESET)
       {
         /* Trimming value is actually one value more */
         trimmingvaluep2++;
@@ -357,8 +371,10 @@ HAL_StatusTypeDef HAL_OPAMPEx_SelfCalibrateAll(OPAMP_HandleTypeDef *hopamp1, OPA
       hopamp1->State = HAL_OPAMP_STATE_READY;
       hopamp2->State = HAL_OPAMP_STATE_READY;
 
+      /* Restore OPAMP mode after calibration */
+      MODIFY_REG(hopamp1->Instance->CSR, OPAMP_CSR_OPAMODE, opampmode1);
+      MODIFY_REG(hopamp2->Instance->CSR, OPAMP_CSR_OPAMODE, opampmode2);
     }
-
     else
     {
       /* At least one OPAMP can not be calibrated */ 
@@ -371,6 +387,8 @@ HAL_StatusTypeDef HAL_OPAMPEx_SelfCalibrateAll(OPAMP_HandleTypeDef *hopamp1, OPA
 /**
   * @}
   */
+
+#endif
 
 /** @defgroup OPAMPEx_Exported_Functions_Group2 Peripheral Control functions 
  *  @brief   Peripheral Control functions 
@@ -387,8 +405,8 @@ HAL_StatusTypeDef HAL_OPAMPEx_SelfCalibrateAll(OPAMP_HandleTypeDef *hopamp1, OPA
   */
 
 /**
-  * @brief  Unlock the selected opamp configuration.
-  *         This function must be called only when OPAMP is in state "locked".
+  * @brief  Unlock the selected OPAMP configuration.
+  * @note   This function must be called only when OPAMP is in state "locked".
   * @param  hopamp: OPAMP handle
   * @retval HAL status
   */

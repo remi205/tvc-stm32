@@ -2,10 +2,9 @@
   ******************************************************************************
   * @file    stm32l4xx_hal_firewall.c
   * @author  MCD Application Team
-  * @version V0.5.0
-  * @date    10-February-2015
+  * @version V1.4.0
+  * @date    26-February-2016
   * @brief   FIREWALL HAL module driver.
-  *
   *          This file provides firmware functions to manage the Firewall
   *          Peripheral initialization and enabling.
   *
@@ -35,7 +34,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -245,17 +244,16 @@ void HAL_FIREWALL_EnableFirewall(void)
   *       will close the Firewall. 
   * @note This API provides the same service as __HAL_FIREWALL_PREARM_ENABLE() macro
   *       but can't be executed inside a code area protected by the Firewall. 
-  * @note -- When the Firewall is disabled, user can resort to 
-  *          HAL_FIREWALL_EnablePreArmFlag() API any time.   
-  *       -- When the Firewall is enabled and NVDSL register is equal to 0 (that is, 
-  *          when the non volatile data segment is not defined),
-  *          **  this API can be executed when the Firewall is closed
-  *          **  when the Firewall is opened, user should resort to 
-  *              __HAL_FIREWALL_PREARM_ENABLE() macro instead
-  *       -- When the Firewall is enabled and  NVDSL register is different from 0
-  *          (that is, when the non volatile data segment is defined)
-  *          **  FW_CR register can be accessed only when the Firewall is opened: 
-  *              user should resort to  __HAL_FIREWALL_PREARM_ENABLE() macro instead.               
+  * @note When the Firewall is disabled, user can resort to HAL_FIREWALL_EnablePreArmFlag() API any time.   
+  * @note When the Firewall is enabled and NVDSL register is equal to 0 (that is, 
+  *       when the non volatile data segment is not defined),
+  *        **  this API can be executed when the Firewall is closed
+  *        **  when the Firewall is opened, user should resort to 
+  *            __HAL_FIREWALL_PREARM_ENABLE() macro instead
+  * @note When the Firewall is enabled and  NVDSL register is different from 0
+  *       (that is, when the non volatile data segment is defined)
+  *       **  FW_CR register can be accessed only when the Firewall is opened: 
+  *           user should resort to  __HAL_FIREWALL_PREARM_ENABLE() macro instead.               
   * @retval None
   */
 void HAL_FIREWALL_EnablePreArmFlag(void)
@@ -271,17 +269,16 @@ void HAL_FIREWALL_EnablePreArmFlag(void)
   *       when the Firewall is opened will generate a system reset.
   * @note This API provides the same service as __HAL_FIREWALL_PREARM_DISABLE() macro
   *       but can't be executed inside a code area protected by the Firewall.
-  * @note -- When the Firewall is disabled, user can resort to 
-  *          HAL_FIREWALL_EnablePreArmFlag() API any time.   
-  *       -- When the Firewall is enabled and NVDSL register is equal to 0 (that is, 
-  *          when the non volatile data segment is not defined),
-  *          **  this API can be executed when the Firewall is closed
-  *          **  when the Firewall is opened, user should resort to 
-  *              __HAL_FIREWALL_PREARM_DISABLE() macro instead
-  *       -- When the Firewall is enabled and  NVDSL register is different from 0
-  *          (that is, when the non volatile data segment is defined)
-  *          **  FW_CR register can be accessed only when the Firewall is opened: 
-  *              user should resort to  __HAL_FIREWALL_PREARM_DISABLE() macro instead.               
+  * @note When the Firewall is disabled, user can resort to HAL_FIREWALL_EnablePreArmFlag() API any time.   
+  * @note When the Firewall is enabled and NVDSL register is equal to 0 (that is, 
+  *       when the non volatile data segment is not defined),
+  *        **  this API can be executed when the Firewall is closed
+  *        **  when the Firewall is opened, user should resort to 
+  *            __HAL_FIREWALL_PREARM_DISABLE() macro instead
+  * @note When the Firewall is enabled and  NVDSL register is different from 0
+  *       (that is, when the non volatile data segment is defined)
+  *       **  FW_CR register can be accessed only when the Firewall is opened: 
+  *           user should resort to  __HAL_FIREWALL_PREARM_DISABLE() macro instead.               
           
   * @retval None
   */

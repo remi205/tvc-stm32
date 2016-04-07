@@ -2,12 +2,11 @@
   ******************************************************************************
   * @file    stm32l4xx_hal_dac_ex.c
   * @author  MCD Application Team
-  * @version V0.5.0
-  * @date    10-February-2015
+  * @version V1.4.0
+  * @date    26-February-2016
   * @brief   DAC HAL module driver.
-  *         This file provides firmware functions to manage the following 
-  *         functionalities of DAC extension peripheral:
-  *           + Extended features functions
+  *          This file provides firmware functions to manage the extended 
+  *          functionalities of the DAC peripheral.  
   *     
   *
   @verbatim      
@@ -15,7 +14,7 @@
                       ##### How to use this driver #####
   ==============================================================================
     [..]          
-      (+) When Dual mode is enabled (i.e DAC Channel1 and Channel2 are used simultaneously) :
+      (+) When Dual mode is enabled (i.e. DAC Channel1 and Channel2 are used simultaneously) :
           Use HAL_DACEx_DualGetValue() to get digital data to be converted and use
           HAL_DACEx_DualSetValue() to set digital value to converted simultaneously in Channel 1 and Channel 2.  
       (+) Use HAL_DACEx_TriangleWaveGenerate() to generate Triangle signal.
@@ -31,7 +30,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -85,7 +84,7 @@
   */
 
 /** @defgroup DACEx_Exported_Functions_Group2 IO operation functions
- *  @brief    Ex IO operation functions 
+ *  @brief    Extended IO operation functions 
  *
 @verbatim   
   ==============================================================================
@@ -104,7 +103,7 @@
   */
 
 /**
-  * @brief  Enables or disables the selected DAC channel wave generation.
+  * @brief  Enable or disable the selected DAC channel wave generation.
   * @param  hdac: pointer to a DAC_HandleTypeDef structure that contains
   *         the configuration information for the specified DAC.
   * @param  Channel: The selected DAC channel. 
@@ -152,7 +151,7 @@ HAL_StatusTypeDef HAL_DACEx_TriangleWaveGenerate(DAC_HandleTypeDef* hdac, uint32
 }
 
 /**
-  * @brief  Enables or disables the selected DAC channel wave generation.
+  * @brief  Enable or disable the selected DAC channel wave generation.
   * @param  hdac: pointer to a DAC_HandleTypeDef structure that contains
   *         the configuration information for the specified DAC. 
   * @param  Channel: The selected DAC channel. 
@@ -246,27 +245,33 @@ HAL_StatusTypeDef HAL_DACEx_DualSetValue(DAC_HandleTypeDef* hdac, uint32_t Align
 }
 
 /**
-  * @brief  Conversion complete callback in non blocking mode for Channel2 
+  * @brief  Conversion complete callback in non-blocking mode for Channel2.
   * @param  hdac: pointer to a DAC_HandleTypeDef structure that contains
   *         the configuration information for the specified DAC.
   * @retval None
   */
 __weak void HAL_DACEx_ConvCpltCallbackCh2(DAC_HandleTypeDef* hdac)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hdac);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_DACEx_ConvCpltCallbackCh2 could be implemented in the user file
    */
 }
 
 /**
-  * @brief  Conversion half DMA transfer callback in non blocking mode for Channel2 
+  * @brief  Conversion half DMA transfer callback in non-blocking mode for Channel2. 
   * @param  hdac: pointer to a DAC_HandleTypeDef structure that contains
   *         the configuration information for the specified DAC.
   * @retval None
   */
 __weak void HAL_DACEx_ConvHalfCpltCallbackCh2(DAC_HandleTypeDef* hdac)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hdac);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_DACEx_ConvHalfCpltCallbackCh2 could be implemented in the user file
    */
 }
@@ -279,26 +284,32 @@ __weak void HAL_DACEx_ConvHalfCpltCallbackCh2(DAC_HandleTypeDef* hdac)
   */
 __weak void HAL_DACEx_ErrorCallbackCh2(DAC_HandleTypeDef *hdac)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hdac);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_DACEx_ErrorCallbackCh2 could be implemented in the user file
    */
 }
 
 /**
-  * @brief  DMA underrun DAC callback for channel2.
+  * @brief  DMA underrun DAC callback for Channel2.
   * @param  hdac: pointer to a DAC_HandleTypeDef structure that contains
   *         the configuration information for the specified DAC.
   * @retval None
   */
 __weak void HAL_DACEx_DMAUnderrunCallbackCh2(DAC_HandleTypeDef *hdac)
 {
-  /* NOTE : This function Should not be modified, when the callback is needed,
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hdac);
+
+  /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_DACEx_DMAUnderrunCallbackCh2 could be implemented in the user file
    */
 }
 
 /**
-  * @brief  Runs the self calibration of one DAC channel
+  * @brief  Run the self calibration of one DAC channel.
   * @param  hdac: pointer to a DAC_HandleTypeDef structure that contains
   *         the configuration information for the specified DAC.
   * @param  sConfig: DAC channel configuration structure.
@@ -421,16 +432,15 @@ HAL_StatusTypeDef HAL_DACEx_SelfCalibrate (DAC_HandleTypeDef* hdac, DAC_ChannelC
 }
 
 /**
-  * @brief  Sets the the trimming mode and trimming value is use mode selected
+  * @brief  Set the trimming mode and trimming value (user trimming mode applied).
   * @param  hdac: pointer to a DAC_HandleTypeDef structure that contains
   *         the configuration information for the specified DAC.
-  * @param  sConfig: DAC configuration structure.
+  * @param  sConfig: DAC configuration structure updated with new DAC trimming value.
   * @param  Channel: The selected DAC channel. 
   *          This parameter can be one of the following values:
   *            @arg DAC_CHANNEL_1: DAC Channel1 selected
   *            @arg DAC_CHANNEL_2: DAC Channel2 selected
   * @param  NewTrimmingValue: DAC new trimming value
-  * @retval Updates offset trimming value when NewUserTrimming equals enabled
   * @retval HAL status
   */
 
@@ -465,7 +475,7 @@ HAL_StatusTypeDef HAL_DACEx_SetUserTrimming (DAC_HandleTypeDef* hdac, DAC_Channe
 }
 
 /**
-  * @brief  Return the DAC trimming value
+  * @brief  Return the DAC trimming value.
   * @param  hdac : DAC handle
   * @param  Channel: The selected DAC channel. 
   *          This parameter can be one of the following values:
@@ -501,7 +511,7 @@ uint32_t HAL_DACEx_GetTrimOffset (DAC_HandleTypeDef *hdac, uint32_t Channel)
   */
 
 /** @defgroup DACEx_Exported_Functions_Group3 Peripheral Control functions
- *  @brief    Peripheral Control functions 
+ *  @brief    Extended Peripheral Control functions 
  *
 @verbatim   
   ==============================================================================
@@ -516,7 +526,7 @@ uint32_t HAL_DACEx_GetTrimOffset (DAC_HandleTypeDef *hdac, uint32_t Channel)
   */
 
 /**
-  * @brief  Returns the last data output value of the selected DAC channel.
+  * @brief  Return the last data output value of the selected DAC channel.
   * @param  hdac: pointer to a DAC_HandleTypeDef structure that contains
   *         the configuration information for the specified DAC.
   * @retval The selected DAC channel data output value.
@@ -576,7 +586,7 @@ void DAC_DMAHalfConvCpltCh2(DMA_HandleTypeDef *hdma)
 }
 
 /**
-  * @brief  DMA error callback 
+  * @brief  DMA error callback.
   * @param  hdma: pointer to a DMA_HandleTypeDef structure that contains
   *                the configuration information for the specified DMA module.
   * @retval None
