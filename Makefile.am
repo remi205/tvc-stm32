@@ -80,9 +80,6 @@ SUBDIRS += application bsp over-hal
 AM_CFLAGS +=$(WANT_ARCH) -O3 -Wall -Wpointer-arith -Wstrict-prototypes -Winline -Wundef -g -I$(top_srcdir)/Inc -I../Inc -I$(top_srcdir)/$(PORT_INC) -I$(top_srcdir)/tvc-macros $(INC_IP) $(INC_FREERTOS) -DSTM32$(PRODUCT)
 AM_CXXFLAGS += $(WANT_ARCH) -ffunction-sections -fdata-sections -fno-exceptions  -I$(top_srcdir)/Inc -I../Inc  -I$(top_srcdir)/$(PORT_INC) -I$(top_srcdir)/tvc-macros $(INC_IP) $(INC_FREERTOS) -DSTM32$(PRODUCT)
 
-CXXFLAGS += -DSTM32$(PRODUCT) 
-CFLAGS += -DSTM32$(PRODUCT)
-
 ## -fno-rtti
 bin_PROGRAMS = essai_stm32
 
@@ -90,6 +87,6 @@ bin_PROGRAMS = essai_stm32
 essai_stm32_SOURCES = 
 
 ##  -DSTM32$(STM32)xx donne STM32F407xx pour la HAL
-essai_stm32_LDFLAGS = $(WANT_ARCH) -Wl,-Map,essai_stm32.map -T$(top_srcdir)/target/stm32-mem/$(WANT_STM32) -T$(LD_SCRIPT) -DSTM32$(PRODUCT)
+essai_stm32_LDFLAGS =-o $(WANT_APP_NAME) -Wl,-Map,$(WANT_APP_NAME).map -T$(top_srcdir)/target/stm32-mem/$(WANT_STM32) -T$(LD_SCRIPT)
 
 essai_stm32_LDADD = bsp/libbsp.a application/libapplication.a over-hal/libover_hal.a $(LIB_HAL) $(LIBPORT) $(LIB_FREERTOS) $(LIB_IP) FreeRTOS/Source/libfreertos.a FreeRTOS/Source/portable/MemMang/libmem.a FreeRTOS/Source/CMSIS_RTOS/libcmsis_os.a $(LIB_USB) Common/Utils/libutils.a STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_eth.o
