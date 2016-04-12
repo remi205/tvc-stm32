@@ -28,7 +28,7 @@ TVC_STM32_SERIE(stm32_serie, [choose the stm32 as F4 or L0],[F4])
 TVC_STM32_PRODUCT(stm32_product, [choose the stm32 as F407 or L053],[F407])
 TVC_WANT_USB_DEVICE_CDC(usb_device_cdc, [do you want a usb device serial 'yes/no'],[no])
 TVC_WANT_ARCH(arch, [specify the compiler option for the target],[-mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-sp-d16 -mthumb])
-TVC_WANT_APP_NAME(app-name,[Specify the name of application],[stm32_try])
+TVC_WANT_OPTIMISATION(opt, [optimisation wanted, -Od by default], [-Od])
 
 TVC_WANT_FEATURE(ipv4,[ choose the vesion V4 of Ip protocol], [yes])
 TVC_WANT_FEATURE(ipv6,[ choose the vesion V6 of Ip protocol], [no])
@@ -43,7 +43,11 @@ AC_DEFINE([freertos],["$want_string"],[Specify the target type])
 AC_DEFINE([stm32_serie],["$want_string"],[Specify the serie of stm32])
 AC_DEFINE([stm32_product],["$want_string"],[Specify the product of stm32])
 AC_DEFINE([arch],["$want_string"],[Specify the arch used])
+<<<<<<< HEAD
 AC_DEFINE([app_name],["$want_string"],[Specify the name of application])
+=======
+AC_DEFINE([opt],["$want_string"],[Specify the aoptimisation wanted])
+>>>>>>> 9e81e2348b3307463540bb40b0e898af6e5cefa5
 
 
 AM_CONDITIONAL([FREERTOS], [test "$WANT_FREERTOS" = "yes"])

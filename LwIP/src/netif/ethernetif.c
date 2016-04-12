@@ -32,7 +32,7 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f7xx_hal.h"
+#include "stm32.h"
 #include "FreeRTOS.h"
 
 
@@ -86,7 +86,8 @@ osSemaphoreId SemaphoreIncommoingPacket = NULL;
 ETH_HandleTypeDef heth;
 
 /* USER CODE BEGIN 3 */
-//static void arp_timer(void *arg);
+static void arp_timer(void *arg);
+
 /* USER CODE END 3 */
 /* Private functions ---------------------------------------------------------*/
 /**
@@ -381,7 +382,7 @@ void ethernetif_input( void const * argument )
   struct pbuf *p;
   struct netif *netif = (struct netif *) argument;
   
-  SemaphoreIncommoingPacket = osSemaphoreCreate(osSemaphore(sem) , 1 );
+  SemaphoreIncommoingPacket = osSemaphoreCreate(osSemaphore(sem), 1);
   HAL_NVIC_EnableIRQ(ETH_IRQn);  
 
   for( ;; )
@@ -438,7 +439,7 @@ err_t ethernetif_init(struct netif *netif)
   low_level_init(netif);
 
   //etharp_init();
-  //sys_timeout(ARP_TMR_INTERVAL, arp_timer, NULL);
+  sys_timeout(ARP_TMR_INTERVAL, arp_timer, NULL);
 
   return ERR_OK;
 }

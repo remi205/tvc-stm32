@@ -7,7 +7,7 @@
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-
+osThreadId User_Thread;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -23,6 +23,14 @@ int main(void)
 {
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
+
+#if 0
+  /* Enable I-Cache-------------------------------------------------------------*/
+  SCB_EnableICache();
+
+  /* Enable D-Cache-------------------------------------------------------------*/
+  SCB_EnableDCache();
+#endif
 
   /* Configure the system clock */
   SystemClock_Config();

@@ -77,7 +77,7 @@ endif
 ### TOTO = $(HAL_PATH) = STM32$(FAMILLY)xx_HAL_Driver
 SUBDIRS += application bsp over-hal 
 
-AM_CFLAGS +=$(WANT_ARCH) -O3 -Wall -Wpointer-arith -Wstrict-prototypes -Winline -Wundef -g -I$(top_srcdir)/Inc -I../Inc -I$(top_srcdir)/$(PORT_INC) -I$(top_srcdir)/tvc-macros $(INC_IP) $(INC_FREERTOS) -DSTM32$(PRODUCT)
+AM_CFLAGS +=$(WANT_ARCH) $(WANT_OPT) -Wall -Wpointer-arith -Wstrict-prototypes -Winline -Wundef -g -I$(top_srcdir)/Inc -I../Inc -I$(top_srcdir)/$(PORT_INC) -I$(top_srcdir)/tvc-macros $(INC_IP) $(INC_FREERTOS) -DSTM32$(PRODUCT)
 AM_CXXFLAGS += $(WANT_ARCH) -ffunction-sections -fdata-sections -fno-exceptions  -I$(top_srcdir)/Inc -I../Inc  -I$(top_srcdir)/$(PORT_INC) -I$(top_srcdir)/tvc-macros $(INC_IP) $(INC_FREERTOS) -DSTM32$(PRODUCT)
 
 ## -fno-rtti

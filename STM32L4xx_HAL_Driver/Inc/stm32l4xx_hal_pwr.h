@@ -83,6 +83,26 @@ typedef struct
   * @{
   */
 
+#ifndef PWR_CR1_LPMS_STOP0
+#define  PWR_CR1_LPMS_STOP0 0
+#endif
+
+#ifndef PWR_CR1_LPMS_STOP1
+#define  PWR_CR1_LPMS_STOP1 1
+#endif
+
+#ifndef PWR_CR1_LPMS_STOP2
+#define  PWR_CR1_LPMS_STOP2 2
+#endif
+
+#ifndef PWR_CR1_LPMS_STANDBY
+#define  PWR_CR1_LPMS_STANDBY 3
+#endif
+
+#ifndef PWR_CR1_LPMS_SHUTDOWN
+#define  PWR_CR1_LPMS_SHUTDOWN 4
+#endif
+
 
 /** @defgroup PWR_PVD_detection_level Programmable Voltage Detection levels
   * @{

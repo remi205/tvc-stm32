@@ -2,7 +2,7 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 lib_LIBRARIES = libppp.a
 
-AM_CFLAGS =$(WANT_ARCH) -O3 -Wall -Wpointer-arith  -Winline -Wundef -g  -ffunction-sections -fdata-sections
+AM_CFLAGS =$(WANT_ARCH) $(WANT_OPT) -Wall -Wpointer-arith  -Winline -Wundef -g  -ffunction-sections -fdata-sections
 
 CPPFLAGS += -Iinc/ -I../inc -I../include  -I$(top_srcdir)/inc -I$(top_srcdir) -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/inc
 CFLAGS += -Iinc/ -I../inc -I../include -I$(top_srcdir)/inc -I$(top_srcdir) -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/inc
