@@ -1,4 +1,3 @@
-XF
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 SUBDIRS = 
 
@@ -16,7 +15,7 @@ lib_LIBRARIES = libcore.a
 
 AM_CFLAGS = $(WANT_ARCH) $(WANT_OPT) -Wall -Wpointer-arith -Winline -Wundef -g -ffunction-sections -fdata-sections -DSTM32$(PRODUCT) -DFAMILLY$(FAMILLY) -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/Inc -I$(top_srcdir)/CMSIS/Device/ST/STM32$(FAMILLY)xx/Include
 
-CFLAGS += -I$(top_srcdir)/Inc -I$(top_srcdir)/LwIP/src/include -I$(top_srcdir)/CMSIS/Include -I$(top_srcdir)/LwIP/system -I$(top_srcdir)/FreeRTOS/Source/CMSIS_RTOS -I$(top_srcdir)/FreeRTOS/Source/include -I$(top_srcdir)/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1 -I$(top_srcdir)/LwIP/src/include/ipv4
+CFLAGS += -I$(top_srcdir)/Inc -I$(top_srcdir)/LwIP/src/include -I$(top_srcdir)/CMSIS/Include -I$(top_srcdir)/LwIP/system -I$(top_srcdir)/FreeRTOS/Source/CMSIS_RTOS -I$(top_srcdir)/FreeRTOS/Source/include -I$(top_srcdir)/FreeRTOS/Source/portable/GCC/$(GCC_CORE) -I$(top_srcdir)/LwIP/src/include/ipv4
 
 libcore_a_SOURCES =def.c dhcp.c dns.c init.c mem.c memp.c netif.c pbuf.c raw.c stats.c sys.c tcp.c tcp_in.c tcp_out.c udp.c lwip_timers.c
 

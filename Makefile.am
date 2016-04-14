@@ -8,38 +8,34 @@ HAL_PATH = STM32$(FAMILLY)xx_HAL_Driver
 AM_CFLAGS = -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/Inc -I$(top_srcdir)/CMSIS/Device/ST/STM32$(FAMILLY)xx/Include
 AM_CXXFLAGS = -I$(top_srcdir)/STM32$(FAMILLY)xx_HAL_Driver/Inc -I$(top_srcdir)/CMSIS/Device/ST/STM32$(FAMILLY)xx/Include 
 
+
+PORT_INC = FreeRTOS/Source/portable/GCC/$(GCC_CORE)
+LIBPORT  =  FreeRTOS/Source/portable/GCC/$(GCC_CORE)/libport.a
+
+
 if L4XX
 AM_CFLAGS += -D__CORTEX_M=4 -D__FPU_PRESENT -D__FPU_USED=1 
-PORT_INC = FreeRTOS/Source/portable/GCC/ARM_CM4F
-LIBPORT  = FreeRTOS/Source/portable/GCC/ARM_CM4F/libport.a
 LD_SCRIPT = $(top_srcdir)/target/target-stm32-$(ROMRAM)-8.ld 
 SUBDIRS = STM32L4xx_HAL_Driver
 else
 if F3XX
 AM_CFLAGS += -D__CORTEX_M=4 -D__FPU_PRESENT -D__FPU_USED=1 
-PORT_INC = FreeRTOS/Source/portable/GCC/ARM_CM4F
-LIBPORT  =  FreeRTOS/Source/portable/GCC/ARM_CM4F/libport.a
+
 LD_SCRIPT = $(top_srcdir)/target/target-stm32-$(ROMRAM)-4.ld 
 SUBDIRS = STM32F3xx_HAL_Driver
 else
 if F7XX 
 AM_CFLAGS += -D__CORTEX_M=7 -D__FPU_PRESENT -D__FPU_USED=1 
-PORT_INC = FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1
-LIBPORT =  FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1/libport.a 
 LD_SCRIPT = $(top_srcdir)/target/target-stm32-$(ROMRAM)-4.ld 
 SUBDIRS = STM32F7xx_HAL_Driver
 else
 if L0XX 
 AM_CFLAGS += -D__CORTEX_M=0 -D__FPU_USED=0 
-PORT_INC = FreeRTOS/Source/portable/GCC/ARM_CM0
-LIBPORT = FreeRTOS/Source/portable/GCC/ARM_CM0/libport.a
 LD_SCRIPT = $(top_srcdir)/target/target-stm32-$(ROMRAM)-4.ld 
 SUBDIRS = STM32L0xx_HAL_Driver
 else
 ### par defaut c'est le F4
 AM_CFLAGS+=-D__CORTEX_M=4 -D__FPU_PRESENT -D__FPU_USED=1
-PORT_INC = FreeRTOS/Source/portable/GCC/ARM_CM4F 
-LIBPORT = FreeRTOS/Source/portable/GCC/ARM_CM4F/libport.a 
 LD_SCRIPT = $(top_srcdir)/target/target-stm32-$(ROMRAM)-4.ld 
 SUBDIRS = STM32F4xx_HAL_Driver
 endif
