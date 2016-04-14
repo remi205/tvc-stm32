@@ -573,6 +573,9 @@ uint32_t             HAL_I2C_GetError(I2C_HandleTypeDef *hi2c);
   * @}
   */ 
 
+/* DNF[3:0] */
+#define I2C_CR1_DNF 0x0700
+
 /* Private macros ------------------------------------------------------------*/
 /** @defgroup I2C_Private_Macro I2C Private Macros
   * @{

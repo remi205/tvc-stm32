@@ -121,6 +121,14 @@ extern "C" {
 /** @defgroup PWR_LL_EC_MODE_PWR MODE PWR
   * @{
   */
+
+#define  PWR_CR1_LPMS_STOP0 0
+#define  PWR_CR1_LPMS_STOP1 1
+#define  PWR_CR1_LPMS_STOP2 2
+#define  PWR_CR1_LPMS_STANDBY 3
+#define  PWR_CR1_LPMS_SHUTDOWN 4
+
+
 #define LL_PWR_MODE_STOP0                  (PWR_CR1_LPMS_STOP0)
 #define LL_PWR_MODE_STOP1                  (PWR_CR1_LPMS_STOP1)
 #define LL_PWR_MODE_STOP2                  (PWR_CR1_LPMS_STOP2)
