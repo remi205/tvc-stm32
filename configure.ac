@@ -43,11 +43,7 @@ AC_DEFINE([freertos],["$want_string"],[Specify the target type])
 AC_DEFINE([stm32_serie],["$want_string"],[Specify the serie of stm32])
 AC_DEFINE([stm32_product],["$want_string"],[Specify the product of stm32])
 AC_DEFINE([arch],["$want_string"],[Specify the arch used])
-<<<<<<< HEAD
-AC_DEFINE([app_name],["$want_string"],[Specify the name of application])
-=======
-AC_DEFINE([opt],["$want_string"],[Specify the aoptimisation wanted])
->>>>>>> 9e81e2348b3307463540bb40b0e898af6e5cefa5
+AC_DEFINE([opt],["$want_string"],[Specify the optimization wanted])
 
 
 AM_CONDITIONAL([FREERTOS], [test "$WANT_FREERTOS" = "yes"])
