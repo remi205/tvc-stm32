@@ -2,14 +2,14 @@
   ******************************************************************************
   * @file    stm32f4xx_hal.h
   * @author  MCD Application Team
-  * @version V1.4.0RC3
-  * @date    08-May-2015
+  * @version V1.4.4
+  * @date    22-January-2016
   * @brief   This file contains all the functions prototypes for the HAL 
   *          module driver.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -148,6 +148,36 @@
                                                        SYSCFG->MEMRMP |= (SYSCFG_MEMRMP_MEM_MODE_2);\
                                                       }while(0);
 #endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F469xx || STM32F479xx */ 
+
+#if defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx)
+/** @defgroup Cortex_Lockup_Enable Cortex Lockup Enable
+  * @{
+  */
+/** @brief  SYSCFG Break Lockup lock
+  *         Enables and locks the connection of Cortex-M4 LOCKUP (Hardfault) output to TIM1/8 input
+  * @note   The selected configuration is locked and can be unlocked by system reset
+  */
+#define __HAL_SYSCFG_BREAK_PVD_LOCK()      do {SYSCFG->CFGR2 &= ~(SYSCFG_CFGR2_PVD_LOCK); \
+                                               SYSCFG->CFGR2 |= SYSCFG_CFGR2_PVD_LOCK;    \
+                                              }while(0)
+/**
+ * @}
+ */
+                                                 
+/** @defgroup PVD_Lock_Enable PVD Lock
+  * @{
+  */
+/** @brief  SYSCFG Break PVD lock
+  *         Enables and locks the PVD connection with Timer1/8 Break Input, , as well as the PVDE and PLS[2:0] in the PWR_CR register
+  * @note   The selected configuration is locked and can be unlocked by system reset
+  */
+#define __HAL_SYSCFG_BREAK_LOCKUP_LOCK()     do {SYSCFG->CFGR2 &= ~(SYSCFG_CFGR2_LOCKUP_LOCK); \
+                                                 SYSCFG->CFGR2 |= SYSCFG_CFGR2_LOCKUP_LOCK;    \
+                                                }while(0)
+/**
+ * @}
+ */
+#endif /* STM32F410Tx || STM32F410Cx || STM32F410Rx */
 /**
   * @}
   */

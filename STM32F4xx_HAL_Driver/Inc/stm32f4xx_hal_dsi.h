@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_dsi.h
   * @author  MCD Application Team
-  * @version V1.4.0RC3
-  * @date    08-May-2015
+  * @version V1.4.4
+  * @date    22-January-2016
   * @brief   Header file of DSI HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -65,29 +65,11 @@ typedef struct
   uint32_t AutomaticClockLaneControl; /*!< Automatic clock lane control
                                            This parameter can be any value of @ref DSI_Automatic_Clk_Lane_Control */
   
-  uint32_t TXEscapeCkdiv;             /*!< TX Escape clock division                                               */
-  
-  uint32_t UnitIntervalx4;            /*!< Unit Interval multiplied by 4                                          */
+  uint32_t TXEscapeCkdiv;             /*!< TX Escape clock division
+                                           The values 0 and 1 stop the TX_ESC clock generation                    */
   
   uint32_t NumberOfLanes;             /*!< Number of lanes
                                            This parameter can be any value of @ref DSI_Number_Of_Lanes            */
-  
-  uint32_t VirtualChannelID;          /*!< Virtual channel ID                                                     */
-  
-  uint32_t ColorCoding;               /*!< Color coding for LTDC interface
-                                           This parameter can be any value of @ref DSI_Color_Coding               */
-  
-  uint32_t LooselyPacked;             /*!< Enable or disable loosely packed stream (only for 18-bit configuration)
-                                           This parameter can be any value of @ref DSI_LooselyPacked              */
-  
-  uint32_t HSPolarity;                /*!< HSYNC pin polarity
-                                           This parameter can be any value of @ref DSI_HSYNC_Polarity             */
-  
-  uint32_t VSPolarity;                /*!< VSYNC pin polarity
-                                           This parameter can be any value of @ref DSI_VSYNC_Polarity             */
-  
-  uint32_t DEPolarity;                /*!< Data Enable pin polarity
-                                           This parameter can be any value of @ref DSI_DATA_ENABLE_Polarity       */
   
 }DSI_InitTypeDef;
 
@@ -109,146 +91,170 @@ typedef struct
 
 /** 
   * @brief  DSI Video mode configuration
-  */  
+  */
 typedef struct 
 {
+  uint32_t VirtualChannelID;             /*!< Virtual channel ID                                                 */
+  
+  uint32_t ColorCoding;                  /*!< Color coding for LTDC interface
+                                              This parameter can be any value of @ref DSI_Color_Coding           */
+  
+  uint32_t LooselyPacked;                /*!< Enable or disable loosely packed stream (needed only when using
+                                              18-bit configuration).
+                                              This parameter can be any value of @ref DSI_LooselyPacked          */
+  
   uint32_t Mode;                         /*!< Video mode type
-                                              This parameter can be any value of @ref DSI_Video_Mode_Type  */
+                                              This parameter can be any value of @ref DSI_Video_Mode_Type        */
                                          
-  uint32_t PacketSize;                   /*!< Video packet size                                            */
+  uint32_t PacketSize;                   /*!< Video packet size                                                  */
                                          
-  uint32_t NumberOfChunks;               /*!< Number of chunks                                             */
+  uint32_t NumberOfChunks;               /*!< Number of chunks                                                   */
                                          
-  uint32_t NullPacketSize;               /*!< Null packet size                                             */
+  uint32_t NullPacketSize;               /*!< Null packet size                                                   */
+  
+  uint32_t HSPolarity;                   /*!< HSYNC pin polarity
+                                              This parameter can be any value of @ref DSI_HSYNC_Polarity         */
+  
+  uint32_t VSPolarity;                   /*!< VSYNC pin polarity
+                                              This parameter can be any value of @ref DSI_VSYNC_Active_Polarity  */
+  
+  uint32_t DEPolarity;                   /*!< Data Enable pin polarity
+                                              This parameter can be any value of @ref DSI_DATA_ENABLE_Polarity   */
                                          
-  uint32_t HorizontalSyncActive;         /*!< Horizontal synchronism active duration                       */
+  uint32_t HorizontalSyncActive;         /*!< Horizontal synchronism active duration (in lane byte clock cycles) */
                                          
-  uint32_t HorizontalBackPorch;          /*!< Horizontal back-porch duration                               */
+  uint32_t HorizontalBackPorch;          /*!< Horizontal back-porch duration (in lane byte clock cycles)         */
                                          
-  uint32_t HorizontalLine;               /*!< Horizontal line duration                                     */
+  uint32_t HorizontalLine;               /*!< Horizontal line duration (in lane byte clock cycles)               */
                                          
-  uint32_t VerticalSyncActive;           /*!< Vertical synchronism active duration                         */
+  uint32_t VerticalSyncActive;           /*!< Vertical synchronism active duration                               */
                                          
-  uint32_t VerticalBackPorch;            /*!< Vertical back-porch duration                                 */
+  uint32_t VerticalBackPorch;            /*!< Vertical back-porch duration                                       */
                                          
-  uint32_t VerticalFrontPorch;           /*!< Vertical front-porch duration                                */
+  uint32_t VerticalFrontPorch;           /*!< Vertical front-porch duration                                      */
                                          
-  uint32_t VerticalActive;               /*!< Vertical active duration                                     */
-                                         
-  uint32_t ColorMode;                    /*!< Color mode
-                                              This parameter can be any value of @ref DSI_Color_Mode       */
-                                         
-  uint32_t Shutdown;                     /*!< Shut-down
-                                              This parameter can be any value of @ref DSI_ShutDown         */
+  uint32_t VerticalActive;               /*!< Vertical active duration                                           */
                                          
   uint32_t LPCommandEnable;              /*!< Low-power command enable
-                                              This parameter can be any value of @ref DSI_LP_Command       */
+                                              This parameter can be any value of @ref DSI_LP_Command             */
   
   uint32_t LPLargestPacketSize;          /*!< The size, in bytes, of the low power largest packet that
-                                              can fit in a line during VSA, VBP and VFP regions            */
+                                              can fit in a line during VSA, VBP and VFP regions                  */
            
   uint32_t LPVACTLargestPacketSize;      /*!< The size, in bytes, of the low power largest packet that
-                                              can fit in a line during VACT region                         */
+                                              can fit in a line during VACT region                               */
            
   uint32_t LPHorizontalFrontPorchEnable; /*!< Low-power horizontal front-porch enable
-                                              This parameter can be any value of @ref DSI_LP_HFP           */
+                                              This parameter can be any value of @ref DSI_LP_HFP                 */
            
   uint32_t LPHorizontalBackPorchEnable;  /*!< Low-power horizontal back-porch enable
-                                              This parameter can be any value of @ref DSI_LP_HBP           */
+                                              This parameter can be any value of @ref DSI_LP_HBP                 */
            
   uint32_t LPVerticalActiveEnable;       /*!< Low-power vertical active enable
-                                              This parameter can be any value of @ref DSI_LP_VACT          */
+                                              This parameter can be any value of @ref DSI_LP_VACT                */
            
   uint32_t LPVerticalFrontPorchEnable;   /*!< Low-power vertical front-porch enable
-                                              This parameter can be any value of @ref DSI_LP_VFP           */
+                                              This parameter can be any value of @ref DSI_LP_VFP                 */
            
   uint32_t LPVerticalBackPorchEnable;    /*!< Low-power vertical back-porch enable
-                                              This parameter can be any value of @ref DSI_LP_VBP           */
+                                              This parameter can be any value of @ref DSI_LP_VBP                 */
            
   uint32_t LPVerticalSyncActiveEnable;   /*!< Low-power vertical sync active enable
-                                              This parameter can be any value of @ref DSI_LP_VSYNC         */
+                                              This parameter can be any value of @ref DSI_LP_VSYNC               */
            
   uint32_t FrameBTAAcknowledgeEnable;    /*!< Frame bus-turn-around acknowledge enable
-                                              This parameter can be any value of @ref DSI_FBTA_acknowledge */
-  
-  uint32_t PixelClk;                     /*!< Pixel clock frequency, in Hertz                              */
-                                         
-  uint32_t LaneByteClk;                  /*!< Lane byte clock frequency, in Hertz                          */
+                                              This parameter can be any value of @ref DSI_FBTA_acknowledge       */
   
 }DSI_VidCfgTypeDef;
 
 /** 
-  * @brief  DSI Command mode configuration
-  */  
+  * @brief  DSI Adapted command mode configuration
+  */
 typedef struct 
 {
-  uint32_t HorizontalLine;        /*!< Horizontal line duration                                           */
+  uint32_t VirtualChannelID;      /*!< Virtual channel ID                                                */
   
-  uint32_t CommandSize;           /*!< Maximum allowed size for an LTDC write memory command              */
+  uint32_t ColorCoding;           /*!< Color coding for LTDC interface
+                                       This parameter can be any value of @ref DSI_Color_Coding          */
+  
+  uint32_t CommandSize;           /*!< Maximum allowed size for an LTDC write memory command, measured in 
+                                       pixels. This parameter can be any value between 0x00 and 0xFFFFU   */
   
   uint32_t TearingEffectSource;   /*!< Tearing effect source
-                                       This parameter can be any value of @ref DSI_TearingEffectSource    */
+                                       This parameter can be any value of @ref DSI_TearingEffectSource   */
   
   uint32_t TearingEffectPolarity; /*!< Tearing effect pin polarity
-                                       This parameter can be any value of @ref DSI_TearingEffectPolarity  */
+                                       This parameter can be any value of @ref DSI_TearingEffectPolarity */
   
-  uint32_t VSPolarity;            /*!< VSync edge on which the LTDC is halted
-                                       This parameter can be any value of @ref DSI_Vsync_Polarity         */
+  uint32_t HSPolarity;            /*!< HSYNC pin polarity
+                                       This parameter can be any value of @ref DSI_HSYNC_Polarity        */
+  
+  uint32_t VSPolarity;            /*!< VSYNC pin polarity
+                                       This parameter can be any value of @ref DSI_VSYNC_Active_Polarity */
+  
+  uint32_t DEPolarity;            /*!< Data Enable pin polarity
+                                       This parameter can be any value of @ref DSI_DATA_ENABLE_Polarity  */
+  
+  uint32_t VSyncPol;              /*!< VSync edge on which the LTDC is halted
+                                       This parameter can be any value of @ref DSI_Vsync_Polarity        */
   
   uint32_t AutomaticRefresh;      /*!< Automatic refresh mode
-                                       This parameter can be any value of @ref DSI_AutomaticRefresh       */
+                                       This parameter can be any value of @ref DSI_AutomaticRefresh      */
   
   uint32_t TEAcknowledgeRequest;  /*!< Tearing Effect Acknowledge Request Enable
-                                       This parameter can be any value of @ref DSI_TE_AcknowledgeRequest  */
-  
-  uint32_t AcknowledgeRequest;    /*!< Acknowledge Request Enable
-                                       This parameter can be any value of @ref DSI_AcknowledgeRequest  */
-  
-  uint32_t LPGenShortWriteNoP;    /*!< Generic Short Write Zero parameters Transmission
-                                       This parameter can be any value of @ref DSI_LP_LPGenShortWriteNoP  */
-  
-  uint32_t LPGenShortWriteOneP;   /*!< Generic Short Write One parameter Transmission
-                                       This parameter can be any value of @ref DSI_LP_LPGenShortWriteOneP */
-  
-  uint32_t LPGenShortWriteTwoP;   /*!< Generic Short Write Two parameters Transmission
-                                       This parameter can be any value of @ref DSI_LP_LPGenShortWriteTwoP */
-  
-  uint32_t LPGenShortReadNoP;     /*!< Generic Short Read Zero parameters Transmission
-                                       This parameter can be any value of @ref DSI_LP_LPGenShortReadNoP   */
-           
-  uint32_t LPGenShortReadOneP;    /*!< Generic Short Read One parameter Transmission
-                                       This parameter can be any value of @ref DSI_LP_LPGenShortReadOneP  */
-           
-  uint32_t LPGenShortReadTwoP;    /*!< Generic Short Read Two parameters Transmission
-                                       This parameter can be any value of @ref DSI_LP_LPGenShortReadTwoP  */
-  
-  uint32_t LPGenLongWrite;        /*!< Generic Long Write Transmission
-                                       This parameter can be any value of @ref DSI_LP_LPGenLongWrite      */
-  
-  uint32_t LPDcsShortWriteNoP;    /*!< DCS Short Write Zero parameters Transmission
-                                       This parameter can be any value of @ref DSI_LP_LPDcsShortWriteNoP  */
-  
-  uint32_t LPDcsShortWriteOneP;   /*!< DCS Short Write One parameter Transmission
-                                       This parameter can be any value of @ref DSI_LP_LPDcsShortWriteOneP */
-  
-  uint32_t LPDcsShortReadNoP;     /*!< DCS Short Read Zero parameters Transmission
-                                       This parameter can be any value of @ref DSI_LP_LPDcsShortReadNoP   */
-  
-  uint32_t LPDcsLongWrite;        /*!< DCS Long Write Transmission
-                                       This parameter can be any value of @ref DSI_LP_LPDcsLongWrite      */
-  
-  uint32_t LPMaxReadPacket;       /*!< Maximum Read Packet Size Transmission
-                                       This parameter can be any value of @ref DSI_LP_LPMaxReadPacket     */
-  
-  uint32_t PixelClk;              /*!< Pixel clock frequency, in Hertz                                    */
-  
-  uint32_t LaneByteClk;           /*!< Lane byte clock frequency, in Hertz                                */
+                                       This parameter can be any value of @ref DSI_TE_AcknowledgeRequest */
   
 }DSI_CmdCfgTypeDef;
 
 /** 
+  * @brief  DSI command transmission mode configuration
+  */
+typedef struct 
+{
+  uint32_t LPGenShortWriteNoP;  /*!< Generic Short Write Zero parameters Transmission
+                                     This parameter can be any value of @ref DSI_LP_LPGenShortWriteNoP  */
+  
+  uint32_t LPGenShortWriteOneP; /*!< Generic Short Write One parameter Transmission
+                                     This parameter can be any value of @ref DSI_LP_LPGenShortWriteOneP */
+  
+  uint32_t LPGenShortWriteTwoP; /*!< Generic Short Write Two parameters Transmission
+                                     This parameter can be any value of @ref DSI_LP_LPGenShortWriteTwoP */
+  
+  uint32_t LPGenShortReadNoP;   /*!< Generic Short Read Zero parameters Transmission
+                                     This parameter can be any value of @ref DSI_LP_LPGenShortReadNoP   */
+           
+  uint32_t LPGenShortReadOneP;  /*!< Generic Short Read One parameter Transmission
+                                     This parameter can be any value of @ref DSI_LP_LPGenShortReadOneP  */
+           
+  uint32_t LPGenShortReadTwoP;  /*!< Generic Short Read Two parameters Transmission
+                                     This parameter can be any value of @ref DSI_LP_LPGenShortReadTwoP  */
+  
+  uint32_t LPGenLongWrite;      /*!< Generic Long Write Transmission
+                                     This parameter can be any value of @ref DSI_LP_LPGenLongWrite      */
+  
+  uint32_t LPDcsShortWriteNoP;  /*!< DCS Short Write Zero parameters Transmission
+                                     This parameter can be any value of @ref DSI_LP_LPDcsShortWriteNoP  */
+  
+  uint32_t LPDcsShortWriteOneP; /*!< DCS Short Write One parameter Transmission
+                                     This parameter can be any value of @ref DSI_LP_LPDcsShortWriteOneP */
+  
+  uint32_t LPDcsShortReadNoP;   /*!< DCS Short Read Zero parameters Transmission
+                                     This parameter can be any value of @ref DSI_LP_LPDcsShortReadNoP   */
+  
+  uint32_t LPDcsLongWrite;      /*!< DCS Long Write Transmission
+                                     This parameter can be any value of @ref DSI_LP_LPDcsLongWrite      */
+  
+  uint32_t LPMaxReadPacket;     /*!< Maximum Read Packet Size Transmission
+                                     This parameter can be any value of @ref DSI_LP_LPMaxReadPacket     */
+  
+  uint32_t AcknowledgeRequest;  /*!< Acknowledge Request Enable
+                                     This parameter can be any value of @ref DSI_AcknowledgeRequest     */
+  
+}DSI_LPCmdTypeDef;
+
+/** 
   * @brief  DSI PHY Timings definition
-  */  
+  */
 typedef struct 
 {
   uint32_t ClockLaneHS2LPTime;        /*!< The maximum time that the D-PHY clock lane takes to go from high-speed
@@ -272,26 +278,27 @@ typedef struct
 
 /** 
   * @brief  DSI HOST Timeouts definition
-  */  
+  */
 typedef struct 
 {
-  uint32_t TimeoutCkdiv;                 /*!< Time-out clock division          */
+  uint32_t TimeoutCkdiv;                 /*!< Time-out clock division                                  */
   
-  uint32_t HighSpeedTransmissionTimeout; /*!< High-speed transmission time-out */
+  uint32_t HighSpeedTransmissionTimeout; /*!< High-speed transmission time-out                         */
   
-  uint32_t LowPowerReceptionTimeout;     /*!< Low-power reception time-out     */
+  uint32_t LowPowerReceptionTimeout;     /*!< Low-power reception time-out                             */
   
-  uint32_t HighSpeedReadTimeout;         /*!< High-speed read time-out         */
+  uint32_t HighSpeedReadTimeout;         /*!< High-speed read time-out                                 */
   
-  uint32_t LowPowerReadTimeout;          /*!< Low-power read time-out          */
+  uint32_t LowPowerReadTimeout;          /*!< Low-power read time-out                                  */
   
-  uint32_t HighSpeedWriteTimeout;        /*!< High-speed write time-out        */
+  uint32_t HighSpeedWriteTimeout;        /*!< High-speed write time-out                                */
   
-  uint32_t HighSpeedWritePrespMode;      /*!< High-speed write presp mode      */
+  uint32_t HighSpeedWritePrespMode;      /*!< High-speed write presp mode
+                                              This parameter can be any value of @ref DSI_HS_PrespMode */
   
-  uint32_t LowPowerWriteTimeout;         /*!< Low-speed write time-out         */
+  uint32_t LowPowerWriteTimeout;         /*!< Low-speed write time-out                                 */
   
-  uint32_t BTATimeout;                   /*!< BTA time-out                     */
+  uint32_t BTATimeout;                   /*!< BTA time-out                                             */
   
 }DSI_HOST_TimeoutTypeDef;
 
@@ -300,11 +307,11 @@ typedef struct
   */
 typedef enum 
 {
-  HAL_DSI_STATE_RESET   = 0x00,
-  HAL_DSI_STATE_READY   = 0x01,
-  HAL_DSI_STATE_ERROR   = 0x02,
-  HAL_DSI_STATE_BUSY    = 0x03,
-  HAL_DSI_STATE_TIMEOUT = 0x04
+  HAL_DSI_STATE_RESET   = 0x00U,
+  HAL_DSI_STATE_READY   = 0x01U,
+  HAL_DSI_STATE_ERROR   = 0x02U,
+  HAL_DSI_STATE_BUSY    = 0x03U,
+  HAL_DSI_STATE_TIMEOUT = 0x04U
 }HAL_DSI_StateTypeDef;
 
 /**
@@ -312,347 +319,357 @@ typedef enum
   */
 typedef struct
 {
-  DSI_TypeDef               *Instance;   /*!< Register base address     */
-  DSI_InitTypeDef           Init;        /*!< DSI required parameters   */
-  HAL_LockTypeDef           Lock;        /*!< DSI peripheral status     */
-  __IO HAL_DSI_StateTypeDef State;       /*!< DSI communication state   */
-  __IO uint32_t             ErrorCode;   /*!< DSI Error code            */
-  uint32_t                  ErrorMsk;    /*!< DSI Error monitoring mask */
+  DSI_TypeDef               *Instance;    /*!< Register base address      */
+  DSI_InitTypeDef           Init;         /*!< DSI required parameters    */
+  HAL_LockTypeDef           Lock;         /*!< DSI peripheral status      */
+  __IO HAL_DSI_StateTypeDef State;        /*!< DSI communication state    */
+  __IO uint32_t             ErrorCode;    /*!< DSI Error code             */
+  uint32_t                  ErrorMsk;     /*!< DSI Error monitoring mask  */
 }DSI_HandleTypeDef;
 
 /* Exported constants --------------------------------------------------------*/
-/** @defgroup DSI_DCS_Command
+/** @defgroup DSI_DCS_Command DSI DCS Command
   * @{
   */
-#define DSI_ENTER_IDLE_MODE       0x39
-#define DSI_ENTER_INVERT_MODE     0x21
-#define DSI_ENTER_NORMAL_MODE     0x13
-#define DSI_ENTER_PARTIAL_MODE    0x12
-#define DSI_ENTER_SLEEP_MODE      0x10
-#define DSI_EXIT_IDLE_MODE        0x38
-#define DSI_EXIT_INVERT_MODE      0x20
-#define DSI_EXIT_SLEEP_MODE       0x11
-#define DSI_GET_3D_CONTROL        0x3F
-#define DSI_GET_ADDRESS_MODE      0x0B
-#define DSI_GET_BLUE_CHANNEL      0x08
-#define DSI_GET_DIAGNOSTIC_RESULT 0x0F
-#define DSI_GET_DISPLAY_MODE      0x0D
-#define DSI_GET_GREEN_CHANNEL     0x07
-#define DSI_GET_PIXEL_FORMAT      0x0C
-#define DSI_GET_POWER_MODE        0x0A
-#define DSI_GET_RED_CHANNEL       0x06
-#define DSI_GET_SCANLINE          0x45
-#define DSI_GET_SIGNAL_MODE       0x0E
-#define DSI_NOP                   0x00
-#define DSI_READ_DDB_CONTINUE     0xA8
-#define DSI_READ_DDB_START        0xA1
-#define DSI_READ_MEMORY_CONTINUE  0x3E
-#define DSI_READ_MEMORY_START     0x2E
-#define DSI_SET_3D_CONTROL        0x3D
-#define DSI_SET_ADDRESS_MODE      0x36
-#define DSI_SET_COLUMN_ADDRESS    0x2A
-#define DSI_SET_DISPLAY_OFF       0x28
-#define DSI_SET_DISPLAY_ON        0x29
-#define DSI_SET_GAMMA_CURVE       0x26
-#define DSI_SET_PAGE_ADDRESS      0x2B
-#define DSI_SET_PARTIAL_COLUMNS   0x31
-#define DSI_SET_PARTIAL_ROWS      0x30
-#define DSI_SET_PIXEL_FORMAT      0x3A
-#define DSI_SET_SCROLL_AREA       0x33
-#define DSI_SET_SCROLL_START      0x37
-#define DSI_SET_TEAR_OFF          0x34
-#define DSI_SET_TEAR_ON           0x35
-#define DSI_SET_TEAR_SCANLINE     0x44
-#define DSI_SET_VSYNC_TIMING      0x40
-#define DSI_SOFT_RESET            0x01
-#define DSI_WRITE_LUT             0x2D
-#define DSI_WRITE_MEMORY_CONTINUE 0x3C
-#define DSI_WRITE_MEMORY_START    0x2C
+#define DSI_ENTER_IDLE_MODE       0x39U
+#define DSI_ENTER_INVERT_MODE     0x21U
+#define DSI_ENTER_NORMAL_MODE     0x13U
+#define DSI_ENTER_PARTIAL_MODE    0x12U
+#define DSI_ENTER_SLEEP_MODE      0x10U
+#define DSI_EXIT_IDLE_MODE        0x38U
+#define DSI_EXIT_INVERT_MODE      0x20U
+#define DSI_EXIT_SLEEP_MODE       0x11U
+#define DSI_GET_3D_CONTROL        0x3FU
+#define DSI_GET_ADDRESS_MODE      0x0BU
+#define DSI_GET_BLUE_CHANNEL      0x08U
+#define DSI_GET_DIAGNOSTIC_RESULT 0x0FU
+#define DSI_GET_DISPLAY_MODE      0x0DU
+#define DSI_GET_GREEN_CHANNEL     0x07U
+#define DSI_GET_PIXEL_FORMAT      0x0CU
+#define DSI_GET_POWER_MODE        0x0AU
+#define DSI_GET_RED_CHANNEL       0x06U
+#define DSI_GET_SCANLINE          0x45U
+#define DSI_GET_SIGNAL_MODE       0x0EU
+#define DSI_NOP                   0x00U
+#define DSI_READ_DDB_CONTINUE     0xA8U
+#define DSI_READ_DDB_START        0xA1U
+#define DSI_READ_MEMORY_CONTINUE  0x3EU
+#define DSI_READ_MEMORY_START     0x2EU
+#define DSI_SET_3D_CONTROL        0x3DU
+#define DSI_SET_ADDRESS_MODE      0x36U
+#define DSI_SET_COLUMN_ADDRESS    0x2AU
+#define DSI_SET_DISPLAY_OFF       0x28U
+#define DSI_SET_DISPLAY_ON        0x29U
+#define DSI_SET_GAMMA_CURVE       0x26U
+#define DSI_SET_PAGE_ADDRESS      0x2BU
+#define DSI_SET_PARTIAL_COLUMNS   0x31U
+#define DSI_SET_PARTIAL_ROWS      0x30U
+#define DSI_SET_PIXEL_FORMAT      0x3AU
+#define DSI_SET_SCROLL_AREA       0x33U
+#define DSI_SET_SCROLL_START      0x37U
+#define DSI_SET_TEAR_OFF          0x34U
+#define DSI_SET_TEAR_ON           0x35U
+#define DSI_SET_TEAR_SCANLINE     0x44U
+#define DSI_SET_VSYNC_TIMING      0x40U
+#define DSI_SOFT_RESET            0x01U
+#define DSI_WRITE_LUT             0x2DU
+#define DSI_WRITE_MEMORY_CONTINUE 0x3CU
+#define DSI_WRITE_MEMORY_START    0x2CU
 /**
   * @}
   */
 
-/** @defgroup DSI_Video_Mode_Type
+/** @defgroup DSI_Video_Mode_Type DSI Video Mode Type
   * @{
   */
-#define DSI_VID_MODE_NB_PULSES 0
-#define DSI_VID_MODE_NB_EVENTS 1
-#define DSI_VID_MODE_BURST     2
+#define DSI_VID_MODE_NB_PULSES 0U
+#define DSI_VID_MODE_NB_EVENTS 1U
+#define DSI_VID_MODE_BURST     2U
 /**
   * @}
   */
 
-/** @defgroup DSI_Color_Mode
+/** @defgroup DSI_Color_Mode DSI Color Mode
   * @{
   */
-#define DSI_COLOR_MODE_FULL  0
+#define DSI_COLOR_MODE_FULL  ((uint32_t)0x00000000U)
 #define DSI_COLOR_MODE_EIGHT DSI_WCR_COLM
 /**
   * @}
   */
 
-/** @defgroup DSI_ShutDown
+/** @defgroup DSI_ShutDown DSI ShutDown
   * @{
   */
-#define DSI_DISPLAY_ON  0
+#define DSI_DISPLAY_ON  ((uint32_t)0x00000000U)
 #define DSI_DISPLAY_OFF DSI_WCR_SHTDN
 /**
   * @}
   */
 
-/** @defgroup DSI_LP_Command
+/** @defgroup DSI_LP_Command DSI LP Command
   * @{
   */
-#define DSI_LP_COMMAND_DISABLE 0
+#define DSI_LP_COMMAND_DISABLE ((uint32_t)0x00000000U)
 #define DSI_LP_COMMAND_ENABLE  DSI_VMCR_LPCE
 /**
   * @}
   */
 
-/** @defgroup DSI_LP_HFP
+/** @defgroup DSI_LP_HFP DSI LP HFP
   * @{
   */
-#define DSI_LP_HFP_DISABLE 0
+#define DSI_LP_HFP_DISABLE ((uint32_t)0x00000000U)
 #define DSI_LP_HFP_ENABLE  DSI_VMCR_LPHFPE
 /**
   * @}
   */
 
-/** @defgroup DSI_LP_HBP
+/** @defgroup DSI_LP_HBP DSI LP HBP
   * @{
   */
-#define DSI_LP_HBP_DISABLE 0
+#define DSI_LP_HBP_DISABLE ((uint32_t)0x00000000U)
 #define DSI_LP_HBP_ENABLE  DSI_VMCR_LPHBPE
 /**
   * @}
   */
 
-/** @defgroup DSI_LP_VACT
+/** @defgroup DSI_LP_VACT DSI LP VACT
   * @{
   */
-#define DSI_LP_VACT_DISABLE 0
+#define DSI_LP_VACT_DISABLE ((uint32_t)0x00000000U)
 #define DSI_LP_VACT_ENABLE  DSI_VMCR_LPVAE
 /**
   * @}
   */
 
-/** @defgroup DSI_LP_VFP
+/** @defgroup DSI_LP_VFP DSI LP VFP
   * @{
   */
-#define DSI_LP_VFP_DISABLE 0
+#define DSI_LP_VFP_DISABLE ((uint32_t)0x00000000U)
 #define DSI_LP_VFP_ENABLE  DSI_VMCR_LPVFPE
 /**
   * @}
   */
 
-/** @defgroup DSI_LP_VBP
+/** @defgroup DSI_LP_VBP DSI LP VBP
   * @{
   */
-#define DSI_LP_VBP_DISABLE 0
+#define DSI_LP_VBP_DISABLE ((uint32_t)0x00000000U)
 #define DSI_LP_VBP_ENABLE  DSI_VMCR_LPVBPE
 /**
   * @}
   */
 
-/** @defgroup DSI_LP_VSYNC
+/** @defgroup DSI_LP_VSYNC DSI LP VSYNC
   * @{
   */
-#define DSI_LP_VSYNC_DISABLE 0
+#define DSI_LP_VSYNC_DISABLE ((uint32_t)0x00000000U)
 #define DSI_LP_VSYNC_ENABLE  DSI_VMCR_LPVSAE
 /**
   * @}
   */
 
-/** @defgroup DSI_FBTA_acknowledge
+/** @defgroup DSI_FBTA_acknowledge DSI FBTA Acknowledge
   * @{
   */
-#define DSI_FBTAA_DISABLE 0
+#define DSI_FBTAA_DISABLE ((uint32_t)0x00000000U)
 #define DSI_FBTAA_ENABLE  DSI_VMCR_FBTAAE
 /**
   * @}
   */
 
-/** @defgroup DSI_TearingEffectSource
+/** @defgroup DSI_TearingEffectSource DSI Tearing Effect Source
   * @{
   */
-#define DSI_TE_DSILINK  0
+#define DSI_TE_DSILINK  ((uint32_t)0x00000000U)
 #define DSI_TE_EXTERNAL DSI_WCFGR_TESRC
 /**
   * @}
   */
 
-/** @defgroup DSI_TearingEffectPolarity
+/** @defgroup DSI_TearingEffectPolarity DSI Tearing Effect Polarity
   * @{
   */
-#define DSI_TE_RISING_EDGE  0
+#define DSI_TE_RISING_EDGE  ((uint32_t)0x00000000U)
 #define DSI_TE_FALLING_EDGE DSI_WCFGR_TEPOL
 /**
   * @}
   */
 
-/** @defgroup DSI_Vsync_Polarity
+/** @defgroup DSI_Vsync_Polarity DSI Vsync Polarity
   * @{
   */
-#define DSI_VSYNC_FALLING 0
+#define DSI_VSYNC_FALLING ((uint32_t)0x00000000U)
 #define DSI_VSYNC_RISING  DSI_WCFGR_VSPOL
 /**
   * @}
   */
 
-/** @defgroup DSI_AutomaticRefresh
+/** @defgroup DSI_AutomaticRefresh DSI Automatic Refresh
   * @{
   */
-#define DSI_AR_DISABLE 0
+#define DSI_AR_DISABLE ((uint32_t)0x00000000U)
 #define DSI_AR_ENABLE  DSI_WCFGR_AR
 /**
   * @}
   */
 
-/** @defgroup DSI_TE_AcknowledgeRequest
+/** @defgroup DSI_TE_AcknowledgeRequest DSI TE Acknowledge Request
   * @{
   */
-#define DSI_TE_ACKNOWLEDGE_DISABLE 0
+#define DSI_TE_ACKNOWLEDGE_DISABLE ((uint32_t)0x00000000U)
 #define DSI_TE_ACKNOWLEDGE_ENABLE DSI_CMCR_TEARE
 /**
   * @}
   */
 
-/** @defgroup DSI_AcknowledgeRequest
+/** @defgroup DSI_AcknowledgeRequest DSI Acknowledge Request
   * @{
   */
-#define DSI_ACKNOWLEDGE_DISABLE 0
+#define DSI_ACKNOWLEDGE_DISABLE ((uint32_t)0x00000000U)
 #define DSI_ACKNOWLEDGE_ENABLE DSI_CMCR_ARE
 /**
   * @}
   */
 
-/** @defgroup DSI_LP_LPGenShortWriteNoP
+/** @defgroup DSI_LP_LPGenShortWriteNoP DSI LP LPGen Short Write NoP
   * @{
   */
-#define DSI_LP_GSW0P_DISABLE 0
+#define DSI_LP_GSW0P_DISABLE ((uint32_t)0x00000000U)
 #define DSI_LP_GSW0P_ENABLE DSI_CMCR_GSW0TX
 /**
   * @}
   */
 
-/** @defgroup DSI_LP_LPGenShortWriteOneP
+/** @defgroup DSI_LP_LPGenShortWriteOneP DSI LP LPGen Short Write OneP
   * @{
   */
-#define DSI_LP_GSW1P_DISABLE 0
+#define DSI_LP_GSW1P_DISABLE ((uint32_t)0x00000000U)
 #define DSI_LP_GSW1P_ENABLE DSI_CMCR_GSW1TX
 /**
   * @}
   */
 
-/** @defgroup DSI_LP_LPGenShortWriteTwoP
+/** @defgroup DSI_LP_LPGenShortWriteTwoP DSI LP LPGen Short Write TwoP
   * @{
   */
-#define DSI_LP_GSW2P_DISABLE 0
+#define DSI_LP_GSW2P_DISABLE ((uint32_t)0x00000000U)
 #define DSI_LP_GSW2P_ENABLE DSI_CMCR_GSW2TX
 /**
   * @}
   */
 
-/** @defgroup DSI_LP_LPGenShortReadNoP
+/** @defgroup DSI_LP_LPGenShortReadNoP DSI LP LPGen Short Read NoP
   * @{
   */
-#define DSI_LP_GSR0P_DISABLE 0
+#define DSI_LP_GSR0P_DISABLE ((uint32_t)0x00000000U)
 #define DSI_LP_GSR0P_ENABLE DSI_CMCR_GSR0TX
 /**
   * @}
   */
 
-/** @defgroup DSI_LP_LPGenShortReadOneP
+/** @defgroup DSI_LP_LPGenShortReadOneP DSI LP LPGen Short Read OneP
   * @{
   */
-#define DSI_LP_GSR1P_DISABLE 0
+#define DSI_LP_GSR1P_DISABLE ((uint32_t)0x00000000U)
 #define DSI_LP_GSR1P_ENABLE DSI_CMCR_GSR1TX
 /**
   * @}
   */
 
-/** @defgroup DSI_LP_LPGenShortReadTwoP
+/** @defgroup DSI_LP_LPGenShortReadTwoP DSI LP LPGen Short Read TwoP
   * @{
   */
-#define DSI_LP_GSR2P_DISABLE 0
+#define DSI_LP_GSR2P_DISABLE ((uint32_t)0x00000000U)
 #define DSI_LP_GSR2P_ENABLE DSI_CMCR_GSR2TX
 /**
   * @}
   */
 
-/** @defgroup DSI_LP_LPGenLongWrite
+/** @defgroup DSI_LP_LPGenLongWrite DSI LP LPGen LongWrite
   * @{
   */
-#define DSI_LP_GLW_DISABLE 0
+#define DSI_LP_GLW_DISABLE ((uint32_t)0x00000000U)
 #define DSI_LP_GLW_ENABLE DSI_CMCR_GLWTX
 /**
   * @}
   */
 
-/** @defgroup DSI_LP_LPDcsShortWriteNoP
+/** @defgroup DSI_LP_LPDcsShortWriteNoP DSI LP LPDcs Short Write NoP
   * @{
   */
-#define DSI_LP_DSW0P_DISABLE 0
+#define DSI_LP_DSW0P_DISABLE ((uint32_t)0x00000000U)
 #define DSI_LP_DSW0P_ENABLE DSI_CMCR_DSW0TX
 /**
   * @}
   */
 
-/** @defgroup DSI_LP_LPDcsShortWriteOneP
+/** @defgroup DSI_LP_LPDcsShortWriteOneP DSI LP LPDcs Short Write OneP
   * @{
   */
-#define DSI_LP_DSW1P_DISABLE 0
+#define DSI_LP_DSW1P_DISABLE ((uint32_t)0x00000000U)
 #define DSI_LP_DSW1P_ENABLE DSI_CMCR_DSW1TX
 /**
   * @}
   */
 
-/** @defgroup DSI_LP_LPDcsShortReadNoP
+/** @defgroup DSI_LP_LPDcsShortReadNoP DSI LP LPDcs Short Read NoP
   * @{
   */
-#define DSI_LP_DSR0P_DISABLE 0
+#define DSI_LP_DSR0P_DISABLE ((uint32_t)0x00000000U)
 #define DSI_LP_DSR0P_ENABLE DSI_CMCR_DSR0TX
 /**
   * @}
   */
 
-/** @defgroup DSI_LP_LPDcsLongWrite
+/** @defgroup DSI_LP_LPDcsLongWrite DSI LP LPDcs Long Write
   * @{
   */
-#define DSI_LP_DLW_DISABLE 0
+#define DSI_LP_DLW_DISABLE ((uint32_t)0x00000000U)
 #define DSI_LP_DLW_ENABLE DSI_CMCR_DLWTX
 /**
   * @}
   */
 
-/** @defgroup DSI_LP_LPMaxReadPacket
+/** @defgroup DSI_LP_LPMaxReadPacket DSI LP LPMax Read Packet
   * @{
   */
-#define DSI_LP_MRDP_DISABLE 0
+#define DSI_LP_MRDP_DISABLE ((uint32_t)0x00000000U)
 #define DSI_LP_MRDP_ENABLE DSI_CMCR_MRDPS
 /**
   * @}
   */
 
-/** @defgroup DSI_Automatic_Clk_Lane_Control
+/** @defgroup DSI_HS_PrespMode DSI HS Presp Mode
   * @{
   */
-#define DSI_AUTO_CLK_LANE_CTRL_DISABLE 0
+#define DSI_HS_PM_DISABLE ((uint32_t)0x00000000U)
+#define DSI_HS_PM_ENABLE DSI_TCCR3_PM
+/**
+  * @}
+  */
+
+
+/** @defgroup DSI_Automatic_Clk_Lane_Control DSI Automatic Clk Lane Control
+  * @{
+  */
+#define DSI_AUTO_CLK_LANE_CTRL_DISABLE ((uint32_t)0x00000000U)
 #define DSI_AUTO_CLK_LANE_CTRL_ENABLE  DSI_CLCR_ACR
 /**
   * @}
   */
 
-/** @defgroup DSI_Number_Of_Lanes
+/** @defgroup DSI_Number_Of_Lanes DSI Number Of Lanes
   * @{
   */
-#define DSI_ONE_DATA_LANE  0
-#define DSI_TWO_DATA_LANES 1
+#define DSI_ONE_DATA_LANE  0U
+#define DSI_TWO_DATA_LANES 1U
 /**
   * @}
   */
 
-/** @defgroup DSI_FlowControl
+/** @defgroup DSI_FlowControl DSI Flow Control
   * @{
   */
 #define DSI_FLOW_CONTROL_CRC_RX  DSI_PCR_CRCRXE
@@ -667,81 +684,78 @@ typedef struct
   * @}
   */
 
-/** @defgroup DSI_Color_Coding
+/** @defgroup DSI_Color_Coding DSI Color Coding
   * @{
   */
-#define DSI_RGB565_CONFIG1 ((uint32_t)0x00000000)
-#define DSI_RGB565_CONFIG2 ((uint32_t)0x00000001)
-#define DSI_RGB565_CONFIG3 ((uint32_t)0x00000002)
-#define DSI_RGB666_CONFIG1 ((uint32_t)0x00000003)
-#define DSI_RGB666_CONFIG2 ((uint32_t)0x00000004)
-#define DSI_RGB888         ((uint32_t)0x00000005)
+#define DSI_RGB565 ((uint32_t)0x00000000U) /*!< The values 0x00000001U and 0x00000002U can also be used for the RGB565 color mode configuration */
+#define DSI_RGB666 ((uint32_t)0x00000003U) /*!< The value 0x00000004U can also be used for the RGB666 color mode configuration                 */
+#define DSI_RGB888 ((uint32_t)0x00000005U)
 /**
   * @}
   */
 
-/** @defgroup DSI_LooselyPacked
+/** @defgroup DSI_LooselyPacked DSI Loosely Packed
   * @{
   */
 #define DSI_LOOSELY_PACKED_ENABLE  DSI_LCOLCR_LPE
-#define DSI_LOOSELY_PACKED_DISABLE 0
+#define DSI_LOOSELY_PACKED_DISABLE ((uint32_t)0x00000000U)
 /**
   * @}
   */
 
-/** @defgroup DSI_HSYNC_Polarity
+/** @defgroup DSI_HSYNC_Polarity DSI HSYNC Polarity
   * @{
   */
-#define DSI_HSYNC_ACTIVE_HIGH       0
+#define DSI_HSYNC_ACTIVE_HIGH       ((uint32_t)0x00000000U)
 #define DSI_HSYNC_ACTIVE_LOW        DSI_LPCR_HSP
 /**
   * @}
   */
 
-/** @defgroup DSI_VSYNC_Polarity
+/** @defgroup DSI_VSYNC_Active_Polarity DSI VSYNC Active Polarity
   * @{
   */
-#define DSI_VSYNC_ACTIVE_HIGH       0
+#define DSI_VSYNC_ACTIVE_HIGH       ((uint32_t)0x00000000U)
 #define DSI_VSYNC_ACTIVE_LOW        DSI_LPCR_VSP
 /**
   * @}
   */
 
-/** @defgroup DSI_DATA_ENABLE_Polarity
+/** @defgroup DSI_DATA_ENABLE_Polarity DSI DATA ENABLE Polarity
   * @{
   */
-#define DSI_DATA_ENABLE_ACTIVE_HIGH 0
+#define DSI_DATA_ENABLE_ACTIVE_HIGH ((uint32_t)0x00000000U)
 #define DSI_DATA_ENABLE_ACTIVE_LOW  DSI_LPCR_DEP
 /**
   * @}
   */
 
-/** @defgroup DSI_PLL_IDF
+/** @defgroup DSI_PLL_IDF DSI PLL IDF
   * @{
   */
-#define DSI_PLL_IN_DIV1 ((uint32_t)0x00000001)
-#define DSI_PLL_IN_DIV2 ((uint32_t)0x00000002)
-#define DSI_PLL_IN_DIV3 ((uint32_t)0x00000003)
-#define DSI_PLL_IN_DIV4 ((uint32_t)0x00000004)
-#define DSI_PLL_IN_DIV5 ((uint32_t)0x00000005)
-#define DSI_PLL_IN_DIV6 ((uint32_t)0x00000006)
-#define DSI_PLL_IN_DIV7 ((uint32_t)0x00000007)
+#define DSI_PLL_IN_DIV1 ((uint32_t)0x00000001U)
+#define DSI_PLL_IN_DIV2 ((uint32_t)0x00000002U)
+#define DSI_PLL_IN_DIV3 ((uint32_t)0x00000003U)
+#define DSI_PLL_IN_DIV4 ((uint32_t)0x00000004U)
+#define DSI_PLL_IN_DIV5 ((uint32_t)0x00000005U)
+#define DSI_PLL_IN_DIV6 ((uint32_t)0x00000006U)
+#define DSI_PLL_IN_DIV7 ((uint32_t)0x00000007U)
 /**
   * @}
   */
 
-/** @defgroup DSI_PLL_ODF
+/** @defgroup DSI_PLL_ODF DSI PLL ODF
   * @{
   */
-#define DSI_PLL_OUT_DIV1 ((uint32_t)0x00000000)
-#define DSI_PLL_OUT_DIV2 ((uint32_t)0x00000001)
-#define DSI_PLL_OUT_DIV4 ((uint32_t)0x00000002)
-#define DSI_PLL_OUT_DIV8 ((uint32_t)0x00000003)
+#define DSI_PLL_OUT_DIV1 ((uint32_t)0x00000000U)
+#define DSI_PLL_OUT_DIV2 ((uint32_t)0x00000001U)
+#define DSI_PLL_OUT_DIV4 ((uint32_t)0x00000002U)
+#define DSI_PLL_OUT_DIV8 ((uint32_t)0x00000003U)
 /**
   * @}
   */
 
-/** @defgroup DSI_Flags
+/** @defgroup DSI_Flags DSI Flags
   * @{
   */
 #define DSI_FLAG_TE    DSI_WISR_TEIF
@@ -756,7 +770,7 @@ typedef struct
   * @}
   */
 
-/** @defgroup DSI_Interrupts
+/** @defgroup DSI_Interrupts DSI Interrupts
   * @{
   */
 #define DSI_IT_TE   DSI_WIER_TEIE
@@ -768,100 +782,167 @@ typedef struct
   * @}
   */
 
-/** @defgroup DSI_SHORT_PKT_Data_Type
+/** @defgroup DSI_SHORT_WRITE_PKT_Data_Type DSI SHORT WRITE PKT Data Type
   * @{
   */
-#define DSI_DCS_SHORT_PKT_WRITE_P0 ((uint32_t)0x00000005) /*!< DCS short write, no parameters      */
-#define DSI_DCS_SHORT_PKT_WRITE_P1 ((uint32_t)0x00000015) /*!< DCS short write, one parameter      */
-#define DSI_GEN_SHORT_PKT_WRITE_P0 ((uint32_t)0x00000003) /*!< Generic short write, no parameters  */
-#define DSI_GEN_SHORT_PKT_WRITE_P1 ((uint32_t)0x00000013) /*!< Generic short write, one parameter  */
-#define DSI_GEN_SHORT_PKT_WRITE_P2 ((uint32_t)0x00000023) /*!< Generic short write, two parameters */
+#define DSI_DCS_SHORT_PKT_WRITE_P0 ((uint32_t)0x00000005U) /*!< DCS short write, no parameters      */
+#define DSI_DCS_SHORT_PKT_WRITE_P1 ((uint32_t)0x00000015U) /*!< DCS short write, one parameter      */
+#define DSI_GEN_SHORT_PKT_WRITE_P0 ((uint32_t)0x00000003U) /*!< Generic short write, no parameters  */
+#define DSI_GEN_SHORT_PKT_WRITE_P1 ((uint32_t)0x00000013U) /*!< Generic short write, one parameter  */
+#define DSI_GEN_SHORT_PKT_WRITE_P2 ((uint32_t)0x00000023U) /*!< Generic short write, two parameters */
 /**
   * @}
   */
 
-/** @defgroup DSI_LONG_PKT_Data_Type
+/** @defgroup DSI_LONG_WRITE_PKT_Data_Type DSI LONG WRITE PKT Data Type
   * @{
   */
-#define DSI_DCS_LONG_PKT_WRITE ((uint32_t)0x00000039) /*!< DCS long write     */
-#define DSI_GEN_LONG_PKT_WRITE ((uint32_t)0x00000029) /*!< Generic long write */
+#define DSI_DCS_LONG_PKT_WRITE ((uint32_t)0x00000039U) /*!< DCS long write     */
+#define DSI_GEN_LONG_PKT_WRITE ((uint32_t)0x00000029U) /*!< Generic long write */
 /**
   * @}
   */
 
-/** @defgroup DSI_Error_Data_Type
+/** @defgroup DSI_SHORT_READ_PKT_Data_Type DSI SHORT READ PKT Data Type
+  * @{
+  */
+#define DSI_DCS_SHORT_PKT_READ    ((uint32_t)0x00000006U) /*!< DCS short read                     */
+#define DSI_GEN_SHORT_PKT_READ_P0 ((uint32_t)0x00000004U) /*!< Generic short read, no parameters  */
+#define DSI_GEN_SHORT_PKT_READ_P1 ((uint32_t)0x00000014U) /*!< Generic short read, one parameter  */
+#define DSI_GEN_SHORT_PKT_READ_P2 ((uint32_t)0x00000024U) /*!< Generic short read, two parameters */
+/**
+  * @}
+  */
+
+/** @defgroup DSI_Error_Data_Type DSI Error Data Type
   * @{
   */
 #define HAL_DSI_ERROR_NONE 0
-#define HAL_DSI_ERROR_ACK  ((uint32_t)0x00000001)
-#define HAL_DSI_ERROR_PHY  ((uint32_t)0x00000002)
-#define HAL_DSI_ERROR_TX   ((uint32_t)0x00000004)
-#define HAL_DSI_ERROR_RX   ((uint32_t)0x00000008)
-#define HAL_DSI_ERROR_ECC  ((uint32_t)0x00000010)
-#define HAL_DSI_ERROR_CRC  ((uint32_t)0x00000020)
-#define HAL_DSI_ERROR_PSE  ((uint32_t)0x00000040)
-#define HAL_DSI_ERROR_EOT  ((uint32_t)0x00000080)
-#define HAL_DSI_ERROR_OVF  ((uint32_t)0x00000100)
-#define HAL_DSI_ERROR_GEN  ((uint32_t)0x00000200)
+#define HAL_DSI_ERROR_ACK  ((uint32_t)0x00000001U) /*!< acknowledge errors          */
+#define HAL_DSI_ERROR_PHY  ((uint32_t)0x00000002U) /*!< PHY related errors          */
+#define HAL_DSI_ERROR_TX   ((uint32_t)0x00000004U) /*!< transmission error          */
+#define HAL_DSI_ERROR_RX   ((uint32_t)0x00000008U) /*!< reception error             */
+#define HAL_DSI_ERROR_ECC  ((uint32_t)0x00000010U) /*!< ECC errors                  */
+#define HAL_DSI_ERROR_CRC  ((uint32_t)0x00000020U) /*!< CRC error                   */
+#define HAL_DSI_ERROR_PSE  ((uint32_t)0x00000040U) /*!< Packet Size error           */
+#define HAL_DSI_ERROR_EOT  ((uint32_t)0x00000080U) /*!< End Of Transmission error   */
+#define HAL_DSI_ERROR_OVF  ((uint32_t)0x00000100U) /*!< FIFO overflow error         */
+#define HAL_DSI_ERROR_GEN  ((uint32_t)0x00000200U) /*!< Generic FIFO related errors */
 /**
   * @}
   */
 
-/** @defgroup DSI_Lane_Group
+/** @defgroup DSI_Lane_Group DSI Lane Group
   * @{
   */
-#define DSI_CLOCK_LANE ((uint32_t)0x00000000)
-#define DSI_DATA_LANES ((uint32_t)0x00000001)
+#define DSI_CLOCK_LANE ((uint32_t)0x00000000U)
+#define DSI_DATA_LANES ((uint32_t)0x00000001U)
 /**
   * @}
   */
 
-/** @defgroup DSI_Communication_Delay
+/** @defgroup DSI_Communication_Delay DSI Communication Delay
   * @{
   */
-#define DSI_SLEW_RATE_HSTX ((uint32_t)0x00000000)
-#define DSI_SLEW_RATE_LPTX ((uint32_t)0x00000001)
-#define DSI_HS_DELAY       ((uint32_t)0x00000002)
+#define DSI_SLEW_RATE_HSTX ((uint32_t)0x00000000U)
+#define DSI_SLEW_RATE_LPTX ((uint32_t)0x00000001U)
+#define DSI_HS_DELAY       ((uint32_t)0x00000002U)
 /**
   * @}
   */
 
-/** @defgroup DSI_CustomLane
+/** @defgroup DSI_CustomLane DSI CustomLane
   * @{
   */
-#define DSI_SWAP_LANE_PINS   ((uint32_t)0x00000000)
-#define DSI_INVERT_HS_SIGNAL ((uint32_t)0x00000001)
+#define DSI_SWAP_LANE_PINS   ((uint32_t)0x00000000U)
+#define DSI_INVERT_HS_SIGNAL ((uint32_t)0x00000001U)
 /**
   * @}
   */
 
-/** @defgroup DSI_Lane_Select
+/** @defgroup DSI_Lane_Select DSI Lane Select
   * @{
   */
-#define DSI_CLOCK_LANE ((uint32_t)0x00000000)
-#define DSI_DATA_LANE0 ((uint32_t)0x00000001)
-#define DSI_DATA_LANE1 ((uint32_t)0x00000002)
+#define DSI_CLOCK_LANE ((uint32_t)0x00000000U)
+#define DSI_DATA_LANE0 ((uint32_t)0x00000001U)
+#define DSI_DATA_LANE1 ((uint32_t)0x00000002U)
 /**
   * @}
   */
 
-/** @defgroup DSI_PHY_Timing
+/** @defgroup DSI_PHY_Timing DSI PHY Timing
   * @{
   */
-#define DSI_TCLK_POST    ((uint32_t)0x00000000)
-#define DSI_TLPX_CLK     ((uint32_t)0x00000001)
-#define DSI_THS_EXIT     ((uint32_t)0x00000002)
-#define DSI_TLPX_DATA    ((uint32_t)0x00000003)
-#define DSI_THS_ZERO     ((uint32_t)0x00000004)
-#define DSI_THS_TRAIL    ((uint32_t)0x00000005)
-#define DSI_THS_PREPARE  ((uint32_t)0x00000006)
-#define DSI_TCLK_ZERO    ((uint32_t)0x00000007)
-#define DSI_TCLK_PREPARE ((uint32_t)0x00000008)
+#define DSI_TCLK_POST    ((uint32_t)0x00000000U)
+#define DSI_TLPX_CLK     ((uint32_t)0x00000001U)
+#define DSI_THS_EXIT     ((uint32_t)0x00000002U)
+#define DSI_TLPX_DATA    ((uint32_t)0x00000003U)
+#define DSI_THS_ZERO     ((uint32_t)0x00000004U)
+#define DSI_THS_TRAIL    ((uint32_t)0x00000005U)
+#define DSI_THS_PREPARE  ((uint32_t)0x00000006U)
+#define DSI_TCLK_ZERO    ((uint32_t)0x00000007U)
+#define DSI_TCLK_PREPARE ((uint32_t)0x00000008U)
 /**
   * @}
   */
 
 /* Exported macros -----------------------------------------------------------*/
+/**
+  * @brief  Enables the DSI host.
+  * @param  __HANDLE__: DSI handle
+  * @retval None.
+  */
+#define __HAL_DSI_ENABLE(__HANDLE__) ((__HANDLE__)->Instance->CR |= DSI_CR_EN)
+
+/**
+  * @brief  Disables the DSI host.
+  * @param  __HANDLE__: DSI handle
+  * @retval None.
+  */
+#define __HAL_DSI_DISABLE(__HANDLE__) ((__HANDLE__)->Instance->CR &= ~DSI_CR_EN)
+
+/**
+  * @brief  Enables the DSI wrapper.
+  * @param  __HANDLE__: DSI handle
+  * @retval None.
+  */
+#define __HAL_DSI_WRAPPER_ENABLE(__HANDLE__) ((__HANDLE__)->Instance->WCR |= DSI_WCR_DSIEN)
+
+/**
+  * @brief  Disable the DSI wrapper.
+  * @param  __HANDLE__: DSI handle
+  * @retval None.
+  */
+#define __HAL_DSI_WRAPPER_DISABLE(__HANDLE__) ((__HANDLE__)->Instance->WCR &= ~DSI_WCR_DSIEN)
+
+/**
+  * @brief  Enables the DSI PLL.
+  * @param  __HANDLE__: DSI handle
+  * @retval None.
+  */
+#define __HAL_DSI_PLL_ENABLE(__HANDLE__) ((__HANDLE__)->Instance->WRPCR |= DSI_WRPCR_PLLEN)
+
+/**
+  * @brief  Disables the DSI PLL.
+  * @param  __HANDLE__: DSI handle
+  * @retval None.
+  */
+#define __HAL_DSI_PLL_DISABLE(__HANDLE__) ((__HANDLE__)->Instance->WRPCR &= ~DSI_WRPCR_PLLEN)
+
+/**
+  * @brief  Enables the DSI regulator.
+  * @param  __HANDLE__: DSI handle
+  * @retval None.
+  */
+#define __HAL_DSI_REG_ENABLE(__HANDLE__) ((__HANDLE__)->Instance->WRPCR |= DSI_WRPCR_REGEN)
+
+/**
+  * @brief  Disables the DSI regulator.
+  * @param  __HANDLE__: DSI handle
+  * @retval None.
+  */
+#define __HAL_DSI_REG_DISABLE(__HANDLE__) ((__HANDLE__)->Instance->WRPCR &= ~DSI_WRPCR_REGEN)
+
 /**
   * @brief  Get the DSI pending flags.
   * @param  __HANDLE__: DSI handle.
@@ -949,14 +1030,18 @@ void HAL_DSI_TearingEffectCallback(DSI_HandleTypeDef *hdsi);
 void HAL_DSI_EndOfRefreshCallback(DSI_HandleTypeDef *hdsi);
 void HAL_DSI_ErrorCallback(DSI_HandleTypeDef *hdsi);
 
+HAL_StatusTypeDef HAL_DSI_SetGenericVCID(DSI_HandleTypeDef *hdsi, uint32_t VirtualChannelID);
 HAL_StatusTypeDef HAL_DSI_ConfigVideoMode(DSI_HandleTypeDef *hdsi, DSI_VidCfgTypeDef *VidCfg);
-HAL_StatusTypeDef HAL_DSI_ConfigCommandMode(DSI_HandleTypeDef *hdsi, DSI_CmdCfgTypeDef *CmdCfg);
+HAL_StatusTypeDef HAL_DSI_ConfigAdaptedCommandMode(DSI_HandleTypeDef *hdsi, DSI_CmdCfgTypeDef *CmdCfg);
+HAL_StatusTypeDef HAL_DSI_ConfigCommand(DSI_HandleTypeDef *hdsi, DSI_LPCmdTypeDef *LPCmd);
 HAL_StatusTypeDef HAL_DSI_ConfigFlowControl(DSI_HandleTypeDef *hdsi, uint32_t FlowControl);
 HAL_StatusTypeDef HAL_DSI_ConfigPhyTimer(DSI_HandleTypeDef *hdsi, DSI_PHY_TimerTypeDef *PhyTimings);
 HAL_StatusTypeDef HAL_DSI_ConfigHostTimeouts(DSI_HandleTypeDef *hdsi, DSI_HOST_TimeoutTypeDef *HostTimeouts);
 HAL_StatusTypeDef HAL_DSI_Start(DSI_HandleTypeDef *hdsi);
 HAL_StatusTypeDef HAL_DSI_Stop(DSI_HandleTypeDef *hdsi);
 HAL_StatusTypeDef HAL_DSI_Refresh(DSI_HandleTypeDef *hdsi);
+HAL_StatusTypeDef HAL_DSI_ColorMode(DSI_HandleTypeDef *hdsi, uint32_t ColorMode);
+HAL_StatusTypeDef HAL_DSI_Shutdown(DSI_HandleTypeDef *hdsi, uint32_t Shutdown);
 HAL_StatusTypeDef HAL_DSI_ShortWrite(DSI_HandleTypeDef *hdsi,
                                      uint32_t ChannelID,
                                      uint32_t Mode,
@@ -968,7 +1053,13 @@ HAL_StatusTypeDef HAL_DSI_LongWrite(DSI_HandleTypeDef *hdsi,
                                     uint32_t Nbparams,
                                     uint32_t Param1,
                                     uint8_t* ParametersTable);
-uint32_t HAL_DSI_DCSShortRead(DSI_HandleTypeDef *hdsi, uint32_t ChannelNbr, uint32_t DCSCommand);
+HAL_StatusTypeDef HAL_DSI_Read(DSI_HandleTypeDef *hdsi,
+                               uint32_t ChannelNbr,
+                               uint8_t* Array,
+                               uint32_t Size,
+                               uint32_t Mode,
+                               uint32_t DCSCmd,
+                               uint8_t* ParametersTable);
 HAL_StatusTypeDef HAL_DSI_EnterULPMData(DSI_HandleTypeDef *hdsi);
 HAL_StatusTypeDef HAL_DSI_ExitULPMData(DSI_HandleTypeDef *hdsi);
 HAL_StatusTypeDef HAL_DSI_EnterULPM(DSI_HandleTypeDef *hdsi);
@@ -979,14 +1070,14 @@ HAL_StatusTypeDef HAL_DSI_PatternGeneratorStop(DSI_HandleTypeDef *hdsi);
 
 HAL_StatusTypeDef HAL_DSI_SetSlewRateAndDelayTuning(DSI_HandleTypeDef *hdsi, uint32_t CommDelay, uint32_t Lane, uint32_t Value);
 HAL_StatusTypeDef HAL_DSI_SetLowPowerRXFilter(DSI_HandleTypeDef *hdsi, uint32_t Frequency);
-HAL_StatusTypeDef HAL_DSI_SetSDD(DSI_HandleTypeDef *hdsi);
-HAL_StatusTypeDef HAL_DSI_SetLanePinsConfiguration(DSI_HandleTypeDef *hdsi, uint32_t CustomLane, uint32_t Lane);
-HAL_StatusTypeDef HAL_DSI_SetPHYTimings(DSI_HandleTypeDef *hdsi, uint32_t Timing, uint32_t Value);
-HAL_StatusTypeDef HAL_DSI_ForceTXStopMode(DSI_HandleTypeDef *hdsi, uint32_t Lane);
-HAL_StatusTypeDef HAL_DSI_ForceRXLowPower(DSI_HandleTypeDef *hdsi);
-HAL_StatusTypeDef HAL_DSI_ForceDataLanesInRX(DSI_HandleTypeDef *hdsi);
-HAL_StatusTypeDef HAL_DSI_SetPullDown(DSI_HandleTypeDef *hdsi);
-HAL_StatusTypeDef HAL_DSI_SetContentionDetectionOff(DSI_HandleTypeDef *hdsi);
+HAL_StatusTypeDef HAL_DSI_SetSDD(DSI_HandleTypeDef *hdsi, FunctionalState State);
+HAL_StatusTypeDef HAL_DSI_SetLanePinsConfiguration(DSI_HandleTypeDef *hdsi, uint32_t CustomLane, uint32_t Lane, FunctionalState State);
+HAL_StatusTypeDef HAL_DSI_SetPHYTimings(DSI_HandleTypeDef *hdsi, uint32_t Timing, FunctionalState State, uint32_t Value);
+HAL_StatusTypeDef HAL_DSI_ForceTXStopMode(DSI_HandleTypeDef *hdsi, uint32_t Lane, FunctionalState State);
+HAL_StatusTypeDef HAL_DSI_ForceRXLowPower(DSI_HandleTypeDef *hdsi, FunctionalState State);
+HAL_StatusTypeDef HAL_DSI_ForceDataLanesInRX(DSI_HandleTypeDef *hdsi, FunctionalState State);
+HAL_StatusTypeDef HAL_DSI_SetPullDown(DSI_HandleTypeDef *hdsi, FunctionalState State);
+HAL_StatusTypeDef HAL_DSI_SetContentionDetectionOff(DSI_HandleTypeDef *hdsi, FunctionalState State);
 
 uint32_t HAL_DSI_GetError(DSI_HandleTypeDef *hdsi);
 HAL_StatusTypeDef HAL_DSI_ConfigErrorMonitor(DSI_HandleTypeDef *hdsi, uint32_t ActiveErrors);
@@ -1026,8 +1117,7 @@ HAL_DSI_StateTypeDef HAL_DSI_GetState(DSI_HandleTypeDef *hdsi);
 /** @defgroup DSI_Private_Constants DSI Private Constants
   * @{
   */
-#define DSI_DCS_SHORT_PKT_READ ((uint32_t)0x00000006) /*!< Read DCS command */
-
+#define DSI_MAX_RETURN_PKT_SIZE ((uint32_t)0x00000037U) /*!< Maximum return packet configuration */
 /**
   * @}
   */ 
@@ -1036,7 +1126,7 @@ HAL_DSI_StateTypeDef HAL_DSI_GetState(DSI_HandleTypeDef *hdsi);
 /** @defgroup DSI_Private_Macros DSI Private Macros
   * @{
   */
-#define IS_DSI_PLL_NDIV(NDIV)                       ((10 <= (NDIV)) && ((NDIV) <= 125))
+#define IS_DSI_PLL_NDIV(NDIV)                       ((10U <= (NDIV)) && ((NDIV) <= 125U))
 #define IS_DSI_PLL_IDF(IDF)                         (((IDF) == DSI_PLL_IN_DIV1) || \
                                                      ((IDF) == DSI_PLL_IN_DIV2) || \
                                                      ((IDF) == DSI_PLL_IN_DIV3) || \
@@ -1048,16 +1138,10 @@ HAL_DSI_StateTypeDef HAL_DSI_GetState(DSI_HandleTypeDef *hdsi);
                                                      ((ODF) == DSI_PLL_OUT_DIV2) || \
                                                      ((ODF) == DSI_PLL_OUT_DIV4) || \
                                                      ((ODF) == DSI_PLL_OUT_DIV8))
-#define IS_DSI_CLOCK_CONTROL(DPHYClk)               (((DPHYClk) == DSI_DPHY_CLK_LP) || ((DPHYClk) == DSI_DPHY_CLK_HS))
 #define IS_DSI_AUTO_CLKLANE_CONTROL(AutoClkLane)    (((AutoClkLane) == DSI_AUTO_CLK_LANE_CTRL_DISABLE) || ((AutoClkLane) == DSI_AUTO_CLK_LANE_CTRL_ENABLE))
 #define IS_DSI_NUMBER_OF_LANES(NumberOfLanes)       (((NumberOfLanes) == DSI_ONE_DATA_LANE) || ((NumberOfLanes) == DSI_TWO_DATA_LANES))
 #define IS_DSI_FLOW_CONTROL(FlowControl)            (((FlowControl) | DSI_FLOW_CONTROL_ALL) == DSI_FLOW_CONTROL_ALL)
-#define IS_DSI_COLOR_CODING(ColorCoding)            (((ColorCoding) == DSI_RGB565_CONFIG1) || \
-                                                     ((ColorCoding) == DSI_RGB565_CONFIG2) || \
-                                                     ((ColorCoding) == DSI_RGB565_CONFIG3) || \
-                                                     ((ColorCoding) == DSI_RGB666_CONFIG1) || \
-                                                     ((ColorCoding) == DSI_RGB666_CONFIG2) || \
-                                                     ((ColorCoding) == DSI_RGB888))
+#define IS_DSI_COLOR_CODING(ColorCoding)            ((ColorCoding) <= 5U)
 #define IS_DSI_LOOSELY_PACKED(LooselyPacked)        (((LooselyPacked) == DSI_LOOSELY_PACKED_ENABLE) || ((LooselyPacked) == DSI_LOOSELY_PACKED_DISABLE))
 #define IS_DSI_DE_POLARITY(DataEnable)              (((DataEnable) == DSI_DATA_ENABLE_ACTIVE_HIGH) || ((DataEnable) == DSI_DATA_ENABLE_ACTIVE_LOW))
 #define IS_DSI_VSYNC_POLARITY(VSYNC)                (((VSYNC) == DSI_VSYNC_ACTIVE_HIGH) || ((VSYNC) == DSI_VSYNC_ACTIVE_LOW))
@@ -1093,13 +1177,30 @@ HAL_DSI_StateTypeDef HAL_DSI_GetState(DSI_HandleTypeDef *hdsi);
 #define IS_DSI_LP_DSR0P(LP_DSR0P)                   (((LP_DSR0P) == DSI_LP_DSR0P_DISABLE) || ((LP_DSR0P) == DSI_LP_DSR0P_ENABLE))
 #define IS_DSI_LP_DLW(LP_DLW)                       (((LP_DLW) == DSI_LP_DLW_DISABLE) || ((LP_DLW) == DSI_LP_DLW_ENABLE))
 #define IS_DSI_LP_MRDP(LP_MRDP)                     (((LP_MRDP) == DSI_LP_MRDP_DISABLE) || ((LP_MRDP) == DSI_LP_MRDP_ENABLE))
-#define IS_DSI_SHORT_PACKET_TYPE(MODE)              (((MODE) == DSI_DCS_SHORT_PKT_WRITE_P0) || \
+#define IS_DSI_SHORT_WRITE_PACKET_TYPE(MODE)        (((MODE) == DSI_DCS_SHORT_PKT_WRITE_P0) || \
                                                      ((MODE) == DSI_DCS_SHORT_PKT_WRITE_P1) || \
                                                      ((MODE) == DSI_GEN_SHORT_PKT_WRITE_P0) || \
                                                      ((MODE) == DSI_GEN_SHORT_PKT_WRITE_P1) || \
                                                      ((MODE) == DSI_GEN_SHORT_PKT_WRITE_P2))
-#define IS_DSI_LONG_PACKET_TYPE(MODE)               (((MODE) == DSI_DCS_LONG_PKT_WRITE) || \
+#define IS_DSI_LONG_WRITE_PACKET_TYPE(MODE)         (((MODE) == DSI_DCS_LONG_PKT_WRITE) || \
                                                      ((MODE) == DSI_GEN_LONG_PKT_WRITE))
+#define IS_DSI_READ_PACKET_TYPE(MODE)               (((MODE) == DSI_DCS_SHORT_PKT_READ) || \
+                                                     ((MODE) == DSI_GEN_SHORT_PKT_READ_P0) || \
+                                                     ((MODE) == DSI_GEN_SHORT_PKT_READ_P1) || \
+                                                     ((MODE) == DSI_GEN_SHORT_PKT_READ_P2))
+#define IS_DSI_COMMUNICATION_DELAY(CommDelay)       (((CommDelay) == DSI_SLEW_RATE_HSTX) || ((CommDelay) == DSI_SLEW_RATE_LPTX) || ((CommDelay) == DSI_HS_DELAY))
+#define IS_DSI_LANE_GROUP(Lane)                     (((Lane) == DSI_CLOCK_LANE) || ((Lane) == DSI_DATA_LANES))
+#define IS_DSI_CUSTOM_LANE(CustomLane)              (((CustomLane) == DSI_SWAP_LANE_PINS) || ((CustomLane) == DSI_INVERT_HS_SIGNAL))
+#define IS_DSI_LANE(Lane)                           (((Lane) == DSI_CLOCK_LANE) || ((Lane) == DSI_DATA_LANE0) || ((Lane) == DSI_DATA_LANE1))
+#define IS_DSI_PHY_TIMING(Timing)                   (((Timing) == DSI_TCLK_POST   ) || \
+                                                     ((Timing) == DSI_TLPX_CLK    ) || \
+                                                     ((Timing) == DSI_THS_EXIT    ) || \
+                                                     ((Timing) == DSI_TLPX_DATA   ) || \
+                                                     ((Timing) == DSI_THS_ZERO    ) || \
+                                                     ((Timing) == DSI_THS_TRAIL   ) || \
+                                                     ((Timing) == DSI_THS_PREPARE ) || \
+                                                     ((Timing) == DSI_TCLK_ZERO   ) || \
+                                                     ((Timing) == DSI_TCLK_PREPARE))
 
 /**
   * @}

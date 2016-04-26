@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_cortex.c
   * @author  MCD Application Team
-  * @version V1.4.0RC3
-  * @date    08-May-2015
+  * @version V1.4.4
+  * @date    22-January-2016
   * @brief   CORTEX HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the CORTEX:
@@ -45,7 +45,7 @@
    (+) The HAL_SYSTICK_Config() function calls the SysTick_Config() function which
        is a CMSIS function that:
         (++) Configures the SysTick Reload register with value passed as function parameter.
-        (++) Configures the SysTick IRQ priority to the lowest value (0x0F).
+        (++) Configures the SysTick IRQ priority to the lowest value (0x0FU).
         (++) Resets the SysTick Counter register.
         (++) Configures the SysTick Counter clock source to be Core Clock Source (HCLK).
         (++) Enables the SysTick Interrupt.
@@ -70,7 +70,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -182,7 +182,7 @@ void HAL_NVIC_SetPriorityGrouping(uint32_t PriorityGroup)
   */
 void HAL_NVIC_SetPriority(IRQn_Type IRQn, uint32_t PreemptPriority, uint32_t SubPriority)
 { 
-  uint32_t prioritygroup = 0x00;
+  uint32_t prioritygroup = 0x00U;
   
   /* Check the parameters */
   assert_param(IS_NVIC_SUB_PRIORITY(SubPriority));
@@ -268,7 +268,7 @@ uint32_t HAL_SYSTICK_Config(uint32_t TicksNumb)
   * @{
   */
 
-#if (__MPU_PRESENT == 1)
+#if (__MPU_PRESENT == 1U)
 /**
   * @brief  Initializes and configures the Region and the memory to be protected.
   * @param  MPU_Init: Pointer to a MPU_Region_InitTypeDef structure that contains
@@ -297,20 +297,20 @@ void HAL_MPU_ConfigRegion(MPU_Region_InitTypeDef *MPU_Init)
     assert_param(IS_MPU_REGION_SIZE(MPU_Init->Size));
     
     MPU->RBAR = MPU_Init->BaseAddress;
-    MPU->RASR = (MPU_Init->DisableExec             << MPU_RASR_XN_Pos)   |
-                (MPU_Init->AccessPermission        << MPU_RASR_AP_Pos)   |
-                (MPU_Init->TypeExtField            << MPU_RASR_TEX_Pos)  |
-                (MPU_Init->IsShareable             << MPU_RASR_S_Pos)    |
-                (MPU_Init->IsCacheable             << MPU_RASR_C_Pos)    |
-                (MPU_Init->IsBufferable            << MPU_RASR_B_Pos)    |
-                (MPU_Init->SubRegionDisable        << MPU_RASR_SRD_Pos)  |
-                (MPU_Init->Size                    << MPU_RASR_SIZE_Pos) |
-                (MPU_Init->Enable                  << MPU_RASR_ENABLE_Pos);
+    MPU->RASR = ((uint32_t)MPU_Init->DisableExec             << MPU_RASR_XN_Pos)   |
+                ((uint32_t)MPU_Init->AccessPermission        << MPU_RASR_AP_Pos)   |
+                ((uint32_t)MPU_Init->TypeExtField            << MPU_RASR_TEX_Pos)  |
+                ((uint32_t)MPU_Init->IsShareable             << MPU_RASR_S_Pos)    |
+                ((uint32_t)MPU_Init->IsCacheable             << MPU_RASR_C_Pos)    |
+                ((uint32_t)MPU_Init->IsBufferable            << MPU_RASR_B_Pos)    |
+                ((uint32_t)MPU_Init->SubRegionDisable        << MPU_RASR_SRD_Pos)  |
+                ((uint32_t)MPU_Init->Size                    << MPU_RASR_SIZE_Pos) |
+                ((uint32_t)MPU_Init->Enable                  << MPU_RASR_ENABLE_Pos);
   }
   else
   {
-    MPU->RBAR = 0x00;
-    MPU->RASR = 0x00;
+    MPU->RBAR = 0x00U;
+    MPU->RASR = 0x00U;
   }
 }
 #endif /* __MPU_PRESENT */
