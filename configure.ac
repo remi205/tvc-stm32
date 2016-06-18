@@ -1,4 +1,4 @@
-## Process this file with autoconf to produce a configure script.
+# Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.59)
 
 AC_INIT([tvc-stm32], [1.0], [prudhomme.remi@gmail.com])
